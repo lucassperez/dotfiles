@@ -37,10 +37,6 @@ noremap('n', '<leader>zv', ':so ~/.config/nvim/init.vim<CR>')
 noremap('n', '<leader>o', 'o<C-c>')
 noremap('n', '<leader>O', 'O<C-c>')
 
--- Deleta tudo que vem depois do primeiro sinal de igual da linha e
--- entra no insert mode
-noremap('n', '<leader>C', '0f=lC<Space>')
-
 -- Abrir links no firefox (quebra quando tem # :C)
 noremap('n', 'gx', ':!firefox <C-r><C-a><CR>')
 
@@ -71,21 +67,14 @@ noremap('n', '<leader>Y', '"+yg_')
 -- Modo visual
 noremap('v', '<', '<gv')
 noremap('v', '>', '>gv')
-noremap('v', '<Tab>', '>gv')
-noremap('v', '<S-Tab>', '<gv')
 -- Modo normal
 noremap('n', '>', '>>')
 noremap('n', '<', '<<')
 
 -- Mover blocos de texto
----- Visual mode com J e K e <C-j> e <C-k>
-noremap('v', 'J', ":m '>+1<CR>gv=gv")
-noremap('v', 'K', ":m '<-2<CR>gv=gv")
+-- TODO: Fazer um map para a mesma coisa no normal mode
 noremap('v', '<C-j>', ":m '>+1<CR>gv=gv")
 noremap('v', '<C-k>', ":m '<-2<CR>gv=gv")
----- Insert e normal modes com <C-j> e <C-k>
-noremap('i', '<C-j>', '<C-c>:m .+1<CR>==i')
-noremap('i', '<C-k>', '<C-c>:m .-2<CR>==i')
 
 -- Mudar o tamanho dos painéis
 noremap('n', '<C-Down>', ':resize -3<CR>')
@@ -100,8 +89,6 @@ noremap('i', '<C-Del>', '<C-o>de')
 -- Colocar 3 (ou 6) crases
 noremap('n', '<leader>ç', 'i```<CR>```<CR><C-c>2kA')
 
--- Shebang pra shell script
-noremap('n', ',sh', 'i#!/bin/sh<CR><C-c>')
 -- Tenho andado escrevendo muito "binding.pry", então...
 noremap('n', ',bp', 'obinding.pry<C-c>')
 
@@ -130,15 +117,12 @@ noremap('n', '<leader>rs', ":lua runAutomatedTest { cur_file = true }<CR>")
 noremap('n', '<leader>rn', ":lua runAutomatedTest { cur_file = true, cur_line = true }<CR>")
 noremap('n', '<leader>rd', ":lua runAutomatedTest { cur_dir = true }<CR>")
 
--- Run last command executed in attached pane
+-- Run last command executado no painel "anexado"
 noremap('n', '<leader>rl', ':call VtrSendCommand("!!")<CR>')
 
 -- Executa o arquivo como um script a depender do seu "filetype"
 -- Ver o script para detalhes
 noremap('n', '<leader>rr', ':luafile ~/.config/nvim/lua/filetype-tmux-runners/execute-script.lua<CR>')
-
--- Muda entre cores term e gui
-noremap('n', '<leader>i', ':set termguicolors!<CR>')
 
 --- Snippets ---
 noremap('n', ',html', ':-1read $HOME/.config/nvim/snippets/html5<CR>6jf>l')
@@ -152,12 +136,12 @@ noremap('n', ',stl', ':-1read $HOME/.config/nvim/snippets/styledcomps<CR>j')
 -- noremap('n', ',exm', ":-1read $HOME/.config/nvim/snippets/elixirmodule<CR>:%s/$1/=expand('%:t:r')/g<CR>jS")
 vim.cmd('iabbrev dfm, defmodule')
 
--- Buscar por uma sequência de <<<, === ou >>>,
--- pra usar quando tem conflitos no git
+-- Buscar por uma sequência de <<<, === ou >>>
+-- Pra usar quando tem conflitos no git
 noremap('n', '<leader>/', '/\\(<\\|=\\|>\\)\\{7\\}<CR>')
 
 -- Colocar o shebang #!/bin/sh
-noremap('n', ',sh', 'ggI#!/bin/sh<CR><C-c>:set ft=sh<CR>')
+noremap('n', ',sh', 'ggI#!/bin/sh<CR><CR><C-c>')
 
 -- Colocar um ponto e vírgula no final da linha
 noremap('n', '<leader>;', 'A;<C-c>')
