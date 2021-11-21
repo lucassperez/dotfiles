@@ -1,0 +1,130 @@
+#!/bin/sh
+
+#alias simplexev='xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }''
+alias pwdcp="pwd | tr -d '\n' | xclip -selection clipboard && pwd"
+alias showppa='echo "/etc/apt/sources.list.d" && ls /etc/apt/sources.list.d'
+alias diff='diff --color=auto'
+alias path='echo $PATH | tr ":" "\n"'
+alias glo='git log --oneline'
+alias gl='sh ~/scripts/git-stuff/git-log-main-master.sh --oneline'
+alias gds='git diff --staged'
+alias gd='git diff'
+alias gs='git status'
+alias pwdcp="pwd | tr -d '\n' | xclip -selection clipboard && pwd"
+alias normalizechmod='sh ~/scripts/chmod-back-to-normal.sh'
+alias browsersync='browser-sync start --server --directory --files **/*'
+alias vimtime='nvim --startuptime nvim_startuptime.log'
+alias vimrc='nvim ~/.config/nvim/init.vim'
+alias bashrc='nvim ~/.bashrc'
+alias tmuxrc='nvim ~/.tmux.conf'
+alias awerc='nvim ~/.config/awesome/rc.lua'
+alias alrc='nvim ~/.config/alacritty/alacritty.yml'
+alias notouchpad='xinput disable Elan\ Touchpad'
+alias vimgit='git diff --name-only | sort -u | xargs nvim'
+alias tmuxls='sh ~/scripts/parse-tmux-ls.sh'
+# alias rubomaster="git diff master --name-only | sort -u | tr '\n' ' ' | xclip -selection clipboard && xclip -selection clipboard -out | xargs -d ' ' -Ix echo x"
+# alias rspecmaster="git diff master --name-only | sort -u | awk '/spec.*_spec\.rb/' | tr '\n' ' ' | xclip -selection clipboard && xclip -selection clipboard -out | xargs -d ' ' -Ix echo x"
+alias rubomaster='sh ~/scripts/git-stuff/get-files-rubocop.sh'
+alias rspecmaster='sh ~/scripts/git-stuff/get-files-rspec.sh'
+alias readme='ls | grep -i readme | xargs glow -p'
+
+# Git Branch
+git_color() {
+  # I have to keep track of last exit code so I can return it, otherwise
+  # this function would return 0 and I wouldn't be able to print the last exit
+  # code after the git branch
+  local last_exit=$?
+  local git_status="$(git status 2> /dev/null)"
+  local output_styles=""
+
+  # if [[ $git_status =~ "rebas" ]]; then
+  #   output_styles="\e[1;35m"
+  #   # Não funciona :shrug:
+  if [[ $git_status =~ "nothing to commit, working tree clean" ]]; then
+    output_styles="1;91"
+    # vermelho
+  elif [[ $git_status =~ "nothing added to commit but untracked files present" ]]; then
+    output_styles="1;93"
+    # amarelo
+  elif [[ $git_status =~ "no changes added to commit" ]]; then
+    output_styles="1;93"
+    # amarelo
+  elif [[ $git_status =~ "Changes to be committed" ]]; then
+    output_styles="1;96"
+    # azul claro
+  fi
+
+  echo -e "\e[$output_styles"m
+
+  return $last_exit
+}
+
+git_branch() {
+  # I have to keep track of last exit code so I can return it, otherwise
+  # this function would return 0 and I wouldn't be able to print the last exit
+  # code after the git branch
+  local last_exit=$?
+  local git_status="$(git status 2> /dev/null)"
+  local on_branch="On branch ([^${IFS}]*)"
+  local on_commit="HEAD detached at ([^${IFS}])"
+
+  if [[ $git_status =~ $on_branch ]]; then
+    local branch=${BASH_REMATCH[1]}
+    printf "($branch)"
+  elif [[ $git_status =~ $on_commit ]]; then
+    local commit=${BASH_REMATCH[1]}
+    printf "($commit)"
+  fi
+
+  # if [[ $git_status =~ "is ahead" ]]; then
+  #   # fundo amarelo e letra preta e em negrito
+  #   echo -e "\e[1;30;43m A \e[0m"
+  #   # sublinhado
+  # elif [[ $git_status =~ "diverged" ]]; then
+  #   echo -e "\e[1;30;41m D \e[0m"
+  #   # invertido
+  # elif [[ $git_status =~ "behind" ]]; then
+  #   echo -e "\e[1;30;45m B \e[0m"
+  # fi
+
+  return $last_exit
+}
+
+PS1_value='\[\e[1;92m\]\u@\h\[\e[0m\]:\[\e[1;94m\]\w\n'
+# PS1_value='\[\e[1;92m\]\u@\h\[\e[0m\]:\[\e[1;94m\]\W'
+PS1_value+="\[\$(git_color)\]\$(git_branch)\[\e[0m\]"
+# https://stackoverflow.com/questions/16715103/bash-prompt-with-the-last-exit-code
+PS1_value+='\[\e[1;35m\]$(code=${?##0};echo ${code:+[${code}]})\[\e[0m\]'
+# PS1_last_line+='\[\e[0m\]$ '
+PS1_value+='\[\e[0m\]λ '
+export PS1=$PS1_value
+# \u = usuário (lucas), \h = computador (kirby), \w = working directory,
+# \W apenas o diretório atual, e não o caminho inteiro até ele
+# 0 = sem estilo, 1 = negrito, 31 = vermelho, 32 = verde, 34 = azul
+# Lembrando que o negrito além de ficar mais grosso, fica na versão "clara" da cor,
+# isto é, 91 (vermelho claro) tem a mesma cor de 1;31, porém o segundo também é
+# mais grosso, pois está em negrito
+# Após a quebra de linha, é necessário redefinir a cor e o negrito para que não
+# dê aquele bug visual de perder a cor quando redimensiona o terminal.
+################################
+
+# Uma opção seria setar algum outro atalho para limpar a tela (por exemplo,
+# Control + p) e assim poder usar C-l (Control-l) pra poder mudar de janela
+# dentro do tmux. O problema é que daí eu não consigo mais dar o clear dentro de
+# coisas como o irb. :C
+# O comando bind -P pode ser útil para ver outras possibilidades (:
+bind '"\C-f":clear-screen'
+# bind '"\C-f":previous-history'
+bind '"\C-t":kill-line'
+
+#https://www.tecmint.com/tips-for-tmux-terminal-sessions/
+if tmux ls 1>/dev/null 2>&1 && [ -z "$TMUX" ]; then
+  printf "Já existe pelo menos uma instância do \e[32mtmux\e[0m rodando:\n"
+  /bin/sh ~/scripts/parse-tmux-ls.sh
+else
+  ORIGINAL_TERMINAL_EMULATOR=$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$))
+  if [ "$ORIGINAL_TERMINAL_EMULATOR" = alacritty ]; then
+    # tmux attach -t default || tmux new -s default
+    /usr/bin/tmux
+  fi
+fi

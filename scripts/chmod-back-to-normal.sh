@@ -1,0 +1,99 @@
+#!/bin/sh
+
+# chmod -x all regular files and chmod 755 all directories inside current directory
+# if the script is called with the `recursive` option, it also goes inside directories
+# and executes itself recursively. PROCEED WITH CAUTION.
+# This script is also going to remove execute permissions from scripts that should
+# have executing permissions because it just checks if it is a regular file.
+# This script does NOT go inside git directories.
+# This script does NOT touch symbolic links.
+# This script may or may not handle well files and directories with spaces on their names ):
+
+# Usage examples:
+# sh chmod-back-to-normal.sh [OPTIONS]
+# Available options:
+# -r: Executes the script recursively (going inside directories)
+# -a: Executes the script on hidden files/directories as well (will execute ls -a to find files and directories)
+# -h: will show the help message
+
+show_help_message() {
+  echo Usage: sh chmod-back-to-normal [OPTIONS]
+  echo
+  echo This script is intended to run '\e[1m'chmod -x'\e[0m' on all regular files
+  echo and '\e[1m'chmod 755'\e[0m' on all directories found inside current directory.
+  echo Note that this script '\e[1m'will remove execute permissions'\e[0m' from all regular
+  echo files it finds, including scripts that should have those permissions.
+  echo Symbolic links are ignored.
+  echo This script may or may not handle very well files and directories with
+  echo spaces on their names '):'
+  echo
+  echo OPTIONS
+  echo
+  echo -r'\t'Executes the script recursively, going inside found directories.
+  echo '\t'This script will '\e[1m'NOT'\e[0m' go inside the git directories,
+  echo '\t'but will work if called from inside one.
+  echo '\t'This script should not go inside the '\e[1m'.git'\e[0m' directory
+  echo '\t'itself unless called from inside it.
+  echo -a'\t'Executes the script on hidden files/directories as well.
+  echo '\t'It will execute ls -a to find files and directories.
+  echo -q'\t'Does not print anything to stdout.
+  echo -h'\t'Shows this help message.
+}
+
+while getopts 'rahq' arg; do
+  case "${arg}" in
+    r)
+      RECUR='recursive'
+      ;;
+    a)
+      LS_OPTS='-a'
+      ;;
+    h)
+      SHOW_HELP_MESSAGE='true'
+      ;;
+    q)
+      QUIET='yes'
+      ;;
+  esac
+done
+
+if [ -n "$SHOW_HELP_MESSAGE" ]; then
+  show_help_message
+  exit 0
+fi
+
+if [ "$DIR_PATH" ] && [ ! -d "$DIR_PATH" ]; then
+  echo directory "$DIR_PATH" not found
+  exit 1
+fi
+
+OLD_IFS="$IFS"
+IFS='
+'
+for target in $(ls $DIR_PATH $LS_OPTS); do
+  if [ -L "$target" ]; then
+    [ -z "$QUIET" ] && echo "\e[1m >> \e[30;46m$target\e[0m is a \e[1;36msymbolic link\e[0m, we're not touching those"
+  elif [ -f "$target" ] && [ ! -L "$target" ]; then
+    [ -z "$QUIET" ] && echo "\e[1;32mregular file\e[0m: \e[1;36m$target\e[0m, removing execute permissions from it"
+    chmod -x "$target"
+  elif [ -d "$target" ]; then
+    # Ignores . and .. directories, otherwise the
+    # recursive version would scan the whole computer!
+    if [ $(echo "$target" | grep -v "^\.\{1,2\}$") ]; then
+      [ -z "$QUIET" ] && echo "\e[1;33mdirectory\e[0m: \e[1;35m$target\e[0m, giving permission code 755 to it"
+      chmod 755 "$target"
+      if [ -n "$RECUR" ]; then
+        cd "$target"
+        if [ "$(git rev-parse --git-dir 2> /dev/null)" ]; then
+          [ -z "$QUIET" ] && echo "\e[1m >> \e[35m$target\e[0m is a \e[1;31mgit\e[0m directory, not going to go inside it"
+        else
+          sh ~/scripts/chmod-back-to-normal.sh "$arg"
+        fi
+        cd ..
+      fi
+    fi
+  else
+    [ -z "$QUIET" ] && echo "\e[1;31m$target\e[0m is neither a regular file nor a directory, doing nothing to it"
+  fi
+done
+IFS="$OLD_IFS"
