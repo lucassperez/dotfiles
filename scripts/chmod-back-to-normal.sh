@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Author: Lucas Perez
+# Feel free to use and distribute this script as you please (:
+
 # chmod -x all regular files and chmod 755 all directories inside current directory
 # if the script is called with the `recursive` option, it also goes inside directories
 # and executes itself recursively. PROCEED WITH CAUTION.
@@ -13,7 +16,8 @@
 # sh chmod-back-to-normal.sh [OPTIONS]
 # Available options:
 # -r: Executes the script recursively (going inside directories)
-# -a: Executes the script on hidden files/directories as well (will execute ls -a to find files and directories)
+# -a: Executes the script on hidden files/directories as well (will execute ls -A to find files and directories)
+# -q: Executes the script but does not print messages to stdout
 # -h: will show the help message
 
 show_help_message() {
@@ -30,7 +34,7 @@ show_help_message() {
   echo OPTIONS
   echo
   echo -r'\t'Executes the script recursively, going inside found directories.
-  echo '\t'This script will '\e[1m'NOT'\e[0m' go inside the git directories,
+  echo '\t'This script will '\e[1m'NOT'\e[0m' go inside git directories,
   echo '\t'but will work if called from inside one.
   echo '\t'This script should not go inside the '\e[1m'.git'\e[0m' directory
   echo '\t'itself unless called from inside it.
@@ -40,60 +44,55 @@ show_help_message() {
   echo -h'\t'Shows this help message.
 }
 
-while getopts 'rahq' arg; do
+reexecutes_recursively() {
+  cd "$target"
+  if [ "$(git rev-parse --git-dir 2> /dev/null)" ]; then
+    [ "$QUIET" ] || echo "\e[1m >> \e[35m$target\e[0m is a \e[1;31mgit\e[0m directory, skipping"
+  else
+    sh "$0" "$@"
+  fi
+  cd ..
+}
+
+while getopts 'hraq' arg; do
   case "${arg}" in
+    h)
+      show_help_message
+      exit 0
+      ;;
     r)
-      RECUR='recursive'
+      RECUR=recursive
       ;;
     a)
-      LS_OPTS='-a'
-      ;;
-    h)
-      SHOW_HELP_MESSAGE='true'
+      # We have to ignore . and .. directories, otherwise
+      # the recursive version would scan the whole computer!
+      LS_OPTS=-A
       ;;
     q)
-      QUIET='yes'
+      QUIET=yes
       ;;
   esac
 done
 
-if [ -n "$SHOW_HELP_MESSAGE" ]; then
-  show_help_message
-  exit 0
-fi
-
-if [ "$DIR_PATH" ] && [ ! -d "$DIR_PATH" ]; then
-  echo directory "$DIR_PATH" not found
-  exit 1
-fi
-
 OLD_IFS="$IFS"
 IFS='
 '
-for target in $(ls $DIR_PATH $LS_OPTS); do
+for target in $(ls "$LS_OPTS"); do
   if [ -L "$target" ]; then
-    [ -z "$QUIET" ] && echo "\e[1m >> \e[30;46m$target\e[0m is a \e[1;36msymbolic link\e[0m, we're not touching those"
-  elif [ -f "$target" ] && [ ! -L "$target" ]; then
-    [ -z "$QUIET" ] && echo "\e[1;32mregular file\e[0m: \e[1;36m$target\e[0m, removing execute permissions from it"
+    [ "$QUIET" ] || echo "\e[1m >> \e[30;46m$target\e[0m is a \e[1;36msymbolic link\e[0m, we're not touching those"
+
+  elif [ -f "$target" ]; then
+    [ "$QUIET" ] || echo "\e[1;32mregular file\e[0m\t\e[1;36m$target\e[0m, removing execute permissions from it"
     chmod -x "$target"
+
   elif [ -d "$target" ]; then
-    # Ignores . and .. directories, otherwise the
-    # recursive version would scan the whole computer!
-    if [ $(echo "$target" | grep -v "^\.\{1,2\}$") ]; then
-      [ -z "$QUIET" ] && echo "\e[1;33mdirectory\e[0m: \e[1;35m$target\e[0m, giving permission code 755 to it"
-      chmod 755 "$target"
-      if [ -n "$RECUR" ]; then
-        cd "$target"
-        if [ "$(git rev-parse --git-dir 2> /dev/null)" ]; then
-          [ -z "$QUIET" ] && echo "\e[1m >> \e[35m$target\e[0m is a \e[1;31mgit\e[0m directory, not going to go inside it"
-        else
-          sh ~/scripts/chmod-back-to-normal.sh "$arg"
-        fi
-        cd ..
-      fi
-    fi
+    [ "$QUIET" ] || echo "\e[1;33mdirectory\e[0m\t\e[1;35m$target\e[0m, giving permission code 755 to it"
+    chmod 755 "$target"
+
+    [ "$RECUR" ] && reexecutes_recursively "$@"
+
   else
-    [ -z "$QUIET" ] && echo "\e[1;31m$target\e[0m is neither a regular file nor a directory, doing nothing to it"
+    [ "$QUIET" ] || echo "\e[1;31m$target\e[0m is neither a regular file nor a directory, doing nothing to it"
   fi
 done
 IFS="$OLD_IFS"
