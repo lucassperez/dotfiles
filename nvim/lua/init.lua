@@ -1,4 +1,4 @@
--- vim.opt if for things you would `set` in vimscript. vim.g is for things you'd `let`.
+-- https://vonheikemen.github.io/devlog/tools/configuring-neovim-using-lua/
 
 -- Sobre as cores:
 -- https://icyphox.sh/blog/nvim-lua/

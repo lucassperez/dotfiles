@@ -1,6 +1,9 @@
 local o = vim.o   -- global options
 local bo = vim.bo -- buffer options
 local wo = vim.wo -- window options
+-- vim.opt if for things you would `set` in vimscript,
+-- vim.g is for things you'd `let`
+local opt = vim.opt
 
 -- global
 o.hidden  = true -- podemos esconder buffers com alterações
@@ -20,8 +23,6 @@ o.scrolloff = 1 -- sempre mostra pelo menos uma linha abaixo e acima do cursor
 o.sidescrolloff = 3 -- sempre mostra pelo menos três colunas à direita e à esquerda do cursor
 o.backspace = "2" -- conseguir apagar identações, também
 o.lazyredraw = true
--- o.undodir = ???
-o.undofile = true -- arquivo para poder dar undo no diretório acima
 o.backup = false
 o.writebackup = false
 o.mouse = 'a' -- habilita o mouse (a significa all). Sacrilégio!
@@ -44,3 +45,31 @@ wo.number = true -- número das linhas
 wo.relativenumber = true -- números relativos (tipo distâncias) ao cursor
 wo.numberwidth = 3 -- tamanho mínimo da coluna pros números à esquerda
 wo.wrap = false -- sem wrap quando o texto chega no final da tela
+
+opt.encoding = 'utf8'
+-- List mode tem que estar ligado para conseguir usar o listchars
+wo.list = true
+opt.listchars = {
+  tab = '<->',
+  trail = '·',
+  nbsp = '·',
+  extends = '»',
+  precedes = '«',
+}
+opt.lazyredraw = true
+opt.textwidth = 0
+-- Eu odeio demais formatoptions "t", "c", "r" e "o" ):<
+-- t = auto wrap
+-- c = auto wrap comentários
+-- r = nova linha também é comentário se apertar enter dentro de um comentário
+-- o = nova linha também é comentário se apertar o dentro de um comentário
+-- q = pode formatar comentários com o comando "gq" (??) Nem sei o que é isso
+-- l = não auto formata quando acaba a linha no insert mode (exatamente o que eu quero)
+vim.cmd [[
+  autocmd Filetype * setlocal formatoptions=ql
+  setlocal formatoptions=ql
+]]
+-- https://www.reddit.com/r/neovim/comments/ppv7vr/comment/hd7v2ol/?utm_source=share&utm_medium=web2x&context=3
+vim.opt.undodir = vim.fn.stdpath('config')..'/undodir'
+o.undofile = true -- arquivo para poder dar undo no diretório acima
+opt.complete:remove('i') -- https://medium.com/usevim/set-complete-e76b9f196f0f

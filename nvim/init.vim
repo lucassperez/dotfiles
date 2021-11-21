@@ -1,11 +1,8 @@
-set nocompatible
 syntax on
 " set synmaxcol=121 " caso a linha seja tão grande que ultrapasse 120 colunas, não tem
 "                   " mais marcação de sintaxe. É interessante até para a performance
 " " https://vim.fandom.com/wiki/Fix_syntax_highlighting
 syntax sync minlines=256
-
-set undodir=~/.config/nvim/undodir
 
 """ Plugins """
 filetype plugin on
@@ -41,7 +38,6 @@ Plug 'antoinemadec/FixCursorHold.nvim'
 let g:cursorhold_updatetime=100
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'airblade/vim-gitgutter'
-Plug 'thoughtbot/vim-rspec'
 " Plug 'kyazdani42/nvim-web-devicons'
 " Plug 'psliwka/vim-smoothie'
 Plug 'kana/vim-textobj-user'
@@ -136,40 +132,20 @@ let g:buftabline_indicators=1 " mostrar se tem alteração no arquivo ou não
 
 """ Configurações gerais """
 let &titlestring='nvim'
-set encoding=utf8 " vai, Brasil!
-set list listchars=tab:<->,trail:·,nbsp:·,extends:»,precedes:« " mostrar whitespaces, kinda off
 " Mudando a status line pra ficar algo tipo assim:
 " [relative/path/to/file[+]                l:1/200,c:32]
 " set statusline=%f%m%r%h%w%=\ l:%l\/%L,c:%v
 " Alterei pro lualine por enquanto
-set complete-=i " https://medium.com/usevim/set-complete-e76b9f196f0f
-set lazyredraw
 
 " Destacar colunas depois do 80 e 120
 let &colorcolumn='81,121'
 highlight ColorColumn ctermbg=239 guibg=#4e4e4e
-set textwidth=0 " porém, não quero que ele automaticamente coloque uma linha nova ao chegar aí
-
-" Hífen não key word faz com que super-mercado sejam duas (ou três) "palavras",
-" ou seja, com o cursor em "s", apertar w não vai colocá-lo em "o"
-set iskeyword-=- "https://vi.stackexchange.com/questions/18197/how-to-get-w-word-and-b-back-to-treat-hyphens-and-underscores-like-spaces
-
 
 " Usar shift+tab como <C-o>, já que tab = <C-i>
-nnoremap <S-Tab> <C-o>
+" nnoremap <S-Tab> <C-o>
 " <C-i> e <C-o> pulam pelos lugares que o cursor esteve
 " bizarramente, <C-i> e <Tab> disparam a mesma sequência
 " Logo, <S-Tab> poderia ser <C-o> pra fazer parzinho com <Tab>, que é <C-i>
-
-" Eu odeio demais formatoptions "t", "c", "r" e "o" ):<
-" t = auto wrap
-" c = auto wrap comentários
-" r = nova linha também é comentário se apertar enter dentro de um comentário
-" o = nova linha também é comentário se apertar o dentro de um comentário
-" q = pode formatar comentários com o comando "gq" (??) Nem sei o que é isso
-" l = não auto formata quando acaba a linha no insert mode (EXATAMENTE O QUE EU QUERO)
-autocmd Filetype * setlocal formatoptions=ql
-setlocal formatoptions=ql
 
 " Colocar uma corzinha nos pares de parentesis/colchetes/chaves quando o cursor
 " estiver sobre eles
@@ -184,7 +160,7 @@ hi MatchParen guifg=#87ff00 gui=BOLD,UNDERLINE ctermfg=yellow cterm=BOLD,UNDERLI
 " NvimTree
 source $HOME/.config/nvim/tree-config.vim
 
-" Alterar a cor da numeração das linhas com alguma alteraao (git gutter)
+" Alterar a cor da numeração das linhas com alguma alteração (git gutter)
 set signcolumn=no
 let g:gitgutter_signs=0
 let g:gitgutter_highlight_linenrs=1
@@ -197,9 +173,4 @@ hi GitGutterChangeDeleteLineNr guifg=#d75f00 gui=UNDERCURL,BOLD ctermfg=166 cter
 runtime macros/matchit.vim
 let ruby_foldable_groups='if def class module'
 
-" set foldmethod=expr
-" set foldexpr=nvim_treesitter#foldexpr()
-
 let g:closetag_filetypes = 'html,eelixir,javascript,javascriptreact'
-" let g:surround_{char2nr('=')} = "<%= \r %>"
-" let g:surround_{char2nr('-')} = "<% \r %>"
