@@ -9,6 +9,7 @@ require('pluggins.lsp')
 require('pluggins.tree-sitter.config')
 require('pluggins.tree-sitter.elixir')
 require('pluggins.completion')
+require('pluggins.nvim-autopairs')
 require('pluggins.my-lualine')
 
 -- Meus próprios scritpts

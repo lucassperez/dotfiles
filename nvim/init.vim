@@ -23,7 +23,7 @@ Plug 'christoomey/vim-tmux-runner'
 " Plug 'LkeMitchll/vim-kitty-runner'
 " Plug 'knubie/vim-kitty-navigator'
 " Plug 'vim-test/vim-test'
-
+Plug 'windwp/nvim-autopairs'
 Plug 'tpope/vim-surround'
 " Ragtag OBS1
 Plug 'tpope/vim-ragtag'
