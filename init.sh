@@ -7,7 +7,10 @@ echo "Creating symlink to: \e[1;36m$HOME/.config/alacritty\e[0m"
 ln -sfni "$DIR/alacritty/" "$HOME/.config/alacritty"
 
 echo "Creating symlink to: \e[1;36m$HOME/.bashrc\e[0m"
-ln -sfni "$DIR/bash/bash-misc" "$HOME/.bashrc"
+ln -sfni "$DIR/bash/bashrc" "$HOME/.bashrc"
+
+echo "Creating symlink to: \e[1;36m$HOME/.bash_profile\e[0m"
+ln -sfni "$DIR/bash/bash_profile" "$HOME/.bash_profile"
 
 echo "Creating symlink to: \e[1;36m$HOME/.config/kitty\e[0m"
 ln -sfni "$DIR/kitty/" "$HOME/.config/kitty"

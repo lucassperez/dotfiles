@@ -1,10 +1,10 @@
 # Dotfiles
 
-Configuration files for my mostly used programs:
+Configuration files for my most used programs:
 - Neovim
 - Tmux
 - Alacritty
-- Bash (sample bashrc)
+- Bash
 
 It also features some old Kitty configs, though I stopped using it.
 
