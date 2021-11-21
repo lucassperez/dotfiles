@@ -20,15 +20,10 @@ call plug#begin('~/.config/nvim/plugged')
 " Funcionalidades de verdade
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
-" Plug 'LkeMitchll/vim-kitty-runner'
-" Plug 'knubie/vim-kitty-navigator'
-" Plug 'vim-test/vim-test'
 Plug 'windwp/nvim-autopairs'
 Plug 'tpope/vim-surround'
-" Ragtag OBS1
 Plug 'tpope/vim-ragtag'
 Plug 'cohama/lexima.vim'
-" Plug 'vim-scripts/tComment'
 Plug 'tpope/vim-commentary/'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -38,8 +33,6 @@ Plug 'antoinemadec/FixCursorHold.nvim'
 let g:cursorhold_updatetime=100
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'airblade/vim-gitgutter'
-" Plug 'kyazdani42/nvim-web-devicons'
-" Plug 'psliwka/vim-smoothie'
 Plug 'kana/vim-textobj-user'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'andyl/vim-textobj-elixir'
@@ -47,10 +40,6 @@ Plug 'mhinz/vim-startify'
 " Plug 'windwp/nvim-ts-autotag'
 Plug 'alvan/vim-closetag'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
-
-" Plug 'hrsh7th/nvim-cmp'
-" Plug 'hrsh7th/vim-vsnip'
-" Plug 'hrsh7th/cmp-buffer'
 
 " Coisas LSP e TreeSitter
 Plug 'neovim/nvim-lspconfig'
@@ -61,15 +50,7 @@ Plug 'nvim-treesitter/playground'
 Plug 'hrsh7th/nvim-compe'
 
 " Marcadores de sintaxe
-" Plug 'tpope/vim-rails'
-" Plug 'tpope/vim-bundler'
-" Plug 'styled-components/vim-styled-components'
 Plug 'elixir-editors/vim-elixir'
-" Plug 'MaxMEllon/vim-jsx-pretty'
-" Plug 'leafOfTree/vim-vue-plugin'
-" Plug 'pangloss/vim-javascript' " esse é o que quebra o rainbow
-" Plug 'elzr/vim-json'
-" Plug 'vim-ruby/vim-ruby'
 
 " Ajudinha visual
 Plug 'ap/vim-buftabline'
@@ -81,25 +62,10 @@ Plug 'hoob3rt/lualine.nvim'
 " Coisas que tem a ver com cores e visual
 Plug 'rktjmp/lush.nvim'
 Plug 'tjdevries/colorbuddy.nvim'
-" Plug 'xiyaowong/nvim-transparent'
 Plug 'norcalli/nvim-colorizer.lua'
 
 " Esquema de cores
-" Plug 'https://github.com/morhetz/gruvbox/'
-" Plug 'jdsimcoe/abstract.vim'
-" Plug 'arcticicestudio/nord-vim'
 Plug 'ayu-theme/ayu-vim'
-" Plug 'folke/tokyonight.nvim'
-" Plug 'dikiaap/minimalist'
-" Plug 'tomasr/molokai'
-" Plug 'fmoralesc/molokayo'
-" Plug 'marcopaganini/termschool-vim-theme'
-" Plug 'christianchiarulli/nvcode-color-schemes.vim'
-" Plug 'mhartington/oceanic-next'
-" Plug 'arzg/vim-colors-xcode'
-" Plug 'RRethy/nvim-base16'
-" Plug 'Th3Whit3Wolf/onebuddy'
-" Plug 'mhinz/vim-janah'
 call plug#end()
 
 lua <<EOF
