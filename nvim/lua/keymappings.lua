@@ -12,19 +12,17 @@ vim.g.mapleader = ' '
 -- debaixo do cursor pertence
 noremap('n', '<leader>m', ':TSHighlightCapturesUnderCursor<CR>')
 
--- Abre um novo painel horizontal
+-- Novos paineis (horizontal e vertical) e fechar o atual
 noremap('n', '<leader>s', ':sp<CR>')
--- Abre um novo painel vertical
 noremap('n', '<leader>v', ':vs<CR>')
--- Fecha o painel atual
 noremap('n', '<leader>c', '<C-w>c')
 
+-- Se tem ç, tem que usar
 map('n', 'ç', '$')
 map('v', 'ç', '$h')
 
 -- Abrir o último arquivo editado
 noremap('n', '<leader>e', ':e#<CR>')
--- noremap('n', '<leader>e', '<C-^>')
 
 -- Copiar para o clipboard do sistema o caminho do arquivo
 noremap('n', '<leader>f', ':let @+ = expand("%")<CR>')
@@ -46,11 +44,9 @@ noremap('n', '<leader>C', '0f=lC<Space>')
 -- Abrir links no firefox (quebra quando tem # :C)
 noremap('n', 'gx', ':!firefox <C-r><C-a><CR>')
 
--- Buffer anterior
+-- Ir para o buffer anterior/próximo e fechar o atual
 noremap('n', '<leader>q', ':bprevious<CR>')
--- Próximo buffer
 noremap('n', '<leader>w', ':bnext<CR>')
--- Fecha o buffer atual
 noremap('n', '<leader>d', ':bdelete<CR>')
 
 -- Mudar de painéis segurando Control
@@ -69,13 +65,6 @@ noremap('n', '<leader>h', ':History<CR>')
 noremap('v', '<leader>y', '"+y')
 noremap('n', '<leader>y', '"+y')
 noremap('n', '<leader>Y', '"+yg_')
-
--- Colar do clipboard
--- Conflito com as minhas configs do fzf
--- noremap('n', '<leader>p', '"+p')
--- noremap('n', '<leader>P', '"+P')
--- noremap('v', '<leader>p', '"+p')
--- noremap('v', '<leader>P', '"+P')
 
 -- Mudar a indentaçãõ continuamente
 -- https://github.com/changemewtf/dotfiles/blob/master/vim/.vimrc
@@ -108,12 +97,12 @@ noremap('n', '<C-Right>', ':vertical resize +5<CR>')
 -- Note que pra apagar pra trás, Control + w funciona
 noremap('i', '<C-Del>', '<C-o>de')
 
--- Colocar 3 (ou 6) crases, porque ninguém merece essa porcaria
+-- Colocar 3 (ou 6) crases
 noremap('n', '<leader>ç', 'i```<CR>```<CR><C-c>2kA')
 
--- shebang pra shell script
+-- Shebang pra shell script
 noremap('n', ',sh', 'i#!/bin/sh<CR><C-c>')
--- tenho andado escrevendo muito "binding.pry", então...
+-- Tenho andado escrevendo muito "binding.pry", então...
 noremap('n', ',bp', 'obinding.pry<C-c>')
 
 -- É brincadeira que :noh<CR> não vem por padrão em algum lugar, viu...
@@ -131,21 +120,17 @@ noremap('n', '<Esc>', ':noh<CR>')
 -- Setar um runner pro Vim Tmux Runner
 noremap('n', '<leader>a', ':VtrAttachToPane<CR>')
 
--- linter all
+-- linter all & linter this file
 noremap('n', '<leader>rua', ":lua runLinter {}<CR>")
--- linter this file
 noremap('n', '<leader>ruf', ":lua runLinter { cur_file = true }<CR>")
 
--- test all
+-- test all, test this file, test this file this line &  test this directory
 noremap('n', '<leader>ra', ":lua runAutomatedTest {}<CR>")
--- test this file
 noremap('n', '<leader>rs', ":lua runAutomatedTest { cur_file = true }<CR>")
--- test this file this line
 noremap('n', '<leader>rn', ":lua runAutomatedTest { cur_file = true, cur_line = true }<CR>")
--- test this file this line
 noremap('n', '<leader>rd', ":lua runAutomatedTest { cur_dir = true }<CR>")
 
--- Run last command
+-- Run last command executed in attached pane
 noremap('n', '<leader>rl', ':call VtrSendCommand("!!")<CR>')
 
 -- Executa o arquivo como um script a depender do seu "filetype"
@@ -167,8 +152,8 @@ noremap('n', ',stl', ':-1read $HOME/.config/nvim/snippets/styledcomps<CR>j')
 -- noremap('n', ',exm', ":-1read $HOME/.config/nvim/snippets/elixirmodule<CR>:%s/$1/=expand('%:t:r')/g<CR>jS")
 vim.cmd('iabbrev dfm, defmodule')
 
--- Buscar por uma sequência de <<<, === ou >>>, pra usar quando tem conflitos
--- no git
+-- Buscar por uma sequência de <<<, === ou >>>,
+-- pra usar quando tem conflitos no git
 noremap('n', '<leader>/', '/\\(<\\|=\\|>\\)\\{7\\}<CR>')
 
 -- Colocar o shebang #!/bin/sh
@@ -180,7 +165,6 @@ noremap('n', '<leader>;', 'A;<C-c>')
 -- Abrir um programa com o programa padrão para aquele tipo de arquivo
 noremap('n', '<leader>x', ':!xdg-open %<CR><CR>')
 
--- "Zoom" na split atual
+-- "Zoom" na split atual e deixar as splits o mais parecidas possível
 noremap('n', '<leader>-', ':wincmd _<CR>:wincmd |<CR>')
--- Deixar as splits o mais parecidas possível
 noremap('n', '<leader>=', ':wincmd =<CR>')
