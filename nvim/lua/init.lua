@@ -5,12 +5,12 @@
 require('keymappings')
 require('settings')
 
-require('pluggins.lsp')
-require('pluggins.tree-sitter.config')
-require('pluggins.tree-sitter.elixir')
-require('pluggins.completion')
-require('pluggins.nvim-autopairs')
-require('pluggins.my-lualine')
+require('plugins.lsp')
+require('plugins.tree-sitter.config')
+require('plugins.tree-sitter.elixir')
+require('plugins.completion')
+require('plugins.nvim-autopairs')
+require('plugins.my-lualine')
 
 -- Meus próprios scritpts
 require('filetype-tmux-runners.test')

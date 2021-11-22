@@ -1,4 +1,4 @@
-local tema_modificado = require('pluggins.modified-everforest-theme')
+local tema_modificado = require('plugins.modified-everforest-theme')
 
 local function getlines ()
   return [[%l/%L:%v]]
