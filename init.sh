@@ -14,9 +14,12 @@ if [ "$shell" = z ]; then
   echo "Creating symlink to: \e[1;36m$HOME/.zshrc\e[0m"
   ln -sfni "$DIR/zsh/zshrc" "$HOME/.zshrc"
 
-  echo "Creating symlink to: \e[1;36m$HOME/.zsh_pluggins\e[0m"
-  ln -sfni "$DIR/zsh/zsh_pluggins" "$HOME/.zsh_pluggins"
+  [ -d "$HOME/.zsh" ] || mkdir "$HOME/.zsh"
+  echo "Creating symlink to: \e[1;36m$HOME/.zsh/plugins\e[0m"
+  ln -sfni "$DIR/zsh/plugins" "$HOME/.zsh/plugins"
 
+  echo "Creating symlink to: \e[1;36m$HOME/.zsh/completion\e[0m"
+  ln -sfni "$DIR/zsh/completion" "$HOME/.zsh/completion"
 else
   echo "Creating symlink to: \e[1;36m$HOME/.bashrc\e[0m"
   ln -sfni "$DIR/bash/bashrc" "$HOME/.bashrc"
