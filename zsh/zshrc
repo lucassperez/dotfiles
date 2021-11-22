@@ -1,0 +1,81 @@
+fpath=(${ASDF_DIR}/completions $fpath)
+
+# The following lines were added by compinstall
+zstyle ':completion:*' completer _complete _ignored _correct
+zstyle ':completion:*' completions 0
+zstyle ':completion:*' glob 1
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' max-errors 3
+zstyle ':completion:*' menu select=0
+zstyle ':completion:*' prompt '»'
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' substitute 0
+zstyle :compinstall filename '/home/lucas/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=2000
+setopt nomatch notify
+unsetopt autocd beep extendedglob
+bindkey -e
+# End of lines configured by zsh-newuser-install
+
+# Vi mode, um dia? # bindkey -v
+
+git_color() {
+  local git_status="$(git status 2> /dev/null)"
+  local output_styles=""
+
+  # if [[ $git_status =~ "rebas" ]]; then
+  #   output_styles="\e[1;35m"
+  #   # Não funciona :shrug:
+  if [[ $git_status =~ "nothing to commit, working tree clean" ]]; then
+    output_styles="9"
+    # vermelho
+  elif [[ $git_status =~ "nothing added to commit but untracked files present" ]]; then
+    output_styles="11"
+    # amarelo
+  elif [[ $git_status =~ "no changes added to commit" ]]; then
+    output_styles="11"
+    # amarelo
+  elif [[ $git_status =~ "Changes to be committed" ]]; then
+    output_styles="14"
+    # azul claro
+  else
+    output_styles="white"
+  fi
+
+  echo "$output_styles"
+}
+
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats '(%b)'
+setopt PROMPT_SUBST
+
+# Cores escuras / claras
+# vermelho | verde | amarelo | azul | magenta | ciano | branco | preto/cinza
+#   1/9    |  2/10 |   3/11  | 4/12 |   5/13  |  6/14 |  7/15  |     8/16
+# https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Prompt-Expansion
+PROMPT='%B%F{green}%n@%m%F{white}:%F{blue}%~%f%b
+%B%F{$(git_color)}${vcs_info_msg_0_}%f%b%0(?..%B%F{magenta}[%?]%f%b)λ '
+RPROMPT='%B%F{6}{zsh}%f%b'
+
+eval "$(zoxide init zsh)"
+
+source "$HOME/.aliases"
+
+bindkey "^F" clear-screen
+bindkey "^T" kill-line
+
+# Control + esquerda/direita, respectivamente
+bindkey ";5D" backward-word
+bindkey ";5C" forward-word
+
+source "$HOME/.zsh_pluggins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

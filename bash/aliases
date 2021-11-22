@@ -1,0 +1,43 @@
+if [ -x /usr/bin/dircolors ]; then
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  alias ls='ls --color=auto -F --group-directories-first'
+  alias dir='dir --color=auto'
+  alias vdir='vdir --color=auto'
+
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Meus apelidos
+alias showppa='echo "/etc/apt/sources.list.d" && ls /etc/apt/sources.list.d'
+alias diff='diff --color=auto'
+alias path='echo $PATH | tr ":" "\n"'
+alias glo='git log --oneline'
+alias gl='sh ~/scripts/git-stuff/git-log-main-master.sh --oneline'
+alias gds='git diff --staged'
+alias gd='git diff'
+alias gs='git status'
+# alias simplexev='xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }''
+alias pwdcp="pwd | tr -d '\n' | xclip -selection clipboard && pwd"
+alias normalizechmod='sh ~/scripts/chmod-back-to-normal.sh'
+alias browsersync='browser-sync start --server --directory --files **/*'
+alias vimtime='nvim --startuptime nvim_startuptime.log'
+alias vimrc='nvim ~/.config/nvim/init.vim'
+alias bashrc='nvim ~/.bashrc'
+alias tmuxrc='nvim ~/.tmux.conf'
+alias awerc='nvim ~/.config/awesome/rc.lua'
+alias alrc='nvim ~/.config/alacritty/alacritty.yml'
+alias notouchpad='xinput disable Elan\ Touchpad'
+alias vimgit='git diff --name-only | sort -u | xargs nvim'
+alias tmuxls='sh ~/scripts/parse-tmux-ls.sh'
+alias rubomaster='sh ~/scripts/git-stuff/get-files-rubocop.sh'
+alias rspecmaster='sh ~/scripts/git-stuff/get-files-rspec.sh'
+alias readme='ls | grep -i readme | xargs glow -p'
+
+[ -f "$HOME/.local_aliases" ] && source "$HOME/.local_aliases"

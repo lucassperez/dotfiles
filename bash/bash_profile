@@ -4,14 +4,6 @@
 # Also this: https://stackoverflow.com/a/903213
 case $- in *i*) . ~/.bashrc;; esac
 
-# Uma opção seria setar algum outro atalho para limpar a tela (por exemplo,
-# Control + p) e assim poder usar C-l (Control-l) pra poder mudar de janela
-# dentro do tmux. O problema é que daí eu não consigo mais dar o clear dentro de
-# coisas como o irb. :C
-# O comando bind -P pode ser útil para ver outras possibilidades (:
-bind '"\C-f":clear-screen'
-bind '"\C-t":kill-line'
-
 PATH="$HOME/.local/bin:$PATH"
 
 export EDITOR=nvim

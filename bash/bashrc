@@ -79,61 +79,13 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto -F --group-directories-first'
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-# Apelidos
-alias sb='source "$HOME/.bashrc"'
-alias showppa='echo "/etc/apt/sources.list.d" && ls /etc/apt/sources.list.d'
-alias diff='diff --color=auto'
-alias path='echo $PATH | tr ":" "\n"'
-alias glo='git log --oneline'
-alias gl='sh ~/scripts/git-stuff/git-log-main-master.sh --oneline'
-alias gds='git diff --staged'
-alias gd='git diff'
-alias gs='git status'
-# alias hidecursor='unclutter -root -idle 3 -grab &'
-# alias simplexev='xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }''
-alias pwdcp="pwd | tr -d '\n' | xclip -selection clipboard && pwd"
-alias normalizechmod='sh ~/scripts/chmod-back-to-normal.sh'
-alias browsersync='browser-sync start --server --directory --files **/*'
-alias vimtime='nvim --startuptime nvim_startuptime.log'
-alias vimrc='nvim ~/.config/nvim/init.vim'
-alias bashrc='nvim ~/.bashrc'
-alias tmuxrc='nvim ~/.tmux.conf'
-alias awerc='nvim ~/.config/awesome/rc.lua'
-alias alrc='nvim ~/.config/alacritty/alacritty.yml'
-alias notouchpad='xinput disable Elan\ Touchpad'
-alias vimgit='git diff --name-only | sort -u | xargs nvim'
-alias tmuxls='sh ~/scripts/parse-tmux-ls.sh'
-# alias rubomaster="git diff master --name-only | sort -u | tr '\n' ' ' | xclip -selection clipboard && xclip -selection clipboard -out | xargs -d ' ' -Ix echo x"
-# alias rspecmaster="git diff master --name-only | sort -u | awk '/spec.*_spec\.rb/' | tr '\n' ' ' | xclip -selection clipboard && xclip -selection clipboard -out | xargs -d ' ' -Ix echo x"
-alias rubomaster='sh ~/scripts/git-stuff/get-files-rubocop.sh'
-alias rspecmaster='sh ~/scripts/git-stuff/get-files-rspec.sh'
-alias readme='ls | grep -i readme | xargs glow -p'
-
-if [ -f "$HOME/.bash_aliases" ]; then
-  source "$HOME/.bash_aliases"
-fi
+# Meus apelidos
+source "$HOME/.aliases"
 
 # Git Branch
 git_color() {
@@ -215,9 +167,18 @@ export PS1=$PS1_value
 # dê aquele bug visual de perder a cor quando redimensiona o terminal.
 ################################
 
+# Uma opção seria setar algum outro atalho para limpar a tela (por exemplo,
+# Control + p) e assim poder usar C-l (Control-l) pra poder mudar de janela
+# dentro do tmux. O problema é que daí eu não consigo mais dar o clear dentro de
+# coisas como o irb. :C
+# O comando bind -P pode ser útil para ver outras possibilidades (:
+bind '"\C-f":clear-screen'
+bind '"\C-t":kill-line'
+
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
-. $HOME/z.sh
+# . $HOME/z.sh
+eval "$("$HOME"/.local/bin/zoxide init bash)"
 
 sh ~/scripts/lambda-fetch.sh
 
