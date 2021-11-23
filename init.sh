@@ -40,8 +40,16 @@ ln -sfni "$DIR/kitty/" "$HOME/.config/kitty"
 echo "Creating symlink to: \e[1;36m$HOME/.config/nvim\e[0m"
 ln -sfni "$DIR/nvim/" "$HOME/.config/nvim"
 
-echo "Creating symlink to: \e[1;36m$HOME/scripts\e[0m"
-ln -sfni "$DIR/scripts/" "$HOME/scripts"
+[ -d "$HOME/scripts" ] || mkdir "$HOME/scripts" -pv
+echo Creating symlinks to the following scripts:
+echo "\e[1;36mparse-tmux-ls.sh\e[0m, \e[1;36mlambda-fetch.sh\e[0m, \e[1;36mchmod-back-to-normal.sh\e[0m"
+echo "whole \e[1;36mgit-stuff\e[0m and \e[1;36mtmux-chtsh\e[0m folders"
+echo To "$HOME/scripts" directory
+ln -sfni "$DIR/scripts/parse-tmux-ls.sh" "$HOME/scripts"
+ln -sfni "$DIR/scripts/lambda-fetch.sh" "$HOME/scripts"
+ln -sfni "$DIR/scripts/chmod-back-to-normal.sh" "$HOME/scripts"
+ln -sfni "$DIR/scripts/git-stuff" "$HOME/scripts"
+ln -sfni "$DIR/scripts/tmux-chtsh" "$HOME/scripts"
 
 echo "Creating symlink to: \e[1;36m$HOME/.tmux.conf\e[0m"
 ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
