@@ -4,9 +4,9 @@ require'nvim-treesitter.configs'.setup {
 
   highlight = { -- enable highlighting for all file types
     enable = true, -- you can also use a table with list of langs here (e.g. { "python", "javascript" })
-    -- custom_captures = {
-    --   ["heredoc_content"] = "TSAttribute",
-    -- },
+    custom_captures = {
+      ["heredoc_content"] = "TSComment",
+    },
   },
   indent = {
     -- Funcionalidade experimental!
