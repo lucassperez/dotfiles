@@ -1,20 +1,16 @@
 #!/bin/sh
 
-if [ -x /usr/bin/dircolors ]; then
-  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-  alias ls='ls --color=auto -F --group-directories-first'
-  alias dir='dir --color=auto'
-  alias vdir='vdir --color=auto'
+alias als='nvim ~/.aliases'
 
-  alias grep='grep --color=auto'
-  alias fgrep='fgrep --color=auto'
-  alias egrep='egrep --color=auto'
-fi
+alias ls='ls --color=auto -F --group-directories-first'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 
-# some more ls aliases
-alias ll='ls -alF'
+alias ll='ls -Al'
 alias la='ls -A'
-alias l='ls -CF'
 
 # Meus apelidos
 alias showppa='echo "/etc/apt/sources.list.d" && ls /etc/apt/sources.list.d'
@@ -25,6 +21,8 @@ alias gl='sh ~/scripts/git-stuff/git-log-main-master.sh --oneline'
 alias gds='git diff --staged'
 alias gd='git diff'
 alias gs='git status'
+alias gk='git checkout'
+alias gb='git branch'
 # alias simplexev='xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }''
 alias pwdcp="pwd | tr -d '\n' | xclip -selection clipboard && pwd"
 alias normalizechmod='sh ~/scripts/chmod-back-to-normal.sh'
@@ -35,7 +33,7 @@ alias bashrc='nvim ~/.bashrc'
 alias tmuxrc='nvim ~/.tmux.conf'
 alias awerc='nvim ~/.config/awesome/rc.lua'
 alias alrc='nvim ~/.config/alacritty/alacritty.yml'
-alias zshrc='nvim ~/.zshrc'
+alias zshrc='nvim $ZDOTDIR/.zshrc'
 alias notouchpad='xinput disable Elan\ Touchpad'
 alias vimgit='git diff --name-only | sort -u | xargs nvim'
 alias tmuxls='sh ~/scripts/parse-tmux-ls.sh'

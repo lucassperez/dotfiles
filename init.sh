@@ -5,28 +5,30 @@ DIR=$(pwd)
 
 echo Bash or Zsh?
 printf "z = Zsh, any other = Bash: "
-read shell
+read INSTALL_SHELL
 
 echo "Creating symlink to: \e[1;36m$HOME/.config/alacritty\e[0m"
 ln -sfni "$DIR/alacritty/" "$HOME/.config/alacritty"
 
-if [ "$shell" = z ]; then
-  echo "Creating symlink to: \e[1;36m$HOME/.zshrc\e[0m"
-  ln -sfni "$DIR/zsh/zshrc" "$HOME/.zshrc"
+if [ "$INSTALL_SHELL" = z ]; then
+  echo "Creating symlink to: \e[1;36m$HOME/.zshenv\e[0m"
+  ln -sfni "$DIR/zsh/zshenv" "$HOME/.zshenv"
 
-  [ -d "$HOME/.zsh" ] || mkdir "$HOME/.zsh"
-  echo "Creating symlink to: \e[1;36m$HOME/.zsh/plugins\e[0m"
-  ln -sfni "$DIR/zsh/plugins" "$HOME/.zsh/plugins"
+  echo "Creating symlink to: \e[1;36m$HOME/.config/zsh/.zshrc\e[0m"
+  ln -sfni "$DIR/zsh/zshrc" "$HOME/.config/zsh/.zshrc"
 
-  echo "Creating symlink to: \e[1;36m$HOME/.zsh/completion\e[0m"
-  ln -sfni "$DIR/zsh/completion" "$HOME/.zsh/completion"
+  [ -d "$HOME/.config/zsh" ] || mkdir "$HOME/.config/zsh" -pv
+  echo "Creating symlink to: \e[1;36m$HOME/.config/zsh/plugins\e[0m"
+  ln -sfni "$DIR/zsh/plugins" "$HOME/.config/zsh/plugins"
+
+  echo "Creating symlink to: \e[1;36m$HOME/.config/zsh/completions\e[0m"
+  ln -sfni "$DIR/zsh/completions" "$HOME/.config/zsh/completions"
 else
   echo "Creating symlink to: \e[1;36m$HOME/.bashrc\e[0m"
   ln -sfni "$DIR/bash/bashrc" "$HOME/.bashrc"
 
   echo "Creating symlink to: \e[1;36m$HOME/.bash_profile\e[0m"
   ln -sfni "$DIR/bash/bash_profile" "$HOME/.bash_profile"
-
 fi
 
 echo "Creating symlink to: \e[1;36m$HOME/.aliases\e[0m"
