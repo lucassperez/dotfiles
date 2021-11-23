@@ -11,6 +11,7 @@ require('plugins.tree-sitter.elixir')
 require('plugins.completion')
 require('plugins.nvim-autopairs')
 require('plugins.my-lualine')
+require('plugins.tabout')
 
 -- Meus próprios scritpts
 require('filetype-tmux-runners.test')

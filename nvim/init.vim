@@ -40,6 +40,7 @@ Plug 'mhinz/vim-startify'
 " Plug 'windwp/nvim-ts-autotag'
 Plug 'alvan/vim-closetag'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
+Plug 'abecodes/tabout.nvim'
 
 " Coisas LSP e TreeSitter
 Plug 'neovim/nvim-lspconfig'
