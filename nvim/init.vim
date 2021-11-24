@@ -126,6 +126,7 @@ hi MatchParen guifg=#87ff00 gui=BOLD,UNDERLINE ctermfg=yellow cterm=BOLD,UNDERLI
 
 " NvimTree
 source $HOME/.config/nvim/tree-config.vim
+" source $HOME/.config/nvim/ported-tree-config.vim
 
 " Alterar a cor da numeração das linhas com alguma alteração (git gutter)
 set signcolumn=no
