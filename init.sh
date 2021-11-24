@@ -41,10 +41,9 @@ echo "Creating symlink to: \e[1;36m$HOME/.config/nvim\e[0m"
 ln -sfni "$DIR/nvim/" "$HOME/.config/nvim"
 
 [ -d "$HOME/scripts" ] || mkdir "$HOME/scripts" -pv
-echo Creating symlinks to the following scripts:
-echo "\e[1;36mparse-tmux-ls.sh\e[0m, \e[1;36mlambda-fetch.sh\e[0m, \e[1;36mchmod-back-to-normal.sh\e[0m"
-echo "whole \e[1;36mgit-stuff\e[0m and \e[1;36mtmux-chtsh\e[0m folders"
-echo To "$HOME/scripts" directory
+echo Creating symlinks to the following scripts to "\e[1;36m$HOME/scripts\e[0m" directory:
+echo Files:"\t \e[1mparse-tmux-ls.sh\e[0m, \e[1mlambda-fetch.sh\e[0m, \e[1mchmod-back-to-normal.sh\e[0m"
+echo Folders:" \e[1mgit-stuff/\e[0m, \e[1mtmux-chtsh/\e[0m"
 ln -sfni "$DIR/scripts/parse-tmux-ls.sh" "$HOME/scripts"
 ln -sfni "$DIR/scripts/lambda-fetch.sh" "$HOME/scripts"
 ln -sfni "$DIR/scripts/chmod-back-to-normal.sh" "$HOME/scripts"

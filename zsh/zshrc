@@ -21,6 +21,22 @@ unsetopt autocd beep extendedglob
 
 bindkey -e
 
+command_not_found_handler() {
+  # https://askubuntu.com/questions/1226574/how-do-i-enable-zsh-package-suggestions-as-in-ubuntu-bash
+  # calls the nice command-not-found handle function that shows a message
+  # with package suggestions, just like it was in bash
+  # If on debian, might have to install the `command-not-found` package
+  # https://unix.stackexchange.com/questions/67466/how-to-implement-package-install-suggestion-on-debian
+  if [ -x /usr/lib/command-not-found ]; then
+    /usr/lib/command-not-found -- "$1"
+  elif [ -x /usr/share/command-not-found/command-not-found ]; then
+    /usr/share/command-not-found/command-not-found -- "$1"
+  else
+    echo "$1: Command not found" >&2
+    return 127
+  fi
+}
+
 git_color() {
   local git_status="$(git status 2> /dev/null)"
   local output_styles=""
