@@ -9,8 +9,10 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-alias ll='ls -Al'
+alias ll='ls -l'
 alias la='ls -A'
+alias lla='ls -lA'
+alias lal='ls -Al'
 
 # Meus apelidos
 alias showppa='echo "/etc/apt/sources.list.d" && ls /etc/apt/sources.list.d'
@@ -41,4 +43,4 @@ alias rubomaster='sh ~/scripts/git-stuff/get-files-rubocop.sh'
 alias rspecmaster='sh ~/scripts/git-stuff/get-files-rspec.sh'
 alias readme='ls | grep -i readme | xargs glow -p'
 
-[ -f "$HOME/.local_aliases" ] && source "$HOME/.local_aliases"
+[ -f "$HOME/.local/.my_aliases" ] && source "$HOME/.local/.my_aliases"
