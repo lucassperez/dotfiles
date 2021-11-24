@@ -6,68 +6,23 @@ syntax sync minlines=256
 
 """ Plugins """
 filetype plugin on
-call plug#begin('~/.config/nvim/plugged')
-" https://github.com/yegappan/mru tentar esse qualquer dias desses
-" https://github.com/neoclide/redismru.vim ou esse
+" call plug#begin('~/.config/nvim/plugged')
+" " https://github.com/yegappan/mru tentar esse qualquer dias desses
+" " https://github.com/neoclide/redismru.vim ou esse
 
-" Joguinho
-" Plug 'ThePrimeagen/vim-be-good'
-" Plug 'alec-gibson/nvim-tetris'
+" " Joguinho
+" " Plug 'ThePrimeagen/vim-be-good'
+" " Plug 'alec-gibson/nvim-tetris'
 
-" Plug 'jghauser/mkdir.nvim'
-" Plug 'code-biscuits/nvim-biscuits'
+" " Plug 'jghauser/mkdir.nvim'
+" " Plug 'code-biscuits/nvim-biscuits'
 
-" Funcionalidades de verdade
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'christoomey/vim-tmux-runner'
-Plug 'windwp/nvim-autopairs'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-ragtag'
-Plug 'cohama/lexima.vim'
-Plug 'tpope/vim-commentary/'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'mattn/emmet-vim'
-Plug 'tpope/vim-fugitive'
-Plug 'antoinemadec/FixCursorHold.nvim'
-let g:cursorhold_updatetime=100
-Plug 'kyazdani42/nvim-tree.lua'
-Plug 'airblade/vim-gitgutter'
-Plug 'kana/vim-textobj-user'
-Plug 'nelstrom/vim-textobj-rubyblock'
-Plug 'andyl/vim-textobj-elixir'
-Plug 'mhinz/vim-startify'
-" Plug 'windwp/nvim-ts-autotag'
-Plug 'alvan/vim-closetag'
-Plug 'JoosepAlviste/nvim-ts-context-commentstring'
-Plug 'abecodes/tabout.nvim'
 
-" Coisas LSP e TreeSitter
-Plug 'neovim/nvim-lspconfig'
-Plug 'kabouzeid/nvim-lspinstall'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'nvim-treesitter/playground'
-Plug 'hrsh7th/nvim-compe'
 
-" Marcadores de sintaxe
-Plug 'elixir-editors/vim-elixir'
 
-" Ajudinha visual
-Plug 'ap/vim-buftabline'
-" Esse rainbow por algum motivo está quebrando a
-" interpolação de strings em arquivos elixir ):
-" Plug 'p00f/nvim-ts-rainbow'
-Plug 'hoob3rt/lualine.nvim'
 
-" Coisas que tem a ver com cores e visual
-Plug 'rktjmp/lush.nvim'
-Plug 'tjdevries/colorbuddy.nvim'
-Plug 'norcalli/nvim-colorizer.lua'
 
-" Esquema de cores
-Plug 'ayu-theme/ayu-vim'
-call plug#end()
+" call plug#end()
 
 lua <<EOF
 require('init')
