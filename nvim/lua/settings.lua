@@ -65,9 +65,10 @@ opt.textwidth = 0
 -- o = nova linha também é comentário se apertar o dentro de um comentário
 -- q = pode formatar comentários com o comando "gq" (??) Nem sei o que é isso
 -- l = não auto formata quando acaba a linha no insert mode (exatamente o que eu quero)
+-- j = junta comentários de maneira inteligente apertando J
+-- :h fo-table para mais informações
 vim.cmd [[
-  autocmd Filetype * setlocal formatoptions=ql
-  setlocal formatoptions=ql
+  autocmd Filetype * setlocal formatoptions=jql
 ]]
 -- https://www.reddit.com/r/neovim/comments/ppv7vr/comment/hd7v2ol/?utm_source=share&utm_medium=web2x&context=3
 vim.opt.undodir = vim.fn.stdpath('config')..'/undodir'
