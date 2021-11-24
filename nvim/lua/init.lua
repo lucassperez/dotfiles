@@ -5,6 +5,7 @@
 require('keymappings')
 require('settings')
 
+require('plugins.plugins')
 require('plugins.lsp')
 require('plugins.tree-sitter.config')
 require('plugins.tree-sitter.elixir')
@@ -12,6 +13,7 @@ require('plugins.completion')
 require('plugins.nvim-autopairs')
 require('plugins.my-lualine')
 require('plugins.tabout')
+require('plugins.Comment')
 
 -- Meus próprios scritpts
 require('filetype-tmux-runners.test')
