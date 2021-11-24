@@ -1,3 +1,5 @@
+-- https://github.com/yegappan/mru tentar esse qualquer dias desses
+-- https://github.com/neoclide/redismru.vim ou esse
 return require('packer').startup(function()
   -- Funcionalidades de verdade
   use {
@@ -10,7 +12,6 @@ return require('packer').startup(function()
   use 'windwp/nvim-autopairs'
   use 'tpope/vim-surround'
   use 'tpope/vim-ragtag'
-  use 'cohama/lexima.vim'
   use 'numToStr/Comment.nvim'
   use 'mattn/emmet-vim'
   use 'tpope/vim-fugitive'

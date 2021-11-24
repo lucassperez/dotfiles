@@ -5,7 +5,7 @@
 require('keymappings')
 require('settings')
 
-require('plugins.plugins')
+require('plugins.packer')
 require('plugins.lsp')
 require('plugins.tree-sitter.config')
 require('plugins.tree-sitter.elixir')
