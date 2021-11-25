@@ -28,8 +28,8 @@ hi DiffChange guifg=#c39f00 guibg=#5f87d7 gui=NONE ctermfg=231 ctermbg=68  cterm
 " hi ErrorMsg ctermfg=131 ctermbg=231 cterm=reverse guifg=#af5f5f guibg=#ffffff gui=reverse
 " hi WarningMsg ctermfg=180 ctermbg=NONE cterm=NONE guifg=#d7af87 guibg=NONE gui=NONE
 hi NonText          guifg=#729ecb
-hi TabLine          guifg=#616163 guibg=#2e3436 ctermfg=242 ctermbg=0
-hi BufTabLineActive guibg=#6c6c6c               ctermfg=15  ctermbg=242
+hi TabLine          guifg=#616163 guibg=#2e3436 gui=NONE ctermfg=242 ctermbg=0 cterm=NONE
+hi BufTabLineActive guibg=#6c6c6c                        ctermfg=15  ctermbg=242
 
 hi Search guibg=#ffff87
 
