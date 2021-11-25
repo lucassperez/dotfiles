@@ -77,7 +77,7 @@ done
 OLD_IFS="$IFS"
 IFS='
 '
-for target in $(ls "$LS_OPTS"); do
+for target in $(ls $LS_OPTS); do
   if [ -L "$target" ]; then
     [ "$QUIET" ] || echo "\e[1m >> \e[30;46m$target\e[0m is a \e[1;36msymbolic link\e[0m, we're not touching those"
 
