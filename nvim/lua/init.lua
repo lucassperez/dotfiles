@@ -14,6 +14,7 @@ require('plugins.nvim-autopairs')
 require('plugins.my-lualine')
 require('plugins.tabout')
 require('plugins.Comment')
+require('plugins.buftabline')
 
 -- Meus próprios scritpts
 require('filetype-tmux-runners.test')

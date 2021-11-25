@@ -43,8 +43,8 @@ return require('packer').startup(function()
   use 'elixir-editors/vim-elixir'
 
   -- Ajudinha visual
-  use 'ap/vim-buftabline'
   use 'hoob3rt/lualine.nvim'
+  use 'jose-elias-alvarez/buftabline.nvim'
   -- Esse rainbow por algum motivo está quebrando a
   -- interpolação de strings em arquivos elixir ):
   -- use 'p00f/nvim-ts-rainbow'
