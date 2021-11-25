@@ -27,6 +27,7 @@ return require('packer').startup(function()
   use 'alvan/vim-closetag'
   use 'JoosepAlviste/nvim-ts-context-commentstring'
   use 'abecodes/tabout.nvim'
+  use 'nvim-lua/plenary.nvim'
 
   -- Coisas LSP e TreeSitter
   use 'neovim/nvim-lspconfig'
