@@ -32,6 +32,8 @@ noremap('n', 'Y', 'y$')
 
 -- "zource" vim
 noremap('n', '<leader>zv', ':so ~/.config/nvim/init.vim<CR>')
+-- "zource" lua
+noremap('n', '<leader>zl', ':luafile ~/.config/nvim/lua/init.lua<CR>')
 
 -- Não entrar no insert mode após usar leader + o/O
 noremap('n', '<leader>o', 'o<C-c>')
