@@ -67,7 +67,10 @@ opt.textwidth = 0
 -- l = não auto formata quando acaba a linha no insert mode (exatamente o que eu quero)
 -- j = junta comentários de maneira inteligente apertando J
 -- :h fo-table para mais informações
-o.formatoptions = 'jql'
+vim.cmd [[
+  autocmd Filetype * setlocal formatoptions=jql
+]]
+-- o.formatoptions = 'jql'
 -- https://www.reddit.com/r/neovim/comments/ppv7vr/comment/hd7v2ol/?utm_source=share&utm_medium=web2x&context=3
 vim.opt.undodir = vim.fn.stdpath('config')..'/undodir'
 o.undofile = true -- arquivo para poder dar undo no diretório acima
