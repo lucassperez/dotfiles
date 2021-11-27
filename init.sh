@@ -55,6 +55,12 @@ ln -sfni "$DIR/scripts/tmux-chtsh" "$HOME/scripts"
 echo "Creating symlink to: \e[1;36m$HOME/.tmux.conf\e[0m"
 ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 
+[ -d "$HOME/.config/i3" ] || mkdir "$HOME/.config/i3" -pv
+echo "Creating symlink to: \e[1;36m$HOME/.config/i3/config\e[0m"
+ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.config/i3/config"
+echo "Creating symlink to: \e[1;36m$HOME/.config/i3/i3status.conf\e[0m"
+ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.config/i3/i3status.conf"
+
 echo "Creating symlink to: \e[1;36m$HOME/.xinputrc\e[0m"
 ln -sfni "$DIR/xinput/xinputrc" "$HOME/.xinputrc"
 
