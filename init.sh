@@ -42,6 +42,7 @@ echo "Creating symlink to: \e[1;36m$HOME/.config/nvim\e[0m"
 ln -sfni "$DIR/nvim/" "$HOME/.config/nvim"
 
 [ -d "$HOME/scripts" ] || mkdir "$HOME/scripts" -pv
+
 echo Creating symlinks to the following scripts to "\e[1;36m$HOME/scripts\e[0m" directory:
 echo Files:"\t \e[1mparse-tmux-ls.sh\e[0m, \e[1mlambda-fetch.sh\e[0m, \e[1mchmod-back-to-normal.sh\e[0m, \e[1msimplexev.sh\e[0m"
 echo Folders:" \e[1mgit-stuff/\e[0m, \e[1mtmux-chtsh/\e[0m"
@@ -56,10 +57,15 @@ echo "Creating symlink to: \e[1;36m$HOME/.tmux.conf\e[0m"
 ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 
 [ -d "$HOME/.config/i3" ] || mkdir "$HOME/.config/i3" -pv
+
 echo "Creating symlink to: \e[1;36m$HOME/.config/i3/config\e[0m"
-ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.config/i3/config"
-echo "Creating symlink to: \e[1;36m$HOME/.config/i3/i3status.conf\e[0m"
-ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.config/i3/i3status.conf"
+ln -sfni "$DIR/i3/config" "$HOME/.config/i3/config"
+
+echo "Creating symlink to: \e[1;36m$HOME/.config/i3/i3blocks.conf\e[0m"
+ln -sfni "$DIR/i3/i3blocks.conf" "$HOME/.config/i3/i3blocks.conf"
+
+echo "Creating symlink to: \e[1;36m$HOME/.config/i3/blocklets-scripts\e[0m"
+ln -sfni "$DIR/i3/blocklets-scripts" "$HOME/.config/i3/blocklets-scripts"
 
 echo "Creating symlink to: \e[1;36m$HOME/.xinputrc\e[0m"
 ln -sfni "$DIR/xinput/xinputrc" "$HOME/.xinputrc"
