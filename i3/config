@@ -22,6 +22,9 @@
 # Fonts Awesome
 # Flameshot
 # alacritty
+# picom
+# xwallpaper
+# xbacklight
 # For some blocklets, docker and dunst I guess
 # In order for the brightness blocklet to work as it is configured now, it is
 # necessary to create a sudoer file (eg /etc/sudoers.d/xbacklight) and give your
