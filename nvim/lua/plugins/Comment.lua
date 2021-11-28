@@ -1,3 +1,4 @@
 require('Comment').setup {
-  padding = true
+  padding = true,
+  ignore = '^$'
 }

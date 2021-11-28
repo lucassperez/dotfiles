@@ -84,6 +84,11 @@ _G.packer_plugins = {
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/ayu-vim",
     url = "https://github.com/ayu-theme/ayu-vim"
   },
+  ["buftabline.nvim"] = {
+    loaded = true,
+    path = "/home/lucas/.local/share/nvim/site/pack/packer/start/buftabline.nvim",
+    url = "https://github.com/jose-elias-alvarez/buftabline.nvim"
+  },
   ["colorbuddy.nvim"] = {
     loaded = true,
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/colorbuddy.nvim",
@@ -164,15 +169,15 @@ _G.packer_plugins = {
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/playground",
     url = "https://github.com/nvim-treesitter/playground"
   },
+  ["plenary.nvim"] = {
+    loaded = true,
+    path = "/home/lucas/.local/share/nvim/site/pack/packer/start/plenary.nvim",
+    url = "https://github.com/nvim-lua/plenary.nvim"
+  },
   ["tabout.nvim"] = {
     loaded = true,
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/tabout.nvim",
     url = "https://github.com/abecodes/tabout.nvim"
-  },
-  ["vim-buftabline"] = {
-    loaded = true,
-    path = "/home/lucas/.local/share/nvim/site/pack/packer/start/vim-buftabline",
-    url = "https://github.com/ap/vim-buftabline"
   },
   ["vim-closetag"] = {
     loaded = true,
