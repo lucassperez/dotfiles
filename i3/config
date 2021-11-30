@@ -36,24 +36,26 @@
 ### ---------------- Important/different key maps -------------------------- ###
 # mod+q and mod+w change focus to left/right
 # mod+e toggle tiling layouts and mod+t go to tabbed layout
-# mod+backspace shows "System control" menu: lock screen, lockout, reboot or shutdown
+# mod+backspace shows "System control" menu: lock screen, logout, reboot or shutdown
 # mod+shift+backspace shows menu to controll brightness, microphone and volume
 # mod+m toggle mute sound, mod+, decreases sound and mod+. increases it
 # Same bindings for microphone, but holding shift:
-# mod+shift+m toggle mute mic, mod+shift+, decrease mic volume and mod+shift+. increases it
+#   mod+shift+m toggle mute mic, mod+shift+, decrease mic volume and mod+shift+. increases it
 # mod+[ and mod+] decreases and increases brightness
 # mod+enter opens alacritty
 # mod+b opens firefox
-# mod+r enters resize mode
-# mod+hjkl changes focus, and mod+shift+hjkl resizes
-# mod+f full screen toggle
+# mod+r enters resize mode (hjkl, uiop and qwas to resize)
+# mod+uiop resizes without having to go into resize mode
+# mod+hjkl changes focus
+# mod+f toggle full screen
 # mod+shift+q closes window
 # On those menus (resize mode, system control mode and vol/mic/brightness control),
-# there is always plenty ways of quiting. The same command used to start the menu
+# there is always plenty of ways of quiting. The same command used to start the menu
 # always quit it, as well as Control+C, ESC and simply the Q key. The only exception
 # being the resize mode, where Q acts as H (since mod+q acts as mod+h, change focus)
 # mod+shift+r restarts i3 presenving layout and sessions
 # mod+shift+c reloads the configuration file
+# mod+n toggle dunst on and off
 ################################################################################
 
 # Super key = Mod4
@@ -77,6 +79,13 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
+
+# Start dunst
+exec --no-startup-id dunst
+
+# Start audio and mic not too loud
+exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 20% && $refresh_audio_icon
+exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 30% && $refresh_mic_icon
 
 ################
 ## Sytem "Numbers" (?) Need a better name
@@ -107,6 +116,10 @@ set $refresh_brightness_icon pkill -RTMIN+12 i3blocks
 bindsym $mod+bracketleft    exec xbacklight -dec 5 && $refresh_brightness_icon
 bindsym $mod+bracketright   exec xbacklight -inc 5 && $refresh_brightness_icon
 
+# Turn off notifications
+set $refresh_notification_icon pkill -RTMIN+13 i3blocks
+bindsym $mod+n exec dunstctl set-paused toggle && $refresh_notification_icon
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -115,8 +128,9 @@ bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
 # Consider making some patches to dmenu, at least the fuzzy matcher: https://tools.suckless.org/dmenu/patches/fuzzymatch/
-# The -i flag for canse insensitive
-bindsym $mod+d exec --no-startup-id dmenu_run -i
+# The -i flag for canse insensitive (default)
+# The -h flag is for line height, requires this patch: https://tools.suckless.org/dmenu/patches/line-height/
+bindsym $mod+d exec --no-startup-id dmenu_run -i -h 21
 # A more modern dmenu replacement is rofi:
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
@@ -230,14 +244,14 @@ bindsym $mod+Control+0 move container to workspace number $ws10, workspace $ws10
 workspace_auto_back_and_forth yes
 
 # Move workspace to another monitor
-bindsym $mod+o move workspace to output left
-bindsym $mod+p move workspace to output right
+bindsym $mod+z move workspace to output left
+bindsym $mod+x move workspace to output right
 # Move container to another monitor
-bindsym $mod+Shift+o move container to output left
-bindsym $mod+Shift+p move container to output right
+bindsym $mod+Shift+z move container to output left
+bindsym $mod+Shift+x move container to output right
 # Move container to another monitor and switch to that monitor
-bindsym $mod+Control+o move container to output left,  focus output left
-bindsym $mod+Control+p move container to output right, focus output right
+bindsym $mod+Control+z move container to output left,  focus output left
+bindsym $mod+Control+x move container to output right, focus output right
 
 # WIP
 # set $workspace_to_monitor Send workspace to left/right monitor
@@ -399,6 +413,11 @@ exec rmmod pcspkr
 focus_follows_mouse no
 
 # resize window (you can also use the mouse for that)
+bindsym $mod+u resize shrink width 5 px or 5 ppt
+bindsym $mod+i resize grow height 5 px or 5 ppt
+bindsym $mod+o resize shrink height 5 px or 5 ppt
+bindsym $mod+p resize grow width 5 px or 5 ppt
+
 bindsym $mod+r mode "resize"
 mode "resize" {
   # These bindings trigger as soon as you enter the resize mode
@@ -411,6 +430,11 @@ mode "resize" {
   bindsym j resize grow height 5 px or 5 ppt
   bindsym k resize shrink height 5 px or 5 ppt
   bindsym l resize grow width 5 px or 5 ppt
+
+  bindsym u resize shrink width 5 px or 5 ppt
+  bindsym i resize grow height 5 px or 5 ppt
+  bindsym o resize shrink height 5 px or 5 ppt
+  bindsym p resize grow width 5 px or 5 ppt
 
   bindsym q resize shrink width 5 px or 5 ppt
   bindsym w resize grow width 5 px or 5 ppt
@@ -456,8 +480,8 @@ bar {
   # status_command i3status --config ~/.config/i3/i3status.conf
   status_command i3blocks -c ~/.config/i3/i3blocks.conf
   position top
-  tray_output eDP1
-  font pango:Font Awesome 9
+  tray_output primary
+  font pango:Font Awesome 12
   binding_mode_indicator yes
   workspace_min_width 30
   # i3bar_command i3bar --transparency
@@ -497,6 +521,7 @@ for_window [window_role="task_dialog"] floating enable
 for_window [class="^.*"] border pixel 5
 # new_window 1pixel
 
+# Run some programs (terminal, browser)
 bindsym $mod+Return exec alacritty
 bindsym $mod+b exec firefox
 
