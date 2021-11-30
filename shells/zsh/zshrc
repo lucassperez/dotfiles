@@ -118,7 +118,7 @@ xset r rate 220 25
 eval "$(zoxide init zsh)"
 
 # https://superuser.com/questions/1585256/inserting-ssh-agent-into-i3wms-startup-so-its-available-to-all-processes-in-th
-eval $(keychain --eval --agents ssh --quick --quiet)
+# eval $(keychain --eval --agents ssh --quick --quiet)
 
 sh "$HOME/scripts/lambda-fetch.sh"
 
