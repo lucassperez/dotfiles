@@ -83,9 +83,25 @@ exec --no-startup-id nm-applet
 # Start dunst
 exec --no-startup-id dunst
 
+# Compositor
+exec_always picom
+
+# Meu Deus, esse barulho é muito alto! Tirar o "pc speaker", que são
+# os bips quando a busca no Firfox não encontra nada, por exemplo
+# Precisa de privilégios sudo pra isso, então não vai funcionar aqui.
+# https://wiki.archlinux.org/title/PC_speaker
+exec rmmod pcspkr
+
 # Start audio and mic not too loud
 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 20% && $refresh_audio_icon
 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 30% && $refresh_mic_icon
+
+# Disable notebook things
+exec sh ~/scripts/disable-keyboard.sh
+exec sh ~/scripts/disable-touchpad.sh
+
+# Wallpaper
+exec sh ~/scripts/setwallpaper.sh ~/Pictures/wallpapers/wall.jpg
 
 ################
 ## Sytem "Numbers" (?) Need a better name
@@ -130,7 +146,7 @@ bindsym $mod+Shift+q kill
 # Consider making some patches to dmenu, at least the fuzzy matcher: https://tools.suckless.org/dmenu/patches/fuzzymatch/
 # The -i flag for canse insensitive (default)
 # The -h flag is for line height, requires this patch: https://tools.suckless.org/dmenu/patches/line-height/
-bindsym $mod+d exec --no-startup-id dmenu_run -i -h 21
+bindsym $mod+d exec --no-startup-id dmenu_run -i -h 21 -p "search" -sb "$bgcolor"
 # A more modern dmenu replacement is rofi:
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
@@ -391,24 +407,9 @@ mode "$volume_control" {
   bindsym $mod+Shift+BackSpace mode "default"
 }
 
-# Wallpaper
-exec sh ~/scripts/setwallpaper.sh ~/Pictures/wallpapers/wall.jpg
 # Lock screen
 # set $i3lockwall i3lock -i ~/Pictures/wallpapers/tux3.png -t
 set $i3lockwall i3lock
-
-# Disable notebook things
-exec sh ~/scripts/disable-keyboard.sh
-exec sh ~/scripts/disable-touchpad.sh
-
-# Compositor
-exec_always picom
-
-# Meu Deus, esse barulho é muito alto! Tirar o "pc speaker", que são
-# os bips quando a busca no Firfox não encontra nada, por exemplo
-# Precisa de privilégios sudo pra isso, então não vai funcionar aqui.
-# https://wiki.archlinux.org/title/PC_speaker
-exec rmmod pcspkr
 
 focus_follows_mouse no
 
@@ -488,7 +489,7 @@ bar {
   colors {
       background #000000
       statusline #ffffff
-      separator #666666
+      separator  #666666
 
       # ---------------- border --- background -- text
       focused_workspace  $bgcolor   $bgcolor      $textcolor
