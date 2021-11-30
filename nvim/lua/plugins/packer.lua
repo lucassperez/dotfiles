@@ -6,6 +6,7 @@ return require('packer').startup(function()
     'junegunn/fzf',
     run = function () vim.fn['fzf#install']() end
   }
+  use 'cohama/lexima.vim'
   use 'junegunn/fzf.vim'
   use 'christoomey/vim-tmux-navigator'
   use 'christoomey/vim-tmux-runner'
