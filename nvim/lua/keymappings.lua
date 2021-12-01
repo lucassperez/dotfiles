@@ -124,7 +124,7 @@ noremap('n', '<leader>rl', ':call VtrSendCommand("!!")<CR>')
 
 -- Executa o arquivo como um script a depender do seu "filetype"
 -- Ver o script para detalhes
-noremap('n', '<leader>rr', ':luafile ~/.config/nvim/lua/filetype-tmux-runners/execute-script.lua<CR>')
+noremap('n', '<leader>rr', ':luafile ~/.config/nvim/lua/filetype-tmux-runners/execute-script.lua<CR>', true) -- silent = true
 
 --- Snippets ---
 noremap('n', ',html', ':-1read $HOME/.config/nvim/snippets/html5<CR>6jf>l')
