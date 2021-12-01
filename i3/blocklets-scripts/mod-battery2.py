@@ -59,11 +59,21 @@ else:
     FA_PLUG = "<span font='FontAwesome'>\uf1e6</span>"
 
     # stands for using battery
-    FA_BATTERY = "<span font='FontAwesome'>\uf240</span>"
+    # FA_BATTERY = "<span font='FontAwesome'>\uf240</span>"
+    # Show different icons for different percentages left
+    if percentleft <= 20:
+        FA_BATTERY = "<span color='#ff0000' font='FontAwesome'>\uf244</span>"
+    elif percentleft <= 40:
+        FA_BATTERY = "<span font='FontAwesome'>\uf243</span>"
+    elif percentleft <= 60:
+        FA_BATTERY = "<span font='FontAwesome'>\uf242</span>"
+    elif percentleft <= 80:
+        FA_BATTERY = "<span font='FontAwesome'>\uf241</span>"
+    else:
+        FA_BATTERY = "<span font='FontAwesome'>\uf240</span>"
 
     # stands for unknown status of battery
     FA_QUESTION = "<span font='FontAwesome'>\uf128</span>"
-
 
     if state == "Discharging":
         fulltext = FA_BATTERY + " "
