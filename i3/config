@@ -532,3 +532,5 @@ bindsym Control+Print exec flameshot gui
 bindsym Mod1+Print exec flameshot screen -c
 
 bindsym Shift+Print exec flameshot full -p ~/Pictures/screenshots/
+
+bindsym $mod+ccedilla exec $HOME/.config/i3/blocklets-scripts/turbo/ignite-turbo-wrapper.sh
