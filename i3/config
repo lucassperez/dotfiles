@@ -22,14 +22,14 @@
 # Fonts Awesome
 # Flameshot
 # alacritty
-# picom
+# compton
 # xwallpaper
 # xbacklight
 # For some blocklets, docker and dunst I guess
 # In order for the brightness blocklet to work as it is configured now, it is
 # necessary to create a sudoer file (eg /etc/sudoers.d/xbacklight) and give your
 # user the hability to run xbacklight without password:
-# user ALL=(ALL) NOPASSWD: /user/bin/xbacklight
+# user ALL=(ALL) NOPASSWD: /usr/bin/xbacklight
 # In doubt, check the documentation here: https://github.com/vivien/i3blocks-contrib/tree/master/backlight
 
 ################################################################################
@@ -84,7 +84,8 @@ exec --no-startup-id nm-applet
 exec --no-startup-id dunst
 
 # Compositor
-exec_always picom
+# exec_always picom -- picom but had too much screen tearing on Zoom ):
+exec_always --no-startup-id compton -b
 
 # Meu Deus, esse barulho é muito alto! Tirar o "pc speaker", que são
 # os bips quando a busca no Firfox não encontra nada, por exemplo

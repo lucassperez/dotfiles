@@ -28,8 +28,6 @@ def random_build_phrase():
         'SPACE', 'EXTREME', 'ULTIMATE', 'COSMIC', 'SUPER', 'TRANSLUSCENT',
         'FINAL', 'ROBOTIC', 'INTERGALATIC', 'NANO', 'POWER', 'SUBSPACE',
         'INTERDIMENSIONAL',
-        'MAX', 'TURBO', 'ULTRA', 'NITRO', 'MEGA',
-        'MAX', 'TURBO', 'ULTRA', 'NITRO', 'MEGA',
     ]
     suffixes =[
         'HYPERPROCESSOR', 'POWERLIGHT', 'POWER CONVERTER', 'MOLECULE GENERATOR',
@@ -38,13 +36,13 @@ def random_build_phrase():
     return random.choice(prefixes) + ' ' + random.choice(suffixes)
 
 def random_verb():
-    l = [
+    verbs = [
         'ACTIVATED', 'STARTED', 'NEUTRALIZED', 'DESTROYED', 'INTERRUPTED',
         'ACCELERATED', 'HEATING UP', 'SHUTTING DOWN', 'DOWN', 'IGNITED',
         'TURNED ON', 'BOOTED SUCCESFULLY', 'RECOVERED', 'SENT TO INTERDIMENSIONAL RIFT',
         'TOOK OFF', 'LANDED'
     ]
-    return random.choice(l)
+    return random.choice(verbs)
 
 def send_notification():
     subprocess.run(["dunstctl", "close-all"], check=True)
@@ -60,7 +58,7 @@ def send_notification():
 def clicked():
     '''Returns True if the button was clicked'''
     button = os.environ.get("BLOCK_BUTTON", None)
-    return bool(button)
+    return button
 
 if clicked():
     send_notification()
