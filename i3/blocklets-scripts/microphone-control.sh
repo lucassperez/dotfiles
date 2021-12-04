@@ -3,10 +3,10 @@
 # 1 = left click, 2 = scroll click, 3 = right click
 # 4 = scroll up, 5 = scroll down
 # alsa_input.pci-0000_00_1f.3.analog-stereo
-case $BLOCK_BUTTON in
+case "$BLOCK_BUTTON" in
   1|2|3) pactl set-source-mute "$SOURCE" toggle ;;
-  4) pactl set-source-volume "$SOURCE" +2.5% ;;
-  5) pactl set-source-volume "$SOURCE" -2.5% ;;
+  4) pactl set-source-volume "$SOURCE" +2% ;;
+  5) pactl set-source-volume "$SOURCE" -2% ;;
 esac
 
 infos=$(pacmd list-sources | grep -A 11 "$SOURCE")
