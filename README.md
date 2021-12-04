@@ -6,6 +6,7 @@ Configuration files for my most used programs:
 - Alacritty
 - Bash
 - Zsh
+- i3
 
 It also features some old Kitty configs, though I stopped using it.
 
