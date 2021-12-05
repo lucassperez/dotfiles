@@ -7,6 +7,10 @@ echo Bash or Zsh?
 printf "z = Zsh, any other = Bash: "
 read INSTALL_SHELL
 
+echo i3, Awesome or neither?
+printf "i = i3, a = Awesome, any other = neither: "
+read INSTALL_WM
+
 echo "Creating symlink to: \e[1;36m$HOME/.config/alacritty\e[0m"
 ln -sfni "$DIR/alacritty/" "$HOME/.config/alacritty"
 
@@ -57,16 +61,29 @@ ln -sfni "$DIR/scripts/tmux-chtsh" "$HOME/scripts"
 echo "Creating symlink to: \e[1;36m$HOME/.tmux.conf\e[0m"
 ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 
-[ -d "$HOME/.config/i3" ] || mkdir "$HOME/.config/i3" -pv
+if [ "$INSTALL_WM" = i ]; then
+  [ -d "$HOME/.config/i3" ] || mkdir "$HOME/.config/i3" -pv
 
-echo "Creating symlink to: \e[1;36m$HOME/.config/i3/config\e[0m"
-ln -sfni "$DIR/i3/config" "$HOME/.config/i3/config"
+  echo "Creating symlink to: \e[1;36m$HOME/.config/i3/config\e[0m"
+  ln -sfni "$DIR/i3/config" "$HOME/.config/i3/config"
 
-echo "Creating symlink to: \e[1;36m$HOME/.config/i3/i3blocks.conf\e[0m"
-ln -sfni "$DIR/i3/i3blocks.conf" "$HOME/.config/i3/i3blocks.conf"
+  echo "Creating symlink to: \e[1;36m$HOME/.config/i3/i3blocks.conf\e[0m"
+  ln -sfni "$DIR/i3/i3blocks.conf" "$HOME/.config/i3/i3blocks.conf"
 
-echo "Creating symlink to: \e[1;36m$HOME/.config/i3/blocklets-scripts\e[0m"
-ln -sfni "$DIR/i3/blocklets-scripts" "$HOME/.config/i3/blocklets-scripts"
+  echo "Creating symlink to: \e[1;36m$HOME/.config/i3/blocklets-scripts\e[0m"
+  ln -sfni "$DIR/i3/blocklets-scripts" "$HOME/.config/i3/blocklets-scripts"
+elif [ "$INSTALL_WM" = a ]; then
+  [ -d "$HOME/.config/awesome" ] || mkdir "$HOME/.config/awesome" -pv
+
+  echo "Creating symlink to: \e[1;36m$HOME/.config/awesome/rc.lua\e[0m"
+  ln -sfni "$DIR/awesome/rc.lua" "$HOME/.config/awesome/rc.lua"
+
+  echo "Creating symlink to: \e[1;36m$HOME/.config/awesome/my-theme.lua\e[0m"
+  ln -sfni "$DIR/awesome/my-theme.lua" "$HOME/.config/awesome/my-theme.lua"
+
+  echo "Creating symlink to: \e[1;36m$HOME/.config/awesome/widgets\e[0m"
+  ln -sfni "$DIR/awesome/widgets" "$HOME/.config/awesome/widgets"
+fi
 
 echo "Creating symlink to: \e[1;36m$HOME/.xinputrc\e[0m"
 ln -sfni "$DIR/xinput/xinputrc" "$HOME/.xinputrc"
