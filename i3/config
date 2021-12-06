@@ -106,9 +106,8 @@ exec_always xset s off
 exec_always xset -dpms
 
 # Start audio and mic not too loud, and with mic muted
-exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 50% && $refresh_audio_icon
-exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 30%
-exec --no-startup-id pactl set-source-mute "alsa_input.pci-0000_00_1f.3.analog-stereo" 1 && $refresh_mic_icon
+exec --no-startup-id amixer -D pulse sset Master 50% && $refresh_audio_icon
+exec --no-startup-id amixer sset Capture 30% && amixer sset Capture nocap && $refresh_mic_icon
 
 # Disable notebook things
 exec sh ~/scripts/disable-keyboard.sh
@@ -126,22 +125,21 @@ exec sh ~/scripts/setwallpaper.sh ~/Pictures/wallpapers/wall.jpg
 
 # Volume (i3 blocklet must have signal=10 matching this RTMIN+10)
 set $refresh_audio_icon pkill -RTMIN+10 i3blocks
-bindsym XF86AudioRaiseVolume  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_audio_icon
-bindsym XF86AudioLowerVolume  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_audio_icon
-bindsym XF86AudioMute         exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_audio_icon
+bindsym XF86AudioRaiseVolume  exec --no-startup-id amixer -D pulse sset Master 5%+ && $refresh_audio_icon
+bindsym XF86AudioLowerVolume  exec --no-startup-id amixer -D pulse sset Master 5%- && $refresh_audio_icon
+bindsym XF86AudioMute         exec --no-startup-id amixer -D pulse sset Master toggle && $refresh_audio_icon
 # ---
-bindsym $mod+comma   exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2%  && $refresh_audio_icon
-bindsym $mod+period  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2%  && $refresh_audio_icon
-bindsym $mod+m       exec --no-startup-id pactl set-sink-mute   @DEFAULT_SINK@ toggle && $refresh_audio_icon
-bindsym $mod+slash   exec --no-startup-id pactl set-sink-mute   @DEFAULT_SINK@ toggle && $refresh_audio_icon
+bindsym $mod+comma   exec --no-startup-id amixer -D pulse sset Master 2%- && $refresh_audio_icon
+bindsym $mod+period  exec --no-startup-id amixer -D pulse sset Master 2%+ && $refresh_audio_icon
+bindsym $mod+slash   exec --no-startup-id amixer -D pulse sset Master toggle && $refresh_audio_icon
 
 # Mic (i3 blocklet must have signal=11 matching this RTMIN+11)
 set $refresh_mic_icon pkill -RTMIN+11 i3blocks
-bindsym XF86AudioMicMute  exec --no-startup-id pactl set-source-mute   "alsa_input.pci-0000_00_1f.3.analog-stereo" toggle && $refresh_mic_icon
-bindsym $mod+Shift+comma  exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" -2%  &&   $refresh_mic_icon
-bindsym $mod+Shift+period exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" +2%  &&   $refresh_mic_icon
-bindsym $mod+Shift+m      exec --no-startup-id pactl set-source-mute   "alsa_input.pci-0000_00_1f.3.analog-stereo" toggle && $refresh_mic_icon
-bindsym $mod+Shift+slash  exec --no-startup-id pactl set-source-mute   "alsa_input.pci-0000_00_1f.3.analog-stereo" toggle && $refresh_mic_icon
+bindsym XF86AudioMicMute    exec --no-startup-id amixer sset Capture nocap && $refresh_mic_icon
+bindsym $mod+Control+comma  exec --no-startup-id amixer sset Capture 2%-  &&   $refresh_mic_icon
+bindsym $mod+Control+period exec --no-startup-id amixer sset Capture 2%+  &&   $refresh_mic_icon
+bindsym $mod+Control+slash  exec --no-startup-id amixer sset Capture toggle && $refresh_mic_icon
+bindsym $mod+Shift+slash    exec --no-startup-id amixer sset Capture toggle && $refresh_mic_icon
 
 # Brightness (i3 blocklet must have signal=12 matching this RTMIN+12)
 set $refresh_brightness_icon pkill -RTMIN+12 i3blocks
@@ -169,6 +167,9 @@ bindsym $mod+d exec --no-startup-id dmenu_run -i -h 21 -p "search" -sb "$bgcolor
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 # bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
+
+# why
+focus_follows_mouse no
 
 # change focus
 # bindsym $mod+ccedilla focus right
@@ -210,6 +211,7 @@ bindsym $mod+f fullscreen toggle
 # change container layout (stacked, tabbed, toggle split)
 # bindsym $mod+q layout stacking
 bindsym $mod+t layout tabbed
+bindsym $mod+m layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
@@ -429,8 +431,6 @@ mode "$volume_control" {
   bindsym $mod+Shift+BackSpace mode "default"
 }
 
-focus_follows_mouse no
-
 # resize window (you can also use the mouse for that)
 bindsym $mod+u resize shrink width 5 px or 5 ppt
 bindsym $mod+i resize grow height 5 px or 5 ppt
@@ -529,11 +529,14 @@ bar {
 # you need to run the application itself, open a terminal and run the following:"
 # xprop | grep WM_CLASS
 # This results in something like WM_CLASS(STRING) = "instance", "class"
+# Set programs to specific workspaces
 assign [instance="discord" class="discord"] 10
 assign [instance="zoom" class="zoom"] 9
+# Set specific programs to open in floating windows
 for_window [instance="zoom" class="zoom"] floating enable
 for_window [instance="gnome-mines" class="Gnome-mines"] floating enable
 for_window [instance="gedit" class="Gedit"] floating enable
+for_window [instance="pavucontrol" class="Pavucontrol"] floating enable
 for_window [window_role="pop_up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 
@@ -545,10 +548,8 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+b exec firefox
 
 # Print screen with flameshot
-bindsym Print exec flameshot full -c
+bindsym Print exec flameshot screen -c
+bindsym $mod+Print exec flameshot full -c
 bindsym Control+Print exec flameshot gui
-bindsym Mod1+Print exec flameshot screen -c
-
-bindsym Shift+Print exec flameshot full -p ~/Pictures/screenshots/
 
 bindsym $mod+ccedilla exec $HOME/.config/i3/blocklets-scripts/turbo/ignite-turbo-wrapper.sh
