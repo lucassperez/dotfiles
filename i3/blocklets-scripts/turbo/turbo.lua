@@ -63,12 +63,11 @@ function send_notification()
 end
 
 function clicked()
-  button = os.getenv('BLOCK_BUTTON')
-  return button
+  return os.getenv('BLOCK_BUTTON')
 end
 
 if clicked() then
   send_notification()
 end
 
-print("TURBO")
+print('TURBO')

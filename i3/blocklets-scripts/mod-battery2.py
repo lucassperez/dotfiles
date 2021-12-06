@@ -108,9 +108,13 @@ else:
 
 form =  '<span color="{}">{}%</span>'
 fulltext += form.format(color(percentleft), percentleft)
+
 mouse_click = os.getenv('BLOCK_BUTTON')
 if mouse_click == '1' or mouse_click == '3':
-    message = '"' + state + '\n' + timeleft + ' remaining"'
+    if state == 'Full':
+        message = '"' + state + '\n' + '(:"'
+    else:
+        message = '"' + state + '\n' + timeleft + ' remaining"'
     os.system('notify-send -u low ' + message)
     # os.system('notify-send -u low -i $HOME/.config/dunst/icons/battery/white-battery.png ' + message)
     # os.system('notify-send -u low -i $HOME/.config/dunst/icons/battery/green-rotated-battery-symbol.png ' + message)
