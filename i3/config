@@ -100,6 +100,8 @@ exec_always --no-startup-id xcompmgr -c -l0 -t0 -r0 -o.00
 # Precisa de privilégios sudo pra isso, então não vai funcionar aqui.
 # https://wiki.archlinux.org/title/PC_speaker
 exec_always rmmod pcspkr
+# Aumenta o número de vezes que uma tecla é apertada quando seguramos ela
+exec_always --no-startup-id xset r rate 220 25
 # https://askubuntu.com/questions/763994/screen-times-out-in-i3-wm
 # xset q pra ver as configurações atuais
 exec_always xset s off
@@ -547,6 +549,9 @@ for_window [window_role="task_dialog"] floating enable
 
 for_window [class="^.*"] border pixel 5
 # new_window 1pixel
+
+# Título das janelas alinhado no meio (aparece no tabbed layout, por exemplo)
+title_align center
 
 # Run some programs (terminal, browser)
 bindsym $mod+Return exec alacritty

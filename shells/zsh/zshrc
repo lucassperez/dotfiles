@@ -113,7 +113,7 @@ source "$ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugi
 
 # Será que isso devia ficar aqui?
 # Aumenta a quantidade de vezes que uma tecla é apertada quando seguramos ela
-xset r rate 220 25
+# xset r rate 220 25
 
 eval "$(zoxide init zsh)"
 
