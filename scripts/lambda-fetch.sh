@@ -44,7 +44,11 @@ elif [ -n "${WM}" ]; then
   uitype='WM'
 elif [ -n "${XDG_CURRENT_DESKTOP}" ]; then
   ui="${XDG_CURRENT_DESKTOP}"
-  uitype='DE'
+  if [ "$ui" = i3 -o "$ui" = awesome ]; then
+    uitype=WM
+  else
+    uitype='DE'
+  fi
 elif [ -n "${DESKTOP_SESSION}" ]; then
   ui="${DESKTOP_SESSION}"
   uitype='DE'
