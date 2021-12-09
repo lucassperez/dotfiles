@@ -119,6 +119,11 @@ noremap('n', '<leader>rs', ":lua runAutomatedTest { cur_file = true }<CR>")
 noremap('n', '<leader>rn', ":lua runAutomatedTest { cur_file = true, cur_line = true }<CR>")
 noremap('n', '<leader>rd', ":lua runAutomatedTest { cur_dir = true }<CR>")
 
+-- Pegando os arquivos no diff com a main/master e executando rspec/rubocop
+-- Mmenônicos: rspec-main (rm) e rubocop-main (rum)
+noremap('n', '<leader>rm', ':luafile ~/.config/nvim/lua/filetype-tmux-runners/rubocop-and-vtr.lua<CR>')
+noremap('n', '<leader>rum', ':luafile ~/.config/nvim/lua/filetype-tmux-runners/rspec-and-vtr.lua<CR>')
+
 -- Run last command executado no painel "anexado"
 noremap('n', '<leader>rl', ':call VtrSendCommand("!!")<CR>')
 
