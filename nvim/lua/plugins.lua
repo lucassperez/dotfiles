@@ -31,11 +31,14 @@ return require('packer').startup(function()
   use 'nvim-lua/plenary.nvim'
 
   -- Coisas LSP e TreeSitter
-  use 'neovim/nvim-lspconfig'
-  use 'kabouzeid/nvim-lspinstall'
+  use {
+    'neovim/nvim-lspconfig',
+  }
+  -- use 'williamboman/nvim-lsp-installer'
+  -- use 'kabouzeid/nvim-lspinstall'
   use {
     'nvim-treesitter/nvim-treesitter',
-    run = 'TSUpdate'
+    run = 'TSUpdate',
   }
   use 'nvim-treesitter/nvim-treesitter-textobjects'
   use 'nvim-treesitter/playground'
@@ -58,4 +61,5 @@ return require('packer').startup(function()
 
   -- Esquema de cores
   use 'ayu-theme/ayu-vim'
+  use 'Shatur/neovim-ayu'
 end)
