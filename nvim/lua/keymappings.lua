@@ -8,6 +8,11 @@ end
 
 vim.g.mapleader = ' '
 
+-- Normally C-c already does this, but after installing LSP, the text box
+-- containing completions would not properly disappear when I C-c out of insert
+-- mode sometimes, which did not happen with ESC.
+map('i', '<C-c>', '<ESC>')
+
 -- Atalho pra mostrar a quais grupos de sintaxe a palavra
 -- debaixo do cursor pertence
 noremap('n', '<leader>m', ':TSHighlightCapturesUnderCursor<CR>')
@@ -110,26 +115,26 @@ noremap('n', '<Esc>', ':noh<CR>')
 noremap('n', '<leader>a', ':VtrAttachToPane<CR>')
 
 -- linter all & linter this file
-noremap('n', '<leader>rua', ":lua runLinter {}<CR>")
-noremap('n', '<leader>ruf', ":lua runLinter { cur_file = true }<CR>")
+noremap('n', '<leader>rua', ':lua runLinter {}<CR>')
+noremap('n', '<leader>ruf', ':lua runLinter { cur_file = true }<CR>')
 
 -- test all, test this file, test this file this line &  test this directory
-noremap('n', '<leader>ra', ":lua runAutomatedTest {}<CR>")
-noremap('n', '<leader>rs', ":lua runAutomatedTest { cur_file = true }<CR>")
+noremap('n', '<leader>ra', ':lua runAutomatedTest {}<CR>')
+noremap('n', '<leader>rs', ':lua runAutomatedTest { cur_file = true }<CR>')
 noremap('n', '<leader>rn', ":lua runAutomatedTest { cur_file = true, cur_line = true }<CR>")
-noremap('n', '<leader>rd', ":lua runAutomatedTest { cur_dir = true }<CR>")
+noremap('n', '<leader>rd', ':lua runAutomatedTest { cur_dir = true }<CR>')
 
 -- Pegando os arquivos no diff com a main/master e executando rspec/rubocop
 -- Mmenônicos: rspec-main (rm) e rubocop-main (rum)
-noremap('n', '<leader>rm', ':luafile ~/.config/nvim/lua/filetype-tmux-runners/rubocop-and-vtr.lua<CR>')
-noremap('n', '<leader>rum', ':luafile ~/.config/nvim/lua/filetype-tmux-runners/rspec-and-vtr.lua<CR>')
+noremap('n', '<leader>rm', ':lua fromGit.genericTest()<CR>')
+noremap('n', '<leader>rum', ':lua fromGit.genericLinter()<CR>')
 
 -- Run last command executado no painel "anexado"
 noremap('n', '<leader>rl', ':call VtrSendCommand("!!")<CR>')
 
 -- Executa o arquivo como um script a depender do seu "filetype"
 -- Ver o script para detalhes
-noremap('n', '<leader>rr', ':luafile ~/.config/nvim/lua/filetype-tmux-runners/execute-script.lua<CR>', true) -- silent = true
+noremap('n', '<leader>rr', ':lua executeFileAsScript()<CR>', true) -- silent = true
 
 --- Snippets ---
 noremap('n', ',html', ':-1read $HOME/.config/nvim/snippets/html5<CR>6jf>l')

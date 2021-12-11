@@ -41,8 +41,8 @@ alias zshrc='nvim $ZDOTDIR/.zshrc ~/.zshenv'
 alias notouchpad='xinput disable Elan\ Touchpad'
 alias vimgit='git diff --name-only | sort -u | xargs nvim'
 alias tmuxls='sh ~/scripts/parse-tmux-ls.sh'
-alias rubomaster='sh ~/scripts/git-stuff/get-files-rubocop.sh'
-alias rspecmaster='sh ~/scripts/git-stuff/get-files-rspec.sh'
+alias glmain="sh $HOME/scripts/git-stuff/get-files/generic-linter.sh"
+alias gtmain="sh $HOME/scripts/git-stuff/get-files/generic-test.sh"
 alias readme='ls | grep -i readme | xargs glow -p'
 
 [ -f "$HOME/.local/.my_aliases" ] && source "$HOME/.local/.my_aliases"
