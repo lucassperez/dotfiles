@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ##############################
-# Name: get-files-rubocop.sh
+# Name: ruby-linter.sh
 # Author: Lucas Perez
 # Date: 11/10/2021
 # Last Update: 08/12/2021
@@ -19,7 +19,7 @@
 #              pipe the results to some running docker container without having
 #              to go through the hassle of copying, changing pane and pasting.
 #
-# Usage: sh get-files-rubocop.sh [OPTIONS]
+# Usage: sh ruby-linter.sh [OPTIONS]
 #
 # Exit codes:
 #   0 - If successfully finds either main or master git branch
@@ -40,7 +40,7 @@ fi
 
 ACTUAL_BRANCH=$(git branch --show-current)
 if [ "$ACTUAL_BRANCH" = main -o "$ACTUAL_BRANCH" = master ]; then
-  echo Current branch is "\e[91;1m$ACTUAL_BRANCH\e[0m"
+  [ "$NO_CLIP" ] || echo Current branch is "\e[91;1m$ACTUAL_BRANCH\e[0m"
   FILES=$(git diff "$ACTUAL_BRANCH" --name-only | sort -u | grep -E '\.rb$')
 elif [ "$(git rev-parse --verify -q main)" ]; then
   FILES=$(git diff main --name-only | sort -u | grep -E '\.rb$')

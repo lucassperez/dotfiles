@@ -19,3 +19,5 @@ require('plugins.buftabline')
 -- Meus próprios scritpts
 require('filetype-tmux-runners.test')
 require('filetype-tmux-runners.linter')
+require('filetype-tmux-runners.from-git-generic')
+require('filetype-tmux-runners.execute-script')
