@@ -17,11 +17,13 @@ widget:set_widget(text)
 
 watch(
   'acpi -b',
-  10,
+  5,
   function(widget, stdout, stderr, exitreason, exitcode)
-    local state, percentage, hours, minutes, seconds =
-      string.match(stdout, 'Battery %d+: (%w+), (%d+)%%, (%d%d):(%d%d):(%d%d)')
+    local state, percentage  =
+      string.match(stdout, 'Battery %d+: (%w*), (%d*)%%')
     percentage = tonumber(percentage)
+    -- local hours, minutes, seconds =
+    --   string.match(stdout, 'Battery %d+: %w*, %d*%%, (%d%d):(%d%d):(%d%d)')
 
     if state == 'Charging' then
       msg = ' '..percentage..'%'

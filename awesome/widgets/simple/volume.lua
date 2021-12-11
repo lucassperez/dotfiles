@@ -9,7 +9,7 @@ local awful = require('awful')
 local wibox = require('wibox')
 
 local text = wibox.widget({
-    font = 'Font Awesome 11',
+    font = 'Hack 12',
     widget = wibox.widget.textbox,
 })
 
@@ -19,9 +19,12 @@ widget:set_fg('#D986C0')
 
 local function set_widget()
   awful.spawn.easy_async(
-  'amixer sget Master',
+  'amixer -D pulse sget Master',
   function(out)
     local volume, on_or_off = string.match(out, 'Front Left.*%[(%d+)%%%].*%[(%w+)%]')
+    if not volume then
+      volume, on_or_off = string.match(out, 'Mono: Playback.*%[(%d+)%%%].*%[(%w+)%]')
+    end
     volume = tonumber(volume)
 
     if on_or_off == 'off' then
@@ -65,6 +68,11 @@ end
 function widget:dec_vol(delta)
   delta = delta or 5
   update_widget('amixer -D pulse sset Master '..delta..'%-')
+end
+
+function widget:set_exact_vol(value)
+  value = value or 50
+  update_widget('amixer -D pulse sset Master '..value..'%')
 end
 
 widget:connect_signal('button::press', function(_,_,_,button)

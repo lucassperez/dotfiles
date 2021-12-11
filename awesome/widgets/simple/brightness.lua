@@ -8,7 +8,7 @@ local awful = require('awful')
 local wibox = require('wibox')
 
 local text = wibox.widget({
-    font = 'Hack 11',
+    font = 'Hack 12',
     widget = wibox.widget.textbox,
 })
 
@@ -18,10 +18,11 @@ widget:set_fg('#AAEB6A')
 
 local function set_widget()
   awful.spawn.easy_async(
-  'light',
+  'xbacklight',
   function(out)
-    local raw_val = string.sub(out, 1, -2)
-    local num_val = math.floor(tonumber(raw_val))
+    -- local raw_val = string.sub(out, 1, -2)
+    -- local num_val = math.floor(tonumber(raw_val))
+    local num_val = math.floor(tonumber(out))
     text:set_text(' '..num_val..'%')
   end
   )
@@ -35,12 +36,14 @@ end
 
 function widget:inc(delta)
   delta = delta or 5
-  update_widget('light -A '..delta..'%')
+  -- update_widget('light -A '..delta..'%')
+  update_widget('xbacklight -inc '..delta)
 end
 
 function widget:dec(delta)
   delta = delta or 5
-  update_widget('light -U '..delta..'%')
+  -- update_widget('light -U '..delta..'%')
+  update_widget('xbacklight -dec '..delta)
 end
 
 widget:connect_signal('button::press', function(_,_,_,button)

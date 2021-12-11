@@ -66,6 +66,7 @@ terminal = 'alacritty'
 -- editor = os.getenv('EDITOR') or 'editor'
 editor = 'nvim'
 editor_cmd = terminal .. ' -e ' .. editor
+browser = 'firefox'
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -231,7 +232,12 @@ awful.screen.connect_for_each_screen(
 
     -- Create the wibox
     -- Top bar widgets
-    s.mywibox = awful.wibar({ position = 'top', screen = s })
+    s.mywibox = awful.wibar({
+      position = 'top',
+      screen = s,
+      height = 21, -- dmenu has this height hardcoded too. Maybe I should make a "topbar height" variable
+      bg = '#000000',
+    })
 
     -- Add widgets to the wibox
     s.mywibox:setup({
@@ -242,10 +248,11 @@ awful.screen.connect_for_each_screen(
         s.mytaglist,
         s.mypromptbox,
       },
-      {
-        layout = wibox.layout.fixed.horizontal,
-        s.mytasklist,
-      },
+      -- {
+      --   layout = wibox.layout.fixed.horizontal,
+      --   s.mytasklist,
+      -- },
+      s.mytasklist,
       { -- Right widgets
         layout = wibox.layout.fixed.horizontal,
                           docker_widget,
@@ -276,9 +283,9 @@ root.buttons(
 )
 -- }}}
 
-control = 'Control'
-shift = 'Shift'
 -- {{{ Key bindings
+local control = 'Control'
+local shift = 'Shift'
 globalkeys = gears.table.join(
 -- 122 XF86AudioLowerVolume
 -- 37  Control_L
@@ -320,13 +327,16 @@ globalkeys = gears.table.join(
   awful.key({ modkey, control }, '/',
             function() mic_widget:toggle() end,
             { group = 'System controls', description = 'toggle mute microphone', }),
+  awful.key({ modkey, shift }, '/',
+            function() mic_widget:toggle() end,
+            { group = 'System controls', description = 'toggle mute microphone', }),
 
   -- Brightness control
   awful.key({ modkey }, '[',
-            function() bright_widget:inc() end,
+            function() bright_widget:inc(5) end,
             { group = 'System controls', description = 'increase brightness', }),
   awful.key({ modkey }, ']',
-            function() bright_widget:dec() end,
+            function() bright_widget:dec(5) end,
             { group = 'System controls', description = 'decrease brightness', }),
 
 
@@ -348,6 +358,12 @@ globalkeys = gears.table.join(
   awful.key({ modkey }, 'l',
             function () awful.client.focus.global_bydirection('right') end,
             { group = 'client', description = 'focus right global', }),
+  awful.key({ modkey }, 'q',
+            function () awful.client.focus.byidx(-1) end,
+            { group = 'client', description = 'focus by index -1', }),
+  awful.key({ modkey }, 'w',
+            function () awful.client.focus.byidx(1) end,
+            { group = 'client', description = 'focus by index +1', }),
   awful.key({ modkey }, 'u',
             awful.client.urgent.jumpto,
             { group = 'client', description = 'jump to urgent client', }),
@@ -389,7 +405,7 @@ globalkeys = gears.table.join(
   awful.key({ modkey, control }, 'r',
             awesome.restart,
             { group = 'awesome', description = 'reload awesome', }),
-  awful.key({ modkey, shift }, 'Backspace',
+  awful.key({ modkey }, 'BackSpace',
             awesome.quit,
             { group = 'awesome', description = 'quit awesome', }),
 
@@ -407,29 +423,35 @@ globalkeys = gears.table.join(
             { group = 'layout', description = 'decrease the number of columns', }),
   awful.key({ modkey }, 'space',
             function () awful.layout.inc(1) end,
-            { group = 'layout', description = 'select next', }),
+            { group = 'layout', description = 'select next layout', }),
   awful.key({ modkey, shift }, 'space',
             function () awful.layout.inc(-1) end,
-            { group = 'layout', description = 'select previous', }),
+            { group = 'layout', description = 'select previous layout', }),
 
   -- Prompt
   -- awful.key({ modkey }, 'r', function () awful.screen.focused().mypromptbox:run() end,
   --           { group = 'Launcher', description = 'run prompt', }),
   awful.key({ modkey }, 'd',
-            function () awful.spawn('dmenu_run -i -h 20 -p "search" -sb "#008080" -nb "#363636"') end,
-            { group = 'Launcher', description = "run dmenu", }),
+            -- function () awful.spawn('dmenu_run -i -h 21 -p "search" -sb "#008080" -nb "#363636"') end,
+            function () awful.spawn('dmenu_run -i -h 21 -p "search" -sb "#008080" -nb "#000000"') end,
+            { group = 'Launcher', description = 'run dmenu', }),
   awful.key({ modkey }, 'b',
-            function() awful.spawn('firefox') end,
-            { group = 'Launcher', description = 'open firefox', }),
+            function() awful.spawn(browser) end,
+            { group = 'Launcher', description = 'open '..browser..' browser', }),
   awful.key({ modkey }, 'Return',
             function () awful.spawn(terminal) end,
-            { group = 'Launcher', description = 'open a terminal',  }),
+            { group = 'Launcher', description = 'open '..terminal..' terminal',  }),
+
   awful.key({}, 'Print',
-            function() awful.spawn('flameshot full -c') end,
+            function() awful.spawn('flameshot screen -c') end,
             { group = 'Launcher', description = 'Print screen to clipboard' }),
   awful.key({ control }, 'Print',
             function() awful.spawn('flameshot gui') end,
             { group = 'Launcher', description = 'Select area to print' }),
+  awful.key({ modkey }, 'Print',
+            function() awful.spawn('flameshot full -c') end,
+            { group = 'Launcher', description = 'Print all screens to clipboard' }),
+
   awful.key({ modkey }, 'ç',
             function() turbo_widget:send_turbo_notification() end,
             { group = 'TURBO', description = 'Activate TURBO mode' }),
@@ -611,6 +633,7 @@ awful.rules.rules = {
         'Gnome-mines',
         'zoom',
         'Gedit',
+        'Erlang',
       },
 
       -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -731,5 +754,8 @@ client.connect_signal('unfocus', function(c) c.border_color = beautiful.border_n
 
 -- Start up things
 awful.spawn.with_shell('nm-applet')
+awful.spawn.with_shell('flameshot')
 awful.spawn.with_shell('xcompmgr -c -l0 -t0 -r0 -o.00')
-awful.spawn.with_shell('sh ~/scripts/disable-keyboard.sh')
+awful.spawn.with_shell('xset r rate 220 25')
+mic_widget:set_exact_vol(30)
+volume_widget:set_exact_vol(50)
