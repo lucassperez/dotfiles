@@ -24,7 +24,8 @@ theme.bg_normal     = ibgcolor
 theme.bg_focus      = bgcolor
 theme.bg_urgent     = ubgcolor
 theme.bg_minimize   = "#444444"
-theme.bg_systray    = theme.bg_normal
+-- theme.bg_systray    = theme.bg_normal
+theme.bg_systray    = "#000000"
 
 theme.fg_normal     = "#aaaaaa"
 theme.fg_focus      = textcolor
@@ -48,7 +49,16 @@ theme.border_marked = ubgcolor
 -- prompt_[fg|bg|fg_cursor|bg_cursor|font]
 -- hotkeys_[bg|fg|border_width|border_color|shape|opacity|modifiers_fg|label_bg|label_fg|group_margin|font|description_font]
 -- Example:
---theme.taglist_bg_focus = "#ff0000"
+-- theme.taglist_bg_focus = "#ff0000"
+-- theme.tasklist_bg_normal = "#000000"
+-- theme.tasklist_disable_icon = true
+-- theme.tasklist_disable_task_name = true
+theme.tasklist_bg_normal = "#000000"
+theme.tasklist_bg_focus = ibgcolor
+theme.tasklist_plain_task_name = true -- is not working, why
+theme.tasklist_align = 'center'
+theme.tasklist_font = 'Hack Mono 10'
+-- theme.tasklist_font_focus = 'Hack Mono Bold 10'
 
 -- Generate taglist squares:
 local taglist_square_size = dpi(4)
@@ -56,8 +66,10 @@ theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
     taglist_square_size, textcolor
 )
 theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
-    taglist_square_size, itextcolor
+    taglist_square_size, textcolor
 )
+theme.taglist_font = 'Hack Mono 10'
+theme.taglist_spacing = 5
 
 -- Variables set for theming notifications:
 -- notification_font

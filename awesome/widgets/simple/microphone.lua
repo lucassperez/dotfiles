@@ -10,7 +10,7 @@ local wibox = require('wibox')
 
 local text = wibox.widget({
     -- font = 'Anonymous Pro Bold 12',
-    font = 'Font Awesome 11',
+    font = 'Hack 12',
     widget = wibox.widget.textbox,
 })
 
@@ -20,10 +20,9 @@ widget:set_fg('#D6CE6F')
 
 local function set_widget()
   awful.spawn.easy_async(
-  'amixer',
+  'amixer sget Capture',
   function(out)
-    local is_on = string.find(out, 'Capture.*%[on%]') ~= nil
-    local val = string.match(out, 'Capture %w* %[(%d+)%%%]')
+    local val, is_on = string.match(out, 'Front Left.*%[(%d+)%%%].*%[(%w+)%]')
     -- file = io.open('/home/lucas/.config/awesome/widgets/anota-lua', 'a')
     -- file:write(out)
     -- file:write('\nnumber = '..number..'\n')
@@ -31,7 +30,7 @@ local function set_widget()
     -- file:close()
 
 
-    if is_on then
+    if is_on == 'on' then
       val = ' '..val..'%'
     else
       val = ' '..val..'%'
@@ -60,6 +59,11 @@ end
 function widget:dec_vol(delta)
   delta = delta or 5
   update_widget('amixer sset Capture '..delta..'%-')
+end
+
+function widget:set_exact_vol(value)
+  value = value or 50
+  update_widget('amixer sset Capture '..value..'%')
 end
 
 widget:connect_signal('button::press', function(_,_,_,button)

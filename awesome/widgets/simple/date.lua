@@ -2,7 +2,7 @@ local wibox = require('wibox')
 local watch = require('awful.widget.watch')
 
 local text = wibox.widget({
-    font = 'Font Awesome 12',
+    font = 'Hack 12',
     widget = wibox.widget.textbox,
 })
 

@@ -1,8 +1,9 @@
 local wibox = require('wibox')
 local watch = require('awful.widget.watch')
+-- local naughty = require('naughty')
 
 local text = wibox.widget({
-    font = 'Font Awesome 11',
+    font = 'Hack 12',
     widget = wibox.widget.textbox,
 })
 
@@ -22,5 +23,18 @@ watch(
   end,
   widget
 )
+
+-- widget:connect_signal(
+--   'button::press',
+--   function(_, _, _, button)
+--     if button == 1 then
+--       if io.popen('docker ps -q'):read() then
+--         local running_containers = io.popen('docker ps --format "{{.Names}} ({{.RunningFor}})\n"')
+--         naughty.notify (?)
+--       else
+--       end
+--     end
+--   end
+-- )
 
 return widget
