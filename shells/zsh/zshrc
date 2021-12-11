@@ -83,7 +83,13 @@ setopt PROMPT_SUBST
 # https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Prompt-Expansion
 PROMPT='%B%F{green}%n@%m%F{white}:%F{blue}%~
 %B$(git_color ${vcs_info_msg_0_})%0(?..%F{magenta}[%?])%f%bλ '
-RPROMPT='%B%F{6}{zsh}%f%b'
+# RPROMPT='%B%F{6}{zsh}%f%b'
+lang_or_zsh() {
+  # lang=$(sh ~/scripts/git-stuff/asdf-lang-version.sh 2>/dev/null)
+  lang=$(sh ~/scripts/git-stuff/simplified-project-lang.sh)
+  echo ${lang:-zsh}
+}
+RPROMPT='%B%F{6}{$(lang_or_zsh)}%f%b'
 
 source "$HOME/.aliases"
 
