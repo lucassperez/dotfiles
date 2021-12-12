@@ -2,7 +2,7 @@
 
 # There is also the `cal` cli tool, very nice. Might be able
 # to redirect its output to dunst or something?
-# gsimplecal is similar to zenity but with not buttons
+# gsimplecal is similar to zenity but with no buttons
 
 DATE_FORMAT=${DATE_FORMAT:-'+%a, %d/%b/%y'}
 
