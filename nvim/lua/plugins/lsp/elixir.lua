@@ -23,9 +23,12 @@ require('lspconfig').elixirls.setup({
   settings = {
     elixirLS = {
       dialyzerEnabled = false,
-      fetchDeps = false
+      fetchDeps = false,
+      -- enableTestLenses = true, -- I have no idea what this does
     }
   }
 })
+
+-- Random references
 -- https://www.mitchellhanberg.com/how-to-set-up-neovim-for-elixir-development/
 -- https://davelage.com/posts/neovim-0.5-lsp-elixirls/
