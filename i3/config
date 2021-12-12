@@ -554,7 +554,7 @@ for_window [instance="Erlang" class="Erlang"] floating enable
 for_window [window_role="pop_up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 
-for_window [class="^.*"] border pixel 5
+for_window [class="^.*"] border pixel 3
 # new_window 1pixel
 
 # Título das janelas alinhado no meio (aparece no tabbed layout, por exemplo)
