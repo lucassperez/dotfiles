@@ -17,7 +17,8 @@ require('plugins.Comment')
 require('plugins.buftabline')
 
 -- Meus próprios scritpts
-require('filetype-tmux-runners.test')
-require('filetype-tmux-runners.linter')
-require('filetype-tmux-runners.from-git-generic')
-require('filetype-tmux-runners.execute-script')
+require('vtr-helpers.test')
+require('vtr-helpers.linter')
+require('vtr-helpers.from-git-generic')
+require('vtr-helpers.execute-script')
+require('vtr-helpers.send-line-to-tmux')

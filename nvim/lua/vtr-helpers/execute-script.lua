@@ -4,7 +4,7 @@ function _G.executeFileAsScript()
   local filename = vim.fn.expand('%')
 
   local first_line = vim.fn.getline(1)
-  local prog_shebang = string.match(first_line, '^#!(/[%w/ ]+)')
+  local prog_shebang = string.match(first_line, '^#!%s*(/[%w/ ]+)')
 
   if prog_shebang then
     vim.fn.VtrSendCommand(prog_shebang..' '..full_path_filename)

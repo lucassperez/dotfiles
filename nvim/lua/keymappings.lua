@@ -164,3 +164,6 @@ noremap('n', '<leader>x', ':!xdg-open %<CR><CR>')
 -- "Zoom" na split atual e deixar as splits o mais parecidas possível
 noremap('n', '<leader>-', ':wincmd _<CR>:wincmd |<CR>')
 noremap('n', '<leader>=', ':wincmd =<CR>')
+
+noremap('n', '<leader>R', ':lua sendLinesToTmux("normal")<CR>')
+noremap('v', '<leader>R', ':lua sendLinesToTmux("visual")<CR>')
