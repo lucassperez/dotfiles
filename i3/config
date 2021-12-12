@@ -565,4 +565,5 @@ bindsym Print exec flameshot screen -c
 bindsym $mod+Print exec flameshot full -c
 bindsym Control+Print exec flameshot gui
 
-bindsym $mod+ccedilla exec $HOME/.config/i3/blocklets-scripts/turbo/ignite-turbo-wrapper.sh
+bindsym $mod+Control+ccedilla exec $HOME/.config/i3/blocklets-scripts/turbo/ignite-turbo-wrapper.sh
+bindsym $mod+ccedilla exec $HOME/scripts/emoji/dmenu-search-emoji.sh
