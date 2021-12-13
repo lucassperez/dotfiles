@@ -11,6 +11,7 @@ local on_attach = function(_, bufnr)
   local map_opts = { noremap = true, silent = true }
 
   map('n', [[\f]],    ':lua vim.lsp.buf.formatting()<CR>', map_opts)
+  -- vim.cmd('command! LspDiagLine lua vim.lsp.diagnostic.show_line_diagnostics()')
   -- map('n', '?',     ':lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', map_opts)
   map('n', 'K',    ':lua vim.lsp.buf.definition()<CR>', map_opts)
   map('n', [[\K]],     ':lua vim.lsp.buf.hover()<CR>', map_opts)
@@ -20,6 +21,7 @@ end
 require('lspconfig').elixirls.setup({
   cmd = { '/home/lucas/sources/elixir-ls/release-directory/language_server.sh' };
   on_attach = on_attach,
+  capabilities = {},
   settings = {
     elixirLS = {
       dialyzerEnabled = false,
@@ -28,6 +30,8 @@ require('lspconfig').elixirls.setup({
     }
   }
 })
+
+-- vim.lsp.set_log_level('debug')
 
 -- Random references
 -- https://www.mitchellhanberg.com/how-to-set-up-neovim-for-elixir-development/
