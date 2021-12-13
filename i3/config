@@ -138,7 +138,7 @@ bindsym $mod+comma   exec --no-startup-id amixer -D pulse sset Master 2%- && $re
 bindsym $mod+period  exec --no-startup-id amixer -D pulse sset Master 2%+ && $refresh_audio_icon
 bindsym $mod+slash   exec --no-startup-id amixer -D pulse sset Master toggle && $refresh_audio_icon
 
-# Mic (i3 blocklet must have signal=11 matching this RTMIN+11)
+# Microphone (i3 blocklet must have signal=11 matching this RTMIN+11)
 set $refresh_mic_icon pkill -RTMIN+11 i3blocks
 bindsym XF86AudioMicMute    exec --no-startup-id amixer sset Capture nocap && $refresh_mic_icon
 bindsym $mod+Control+comma  exec --no-startup-id amixer sset Capture 2%-  &&   $refresh_mic_icon

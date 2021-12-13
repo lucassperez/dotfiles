@@ -5,7 +5,7 @@
 case $BLOCK_BUTTON in
   1)   pactl set-sink-mute   @DEFAULT_SINK@ toggle ;;
   2)   pactl set-sink-volume @DEFAULT_SINK@ 50% ;;
-  3)   pavucontrol ;;
+  3)   pavucontrol && pkill -RTMIN+11 i3blocks && pkill -RTMIN+10 i3blocks ;;
   4)   pactl set-sink-volume @DEFAULT_SINK@ +2% ;;
   5)   pactl set-sink-volume @DEFAULT_SINK@ -2% ;;
   # TODO Understand why can't I use amixer here
