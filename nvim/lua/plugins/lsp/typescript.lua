@@ -17,17 +17,21 @@ local on_attach = function(client, bufnr)
     vim.cmd("command! LspImplementation lua vim.lsp.buf.implementation()")
     vim.cmd("command! LspDiagPrev lua vim.lsp.diagnostic.goto_prev()")
     vim.cmd("command! LspDiagNext lua vim.lsp.diagnostic.goto_next()")
-    vim.cmd("command! LspDiagLine lua vim.lsp.diagnostic.show_line_diagnostics()")
+    -- vim.cmd("command! LspDiagLine lua vim.lsp.diagnostic.show_line_diagnostics()")
     vim.cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
-    buf_map(bufnr, "n", "gd", ":LspDef<CR>")
-    buf_map(bufnr, "n", "gr", ":LspRename<CR>")
-    buf_map(bufnr, "n", "gy", ":LspTypeDef<CR>")
-    buf_map(bufnr, "n", "K", ":LspHover<CR>")
-    buf_map(bufnr, "n", "[a", ":LspDiagPrev<CR>")
-    buf_map(bufnr, "n", "]a", ":LspDiagNext<CR>")
-    buf_map(bufnr, "n", "ga", ":LspCodeAction<CR>")
-    buf_map(bufnr, "n", "<Leader>a", ":LspDiagLine<CR>")
-    buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>")
+    buf_map(bufnr, "n", "K", ":LspDef<CR>")
+    buf_map(bufnr, "n", [[\K]], ":LspHover<CR>")
+    buf_map(bufnr, "n", [[\k]], "<cmd> LspSignatureHelp<CR>")
+    buf_map(bufnr, "n", [[\f]], ':lua vim.lsp.buf.formatting()<CR>')
+    -- buf_map(bufnr, "n", "gd", ":LspDef<CR>")
+    -- buf_map(bufnr, "n", "gr", ":LspRename<CR>")
+    -- buf_map(bufnr, "n", "gy", ":LspTypeDef<CR>")
+    -- buf_map(bufnr, "n", "K", ":LspHover<CR>")
+    -- buf_map(bufnr, "n", "[a", ":LspDiagPrev<CR>")
+    -- buf_map(bufnr, "n", "]a", ":LspDiagNext<CR>")
+    -- buf_map(bufnr, "n", "ga", ":LspCodeAction<CR>")
+    -- buf_map(bufnr, "n", "<Leader>a", ":LspDiagLine<CR>")
+    -- buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>")
 end
 
 lspconfig.tsserver.setup({
@@ -37,8 +41,8 @@ lspconfig.tsserver.setup({
     local ts_utils = require('nvim-lsp-ts-utils')
     ts_utils.setup({
       eslint_bin = 'eslint_d',
-      eslint_enable_diagnostics = true,
-      eslint_enable_code_actions = true,
+      eslint_enable_diagnostics = false,
+      eslint_enable_code_actions = false,
       enable_formatting = true,
       formatter = 'prettier',
     })
