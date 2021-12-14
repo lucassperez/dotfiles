@@ -58,6 +58,9 @@ font-0 = fixed:pixelsize=10;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
 font-3 = FontAwesome:pixelsize=12;1
+; Emojis show huge without proper scale.
+; The bigger the number, the smaller the characters.
+font-4 = Noto Color Emoji:scale=10;
 
 modules-left = i3
 ; modules-left = i3 xwindow active-window-title
@@ -148,27 +151,32 @@ interval = 1
 [module/battery]
 type = custom/script
 exec = ~/.config/polybar/scripts/battery-poly.sh
+click-left = ~/.config/polybar/scripts/battery-poly.sh mouse_click
 interval = 5
 
 [module/date-time]
 type = custom/script
 ; exec = ~/.config/polybar/scripts/date-time-poly.sh
 exec = date "+%{F#6fb4d6}  %a %d %b %{F#ffffff}   %H:%M"
+click-left = zenity --calendar
 interval = 1
 
 [module/pulseaudio-microphone]
 type = custom/script
 exec = ~/.config/polybar/scripts/pulseaudio-microphone.sh
 tail = true
-click-left =  ~/.config/polybar/scripts/pulseaudio-microphone.sh --toggle &
-scroll-up =   ~/.config/polybar/scripts/pulseaudio-microphone.sh --increase &
-scroll-down = ~/.config/polybar/scripts/pulseaudio-microphone.sh --decrease &
+click-left   =  ~/.config/polybar/scripts/pulseaudio-microphone.sh --toggle &
+click-right  = pavucontrol
+scroll-up    = ~/.config/polybar/scripts/pulseaudio-microphone.sh --increase &
+scroll-down  = ~/.config/polybar/scripts/pulseaudio-microphone.sh --decrease &
+click-middle = ~/.config/polybar/scripts/pulseaudio-microphone.sh --set 30 &
 
 [module/volume]
 type = custom/ipc
 hook-0 = ~/.config/polybar/scripts/volume.sh icon
 initial = 1
 click-left =  ~/.config/polybar/scripts/volume.sh toggle
+click-right = pavucontrol
 scroll-up =   ~/.config/polybar/scripts/volume.sh increase
 scroll-down = ~/.config/polybar/scripts/volume.sh decrease
 click-middle = ~/.config/polybar/scripts/volume.sh set

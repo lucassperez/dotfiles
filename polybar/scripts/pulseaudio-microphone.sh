@@ -36,12 +36,17 @@ toggle() {
 
 increase() {
   DEFAULT_SOURCE=$(pacmd list-sources | awk '/\*/,EOF {print $3; exit}')
-  pactl set-source-volume "$DEFAULT_SOURCE" +5%
+  pactl set-source-volume "$DEFAULT_SOURCE" +${1:-5}%
 }
 
 decrease() {
   DEFAULT_SOURCE=$(pacmd list-sources | awk '/\*/,EOF {print $3; exit}')
-  pactl set-source-volume "$DEFAULT_SOURCE" -5%
+  pactl set-source-volume "$DEFAULT_SOURCE" -${1:-5}%
+}
+
+set_exact() {
+  DEFAULT_SOURCE=$(pacmd list-sources | awk '/\*/,EOF {print $3; exit}')
+  pactl set-source-volume "$DEFAULT_SOURCE" ${1:-50}%
 }
 
 case "$1" in
@@ -49,10 +54,13 @@ case "$1" in
         toggle
         ;;
     --increase)
-        increase
+        increase "$2"
         ;;
     --decrease)
-        decrease
+        decrease "$2"
+        ;;
+    --set)
+        set_exact "$2"
         ;;
     *)
         listen

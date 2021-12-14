@@ -6,6 +6,17 @@ state=$(echo "$infos" | sed 's/Battery [0-9]: \(\w*\).*/\1/')
 percentage=$(echo "$infos" | sed 's/Battery [0-9]: \w*, \([0-9]*\)%.*/\1/')
 hours_mins_left=$(echo "$infos" | sed 's/Battery [0-9]: \w*, [0-9]*%, \([0-9][0-9]:[0-9][0-9]\).*/\1/')
 
+if [ "$1" = mouse_click ]; then
+  title="$state: $percentage%"
+  if [ "$percentage" = Full ]; then
+    message='(:'
+  else
+    message="$hours_mins_left remaining"
+  fi
+  notify-send -u low "$title" "$message"
+  exit
+fi
+
 # Define icons based on state and percentage
 if [ "$state" = Charging ]; then
   icons="%{F#ff0}%{F-}"
