@@ -111,7 +111,8 @@ exec_always xset s off
 exec_always xset -dpms
 
 # Start audio and mic not too loud, and with mic muted
-exec --no-startup-id amixer -D pulse sset Master 50% && $refresh_audio_icon
+# exec --no-startup-id amixer -D pulse sset Master 50% && $refresh_audio_icon
+exec --no-startup-id ~/.config/polybar/scripts/volume.sh set 50
 exec --no-startup-id amixer sset Capture 30% && amixer sset Capture nocap && $refresh_mic_icon
 
 # Disable notebook things
@@ -130,30 +131,41 @@ exec sh ~/scripts/setwallpaper.sh ~/Pictures/wallpapers/wall.jpg
 
 # Volume (i3 blocklet must have signal=10 matching this RTMIN+10)
 set $refresh_audio_icon pkill -RTMIN+10 i3blocks
-bindsym XF86AudioRaiseVolume  exec --no-startup-id amixer -D pulse sset Master 5%+ && $refresh_audio_icon
-bindsym XF86AudioLowerVolume  exec --no-startup-id amixer -D pulse sset Master 5%- && $refresh_audio_icon
-bindsym XF86AudioMute         exec --no-startup-id amixer -D pulse sset Master toggle && $refresh_audio_icon
+# bindsym XF86AudioRaiseVolume  exec --no-startup-id amixer -D pulse sset Master 5%+ && $refresh_audio_icon
+# bindsym XF86AudioLowerVolume  exec --no-startup-id amixer -D pulse sset Master 5%- && $refresh_audio_icon
+# bindsym XF86AudioMute         exec --no-startup-id amixer -D pulse sset Master toggle && $refresh_audio_icon
+bindsym XF86AudioRaiseVolume  exec --no-startup-id ~/.config/polybar/scripts/volume.sh increase 5
+bindsym XF86AudioLowerVolume  exec --no-startup-id ~/.config/polybar/scripts/volume.sh decrease 5
+bindsym XF86AudioMute         exec --no-startup-id ~/.config/polybar/scripts/volume.sh toggle
 # ---
-bindsym $mod+comma   exec --no-startup-id amixer -D pulse sset Master 2%- && $refresh_audio_icon
-bindsym $mod+period  exec --no-startup-id amixer -D pulse sset Master 2%+ && $refresh_audio_icon
-bindsym $mod+slash   exec --no-startup-id amixer -D pulse sset Master toggle && $refresh_audio_icon
+bindsym $mod+comma   exec --no-startup-id ~/.config/polybar/scripts/volume.sh decrease 2
+bindsym $mod+period  exec --no-startup-id ~/.config/polybar/scripts/volume.sh increase 2
+bindsym $mod+slash   exec --no-startup-id ~/.config/polybar/scripts/volume.sh toggle
 
 # Microphone (i3 blocklet must have signal=11 matching this RTMIN+11)
 set $refresh_mic_icon pkill -RTMIN+11 i3blocks
-bindsym XF86AudioMicMute    exec --no-startup-id amixer sset Capture nocap && $refresh_mic_icon
-bindsym $mod+Control+comma  exec --no-startup-id amixer sset Capture 2%-  &&   $refresh_mic_icon
-bindsym $mod+Control+period exec --no-startup-id amixer sset Capture 2%+  &&   $refresh_mic_icon
-bindsym $mod+Control+slash  exec --no-startup-id amixer sset Capture toggle && $refresh_mic_icon
-bindsym $mod+Shift+slash    exec --no-startup-id amixer sset Capture toggle && $refresh_mic_icon
+# bindsym XF86AudioMicMute    exec --no-startup-id amixer sset Capture nocap && $refresh_mic_icon
+# bindsym $mod+Control+comma  exec --no-startup-id amixer sset Capture 2%-  &&   $refresh_mic_icon
+# bindsym $mod+Control+period exec --no-startup-id amixer sset Capture 2%+  &&   $refresh_mic_icon
+# bindsym $mod+Control+slash  exec --no-startup-id amixer sset Capture toggle && $refresh_mic_icon
+# bindsym $mod+Shift+slash    exec --no-startup-id amixer sset Capture toggle && $refresh_mic_icon
+bindsym XF86AudioMicMute    exec ~/.config/polybar/scripts/pulseaudio-microphone.sh --toggle &
+bindsym $mod+Control+comma  exec ~/.config/polybar/scripts/pulseaudio-microphone.sh --increase &
+bindsym $mod+Control+period exec ~/.config/polybar/scripts/pulseaudio-microphone.sh --decrease &
+bindsym $mod+Control+slash  exec ~/.config/polybar/scripts/pulseaudio-microphone.sh --toggle &
+bindsym $mod+Shift+slash    exec ~/.config/polybar/scripts/pulseaudio-microphone.sh --toggle &
 
 # Brightness (i3 blocklet must have signal=12 matching this RTMIN+12)
 set $refresh_brightness_icon pkill -RTMIN+12 i3blocks
-bindsym $mod+bracketleft    exec xbacklight -dec 5 && $refresh_brightness_icon
-bindsym $mod+bracketright   exec xbacklight -inc 5 && $refresh_brightness_icon
+# bindsym $mod+bracketleft    exec xbacklight -dec 5 && $refresh_brightness_icon
+# bindsym $mod+bracketright   exec xbacklight -inc 5 && $refresh_brightness_icon
+bindsym $mod+bracketleft    exec ~/.config/polybar/scripts/brightness-poly.sh decrease 5
+bindsym $mod+bracketright   exec ~/.config/polybar/scripts/brightness-poly.sh increase 5
 
 # Turn off notifications
 set $refresh_notification_icon pkill -RTMIN+13 i3blocks
-bindsym $mod+n exec dunstctl set-paused toggle && $refresh_notification_icon
+# bindsym $mod+n exec dunstctl set-paused toggle && $refresh_notification_icon
+bindsym $mod+n exec ~/.config/polybar/scripts/dunst-poly.sh toggle
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -509,31 +521,31 @@ client.urgent           $ubgcolor  $ubgcolor      $textcolor  $ubgcolor
 # finds out, if available)
 # Top bar using i3blocks (needs version 1.5 or more! Build from source if needed)
 # https://github.com/vivien/i3blocks#installation
-bar {
-  # status_command i3status --config ~/.config/i3/i3status.conf
-  status_command i3blocks -c ~/.config/i3/i3blocks.conf
-  position top
-  tray_output primary
-  font pango:Font Awesome 12
-  binding_mode_indicator yes
-  workspace_min_width 30
-  # i3bar_command i3bar --transparency
-  colors {
-      background #000000
-      statusline #ffffff
-      separator  #666666
+# bar {
+#   # status_command i3status --config ~/.config/i3/i3status.conf
+#   status_command i3blocks -c ~/.config/i3/i3blocks.conf
+#   position top
+#   tray_output primary
+#   font pango:Font Awesome 12
+#   binding_mode_indicator yes
+#   workspace_min_width 30
+#   # i3bar_command i3bar --transparency
+#   colors {
+#       background #000000
+#       statusline #ffffff
+#       separator  #666666
 
-      # ---------------- border --- background -- text
-      focused_workspace  $bgcolor   $bgcolor      $textcolor
-      inactive_workspace $ibgcolor  $ibgcolor     $itextcolor
-      urgent_workspace   $ubgcolor  $ubgcolor     $textcolor
-      # binding_mode       #2f343a    #900000       #ffffff
-      binding_mode       $ubgcolor  $ubgcolor     $textcolor
-  }
-}
+#       # ---------------- border --- background -- text
+#       focused_workspace  $bgcolor   $bgcolor      $textcolor
+#       inactive_workspace $ibgcolor  $ibgcolor     $itextcolor
+#       urgent_workspace   $ubgcolor  $ubgcolor     $textcolor
+#       # binding_mode       #2f343a    #900000       #ffffff
+#       binding_mode       $ubgcolor  $ubgcolor     $textcolor
+#   }
+# }
 
 # Polybar
-# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # https://gist.github.com/lirenlin/9892945
 # default_border pixel 1

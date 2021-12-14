@@ -73,6 +73,18 @@ if [ "$INSTALL_WM" = i ]; then
 
   echo "Creating symlink to: \e[1;36m$HOME/.config/i3/blocklets-scripts\e[0m"
   ln -sfni "$DIR/i3/blocklets-scripts" "$HOME/.config/i3/blocklets-scripts"
+
+  [ -d "$HOME/.config/polybar" ] || mkdir "$HOME/.config/polybar"
+
+  echo "Creating symlink to: \e[1;36m$HOME/.config/polybar/launch.sh\e[0m"
+  ln -sfni "$DIR/polybar/launch.sh" "$HOME/.config/polybar/launch.sh"
+
+  echo "Creating symlink to: \e[1;36m$HOME/.config/polybar/config\e[0m"
+  ln -sfni "$DIR/polybar/config" "$HOME/.config/polybar/config"
+
+  echo "Creating symlink to: \e[1;36m$HOME/.config/polybar/config/scripts\e[0m"
+  ln -sfni "$DIR/polybar/config/scripts" "$HOME/.config/polybar/config/scripts"
+
 elif [ "$INSTALL_WM" = a ]; then
   [ -d "$HOME/.config/awesome" ] || mkdir "$HOME/.config/awesome" -pv
 
