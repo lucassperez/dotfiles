@@ -49,6 +49,11 @@ set_exact() {
   pactl set-source-volume "$DEFAULT_SOURCE" ${1:-50}%
 }
 
+mute() {
+  DEFAULT_SOURCE=$(pacmd list-sources | awk '/\*/,EOF {print $3; exit}')
+  pactl set-source-mute "$DEFAULT_SOURCE" 1
+}
+
 case "$1" in
     --toggle)
         toggle
@@ -61,6 +66,9 @@ case "$1" in
         ;;
     --set)
         set_exact "$2"
+        ;;
+    --mute)
+        mute
         ;;
     *)
         listen
