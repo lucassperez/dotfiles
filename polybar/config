@@ -148,18 +148,35 @@ type = custom/script
 exec = xprop -id $(xdotool getactivewindow) WM_CLASS | sed 's/.*= ".*", "\(.*\)"$/\1/'
 interval = 1
 
-[module/battery]
+[module/docker]
 type = custom/script
-exec = ~/.config/polybar/scripts/battery-poly.sh
-click-left = ~/.config/polybar/scripts/battery-poly.sh mouse_click
-interval = 5
+interval = 10
+exec       = ~/.config/polybar/scripts/docker-poly.sh icon
+click-left = ~/.config/polybar/scripts/docker-poly.sh notify
 
-[module/date-time]
+[module/dunst]
+; Hooks start at 0, but "initial" means "first hook", which
+; happens to be hook-0. Same goes for polybar-msg command inside this script,
+; where it calls hook 1, which is the first hook, hook-0.
+; If initial was set to 0, then no hook would be executed at start
+type = custom/ipc
+hook-0 = ~/.config/polybar/scripts/dunst-poly.sh icon
+initial = 1
+click-left = ~/.config/polybar/scripts/dunst-poly.sh toggle
+
+[module/memory]
 type = custom/script
-; exec = ~/.config/polybar/scripts/date-time-poly.sh
-exec = date "+%{F#6fb4d6}  %a %d %b %{F#ffffff}   %H:%M"
-click-left = zenity --calendar
-interval = 1
+interval = 10
+exec       = ~/.config/polybar/scripts/memory-poly.sh icon
+click-left = ~/.config/polybar/scripts/memory-poly.sh notify
+
+[module/brightness]
+type = custom/ipc
+hook-0 = ~/.config/polybar/scripts/brightness-poly.sh icon
+initial = 1
+scroll-up    = ~/.config/polybar/scripts/brightness-poly.sh increase
+scroll-down  = ~/.config/polybar/scripts/brightness-poly.sh decrease
+click-middle = ~/.config/polybar/scripts/brightness-poly.sh set
 
 [module/pulseaudio-microphone]
 type = custom/script
@@ -173,48 +190,30 @@ click-middle = ~/.config/polybar/scripts/pulseaudio-microphone.sh --set 30 &
 
 [module/volume]
 type = custom/ipc
-hook-0 = ~/.config/polybar/scripts/volume.sh icon
+hook-0 = ~/.config/polybar/scripts/volume-poly.sh icon
 initial = 1
-click-left =  ~/.config/polybar/scripts/volume.sh toggle
-click-right = pavucontrol
-scroll-up =   ~/.config/polybar/scripts/volume.sh increase
-scroll-down = ~/.config/polybar/scripts/volume.sh decrease
-click-middle = ~/.config/polybar/scripts/volume.sh set
+click-left   = ~/.config/polybar/scripts/volume-poly.sh toggle
+click-right  = pavucontrol
+scroll-up    = ~/.config/polybar/scripts/volume-poly.sh increase
+scroll-down  = ~/.config/polybar/scripts/volume-poly.sh decrease
+click-middle = ~/.config/polybar/scripts/volume-poly.sh set
 
-[module/brightness]
-type = custom/ipc
-hook-0 = ~/.config/polybar/scripts/brightness-poly.sh icon
-initial = 1
-scroll-up =   ~/.config/polybar/scripts/brightness-poly.sh increase
-scroll-down = ~/.config/polybar/scripts/brightness-poly.sh decrease
-
-[module/dunst]
-; Hooks start at 0, but "initial" means "first hook", which
-; happens to be hook-0. Same goes for polybar-msg command inside this script,
-; where it calls hook 1, which is the first hook, hook-0.
-; If initial was set to 0, then no hook would be executed at start
-type = custom/ipc
-hook-0 = ~/.config/polybar/scripts/dunst-poly.sh icon
-initial = 1
-click-left = ~/.config/polybar/scripts/dunst-poly.sh toggle
-
-[module/docker]
+[module/battery]
 type = custom/script
-interval = 10
-exec       = ~/.config/polybar/scripts/docker.sh icon
-click-left = ~/.config/polybar/scripts/docker.sh notify
+exec = ~/.config/polybar/scripts/battery-poly.sh
+click-left = ~/.config/polybar/scripts/battery-poly.sh mouse_click
+interval = 5
 
-[module/memory]
+[module/date-time]
 type = custom/script
-interval = 10
-exec       = ~/.config/polybar/scripts/memory-poly.sh icon
-click-left = ~/.config/polybar/scripts/memory-poly.sh notify
+exec = date "+%{F#6fb4d6}  %a %d %b %{F#ffffff}   %H:%M"
+click-left = zenity --calendar
+interval = 1
 
 [module/turbo]
 type = custom/script
 exec = echo %{F#00ff00}TURBO
 click-left = BLOCK_BUTTON=yes /bin/env python3 $HOME/.config/i3/blocklets-scripts/turbo/turbo.py
-
 
 [settings]
 screenchange-reload = true
