@@ -10,7 +10,7 @@ function _G.runLinter(opts)
   end
 
   if (filetype == 'elixir') then
-    vim.fn.VtrSendCommand('mix credo '..filename)
+    vim.fn.VtrSendCommand('mix credo --strict '..filename)
   elseif (filetype == 'ruby') then
     vim.fn.VtrSendCommand('bundle exec rubocop '..filename)
   else

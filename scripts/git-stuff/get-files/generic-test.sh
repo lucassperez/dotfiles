@@ -45,7 +45,7 @@ fi
 PROJECT_LANGUAGE=$(sh "$HOME/scripts/git-stuff/get-project-lang.sh")
 
 if [ "$PROJECT_LANGUAGE" = ruby ]; then
-  GREP_PATTERN= 'spec/.*_spec\.rb$'
+  GREP_PATTERN='spec/.*_spec\.rb$'
   TEST_COMMAND='bundle exec rspec'
 elif [ "$PROJECT_LANGUAGE" = elixir ]; then
   GREP_PATTERN='test/.*_test\.exs$'

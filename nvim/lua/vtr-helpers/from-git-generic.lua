@@ -7,7 +7,7 @@ function genericLinter()
 
   local command =
     -- io.popen('sh ~/scripts/git-stuff/get-files/'..filetype..'-linter.sh noclipboard')
-    io.popen('sh ~/scripts/git-stuff/get-files/generic-linter.sh noclipboard')
+    io.popen('sh ~/scripts/git-stuff/get-files/generic-linter.sh noclipboard --strict')
     :read('*a')
     :gsub('\n', '')
 

@@ -11,7 +11,7 @@ vim.g.mapleader = ' '
 -- Normally C-c already does this, but after installing LSP, the text box
 -- containing completions would not properly disappear when I C-c out of insert
 -- mode sometimes, which did not happen with ESC.
-map('i', '<C-c>', '<ESC>')
+map('i', '<C-c>', '<Esc>')
 
 -- Atalho pra mostrar a quais grupos de sintaxe a palavra
 -- debaixo do cursor pertence
@@ -27,7 +27,7 @@ map('n', 'ç', '$')
 map('v', 'ç', '$h')
 
 -- Abrir o último arquivo editado
-noremap('n', '<leader>e', ':e#<CR>')
+noremap('n', '<leader><space>', ':e#<CR>')
 
 -- Copiar para o clipboard do sistema o caminho do arquivo
 noremap('n', '<leader>f', ':let @+ = expand("%")<CR>')
@@ -113,6 +113,8 @@ noremap('n', '<Esc>', ':noh<CR>')
 
 -- Setar um runner pro Vim Tmux Runner
 noremap('n', '<leader>a', ':VtrAttachToPane<CR>')
+noremap('n', '<leader><C-d>', ':VtrSendCtrlD<CR>')
+noremap('n', '<leader><C-c>', ':VtrSendCtrlC<CR>')
 
 -- linter all & linter this file
 noremap('n', '<leader>rua', ':lua runLinter {}<CR>')
@@ -167,3 +169,5 @@ noremap('n', '<leader>=', ':wincmd =<CR>')
 
 noremap('n', '<leader>R', ':lua sendLinesToTmux("normal")<CR>')
 noremap('v', '<leader>R', ':lua sendLinesToTmux("visual")<CR>')
+
+noremap('n', '<leader>e', ':lua toggleBetweenTestAndFile()<CR>')
