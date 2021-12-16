@@ -161,6 +161,7 @@ floating_modifier $mod
 # kill focused window
 # bindsym $mod+Shift+q kill
 bindsym $mod+Control+c kill
+bindsym --release --border button2 kill
 
 # start dmenu (a program launcher)
 # Consider making some patches to dmenu, at least the fuzzy matcher: https://tools.suckless.org/dmenu/patches/fuzzymatch/
