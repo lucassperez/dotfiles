@@ -11,8 +11,12 @@ alias egrep='egrep --color=auto'
 
 alias ll='ls -l'
 alias la='ls -A'
+alias laa='ls -a'
 alias lla='ls -lA'
 alias lal='ls -Al'
+alias llaa='ls -la'
+alias laal='ls -al'
+alias lala='ls -a -l -a'
 
 # Meus apelidos
 alias showppa='echo "/etc/apt/sources.list.d" && ls /etc/apt/sources.list.d'
@@ -38,11 +42,14 @@ alias alrc='nvim ~/.config/alacritty/alacritty.yml'
 alias i3rc='nvim ~/.config/i3/config ~/.config/i3/i3blocks.conf'
 alias polrc='nvim ~/.config/polybar/config'
 alias zshrc='nvim $ZDOTDIR/.zshrc ~/.zshenv'
+alias xmorc='nvim ~/.config/xmonad/xmonad.hs ~/.xmobarrc'
 alias notouchpad='xinput disable Elan\ Touchpad'
 alias vimgit='git diff --name-only | sort -u | xargs nvim'
 alias tmuxls='sh ~/scripts/parse-tmux-ls.sh'
 alias glmain="sh $HOME/scripts/git-stuff/get-files/generic-linter.sh"
 alias gtmain="sh $HOME/scripts/git-stuff/get-files/generic-test.sh"
 alias readme='ls | grep -i readme | xargs glow -p'
+
+alias vim='nvim'
 
 [ -f "$HOME/.local/.my_aliases" ] && source "$HOME/.local/.my_aliases"
