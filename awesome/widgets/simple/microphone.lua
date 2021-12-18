@@ -10,13 +10,14 @@ local wibox = require('wibox')
 
 local text = wibox.widget({
     -- font = 'Anonymous Pro Bold 12',
-    font = 'Hack 12',
+    -- font = 'Hack 12',
+    font = 'FontAwesome 12',
     widget = wibox.widget.textbox,
 })
 
 local widget = wibox.widget.background()
 widget:set_widget(text)
-widget:set_fg('#D6CE6F')
+widget:set_fg('#d6ce6f')
 
 local function set_widget()
   awful.spawn.easy_async(

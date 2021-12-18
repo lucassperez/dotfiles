@@ -192,7 +192,7 @@ local battery_widget = require('widgets.simple.battery')
 local docker_widget = require('widgets.simple.docker')
 local date_widget = require('widgets.simple.date')
 local clock_widget = require('widgets.simple.clock')
--- local notification_widget = require('widgets.simple.notification')
+local notification_widget = require('widgets.simple.notification')
 
 awful.screen.connect_for_each_screen(
   function(s)
@@ -256,7 +256,7 @@ awful.screen.connect_for_each_screen(
       { -- Right widgets
         layout = wibox.layout.fixed.horizontal,
                           docker_widget,
-        -- separator_widget, notification_widget,
+        separator_widget, notification_widget,
         separator_widget, bright_widget,
         separator_widget, mic_widget,
         separator_widget, volume_widget,
@@ -339,6 +339,9 @@ globalkeys = gears.table.join(
             function() bright_widget:dec(5) end,
             { group = 'System controls', description = 'decrease brightness', }),
 
+  awful.key({ modkey }, 'n',
+            function() notification_widget:toggle() end,
+            { group = 'System controls', description = 'toggle notification', }),
 
   awful.key({ modkey }, 's',      hotkeys_popup.show_help,   { description = 'show help', group='awesome' }),
   awful.key({ modkey }, 'Left',   awful.tag.viewprev,        { description = 'view previous', group = 'tag' }),
@@ -453,6 +456,9 @@ globalkeys = gears.table.join(
             { group = 'Launcher', description = 'Print all screens to clipboard' }),
 
   awful.key({ modkey }, 'ç',
+            function() awful.spawn('sh ~/scripts/emoji/dmenu-search-emoji.sh') end,
+            { group = 'TURBO', description = 'Activate TURBO mode' }),
+  awful.key({ modkey, control }, 'ç',
             function() turbo_widget:send_turbo_notification() end,
             { group = 'TURBO', description = 'Activate TURBO mode' }),
   -- Menubar (dmenu's brother, so it has similar keybinding)
@@ -494,7 +500,7 @@ clientkeys = gears.table.join(
   awful.key({ modkey }, 't',
             function (c) c.ontop = not c.ontop end,
             { group = 'client', description = 'toggle keep on top', }),
-  awful.key({ modkey }, 'n',
+  awful.key({ modkey, shift }, 'n',
             function (c)
               -- The client currently has the input focus, so it cannot be
               -- minimized, since minimized clients can't have the focus.
@@ -757,5 +763,6 @@ awful.spawn.with_shell('nm-applet')
 awful.spawn.with_shell('flameshot')
 awful.spawn.with_shell('xcompmgr -c -l0 -t0 -r0 -o.00')
 awful.spawn.with_shell('xset r rate 220 25')
+awful.spawn.with_shell('unclutter')
 mic_widget:set_exact_vol(30)
 volume_widget:set_exact_vol(50)

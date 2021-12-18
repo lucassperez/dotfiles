@@ -30,7 +30,7 @@ watch(
 -- https://github.com/streetturtle/awesome-wm-widgets/tree/master/calendar-widget
 local calendar_widget = require("widgets.calendar")
 local cw = calendar_widget({
-  theme = 'nord',
+  theme = 'naughty',
   placement = 'top_right',
   radius = 12,
   start_sunday = true
