@@ -205,6 +205,27 @@ local memory_widget = require('widgets.simple.memory')
 --   mod_keysym = 'Super_L',
 -- })
 
+local charitable = require('charitable')
+-- Create tags and taglist
+local taglist_buttons = gears.table.join(
+    awful.button({}, 1, function(t) charitable.select_tag(t, awful.screen.focused()) end),
+    awful.button({}, 3, function(t) charitable.toggle_tag(t, awful.screen.focused()) end)
+)
+local tags = charitable.create_tags(
+   { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' },
+   {
+      awful.layout.layouts[1],
+      awful.layout.layouts[1],
+      awful.layout.layouts[1],
+      awful.layout.layouts[1],
+      awful.layout.layouts[1],
+      awful.layout.layouts[1],
+      awful.layout.layouts[1],
+      awful.layout.layouts[1],
+      awful.layout.layouts[1],
+      awful.layout.layouts[1],
+   }
+)
 awful.screen.connect_for_each_screen(
   function(s)
     -- Wallpaper
@@ -212,7 +233,23 @@ awful.screen.connect_for_each_screen(
 
     -- Each screen has its own tag table.
     -- All tags
-    awful.tag({ '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' }, s, awful.layout.layouts[1])
+    -- awful.tag({ '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' }, s, awful.layout.layouts[1])
+    -- Show an unselected tag when a screen is connected
+    for i = 1, #tags do
+      if not tags[i].selected then
+        tags[i].screen = s
+        tags[i]:view_only()
+        break
+      end
+    end
+    -- create a special scratch tag for double buffering
+    s.scratch = awful.tag.add('scratch-' .. s.index, {})
+    s.mytaglist = awful.widget.taglist({
+       screen = s,
+       filter  = awful.widget.taglist.filter.all,
+       buttons = taglist_buttons,
+       source = function(screen, args) return tags end,
+    })
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -228,11 +265,11 @@ awful.screen.connect_for_each_screen(
       )
     )
     -- Create a taglist widget
-    s.mytaglist = awful.widget.taglist({
-      screen  = s,
-      filter  = awful.widget.taglist.filter.all,
-      buttons = taglist_buttons
-    })
+    -- s.mytaglist = awful.widget.taglist({
+    --   screen  = s,
+    --   filter  = awful.widget.taglist.filter.all,
+    --   buttons = taglist_buttons
+    -- })
 
     -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist({
@@ -450,26 +487,26 @@ globalkeys = gears.table.join(
             function () awful.client.swap.global_bydirection('right') end,
             { group = 'client', description = 'swap right client global', }),
   -- Size
-  awful.key({ modkey }, "Left",
+  awful.key({ modkey }, 'Left',
     function ()
       awful.tag.incmwfact( 0.05)
     end,
-    {description = "increase master width factor", group = "layout"}),
-  awful.key({ modkey }, "Right",
+    { group = 'layout', description = 'increase master width factor', }),
+  awful.key({ modkey }, 'Right',
     function ()
       awful.tag.incmwfact(-0.05)
     end,
-    {description = "decrease master width factor", group = "layout"}),
-  awful.key({ modkey }, "Down",
+    { group = 'layout', description = 'decrease master width factor', }),
+  awful.key({ modkey }, 'Down',
     function ()
       awful.tag.incnmaster( 1, nil, true)
     end,
-    {description = "increase the number of master clients", group = "layout"}),
-  awful.key({ modkey }, "Up",
+    { group = 'layout', description = 'increase the number of master clients', }),
+  awful.key({ modkey }, 'Up',
     function ()
       awful.tag.incnmaster(-1, nil, true)
     end,
-    {description = "decrease the number of master clients", group = "layout"}),
+    { group = 'layout', description = 'decrease the number of master clients', }),
 
   -- Standard program
   awful.key({ modkey, control }, 'r',
@@ -607,34 +644,73 @@ clientkeys = gears.table.join(
 -- Be careful: we use keycodes to make it work on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
 -- Added tag 10 (mod + 0 goes to it)
+-- for i = 1, 10 do
+--   globalkeys = gears.table.join(
+--     globalkeys,
+--     -- View tag only.
+--     awful.key({ modkey }, '#' .. i + 9,
+--               function ()
+--                 local screen = awful.screen.focused()
+--                 local tag = screen.tags[i]
+--                 if tag then
+--                   tag:view_only()
+--                 end
+--               end,
+--               { group = 'tag', description = 'view tag #'..i, }),
+--     -- Toggle tag display.
+--     awful.key({ modkey, 'Control' }, '#' .. i + 9,
+--               function ()
+--                 local screen = awful.screen.focused()
+--                 local tag = screen.tags[i]
+--                 if tag then
+--                   awful.tag.viewtoggle(tag)
+--                 end
+--               end,
+--               { group = 'tag', description = 'toggle tag #' .. i, }),
+--     -- Move client to tag.
+--     awful.key({ modkey, 'Shift' }, '#' .. i + 9,
+--               function ()
+--                 if client.focus then
+--                   local tag = client.focus.screen.tags[i]
+--                   if tag then
+--                     client.focus:move_to_tag(tag)
+--                   end
+--                 end
+--               end,
+--               { group = 'tag', description = 'move focused client to tag #'..i, }),
+--     -- Toggle tag on focused client.
+--     awful.key({ modkey, 'Control', 'Shift' }, '#' .. i + 9,
+--               function ()
+--                 if client.focus then
+--                   local tag = client.focus.screen.tags[i]
+--                   if tag then
+--                     client.focus:toggle_tag(tag)
+--                   end
+--                 end
+--               end,
+--               { group = 'tag', description = 'toggle focused client on tag #' .. i, })
+--   )
+-- end
 for i = 1, 10 do
   globalkeys = gears.table.join(
     globalkeys,
     -- View tag only.
     awful.key({ modkey }, '#' .. i + 9,
               function ()
-                local screen = awful.screen.focused()
-                local tag = screen.tags[i]
-                if tag then
-                  tag:view_only()
-                end
+                charitable.select_tag(tags[i], awful.screen.focused())
               end,
               { group = 'tag', description = 'view tag #'..i, }),
     -- Toggle tag display.
-    awful.key({ modkey, 'Control' }, '#' .. i + 9,
+    awful.key({ modkey, control }, '#' .. i + 9,
               function ()
-                local screen = awful.screen.focused()
-                local tag = screen.tags[i]
-                if tag then
-                  awful.tag.viewtoggle(tag)
-                end
+                charitable.toggle_tag(tags[i], awful.screen.focused())
               end,
               { group = 'tag', description = 'toggle tag #' .. i, }),
     -- Move client to tag.
-    awful.key({ modkey, 'Shift' }, '#' .. i + 9,
+    awful.key({ modkey, shift }, '#' .. i + 9,
               function ()
                 if client.focus then
-                  local tag = client.focus.screen.tags[i]
+                  local tag = tags[i]
                   if tag then
                     client.focus:move_to_tag(tag)
                   end
@@ -643,17 +719,33 @@ for i = 1, 10 do
               { group = 'tag', description = 'move focused client to tag #'..i, }),
     -- Toggle tag on focused client.
     awful.key({ modkey, 'Control', 'Shift' }, '#' .. i + 9,
-              function ()
-                if client.focus then
-                  local tag = client.focus.screen.tags[i]
-                  if tag then
-                    client.focus:toggle_tag(tag)
-                  end
-                end
-              end,
-              { group = 'tag', description = 'toggle focused client on tag #' .. i, })
+    function ()
+      if client.focus then
+        local tag = tags[i]
+        if tag then
+          client.focus:toggle_tag(tag)
+        end
+      end
+    end,
+    { group = 'tag', description = 'toggle focused client on tag #' .. i, })
   )
 end
+
+-- ensure that removing screens doesn't kill tags
+tag.connect_signal(
+  'request::screen',
+  function(t)
+    t.selected = false
+    for s in capi.screen do
+      if s ~= t.screen then
+        t.screen = s
+        return
+      end
+    end
+  end
+)
+-- see https://github.com/awesomeWM/awesome/issues/2780
+awful.tag.history.restore = function() end
 
 clientbuttons = gears.table.join(
   awful.button({}, 1,
@@ -753,7 +845,7 @@ awful.rules.rules = {
   },
   {
     rule = { class = 'discord' },
-    properties = { screen = 1, tag = '10' }
+    properties = { screen = 1, tag = '0' }
   },
 }
 -- }}}
