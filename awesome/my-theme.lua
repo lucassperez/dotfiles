@@ -33,7 +33,7 @@ theme.fg_urgent     = textcolor
 theme.fg_minimize   = textcolor
 
 theme.useless_gap   = dpi(4)
-theme.border_width  = dpi(2)
+theme.border_width  = dpi(3)
 theme.border_normal = ibgcolor
 theme.border_focus  = bgcolor
 theme.border_marked = ubgcolor
@@ -54,14 +54,14 @@ theme.hotkeys_fg = '#b0b0b0'
 -- theme.taglist_bg_focus = "#ff0000"
 -- theme.tasklist_bg_normal = "#000000"
 -- theme.tasklist_disable_icon = true
--- theme.tasklist_disable_task_name = true
+theme.tasklist_disable_task_name = true
 theme.tasklist_bg_normal = "#000000"
 -- theme.tasklist_bg_focus = ibgcolor
 -- theme.tasklist_align = 'center'
 theme.tasklist_bg_focus = "#000000"
-theme.tasklist_plain_task_name = true -- is not working, why
-theme.tasklist_align = 'left'
-theme.tasklist_font = 'Hack Mono 10'
+-- theme.tasklist_plain_task_name = true -- is not working, why
+-- theme.tasklist_align = 'left'
+-- theme.tasklist_font = 'Hack Mono 10'
 -- theme.tasklist_font_focus = 'Hack Mono Bold 10'
 
 -- Generate taglist squares:
@@ -84,7 +84,8 @@ theme.taglist_spacing = 5
 theme.notification_bg = '#222222'
 theme.notification_fg = '#ffffff'
 theme.notification_border_width = '13' -- this doesnt work
-theme.notification_border_color = '#008080'
+-- theme.notification_border_color = '#008080'
+theme.notification_border_color = '#00ff00'
 
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]

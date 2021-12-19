@@ -1,6 +1,6 @@
 #!/bin/sh
 
-all_sessions=$(tmux ls)
+all_sessions=$(tmux ls) || exit
 
 OLDIFS="$IFS"
 IFS='

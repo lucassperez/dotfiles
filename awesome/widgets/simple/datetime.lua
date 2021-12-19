@@ -1,45 +1,20 @@
 local wibox = require('wibox')
 local watch = require('awful.widget.watch')
 
--- I prefered this rather than the changing locale before os.date command
-local locale_dict = {
-  Sun = 'dom',
-  Mon = 'seg',
-  Tue = 'ter',
-  Wed = 'qua',
-  Thu = 'qui',
-  Fri = 'sex',
-  Sat = 'sáb',
-  Jan = 'jan',
-  Feb = 'fev',
-  Mar = 'mar',
-  Apr = 'abr',
-  May = 'mai',
-  Jun = 'jun',
-  Jul = 'jul',
-  Aug = 'ago',
-  Sep = 'set',
-  Oct = 'out',
-  Nov = 'nov',
-  Dec = 'dez',
-}
-
 local widget = wibox.widget.background()
 
 watch(
-  'date +%a %d %b %H %M',
+  'date "+%a %d %b %H %M"',
   1,
   function(widget, stdout, stderr, exitreason, exitcode)
-    -- Why can't I use the `stdout` variable? ):
-    local date = os.date('%a %d %b %H %M')
-    local weekday, day, month, hours, minutes = date:match('(%w*) (%w*) (%w*) (%w*) (%w*)')
+    local weekday, day, month, hours, minutes = stdout:match('(%w*) (%w*) (%w*) (%w*) (%w*)')
 
-    local date = ' '..locale_dict[weekday]..' '..day..' '..locale_dict[month]
+    local date = ' '..weekday..' '..day..' '..month
     local time = ' '..hours..':'..minutes
 
     local datetime = wibox.widget({
       markup = '<span foreground="#6fb4d6">'..date..'</span>  <span foreground="#ffffff">'..time..'</span>',
-      font = 'Hack 12',
+      font = 'Hack 11',
       widget = wibox.widget.textbox,
     })
     widget:set_widget(datetime)
@@ -47,7 +22,7 @@ watch(
   widget
 )
 
--- Calendar pop up when click on clock
+-- Calendar pop up on click
 -- https://github.com/streetturtle/awesome-wm-widgets/tree/master/calendar-widget
 local calendar_widget = require("widgets.calendar")
 local cw = calendar_widget({
