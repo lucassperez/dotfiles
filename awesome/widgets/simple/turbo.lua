@@ -10,7 +10,7 @@ local text = wibox.widget({
 local widget = wibox.widget.background()
 widget:set_widget(text)
 widget:set_fg('#00ff00')
-text:set_text('TURBO')
+text:set_text('TURBO ')
 
 function widget:random_from_list(list)
   return list[math.random(#list)]
@@ -75,7 +75,7 @@ function widget:send_turbo_notification()
 
   naughty.notify({
     title = phrase,
-    ignore_suspend = true,
+    ignore_suspend = false, -- this is not working, ffs
     timeout = 6,
   })
 end

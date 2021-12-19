@@ -8,7 +8,8 @@ return require('packer').startup(function()
   }
   use 'cohama/lexima.vim'
   use 'junegunn/fzf.vim'
-  use 'christoomey/vim-tmux-navigator'
+  -- use 'christoomey/vim-tmux-navigator'
+  use 'intrntbrn/awesomewm-vim-tmux-navigator'
   use 'christoomey/vim-tmux-runner'
   use 'windwp/nvim-autopairs'
   use 'tpope/vim-surround'

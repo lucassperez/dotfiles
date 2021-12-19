@@ -78,8 +78,8 @@ modkey = 'Mod4'
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
   awful.layout.suit.tile,
-  awful.layout.suit.max,
   awful.layout.suit.tile.bottom,
+  awful.layout.suit.max,
   awful.layout.suit.fair,
   awful.layout.suit.magnifier, -- magnifier is so weird
   -- awful.layout.suit.floating, -- Control + Super + Space toggle floating in focused client
@@ -190,9 +190,20 @@ local separator_widget = require('widgets.simple.separator')
 local turbo_widget = require('widgets.simple.turbo')
 local battery_widget = require('widgets.simple.battery')
 local docker_widget = require('widgets.simple.docker')
-local date_widget = require('widgets.simple.date')
-local clock_widget = require('widgets.simple.clock')
+-- local date_widget = require('widgets.simple.date')
+-- local clock_widget = require('widgets.simple.clock')
 local notification_widget = require('widgets.simple.notification')
+local datetime_widget = require('widgets.simple.datetime')
+local memory_widget = require('widgets.simple.memory')
+
+require('awesomewm-vim-tmux-navigator')({
+  left  = {'h'},
+  down  = {'j'},
+  up    = {'k'},
+  right = {'l'},
+  mod = 'Mod4',
+  mod_keysym = 'Super_L',
+})
 
 awful.screen.connect_for_each_screen(
   function(s)
@@ -201,7 +212,7 @@ awful.screen.connect_for_each_screen(
 
     -- Each screen has its own tag table.
     -- All tags
-    awful.tag({ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10' }, s, awful.layout.layouts[1])
+    awful.tag({ '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -257,12 +268,14 @@ awful.screen.connect_for_each_screen(
         layout = wibox.layout.fixed.horizontal,
                           docker_widget,
         separator_widget, notification_widget,
+        separator_widget, memory_widget,
         separator_widget, bright_widget,
         separator_widget, mic_widget,
         separator_widget, volume_widget,
         separator_widget, battery_widget,
-        separator_widget, date_widget,
-        separator_widget, clock_widget,
+        -- separator_widget, date_widget,
+        -- separator_widget, clock_widget,
+        separator_widget, datetime_widget,
         separator_widget, turbo_widget,
         -- mykeyboardlayout,
         wibox.widget.systray(),
@@ -349,18 +362,19 @@ globalkeys = gears.table.join(
   awful.key({ modkey }, 'Escape', awful.tag.history.restore, { description = 'go back', group = 'tag' }),
 
   -- Client
-  awful.key({ modkey }, 'h',
-            function () awful.client.focus.global_bydirection('left') end,
-            { group = 'client', description = 'focus left global', }),
-  awful.key({ modkey }, 'j',
-            function () awful.client.focus.global_bydirection('down') end,
-            { group = 'client', description = 'focus down global', }),
-  awful.key({ modkey }, 'k',
-            function () awful.client.focus.global_bydirection('up') end,
-            { group = 'client', description = 'focus up global', }),
-  awful.key({ modkey }, 'l',
-            function () awful.client.focus.global_bydirection('right') end,
-            { group = 'client', description = 'focus right global', }),
+  -- Comenting this while trying awesome-vim-tmux-navigator
+  -- awful.key({ modkey }, 'h',
+  --           function () awful.client.focus.global_bydirection('left') end,
+  --           { group = 'client', description = 'focus left global', }),
+  -- awful.key({ modkey }, 'j',
+  --           function () awful.client.focus.global_bydirection('down') end,
+  --           { group = 'client', description = 'focus down global', }),
+  -- awful.key({ modkey }, 'k',
+  --           function () awful.client.focus.global_bydirection('up') end,
+  --           { group = 'client', description = 'focus up global', }),
+  -- awful.key({ modkey }, 'l',
+  --           function () awful.client.focus.global_bydirection('right') end,
+  --           { group = 'client', description = 'focus right global', }),
   awful.key({ modkey }, 'q',
             function () awful.client.focus.byidx(-1) end,
             { group = 'client', description = 'focus by index -1', }),
@@ -457,7 +471,7 @@ globalkeys = gears.table.join(
 
   awful.key({ modkey }, 'ç',
             function() awful.spawn('sh ~/scripts/emoji/dmenu-search-emoji.sh') end,
-            { group = 'TURBO', description = 'Activate TURBO mode' }),
+            { group = 'Launcher', description = 'search emojis to copy them to clipboard', }),
   awful.key({ modkey, control }, 'ç',
             function() turbo_widget:send_turbo_notification() end,
             { group = 'TURBO', description = 'Activate TURBO mode' }),
@@ -764,5 +778,6 @@ awful.spawn.with_shell('flameshot')
 awful.spawn.with_shell('xcompmgr -c -l0 -t0 -r0 -o.00')
 awful.spawn.with_shell('xset r rate 220 25')
 awful.spawn.with_shell('unclutter')
+awful.spawn.with_shell('sh ~/scripts/disable-keyboard.sh')
 mic_widget:set_exact_vol(30)
-volume_widget:set_exact_vol(50)
+-- volume_widget:set_exact_vol(50)
