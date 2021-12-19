@@ -196,14 +196,14 @@ local notification_widget = require('widgets.simple.notification')
 local datetime_widget = require('widgets.simple.datetime')
 local memory_widget = require('widgets.simple.memory')
 
-require('awesomewm-vim-tmux-navigator')({
-  left  = {'h'},
-  down  = {'j'},
-  up    = {'k'},
-  right = {'l'},
-  mod = 'Mod4',
-  mod_keysym = 'Super_L',
-})
+-- require('awesomewm-vim-tmux-navigator')({
+--   left  = {'h'},
+--   down  = {'j'},
+--   up    = {'k'},
+--   right = {'l'},
+--   mod = 'Mod4',
+--   mod_keysym = 'Super_L',
+-- })
 
 awful.screen.connect_for_each_screen(
   function(s)
@@ -259,11 +259,11 @@ awful.screen.connect_for_each_screen(
         s.mytaglist,
         s.mypromptbox,
       },
-      -- {
-      --   layout = wibox.layout.fixed.horizontal,
-      --   s.mytasklist,
-      -- },
-      s.mytasklist,
+      {
+        layout = wibox.layout.fixed.horizontal,
+        s.mytasklist,
+      },
+      -- s.mytasklist,
       { -- Right widgets
         layout = wibox.layout.fixed.horizontal,
                           docker_widget,
@@ -363,18 +363,18 @@ globalkeys = gears.table.join(
 
   -- Client
   -- Comenting this while trying awesome-vim-tmux-navigator
-  -- awful.key({ modkey }, 'h',
-  --           function () awful.client.focus.global_bydirection('left') end,
-  --           { group = 'client', description = 'focus left global', }),
-  -- awful.key({ modkey }, 'j',
-  --           function () awful.client.focus.global_bydirection('down') end,
-  --           { group = 'client', description = 'focus down global', }),
-  -- awful.key({ modkey }, 'k',
-  --           function () awful.client.focus.global_bydirection('up') end,
-  --           { group = 'client', description = 'focus up global', }),
-  -- awful.key({ modkey }, 'l',
-  --           function () awful.client.focus.global_bydirection('right') end,
-  --           { group = 'client', description = 'focus right global', }),
+  awful.key({ modkey }, 'h',
+            function () awful.client.focus.global_bydirection('left') end,
+            { group = 'client', description = 'focus left global', }),
+  awful.key({ modkey }, 'j',
+            function () awful.client.focus.global_bydirection('down') end,
+            { group = 'client', description = 'focus down global', }),
+  awful.key({ modkey }, 'k',
+            function () awful.client.focus.global_bydirection('up') end,
+            { group = 'client', description = 'focus up global', }),
+  awful.key({ modkey }, 'l',
+            function () awful.client.focus.global_bydirection('right') end,
+            { group = 'client', description = 'focus right global', }),
   awful.key({ modkey }, 'q',
             function () awful.client.focus.byidx(-1) end,
             { group = 'client', description = 'focus by index -1', }),
@@ -778,6 +778,8 @@ awful.spawn.with_shell('flameshot')
 awful.spawn.with_shell('xcompmgr -c -l0 -t0 -r0 -o.00')
 awful.spawn.with_shell('xset r rate 220 25')
 awful.spawn.with_shell('unclutter')
+awful.spawn.with_shell('xset s off')
+awful.spawn.with_shell('xset -dpms')
 awful.spawn.with_shell('sh ~/scripts/disable-keyboard.sh')
 mic_widget:set_exact_vol(30)
--- volume_widget:set_exact_vol(50)
+volume_widget:set_exact_vol(50)

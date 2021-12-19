@@ -77,4 +77,4 @@ o.undofile = true -- arquivo para poder dar undo no diretório acima
 opt.complete:remove('i') -- https://medium.com/usevim/set-complete-e76b9f196f0f
 
 -- AwsomeWM, Vim and Tmux navigator thing
-vim.g.tmux_navigator_insert_mode = 1
+-- vim.g.tmux_navigator_insert_mode = 1

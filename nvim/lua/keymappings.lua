@@ -53,10 +53,10 @@ noremap('n', '<leader>w', ':bnext<CR>')
 noremap('n', '<leader>d', ':bdelete<CR>')
 
 -- Mudar de painéis segurando Control
-noremap('n', '<C-h>', '<C-w>h')
-noremap('n', '<C-j>', '<C-w>j')
-noremap('n', '<C-k>', '<C-w>k')
-noremap('n', '<C-l>', '<C-w>l')
+-- noremap('n', '<C-h>', '<C-w>h')
+-- noremap('n', '<C-j>', '<C-w>j')
+-- noremap('n', '<C-k>', '<C-w>k')
+-- noremap('n', '<C-l>', '<C-w>l')
 
 -- Coisas do fzf
 noremap('n', '<C-p>', ':GFiles<CR>')
