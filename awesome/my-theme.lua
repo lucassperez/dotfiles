@@ -73,7 +73,7 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
     taglist_square_size, textcolor
 )
 theme.taglist_font = 'Hack Mono 10'
-theme.taglist_spacing = 5
+theme.taglist_spacing = 2
 
 -- Variables set for theming notifications:
 -- notification_font
@@ -149,8 +149,10 @@ theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
 
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(
-    theme.menu_height, theme.bg_focus, "#000000"
+    -- theme.menu_height, theme.bg_focus, "#000000"
+    theme.menu_height, '#000000', '#e6e6e6'
 )
+-- theme.awesome_icon = "/home/lucas/lua-icon/copy3.png"
 
 -- Define the icon theme for application icons. If not set then the icons
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.

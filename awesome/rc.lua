@@ -79,7 +79,7 @@ modkey = 'Mod4'
 awful.layout.layouts = {
   awful.layout.suit.tile,
   awful.layout.suit.tile.bottom,
-  awful.layout.suit.max,
+  -- awful.layout.suit.max, -- I made mod + m toggle max layout instead of maximize
   awful.layout.suit.fair,
   awful.layout.suit.magnifier, -- magnifier is so weird
   -- awful.layout.suit.floating, -- Control + Super + Space toggle floating in focused client
@@ -357,23 +357,55 @@ globalkeys = gears.table.join(
             { group = 'System controls', description = 'toggle notification', }),
 
   awful.key({ modkey }, 's',      hotkeys_popup.show_help,   { description = 'show help', group='awesome' }),
-  awful.key({ modkey }, 'Left',   awful.tag.viewprev,        { description = 'view previous', group = 'tag' }),
-  awful.key({ modkey }, 'Right',  awful.tag.viewnext,        { description = 'view next', group = 'tag' }),
+  -- awful.key({ modkey }, 'Left',   awful.tag.viewprev,        { description = 'view previous', group = 'tag' }),
+  -- awful.key({ modkey }, 'Right',  awful.tag.viewnext,        { description = 'view next', group = 'tag' }),
   awful.key({ modkey }, 'Escape', awful.tag.history.restore, { description = 'go back', group = 'tag' }),
 
   -- Client
   -- Comenting this while trying awesome-vim-tmux-navigator
   awful.key({ modkey }, 'h',
-            function () awful.client.focus.global_bydirection('left') end,
+            function ()
+              this_screen = awful.client.screen
+              actual_layout = awful.layout.get(this_screen)
+              if actual_layout == awful.layout.suit.max then
+                awful.client.focus.byidx(-1)
+              else
+                awful.client.focus.global_bydirection('left')
+              end
+            end,
             { group = 'client', description = 'focus left global', }),
   awful.key({ modkey }, 'j',
-            function () awful.client.focus.global_bydirection('down') end,
+            function ()
+              this_screen = awful.client.screen
+              actual_layout = awful.layout.get(this_screen)
+              if actual_layout == awful.layout.suit.max then
+                awful.client.focus.byidx(1)
+              else
+                awful.client.focus.global_bydirection('down')
+              end
+            end,
             { group = 'client', description = 'focus down global', }),
   awful.key({ modkey }, 'k',
-            function () awful.client.focus.global_bydirection('up') end,
+            function ()
+              this_screen = awful.client.screen
+              actual_layout = awful.layout.get(this_screen)
+              if actual_layout == awful.layout.suit.max then
+                awful.client.focus.byidx(-1)
+              else
+                awful.client.focus.global_bydirection('up')
+              end
+            end,
             { group = 'client', description = 'focus up global', }),
   awful.key({ modkey }, 'l',
-            function () awful.client.focus.global_bydirection('right') end,
+            function ()
+              this_screen = awful.client.screen
+              actual_layout = awful.layout.get(this_screen)
+              if actual_layout == awful.layout.suit.max then
+                awful.client.focus.byidx(1)
+              else
+                awful.client.focus.global_bydirection('right')
+              end
+            end,
             { group = 'client', description = 'focus right global', }),
   awful.key({ modkey }, 'q',
             function () awful.client.focus.byidx(-1) end,
@@ -417,6 +449,27 @@ globalkeys = gears.table.join(
   awful.key({ modkey, shift }, 'l',
             function () awful.client.swap.global_bydirection('right') end,
             { group = 'client', description = 'swap right client global', }),
+  -- Size
+  awful.key({ modkey }, "Left",
+    function ()
+      awful.tag.incmwfact( 0.05)
+    end,
+    {description = "increase master width factor", group = "layout"}),
+  awful.key({ modkey }, "Right",
+    function ()
+      awful.tag.incmwfact(-0.05)
+    end,
+    {description = "decrease master width factor", group = "layout"}),
+  awful.key({ modkey }, "Down",
+    function ()
+      awful.tag.incnmaster( 1, nil, true)
+    end,
+    {description = "increase the number of master clients", group = "layout"}),
+  awful.key({ modkey }, "Up",
+    function ()
+      awful.tag.incnmaster(-1, nil, true)
+    end,
+    {description = "decrease the number of master clients", group = "layout"}),
 
   -- Standard program
   awful.key({ modkey, control }, 'r',
@@ -470,7 +523,7 @@ globalkeys = gears.table.join(
             { group = 'Launcher', description = 'Print all screens to clipboard' }),
 
   awful.key({ modkey }, 'ç',
-            function() awful.spawn('sh ~/scripts/emoji/dmenu-search-emoji.sh') end,
+            function() awful.spawn('sh /home/lucas/scripts/emoji/dmenu-search-emoji.sh') end,
             { group = 'Launcher', description = 'search emojis to copy them to clipboard', }),
   awful.key({ modkey, control }, 'ç',
             function() turbo_widget:send_turbo_notification() end,
@@ -523,7 +576,16 @@ clientkeys = gears.table.join(
             { group = 'client', description = 'minimize', }),
   awful.key({ modkey }, 'm',
             function (c)
-              c.maximized = not c.maximized
+              this_screen = awful.client.screen
+              actual_layout = awful.layout.get(this_screen)
+              if actual_layout ~= awful.layout.suit.max then
+                cache = actual_layout
+                awful.layout.set(awful.layout.suit.max)
+              else
+                if cache then awful.layout.set(cache)
+                else awful.layout.set(awful.layout.layouts[1]) end
+              end
+              -- c.maximized = not c.maximized
               c:raise()
             end,
             { group = 'client', description = 'toggle maximize', }),
@@ -638,6 +700,7 @@ awful.rules.rules = {
         'DTA',  -- Firefox addon DownThemAll.
         'copyq',  -- Includes session name in class.
         'pinentry',
+        'Devtools',
       },
       class = {
         'Arandr',

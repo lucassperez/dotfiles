@@ -56,10 +56,12 @@ watch(
     -- 3/4 icon: [65, 90)
     -- 1/2 icon: [40, 65)
     -- 1/4 icon: [15, 40)
-    if state == 'Charging' then
-      msg = ' '..percentage..'%'
-      bg = nil
-      color = '#00ff00'
+    if state == 'Unknown' then
+      msg = ' '..percentage..'%'
+    elseif state == 'Charging' then
+        msg = msg..' '..percentage..'%'
+        bg = nil
+        color = '#00ff00'
     elseif percentage >= 90 then
       msg = ' '..percentage..'%'
     elseif percentage >= 65 then
@@ -86,16 +88,23 @@ widget:connect_signal(
       local text, urgency
 
       local battery = io.popen('acpi -b'):read()
-      local state, percentage, time_left, message =
-        battery:match('Battery %d+: (%w*), (%d*)%%, (%d%d:%d%d):%d%d (.*)')
+      local state, percentage =
+        battery:match('Battery %d+: (%w*), (%d*)%%')
+      local time_left, message = battery:match('(%d%d:%d%d):%d%d (.*)')
 
       if state == 'Full' then
         text = '(:'
+      elseif state == 'Unknown' then
+        text = 'Time left unknown 🤔'
       else
-        text = time_left..' '..message
+        if message then
+          text = time_left..' '..message
+        else
+          text = time_left
+        end
       end
 
-      if tonumber(percentage) <= 15 and state ~= 'Charging' then
+      if percentage and tonumber(percentage) <= 15 and state ~= 'Charging' then
           urgency = 'critical'
           text = text..'\nDo something, quick!'
           bg = '#ff0000' -- since the urgency doesn't seem to work, I did this silliness
