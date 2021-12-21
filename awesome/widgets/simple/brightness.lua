@@ -14,7 +14,7 @@ local text = wibox.widget({
 
 local widget = wibox.widget.background()
 widget:set_widget(text)
-widget:set_fg('#AAEB6A')
+widget:set_fg('#aaeb6a')
 
 local function set_widget()
   awful.spawn.easy_async(

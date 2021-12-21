@@ -25,26 +25,26 @@ watch(
 
     if percentage <= 10 then
       bg = '#ff0000'
-      color = '#FFFFFF'
+      color = '#ffffff'
     elseif percentage <= 20 then
       -- I have to set bg as nil on other percentages because if bg was previously
       -- set, even if I charge my battery, the old bg is still going to prevail
-      color = '#FF3300'
+      color = '#ff3300'
       bg = nil
     elseif percentage <= 30 then
-      color = '#FF6600'
+      color = '#ff6600'
     elseif percentage <= 40 then
-      color = '#FF9900'
+      color = '#ff9900'
     elseif percentage <= 50 then
-      color = '#FFCC00'
+      color = '#ffcc00'
     elseif percentage <= 60 then
-      color = '#FFFF00'
+      color = '#ffff00'
     elseif percentage <= 70 then
-      color = '#FFFF33'
+      color = '#ffff33'
     elseif percentage <= 80 then
-      color = '#FFFF66'
+      color = '#ffff66'
     else
-      color = '#FFFFFF'
+      color = '#ffffff'
     end
 
     -- Full icon: higher than 90

@@ -9,7 +9,7 @@ local text = wibox.widget({
 
 local widget = wibox.widget.background()
 widget:set_widget(text)
-widget:set_fg('#0DB7ED')
+widget:set_fg('#0db7ed')
 
 watch(
   -- TODO Find out why piping docker ps to wc -l doesn't work.
@@ -29,17 +29,17 @@ widget:connect_signal(
   function(_, _, _, button)
     if button == 1 or button == 3 then
       if io.popen('docker ps -q'):read() then
-        local running_containers = io.popen('docker ps --format "{{.Names}} ({{.RunningFor}})\n"')
-        naughty.notify({
-          title = 'Dockers',
-          text = running_containers,
-        })
+        text = io.popen('docker ps --format "{{.Names}} ({{.RunningFor}})\n"')
       else
-        naughty.notify({
-          title = 'Dockers',
-          text = 'No containers running'
-        })
+        text = 'No containers running'
       end
+
+      naughty.notify({
+        title = 'Dockers',
+        text = text,
+        icon = '/home/lucas/.config/i3/blocklets-scripts/icon-docker.png',
+        icon_size = 32,
+      })
     end
   end
 )

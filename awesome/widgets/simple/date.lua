@@ -8,7 +8,7 @@ local text = wibox.widget({
 
 local widget = wibox.widget.background()
 widget:set_widget(text)
-widget:set_fg('#6FB4D6')
+widget:set_fg('#6fb4d6')
 
 watch(
   -- TODO Find out why piping docker ps to wc -l doesn't work.
@@ -28,7 +28,7 @@ watch(
 
 -- Calendar pop up when click on clock
 -- https://github.com/streetturtle/awesome-wm-widgets/tree/master/calendar-widget
-local calendar_widget = require("widgets.calendar")
+local calendar_widget = require('widgets.calendar')
 local cw = calendar_widget({
   theme = 'naughty',
   placement = 'top_right',
@@ -36,7 +36,7 @@ local cw = calendar_widget({
   start_sunday = true
 })
 widget:connect_signal(
-  "button::press",
+  'button::press',
   function(_, _, _, button)
     if button == 1 then cw.toggle() end
   end
