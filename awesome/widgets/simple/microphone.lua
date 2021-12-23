@@ -24,12 +24,6 @@ local function set_widget()
   'amixer sget Capture',
   function(out)
     local val, is_on = string.match(out, 'Front Left.*%[(%d+)%%%].*%[(%w+)%]')
-    -- file = io.open('/home/lucas/.config/awesome/widgets/anota-lua', 'a')
-    -- file:write(out)
-    -- file:write('\nnumber = '..number..'\n')
-    -- file:write('--\n')
-    -- file:close()
-
 
     if is_on == 'on' then
       val = ' '..val..'%'

@@ -20,8 +20,6 @@ local function set_widget()
   awful.spawn.easy_async(
   'xbacklight',
   function(out)
-    -- local raw_val = string.sub(out, 1, -2)
-    -- local num_val = math.floor(tonumber(raw_val))
     local num_val = math.floor(tonumber(out))
     text:set_text(' '..num_val..'%')
   end

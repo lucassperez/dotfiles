@@ -24,17 +24,16 @@ watch(
 
 -- Calendar pop up on click
 -- https://github.com/streetturtle/awesome-wm-widgets/tree/master/calendar-widget
-local calendar_widget = require("widgets.calendar")
-local cw = calendar_widget({
+local calendar_widget = require('widgets.calendar')({
   theme = 'naughty',
   placement = 'top_right',
   radius = 12,
   start_sunday = true
 })
 widget:connect_signal(
-  "button::press",
+  'button::press',
   function(_, _, _, button)
-    if button == 1 or button == 3 then cw.toggle() end
+    if button == 1 or button == 3 then calendar_widget.toggle() end
   end
 )
 

@@ -20,15 +20,18 @@ watch(
   'acpi -b',
   5,
   function(widget, stdout, stderr, exitreason, exitcode)
-    local state, percentage  = stdout:match('Battery %d+: (%w*), (%d*)%%')
-    percentage = tonumber(percentage)
+    local state, percentage = stdout:match('Battery %d+: (%w*), (%d*)%%')
+    local percentage = tonumber(percentage)
+
+    local message, color, bg
 
     if percentage <= 10 then
       bg = '#ff0000'
       color = '#ffffff'
     elseif percentage <= 20 then
-      -- I have to set bg as nil on other percentages because if bg was previously
-      -- set, even if I charge my battery, the old bg is still going to prevail
+      -- I have to set bg as nil on other percentages because if bg was
+      -- previously set, even if I charge my battery, the old bg is still going
+      -- to prevail
       color = '#ff3300'
       bg = nil
     elseif percentage <= 30 then
@@ -47,34 +50,34 @@ watch(
       color = '#ffffff'
     end
 
-    -- Full icon: higher than 90
-    -- Empty icon: lower than 15
-    -- Between 90 and 15 there are 75 numbers to be divided in
+    -- Full icon: higher than or equal to 90
+    -- Empty icon: lower than or equal to 20
+    -- Between 90 and 20 there are 69 numbers to be divided in
     -- three intervals, since we have 3 icons left: 3/4, 1/2 and 1/4
-    -- 75/3 = 25 for each interval
+    -- 69/3 = 23 for each interval
     -- So the other icons will happen in these intervals:
-    -- 3/4 icon: [65, 90)
-    -- 1/2 icon: [40, 65)
-    -- 1/4 icon: [15, 40)
+    -- 3/4 icon: [67, 90)
+    -- 1/2 icon: [44, 67)
+    -- 1/4 icon: [20, 44)
     if state == 'Unknown' then
-      msg = ' '..percentage..'%'
+      message = ' '..percentage..'%'
     elseif state == 'Charging' then
-        msg = msg..' '..percentage..'%'
-        bg = nil
-        color = '#00ff00'
+      message = ' '..percentage..'%'
+      bg = nil
+      color = '#00ff00'
     elseif percentage >= 90 then
-      msg = ' '..percentage..'%'
-    elseif percentage >= 65 then
-      msg = ' '..percentage..'%'
-    elseif percentage >= 40 then
-      msg = ' '..percentage..'%'
-    elseif percentage >= 15 then
-      msg = ' '..percentage..'%'
+      message = ' '..percentage..'%'
+    elseif percentage >= 67 then
+      message = ' '..percentage..'%'
+    elseif percentage >= 44 then
+      message = ' '..percentage..'%'
+    elseif percentage >= 20 then
+      message = ' '..percentage..'%'
     else
-      msg = ' '..percentage..'%'
+      message = ' '..percentage..'%'
     end
 
-    text:set_text(msg)
+    text:set_text(message)
     widget:set_fg(color)
     widget:set_bg(bg)
   end,
@@ -88,8 +91,7 @@ widget:connect_signal(
       local text, urgency
 
       local battery = io.popen('acpi -b'):read()
-      local state, percentage =
-        battery:match('Battery %d+: (%w*), (%d*)%%')
+      local state, percentage = battery:match('Battery %d+: (%w*), (%d*)%%')
       local time_left, message = battery:match('(%d%d:%d%d):%d%d (.*)')
 
       if state == 'Full' then
@@ -104,10 +106,10 @@ widget:connect_signal(
         end
       end
 
-      if percentage and tonumber(percentage) <= 15 and state ~= 'Charging' then
-          urgency = 'critical'
-          text = text..'\nDo something, quick!'
-          bg = '#ff0000' -- since the urgency doesn't seem to work, I did this silliness
+      if percentage and tonumber(percentage) <= 20 and state ~= 'Charging' then
+        urgency = 'critical'
+        text = text..'\nDo something, quick!'
+        bg = '#ff0000' -- since the urgency doesn't seem to work, I did this silliness
       else
         urgency = 'low'
       end

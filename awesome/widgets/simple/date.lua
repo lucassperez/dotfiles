@@ -11,8 +11,6 @@ widget:set_widget(text)
 widget:set_fg('#6fb4d6')
 
 watch(
-  -- TODO Find out why piping docker ps to wc -l doesn't work.
-  --      Maybe the pipe is not supported.
   'date',
   1,
   function(widget, stdout, stderr, exitreason, exitcode)

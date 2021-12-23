@@ -36,6 +36,11 @@ widget:connect_signal(
     local processes = io.popen('ps axh -o cmd,%mem --sort=-%mem')
     local n_most_memory_consuming = 15
     local message = ''
+
+    -- I guess that if `n_most_memory_consuming` is higher than the number of
+    -- processes running, this would eventually try to concatenate `nil` with
+    -- some strings, raising an exception.
+    -- This should never realistic happen, though.
     if button == 1 or button == 3 then
       for i = 1, (n_most_memory_consuming - 1) do
         process, mem = processes:read():match('(.*)%s*(.*)')
@@ -43,6 +48,7 @@ widget:connect_signal(
       end
       message = message..processes:read()
     end
+
     naughty.notify({
       title = n_most_memory_consuming..' maiores consumos de memória',
       text = message,

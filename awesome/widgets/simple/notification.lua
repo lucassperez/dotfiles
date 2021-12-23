@@ -15,7 +15,7 @@ local widget = wibox.widget.background()
 widget:set_widget(text)
 
 local function set_widget()
-  if naughty.suspended then
+  if naughty.is_suspended() then
     color = '#be616e'
     icon  = ''
   else
@@ -29,7 +29,17 @@ end
 set_widget()
 
 function widget:toggle()
-  naughty.suspended = not naughty.suspended
+  naughty.toggle()
+  set_widget()
+end
+
+function widget:suspend()
+  naughty.suspend()
+  set_widget()
+end
+
+function widget:resume()
+  naughty.resume()
   set_widget()
 end
 

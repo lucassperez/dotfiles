@@ -17,9 +17,9 @@ watch(
   'docker ps -q',
   5,
   function(widget, stdout, stderr, exitreason, exitcode)
+    -- gsub also returns how many times a substitution happened
     local _, count = stdout:gsub('\n', '\n')
-    msg = '🐳 '..count
-    text:set_text(msg)
+    text:set_text('🐳 '..count)
   end,
   widget
 )
@@ -28,16 +28,21 @@ widget:connect_signal(
   'button::press',
   function(_, _, _, button)
     if button == 1 or button == 3 then
-      if io.popen('docker ps -q'):read() then
-        text = io.popen('docker ps --format "{{.Names}} ({{.RunningFor}})\n"')
-      else
-        text = 'No containers running'
+      local text = ''
+      local docker_response = io.popen('docker ps --format "{{.Names}} ({{.RunningFor}})\n"')
+
+      while true do
+        line = docker_response:read()
+        if not line then break end
+        text = text..'\n'..line
       end
+
+      if text == '' then text = 'No containers running' end
 
       naughty.notify({
         title = 'Dockers',
         text = text,
-        icon = '/home/lucas/.config/i3/blocklets-scripts/icon-docker.png',
+        icon = '/home/lucas/.config/awesome/widgets/simple/icons/docker-smaller.png',
         icon_size = 32,
       })
     end
