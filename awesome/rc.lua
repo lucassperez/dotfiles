@@ -613,19 +613,27 @@ clientkeys = gears.table.join(
             { group = 'client', description = 'minimize', }),
   awful.key({ modkey }, 'm',
             function (c)
-              this_screen = awful.client.screen
-              actual_layout = awful.layout.get(this_screen)
+              local this_screen = awful.client.screen
+              local actual_layout = awful.layout.get(this_screen)
+
               if actual_layout ~= awful.layout.suit.max then
                 cache = actual_layout
                 awful.layout.set(awful.layout.suit.max)
+              elseif cache then
+                awful.layout.set(cache)
               else
-                if cache then awful.layout.set(cache)
-                else awful.layout.set(awful.layout.layouts[1]) end
+                awful.layout.set(awful.layout.layouts[1])
               end
-              -- c.maximized = not c.maximized
+
               c:raise()
             end,
-            { group = 'client', description = 'toggle maximize', }),
+            { group = 'client', description = 'toggle maximize layout', }),
+  awful.key({ modkey }, '#104',
+            function (c)
+              c.maximized = not c.maximized
+              c:raise()
+            end,
+            { group = 'client', description = '(numpad enter) toggle maximize', }),
   awful.key({ modkey, control }, 'm',
             function (c)
                 c.maximized_vertical = not c.maximized_vertical
