@@ -31,7 +31,7 @@
 # In order for the brightness blocklet to work as it is configured now, it is
 # necessary to create a sudoer file (eg /etc/sudoers.d/xbacklight) and give your
 # user the hability to run xbacklight without password:
-# user ALL=(ALL) NOPASSWD: /usr/bin/xbacklight
+# <your-user-here> ALL=(ALL) NOPASSWD: /usr/bin/xbacklight
 # In doubt, check the documentation here: https://github.com/vivien/i3blocks-contrib/tree/master/backlight
 # Also this: https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
 # On debian, should really build dunst from source
