@@ -50,6 +50,9 @@ hi Tag          guifg=#afd7ff guibg=NONE gui=NONE ctermfg=153 ctermbg=NONE cterm
 
 hi Folded     guifg=#000000 guibg=#a8a8a8 gui=UNDERLINE ctermbg=gray
 hi FoldColumn guifg=#ffffff guibg=#ffffff               ctermbg=gray ctermfg=white cterm=UNDERLINE
+" hi Folded     guifg=#00ff00 guibg=NONE gui=UNDERLINE ctermbg=NONE cterm=UNDERLINE
+" hi FoldColumn guifg=#ff0000 guibg=NONE gui=UNDERLINE ctermbg=NONE cterm=UNDERLINE
+
 " hi StatusLineNC
 " hi StatusLine
 hi Pmenu    guifg=#000000 guibg=#ad7fa8

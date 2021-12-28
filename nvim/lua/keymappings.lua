@@ -156,6 +156,8 @@ noremap('n', '<leader>/', '/\\(<\\|=\\|>\\)\\{7\\}<CR>')
 
 -- Colocar o shebang #!/bin/sh
 noremap('n', ',sh', 'ggI#!/bin/sh<CR><CR><C-c>')
+-- Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo (o silent = true não ta funcionando?)
+noremap('n', ',SH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
 
 -- Colocar um ponto e vírgula no final da linha
 noremap('n', '<leader>;', 'A;<C-c>')

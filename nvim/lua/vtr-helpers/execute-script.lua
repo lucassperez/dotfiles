@@ -32,6 +32,12 @@ function _G.executeFileAsScript()
     vim.fn.VtrSendCommand('lua '..full_path_filename)
     print('lua '..filename)
 
+  elseif (filetype == 'rust') then
+    -- Could use vim.fn.expand('%:r'), but I have no idea which is better/faster
+    filename_without_extension = filename:match('(.*)%.rs$')
+    vim.fn.VtrSendCommand('rustc '..filename..' && ./'..filename_without_extension)
+    print('Compiling and hopefully running '..filename)
+
   else
     print('Não sei executar arquivos do tipo '..filetype)
   end
