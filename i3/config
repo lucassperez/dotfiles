@@ -419,17 +419,28 @@ mode "$brightness_control" {
   bindsym $mod+Shift+BackSpace mode "default"
 }
 mode "$mic_control" {
-  bindsym 0 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 0%   && $refresh_mic_icon
-  bindsym 1 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 10%  && $refresh_mic_icon
-  bindsym 2 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 20%  && $refresh_mic_icon
-  bindsym 3 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 30%  && $refresh_mic_icon
-  bindsym 4 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 40%  && $refresh_mic_icon
-  bindsym 5 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 50%  && $refresh_mic_icon
-  bindsym 6 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 60%  && $refresh_mic_icon
-  bindsym 7 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 70%  && $refresh_mic_icon
-  bindsym 8 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 80%  && $refresh_mic_icon
-  bindsym 9 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 90%  && $refresh_mic_icon
-  bindsym t exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 100% && $refresh_mic_icon
+  # bindsym 0 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 0%   && $refresh_mic_icon
+  # bindsym 1 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 10%  && $refresh_mic_icon
+  # bindsym 2 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 20%  && $refresh_mic_icon
+  # bindsym 3 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 30%  && $refresh_mic_icon
+  # bindsym 4 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 40%  && $refresh_mic_icon
+  # bindsym 5 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 50%  && $refresh_mic_icon
+  # bindsym 6 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 60%  && $refresh_mic_icon
+  # bindsym 7 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 70%  && $refresh_mic_icon
+  # bindsym 8 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 80%  && $refresh_mic_icon
+  # bindsym 9 exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 90%  && $refresh_mic_icon
+  # bindsym t exec --no-startup-id pactl set-source-volume "alsa_input.pci-0000_00_1f.3.analog-stereo" 100% && $refresh_mic_icon
+  bindsym 0 exec --no-startup-id amixer sset Capture 0%   && $refresh_mic_icon
+  bindsym 1 exec --no-startup-id amixer sset Capture 10%  && $refresh_mic_icon
+  bindsym 2 exec --no-startup-id amixer sset Capture 20%  && $refresh_mic_icon
+  bindsym 3 exec --no-startup-id amixer sset Capture 30%  && $refresh_mic_icon
+  bindsym 4 exec --no-startup-id amixer sset Capture 40%  && $refresh_mic_icon
+  bindsym 5 exec --no-startup-id amixer sset Capture 50%  && $refresh_mic_icon
+  bindsym 6 exec --no-startup-id amixer sset Capture 60%  && $refresh_mic_icon
+  bindsym 7 exec --no-startup-id amixer sset Capture 70%  && $refresh_mic_icon
+  bindsym 8 exec --no-startup-id amixer sset Capture 80%  && $refresh_mic_icon
+  bindsym 9 exec --no-startup-id amixer sset Capture 90%  && $refresh_mic_icon
+  bindsym t exec --no-startup-id amixer sset Capture 100% && $refresh_mic_icon
 
   bindsym b mode "$brightness_control"
   bindsym m mode "$mic_control"
@@ -441,17 +452,28 @@ mode "$mic_control" {
   bindsym $mod+Shift+BackSpace mode "default"
 }
 mode "$volume_control" {
-  bindsym 0  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 0%  && $refresh_audio_icon
-  bindsym 1  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 10% && $refresh_audio_icon
-  bindsym 2  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 20% && $refresh_audio_icon
-  bindsym 3  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 30% && $refresh_audio_icon
-  bindsym 4  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 40% && $refresh_audio_icon
-  bindsym 5  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 50% && $refresh_audio_icon
-  bindsym 6  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 60% && $refresh_audio_icon
-  bindsym 7  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 70% && $refresh_audio_icon
-  bindsym 8  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 80% && $refresh_audio_icon
-  bindsym 9  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 90% && $refresh_audio_icon
-  bindsym t exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 100% && $refresh_audio_icon
+  # bindsym 0 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 0%   && $refresh_audio_icon
+  # bindsym 1 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 10%  && $refresh_audio_icon
+  # bindsym 2 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 20%  && $refresh_audio_icon
+  # bindsym 3 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 30%  && $refresh_audio_icon
+  # bindsym 4 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 40%  && $refresh_audio_icon
+  # bindsym 5 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 50%  && $refresh_audio_icon
+  # bindsym 6 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 60%  && $refresh_audio_icon
+  # bindsym 7 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 70%  && $refresh_audio_icon
+  # bindsym 8 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 80%  && $refresh_audio_icon
+  # bindsym 9 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 90%  && $refresh_audio_icon
+  # bindsym t exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 100% && $refresh_audio_icon
+  bindsym 0 exec --no-startup-id amixer -D pulse sset Master 0%   && $refresh_audio_icon
+  bindsym 1 exec --no-startup-id amixer -D pulse sset Master 10%  && $refresh_audio_icon
+  bindsym 2 exec --no-startup-id amixer -D pulse sset Master 20%  && $refresh_audio_icon
+  bindsym 3 exec --no-startup-id amixer -D pulse sset Master 30%  && $refresh_audio_icon
+  bindsym 4 exec --no-startup-id amixer -D pulse sset Master 40%  && $refresh_audio_icon
+  bindsym 5 exec --no-startup-id amixer -D pulse sset Master 50%  && $refresh_audio_icon
+  bindsym 6 exec --no-startup-id amixer -D pulse sset Master 60%  && $refresh_audio_icon
+  bindsym 7 exec --no-startup-id amixer -D pulse sset Master 70%  && $refresh_audio_icon
+  bindsym 8 exec --no-startup-id amixer -D pulse sset Master 80%  && $refresh_audio_icon
+  bindsym 9 exec --no-startup-id amixer -D pulse sset Master 90%  && $refresh_audio_icon
+  bindsym t exec --no-startup-id  amixer -D pulse sset Master 100% && $refresh_audio_icon
 
   bindsym b mode "$brightness_control"
   bindsym m mode "$mic_control"

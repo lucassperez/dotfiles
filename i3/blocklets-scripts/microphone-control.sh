@@ -29,8 +29,8 @@ esac
 
 # infos will be something like [30%][on],
 # which corresponds to the volume and state
-# infos=$(amixer get Capture | awk '/Front (Left|Right):/ {print $5 $7}' | head -1)
-infos=$(amixer get Capture | awk '/Front (Left|Right):/ {print $5 $6}' | head -1)
+infos=$(amixer get Capture | awk '/Front (Left|Right):/ {print $5 $7}' | head -1)
+# infos=$(amixer get Capture | awk '/Front (Left|Right):/ {print $5 $6}' | head -1)
 volume=$(echo "$infos" | sed 's/^\[\([0-9]\+%\)\].*$/\1/')
 
 # if [ "$is_muted" = yes ]; then

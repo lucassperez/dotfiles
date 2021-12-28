@@ -61,13 +61,13 @@ else:
     # stands for using battery
     # FA_BATTERY = "<span font='FontAwesome'>\uf240</span>"
     # Show different icons for different percentages left
-    if percentleft <= 20:
+    if percentleft <= 15:
         FA_BATTERY = "<span color='#ff0000' font='FontAwesome'>\uf244</span>"
     elif percentleft <= 40:
         FA_BATTERY = "<span font='FontAwesome'>\uf243</span>"
-    elif percentleft <= 60:
+    elif percentleft <= 65:
         FA_BATTERY = "<span font='FontAwesome'>\uf242</span>"
-    elif percentleft <= 80:
+    elif percentleft <= 90:
         FA_BATTERY = "<span font='FontAwesome'>\uf241</span>"
     else:
         FA_BATTERY = "<span font='FontAwesome'>\uf240</span>"
