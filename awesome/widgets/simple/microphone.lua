@@ -63,8 +63,13 @@ end
 
 widget:connect_signal('button::press', function(_,_,_,button)
   if (button == 1) then widget:toggle()
-  elseif (button == 4) then widget:inc_vol(5)
-  elseif (button == 5) then widget:dec_vol(5) end
+  elseif (button == 3) then
+    awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
+    -- Why doesn't this update the widget afterwards? ):
+    -- update_widget('amixer sget Capture')
+    set_widget()
+  elseif (button == 4) then widget:inc_vol(2)
+  elseif (button == 5) then widget:dec_vol(2) end
 end)
 
 return widget

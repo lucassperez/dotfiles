@@ -7,7 +7,8 @@ watch(
   'date "+%a %d %b %H %M"',
   1,
   function(widget, stdout, stderr, exitreason, exitcode)
-    local weekday, day, month, hours, minutes = stdout:match('(%w*) (%w*) (%w*) (%w*) (%w*)')
+    -- Sadly, %w does not match "á", present in "sábado" (saturday, in portuguese).
+    local weekday, day, month, hours, minutes = stdout:match('([%wá]*) (%w*) (%w*) (%w*) (%w*)')
 
     local date = ' '..weekday..' '..day..' '..month
     local time = ' '..hours..':'..minutes

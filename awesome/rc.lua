@@ -183,7 +183,7 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal('property::geometry', set_wallpaper)
 
-local mic_widget = require('widgets.simple.microphone')
+local microphone_widget = require('widgets.simple.microphone')
 local bright_widget = require('widgets.simple.brightness')
 local volume_widget = require('widgets.simple.volume')
 local separator_widget = require('widgets.simple.separator')
@@ -307,7 +307,7 @@ awful.screen.connect_for_each_screen(
         separator_widget, notification_widget,
         separator_widget, memory_widget,
         separator_widget, bright_widget,
-        separator_widget, mic_widget,
+        separator_widget, microphone_widget,
         separator_widget, volume_widget,
         separator_widget, battery_widget,
         -- separator_widget, date_widget,
@@ -326,9 +326,10 @@ awful.screen.connect_for_each_screen(
 -- {{{ Mouse bindings
 root.buttons(
   gears.table.join(
-    awful.button({}, 3, function () mymainmenu:toggle() end),
-    awful.button({}, 4, awful.tag.viewnext),
-    awful.button({}, 5, awful.tag.viewprev)
+    awful.button({}, 3, function () mymainmenu:toggle() end)
+    -- why
+    -- awful.button({}, 4, awful.tag.viewnext),
+    -- awful.button({}, 5, awful.tag.viewprev)
   )
 )
 -- }}}
@@ -369,17 +370,23 @@ globalkeys = gears.table.join(
 
   -- Microphone control
   awful.key({ modkey, control }, ',',
-            function() mic_widget:dec_vol(2) end,
+            function() microphone_widget:dec_vol(2) end,
             { group = 'System controls', description = 'decrease microphone volume', }),
   awful.key({ modkey, control }, '.',
-            function() mic_widget:inc_vol(2) end,
+            function() microphone_widget:inc_vol(2) end,
             { group = 'System controls', description = 'increase microphone volume', }),
   awful.key({ modkey, control }, '/',
-            function() mic_widget:toggle() end,
+            function() microphone_widget:toggle() end,
             { group = 'System controls', description = 'toggle mute microphone', }),
   awful.key({ modkey, shift }, '/',
-            function() mic_widget:toggle() end,
+            function() microphone_widget:toggle() end,
             { group = 'System controls', description = 'toggle mute microphone', }),
+
+  awful.key({ modkey, control, shift }, '/',
+            function()
+              awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
+            end,
+            { group = 'System controls', description = 'open pulsemixer', }),
 
   -- Brightness control
   awful.key({ modkey }, '[',
@@ -461,7 +468,7 @@ globalkeys = gears.table.join(
               end
             end,
             { group = 'client', description = 'go to last focused client', }),
-  awful.key({ modkey, control }, 'n',
+  awful.key({ modkey, shift }, 'n',
             function ()
                 local c = awful.client.restore()
                 -- Focus restored client
@@ -516,18 +523,26 @@ globalkeys = gears.table.join(
             awesome.quit,
             { group = 'awesome', description = 'quit awesome', }),
 
-  awful.key({ modkey }, 'o',
+  awful.key({ modkey }, 'i',
             function () awful.tag.incmwfact(0.05) end,
             { group = 'layout', description = 'increase master width factor', }),
-  awful.key({ modkey }, 'i',
+  awful.key({ modkey }, 'o',
+            function () awful.client.incwfact(0.05) end,
+            { group = 'layout', description = 'decrease client height', }),
+  awful.key({ modkey }, 'p',
+            function () awful.client.incwfact(-0.05) end,
+            { group = 'layout', description = 'increase client height', }),
+  awful.key({ modkey }, '#34', -- acento agudo ´
             function () awful.tag.incmwfact(-0.05) end,
-            { group = 'layout', description = 'decrease master width factor', }),
+            { group = 'layout', description = '(acute) decrease master width factor', }),
+
   awful.key({ modkey, control }, 'h',
             function () awful.tag.incncol( 1, nil, true) end,
             { group = 'layout', description = 'increase the number of columns', }),
   awful.key({ modkey, control }, 'l',
             function () awful.tag.incncol(-1, nil, true) end,
             { group = 'layout', description = 'decrease the number of columns', }),
+
   awful.key({ modkey }, 'space',
             function () awful.layout.inc(1) end,
             { group = 'layout', description = 'select next layout', }),
@@ -604,7 +619,7 @@ clientkeys = gears.table.join(
   awful.key({ modkey }, 't',
             function (c) c.ontop = not c.ontop end,
             { group = 'client', description = 'toggle keep on top', }),
-  awful.key({ modkey, shift }, 'n',
+  awful.key({ modkey, control }, 'n',
             function (c)
               -- The client currently has the input focus, so it cannot be
               -- minimized, since minimized clients can't have the focus.
@@ -628,6 +643,8 @@ clientkeys = gears.table.join(
               c:raise()
             end,
             { group = 'client', description = 'toggle maximize layout', }),
+  -- Sometimes, the above function behaves really weird, and the original toggle
+  -- maximized can be a life saver. The key #104 is the numpad enter.
   awful.key({ modkey }, '#104',
             function (c)
               c.maximized = not c.maximized
@@ -699,6 +716,7 @@ clientkeys = gears.table.join(
 --               { group = 'tag', description = 'toggle focused client on tag #' .. i, })
 --   )
 -- end
+
 for i = 1, 10 do
   globalkeys = gears.table.join(
     globalkeys,
@@ -726,7 +744,7 @@ for i = 1, 10 do
               end,
               { group = 'tag', description = 'move focused client to tag #'..i, }),
     -- Toggle tag on focused client.
-    awful.key({ modkey, 'Control', 'Shift' }, '#' .. i + 9,
+    awful.key({ modkey, control, shift }, '#' .. i + 9,
     function ()
       if client.focus then
         local tag = tags[i]
@@ -823,6 +841,7 @@ awful.rules.rules = {
       -- and the name shown there might not match defined rules here.
       name = {
         'Event Tester',  -- xev.
+        'floating-alacritty',
       },
       role = {
         'AlarmWindow',  -- Thunderbird's calendar.
@@ -943,6 +962,5 @@ awful.spawn.with_shell('xset r rate 220 25')
 awful.spawn.with_shell('unclutter')
 awful.spawn.with_shell('xset s off')
 awful.spawn.with_shell('xset -dpms')
-awful.spawn.with_shell('sh ~/scripts/disable-keyboard.sh')
-mic_widget:set_exact_vol(30)
-volume_widget:set_exact_vol(50)
+-- mic_widget:set_exact_vol(30)
+-- volume_widget:set_exact_vol(50)

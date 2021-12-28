@@ -80,7 +80,7 @@ theme.taglist_spacing = 2
 -- notification_[bg|fg]
 -- notification_[width|height|margin]
 -- notification_[border_color|border_width|shape|opacity]
--- theme.notification_bg = '#008080'
+theme.notification_font = 'Hack Mono 10'
 theme.notification_bg = '#222222'
 theme.notification_fg = '#ffffff'
 theme.notification_border_width = '4' -- this doesnt work
@@ -152,7 +152,10 @@ theme.layout_cornerse = themes_path..'default/layouts/cornersew.png'
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(
     -- theme.menu_height, theme.bg_focus, '#000000'
-    theme.menu_height, '#000000', '#e6e6e6'
+    -- theme.menu_height, '#000000', '#e6e6e6'
+    -- theme.menu_height, '#e6e6e6', '#000000'
+    -- theme.menu_height, bgcolor, '#000000'
+    theme.menu_height, '#000000', bgcolor
 )
 -- theme.awesome_icon = '/home/lucas/lua-icon/copy.png'
 
