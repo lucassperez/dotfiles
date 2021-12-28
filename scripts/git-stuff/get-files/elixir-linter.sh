@@ -9,12 +9,12 @@
 # Description: Finds all the .ex and .exs files that have been modified in
 #              comparison to main or master branch, prints them
 #              in the screen and copies them to the clipboard,
-#              prepended with "mix credo".
+#              prepended with "mix credo --strict".
 #              It is meant to be run in the terminal and then you
 #              can go to a docker container and simply paste it
 #              to run rubocop in all changed files.
 #              If the FIRST argument is exactly `noclipboard`, the results will
-#              be printed out prepended with the usual "mix credo".
+#              be printed out prepended with the usual "mix credo --strict".
 #              This option only exists to run this command from inside vim and
 #              pipe the results to some running docker container without having
 #              to go through the hassle of copying, changing pane and pasting.
@@ -54,7 +54,7 @@ fi
 [ -z "$FILES" ] && exit 3
 
 if [ "$NO_CLIP" ]; then
-  echo mix credo "$@" $FILES
+  echo mix credo --strict "$@" $FILES
   exit
 fi
 
@@ -62,4 +62,4 @@ for f in $FILES; do
   echo $f
 done
 
-echo mix credo "$@" $FILES | xclip -selection clipboard -rmlastnl
+echo mix credo --strict "$@" $FILES | xclip -selection clipboard -rmlastnl
