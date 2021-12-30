@@ -54,4 +54,4 @@ alias stoprmalldocker='echo "docker ps -aq | xargs docker stop | xargs docker rm
 
 alias vim='nvim'
 
-[ -f "$HOME/.local/.my_aliases" ] && source "$HOME/.local/.my_aliases"
+[ -f "$HOME/.local/.aliases.local" ] && source "$HOME/.local/.aliases.local"
