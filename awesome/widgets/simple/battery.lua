@@ -62,11 +62,12 @@ watch(
     if state == 'Unknown' then
       message = ' '..percentage..'%'
     elseif state == 'Charging' or rest == '\n' then
-      message = ' '..percentage..'%'
       bg = nil
-      if percentage >= 99 then
+      if percentage >= 99 then -- If is "full" and plugged
         color = "#ffffff"
+        message = '  '..percentage..'%'
       else
+        message = ' '..percentage..'%'
         color = '#00ff00'
       end
     elseif percentage >= 90 then

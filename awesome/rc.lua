@@ -406,16 +406,12 @@ globalkeys = gears.table.join(
   awful.key({ modkey }, 'Escape', awful.tag.history.restore, { description = 'go back', group = 'tag' }),
 
   -- Client
-  -- Comenting this while trying awesome-vim-tmux-navigator
+  -- When layout is "max", the "j" and "k" keys cycle through clients, but the
+  -- "h" and "l" keys do not. This is so I can cycle the non maxed clients and
+  -- retain the ability to move left and right to switch monitors.
   awful.key({ modkey }, 'h',
             function ()
-              this_screen = awful.client.screen
-              actual_layout = awful.layout.get(this_screen)
-              if actual_layout == awful.layout.suit.max then
-                awful.client.focus.byidx(-1)
-              else
-                awful.client.focus.global_bydirection('left')
-              end
+              awful.client.focus.global_bydirection('left')
             end,
             { group = 'client', description = 'focus left global', }),
   awful.key({ modkey }, 'j',
@@ -442,13 +438,7 @@ globalkeys = gears.table.join(
             { group = 'client', description = 'focus up global', }),
   awful.key({ modkey }, 'l',
             function ()
-              this_screen = awful.client.screen
-              actual_layout = awful.layout.get(this_screen)
-              if actual_layout == awful.layout.suit.max then
-                awful.client.focus.byidx(1)
-              else
-                awful.client.focus.global_bydirection('right')
-              end
+              awful.client.focus.global_bydirection('right')
             end,
             { group = 'client', description = 'focus right global', }),
   awful.key({ modkey }, 'q',
