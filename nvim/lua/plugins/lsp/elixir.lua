@@ -14,8 +14,8 @@ local on_attach = function(_, bufnr)
   -- vim.cmd('command! LspDiagLine lua vim.lsp.diagnostic.show_line_diagnostics()')
   -- map('n', '?',     ':lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', map_opts)
   map('n', 'K',    ':lua vim.lsp.buf.definition()<CR>', map_opts)
-  map('n', [[\K]],     ':lua vim.lsp.buf.hover()<CR>', map_opts)
-  map('n', [[\k]], ':lua vim.lsp.buf.signature_help()<CR>', map_opts)
+  map('n', [[\k]],     ':lua vim.lsp.buf.hover()<CR>', map_opts)
+  map('n', [[\K]], ':lua vim.lsp.buf.signature_help()<CR>', map_opts)
 end
 
 require('lspconfig').elixirls.setup({
