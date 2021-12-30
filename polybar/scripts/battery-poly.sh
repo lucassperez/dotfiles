@@ -20,12 +20,14 @@ fi
 # Define icons based on state and percentage
 if [ "$state" = Charging ]; then
   icons="%{F#ff0}%{F-}"
+elif [ "$state" = Full ]; then
+  icons=" %{F-}"
 elif [ "$state" = Discharging ]; then
-  if [ "$percentage" -gt 80 ]; then
+  if [ "$percentage" -gt 90 ]; then
     icons=' '
-  elif [ "$percentage" -gt 60 ]; then
+  elif [ "$percentage" -gt 67 ]; then
     icons=' '
-  elif [ "$percentage" -gt 40 ]; then
+  elif [ "$percentage" -gt 44 ]; then
     icons=' '
   elif [ "$percentage" -gt 20 ]; then
     icons=' '
@@ -58,8 +60,8 @@ else
 fi
 
 # Make the percentage always ocupy 3 characters by padding white spaces
-# Also, if battery is charging and at 98%, show 100%
-if [ "$percentage" -ge 98 -a "$state" = Charging ]; then
+# Also, if battery is charging and at 99%, show 100%
+if [ "$percentage" -ge 99 -a "$state" = Charging ]; then
   final="$icons${color}100%"
 elif [ "$percentage" -eq 100 ]; then
   final="$icons${color}100%"

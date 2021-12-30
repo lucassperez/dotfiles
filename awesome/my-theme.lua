@@ -81,7 +81,8 @@ theme.taglist_spacing = 2
 -- notification_[width|height|margin]
 -- notification_[border_color|border_width|shape|opacity]
 theme.notification_font = 'Hack Mono 10'
-theme.notification_bg = '#222222'
+-- theme.notification_bg = '#222222'
+theme.notification_bg = '#008080'
 theme.notification_fg = '#ffffff'
 theme.notification_border_width = '4' -- this doesnt work
 -- theme.notification_border_color = '#008080'

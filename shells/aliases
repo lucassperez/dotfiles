@@ -44,6 +44,7 @@ alias polrc='nvim ~/.config/polybar/config'
 alias zshrc='nvim $ZDOTDIR/.zshrc ~/.zshenv'
 alias xmorc='nvim ~/.config/xmonad/xmonad.hs ~/.xmobarrc'
 alias qtlrc='nvim ~/.config/qtile/config.py'
+alias lwrc='nvim ~/.config/leftwm/config.toml'
 alias notouchpad='xinput disable Elan\ Touchpad'
 alias vimgit='git diff --name-only | sort -u | xargs nvim'
 alias tmuxls='sh ~/scripts/parse-tmux-ls.sh'
@@ -51,6 +52,8 @@ alias glmain="sh $HOME/scripts/git-stuff/get-files/generic-linter.sh"
 alias gtmain="sh $HOME/scripts/git-stuff/get-files/generic-test.sh"
 alias redme="sh $HOME/scripts/readme-glow.sh"
 alias stoprmalldocker='echo "docker ps -aq | xargs docker stop | xargs docker rm" && docker ps -aq | xargs docker stop | xargs docker rm'
+alias lwmtheme='leftwm-theme'
+alias xspeed='echo "xset r rate 220 25" && xset r rate 220 25'
 
 alias vim='nvim'
 
