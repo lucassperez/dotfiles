@@ -509,9 +509,12 @@ globalkeys = gears.table.join(
   awful.key({ modkey, control }, 'r',
             awesome.restart,
             { group = 'awesome', description = 'reload awesome', }),
-  awful.key({ modkey }, 'BackSpace',
+  awful.key({ modkey, shift }, 'BackSpace',
             awesome.quit,
             { group = 'awesome', description = 'quit awesome', }),
+  awful.key({ modkey }, 'BackSpace',
+            function() awful.spawn('slock') end,
+            { group = 'awesome', description = 'lock screen', }),
 
   awful.key({ modkey }, 'i',
             function () awful.tag.incmwfact(0.05) end,
