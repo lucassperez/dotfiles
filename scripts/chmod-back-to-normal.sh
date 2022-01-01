@@ -19,6 +19,7 @@
 # -a: Executes the script on hidden files/directories as well (will execute ls -A to find files and directories)
 # -q: Executes the script but does not print messages to stdout
 # -h: will show the help message
+# --help: same as -h
 
 show_help_message() {
   echo Usage: sh chmod-back-to-normal [OPTIONS]
@@ -33,15 +34,15 @@ show_help_message() {
   echo
   echo OPTIONS
   echo
-  echo -r'\t'Executes the script recursively, going inside found directories.
-  echo '\t'This script will '\e[1m'NOT'\e[0m' go inside git directories,
-  echo '\t'but will work if called from inside one.
-  echo '\t'This script should not go inside the '\e[1m'.git'\e[0m' directory
-  echo '\t'itself unless called from inside it.
-  echo -a'\t'Executes the script on hidden files/directories as well.
-  echo '\t'It will execute ls -a to find files and directories.
-  echo -q'\t'Does not print anything to stdout.
-  echo -h'\t'Shows this help message.
+  echo '  -r\t\t'Executes the script recursively, going inside found directories.
+  echo '\t\t'This script will '\e[1m'NOT'\e[0m' go inside git directories,
+  echo '\t\t'but will work if called from inside one.
+  echo '\t\t'This script does not go inside the '\e[1m'.git'\e[0m' directory
+  echo '\t\t'itself unless called from inside it.
+  echo '  -a\t\t'Executes the script on hidden files/directories as well.
+  echo '\t\t'It will execute ls -a to find files and directories.
+  echo '  -q\t\t'Does not print anything to stdout.
+  echo '  -h, --help\t'Shows this help message.
 }
 
 reexecutes_recursively() {
@@ -53,6 +54,11 @@ reexecutes_recursively() {
   fi
   cd ..
 }
+
+if [ $(echo "$@" | grep '\-\-help') ]; then
+  show_help_message
+  exit 0
+fi
 
 while getopts 'hraq' arg; do
   case "${arg}" in
@@ -73,6 +79,13 @@ while getopts 'hraq' arg; do
       ;;
   esac
 done
+
+printf 'Are you sure you want to start chmodding things? [y/N] '
+read confirmation
+
+if ! [ "$confirmation" = y -o "$confirmation" = Y -o $(echo "$confirmation" | grep -i '^yes$' ) ]; then
+  exit
+fi
 
 OLD_IFS="$IFS"
 IFS='
