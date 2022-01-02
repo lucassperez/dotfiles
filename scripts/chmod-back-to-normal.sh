@@ -18,6 +18,7 @@
 # -r: Executes the script recursively (going inside directories)
 # -a: Executes the script on hidden files/directories as well (will execute ls -A to find files and directories)
 # -q: Executes the script but does not print messages to stdout
+# -f: Does not ask for confirmation
 # -h: will show the help message
 # --help: same as -h
 
@@ -42,6 +43,7 @@ show_help_message() {
   echo '  -a\t\t'Executes the script on hidden files/directories as well.
   echo '\t\t'It will execute ls -a to find files and directories.
   echo '  -q\t\t'Does not print anything to stdout.
+  echo '  -f\t\t'Does not ask for confirmation.
   echo '  -h, --help\t'Shows this help message.
 }
 
@@ -60,7 +62,7 @@ if [ $(echo "$@" | grep '\-\-help') ]; then
   exit 0
 fi
 
-while getopts 'hraq' arg; do
+while getopts 'hraqf' arg; do
   case "${arg}" in
     h)
       show_help_message
@@ -77,11 +79,16 @@ while getopts 'hraq' arg; do
     q)
       QUIET=yes
       ;;
+    f)
+      FORCE=yes
+      ;;
   esac
 done
 
-printf 'Are you sure you want to start chmodding things? [y/N] '
-read confirmation
+if [ "$FORCE" != yes ] ;then
+  printf 'Are you sure you want to start chmodding things? [y/N] '
+  read confirmation
+fi
 
 if ! [ "$confirmation" = y -o "$confirmation" = Y -o $(echo "$confirmation" | grep -i '^yes$' ) ]; then
   exit
@@ -102,7 +109,7 @@ for target in $(ls $LS_OPTS); do
     [ "$QUIET" ] || echo "\e[1;33mdirectory\e[0m\t\e[1;35m$target\e[0m, giving permission code 755 to it"
     chmod 755 "$target"
 
-    [ "$RECUR" ] && reexecutes_recursively "$@"
+    [ "$RECUR" ] && reexecutes_recursively "$@" -f
 
   else
     [ "$QUIET" ] || echo "\e[1;31m$target\e[0m is neither a regular file nor a directory, doing nothing to it"
