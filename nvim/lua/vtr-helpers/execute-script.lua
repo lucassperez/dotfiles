@@ -38,6 +38,10 @@ function _G.executeFileAsScript()
     vim.fn.VtrSendCommand('rustc '..filename..' && ./'..filename_without_extension)
     print('Compiling and hopefully running '..filename)
 
+  elseif (filetype == 'go') then
+    vim.fn.VtrSendCommand('go run '..full_path_filename)
+    print('go run '..filename)
+
   else
     print('Não sei executar arquivos do tipo '..filetype)
   end

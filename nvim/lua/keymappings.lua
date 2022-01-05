@@ -13,6 +13,10 @@ vim.g.mapleader = ' '
 -- mode sometimes, which did not happen with ESC.
 map('i', '<C-c>', '<Esc>')
 
+-- Fingir que tenho dois pontos ao laod do L pra ir me acostumando aos poucos
+noremap('n', 'Ç', ':')
+noremap('v', 'Ç', ':')
+
 -- Atalho pra mostrar a quais grupos de sintaxe a palavra
 -- debaixo do cursor pertence
 noremap('n', '<leader>m', ':TSHighlightCapturesUnderCursor<CR>')
