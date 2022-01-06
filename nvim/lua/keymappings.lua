@@ -143,18 +143,16 @@ noremap('n', '<leader>rl', ':call VtrSendCommand("!!")<CR>')
 noremap('n', '<leader>rr', ':lua executeFileAsScript()<CR>', true) -- silent = true
 
 --- Snippets ---
-noremap('n', ',html', ':-1read $HOME/.config/nvim/snippets/html5<CR>6jf>l')
-noremap('n', ',rfce', ":-1read $HOME/.config/nvim/snippets/reactfunctcomp<CR>:%s/$1/=expand('%:t:r')/g<CR>5k")
--- nnoremap ,clg :-1read $HOME/.config/nvim/snippets/console.log<CR>==f)i
-vim.cmd('iabbrev clg, console.log')
--- ainda ta ruim esse do console.log ):
-noremap('n', ',rspec', ':-1read $HOME/.config/nvim/snippets/rubyspec<CR>2j6l')
-noremap('n', ',stl', ':-1read $HOME/.config/nvim/snippets/styledcomps<CR>j')
--- noremap('n', ',vcomp', ":-1read $HOME/.config/nvim/snippets/vuecomp<CR>:%s/$1/=expand('%:t:r')/g<CR>0")
--- noremap('n', ',exm', ":-1read $HOME/.config/nvim/snippets/elixirmodule<CR>:%s/$1/=expand('%:t:r')/g<CR>jS")
-vim.cmd('iabbrev dfm, defmodule')
+noremap('n', ',html', ':read $HOME/.config/nvim/snippets/html5<CR>i<Backspace><C-c>6jf>l')
+noremap('n', ',rfce', ":read $HOME/.config/nvim/snippets/reactfunctcomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>5k")
+noremap('n', ',cl', ':read $HOME/.config/nvim/snippets/console.log<CR>i<Backspace><C-c>==f)i')
+noremap('n', ',rspec', ':read $HOME/.config/nvim/snippets/rubyspec<CR>i<Backspace><C-c>2j6l')
+noremap('n', ',stl', ':read $HOME/.config/nvim/snippets/styledcomps<CR>i<Backspace><C-c>j')
+-- noremap('n', ',vcomp', ":read $HOME/.config/nvim/snippets/vuecomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>0")
+-- noremap('n', ',exm', ":read $HOME/.config/nvim/snippets/elixirmodule<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>jS")
+noremap('n', ',go', ':read $HOME/.config/nvim/snippets/gomain<CR>i<Backspace><C-c>5jS')
 
--- Buscar por uma sequência de <<<, === ou >>>
+-- Buscar por uma sequência de <<<<<<<, ======= ou >>>>>>>
 -- Pra usar quando tem conflitos no git
 noremap('n', '<leader>/', '/\\(<\\|=\\|>\\)\\{7\\}<CR>')
 
@@ -173,7 +171,10 @@ noremap('n', '<leader>x', ':!xdg-open %<CR><CR>')
 noremap('n', '<leader>-', ':wincmd _<CR>:wincmd |<CR>')
 noremap('n', '<leader>=', ':wincmd =<CR>')
 
+-- Send current line (or lines in visual mode) to attached tmux pane
 noremap('n', '<leader>R', ':lua sendLinesToTmux("normal")<CR>')
 noremap('v', '<leader>R', ':lua sendLinesToTmux("visual")<CR>')
 
+-- Tries to find the test file of current file or vice versa.
+-- Works well with elixir and its organized and predictable paths.
 noremap('n', '<leader>e', ':lua toggleBetweenTestAndFile()<CR>')

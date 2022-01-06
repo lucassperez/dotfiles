@@ -2,7 +2,11 @@ local npairs = require('nvim-autopairs')
 local Rule = require('nvim-autopairs.rule')
 
 npairs.setup({
-  ignored_next_char = "[%w%.]", -- will ignore alphanumeric and `.` symbol
+  -- ignored_next_char = "[%w%.]", -- will ignore alphanumeric and `.` symbol
+  ignored_next_char = "[%w%_]",
+  enable_check_bracket_line = false,
+  map_c_h = true,  -- Map the <C-h> key to delete a pair
+  map_c_w = true, -- map <c-w> to delete a pair if possible
 })
 
 npairs.add_rules {

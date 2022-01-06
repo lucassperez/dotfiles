@@ -21,7 +21,8 @@ o.inccommand = 'nosplit' -- ir mostrando também no comando de substituir (ex :%
 o.laststatus = 2 -- sempre mostrar a status bar
 o.scrolloff = 1 -- sempre mostra pelo menos uma linha abaixo e acima do cursor
 o.sidescrolloff = 3 -- sempre mostra pelo menos três colunas à direita e à esquerda do cursor
-o.backspace = "2" -- conseguir apagar identações, também
+-- nostop or start?
+o.backspace = "indent,eol,start" -- conseguir apagar identações, também
 o.lazyredraw = true
 o.backup = false
 o.writebackup = false
