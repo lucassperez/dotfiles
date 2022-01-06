@@ -38,36 +38,38 @@ end
 
 set_widget()
 
-local function update_widget(cmd)
+function widget:update_widget(cmd)
   awful.spawn.easy_async(cmd, set_widget)
 end
 
 function widget:toggle()
-  update_widget('amixer sset Capture toggle')
+  widget:update_widget('amixer sset Capture toggle')
 end
 
 function widget:inc_vol(delta)
   delta = delta or 5
-  update_widget('amixer sset Capture '..delta..'%+')
+  widget:update_widget('amixer sset Capture '..delta..'%+')
 end
 
 function widget:dec_vol(delta)
   delta = delta or 5
-  update_widget('amixer sset Capture '..delta..'%-')
+  widget:update_widget('amixer sset Capture '..delta..'%-')
 end
 
 function widget:set_exact_vol(value)
   value = value or 50
-  update_widget('amixer sset Capture '..value..'%')
+  widget:update_widget('amixer sset Capture '..value..'%')
 end
 
 widget:connect_signal('button::press', function(_,_,_,button)
   if (button == 1) then widget:toggle()
   elseif (button == 3) then
-    awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
     -- Why doesn't this update the widget afterwards? ):
-    -- update_widget('amixer sget Capture')
-    set_widget()
+    -- awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
+    -- set_widget()
+
+    -- Weird hack, just like in volume.lua
+    awful.spawn('/home/lucas/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
   elseif (button == 4) then widget:inc_vol(2)
   elseif (button == 5) then widget:dec_vol(2) end
 end)

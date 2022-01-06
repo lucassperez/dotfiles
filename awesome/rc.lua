@@ -384,7 +384,8 @@ globalkeys = gears.table.join(
 
   awful.key({ modkey, control, shift }, '/',
             function()
-              awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
+              -- awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
+              awful.spawn('/home/lucas/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
             end,
             { group = 'System controls', description = 'open pulsemixer', }),
 
@@ -630,6 +631,7 @@ clientkeys = gears.table.join(
               elseif cache then
                 awful.layout.set(cache)
               else
+                -- If there is no "last layout", goes to the first
                 awful.layout.set(awful.layout.layouts[1])
               end
 
@@ -644,6 +646,12 @@ clientkeys = gears.table.join(
               c:raise()
             end,
             { group = 'client', description = '(numpad enter) toggle maximize', }),
+  awful.key({ modkey, control, shift }, 'm',
+            function (c)
+              c.maximized = not c.maximized
+              c:raise()
+            end,
+            { group = 'client', description = 'toggle maximize', }),
   awful.key({ modkey, control }, 'm',
             function (c)
                 c.maximized_vertical = not c.maximized_vertical
@@ -843,6 +851,8 @@ awful.rules.rules = {
         'task_dialog',
       }
     },
+    -- Have floating windows always open centered in the screen
+    callback = function(c) awful.placement.centered(c, nil) end
   },
 
   -- No titlebars, please
@@ -866,6 +876,10 @@ awful.rules.rules = {
   {
     rule = { class = 'discord' },
     properties = { screen = 1, tag = '0' }
+  },
+  {
+    rule = { class = 'Gedit' },
+    properties = { ontop = true }
   },
 }
 -- }}}
@@ -955,5 +969,7 @@ awful.spawn.with_shell('xset r rate 220 25')
 awful.spawn.with_shell('unclutter')
 awful.spawn.with_shell('xset s off')
 awful.spawn.with_shell('xset -dpms')
+awful.spawn.with_shell('numlockx on')
+-- awful.spawn.with_shell('copyq')
 -- mic_widget:set_exact_vol(30)
 -- volume_widget:set_exact_vol(50)

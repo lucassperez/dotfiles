@@ -26,7 +26,7 @@ watch(
 -- Calendar pop up on click
 -- https://github.com/streetturtle/awesome-wm-widgets/tree/master/calendar-widget
 local calendar_widget = require('widgets.calendar')({
-  theme = 'naughty',
+  theme = 'my_theme',
   placement = 'top_right',
   radius = 12,
   start_sunday = true
