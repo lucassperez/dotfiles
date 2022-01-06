@@ -178,7 +178,7 @@ bind '"\C-t":kill-line'
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
 # . $HOME/z.sh
-eval "$("$HOME"/.local/bin/zoxide init bash)"
+eval "$(zoxide init bash)"
 
 sh ~/scripts/lambda-fetch.sh
 
