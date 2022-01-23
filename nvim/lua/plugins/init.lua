@@ -28,7 +28,7 @@ return require('packer').startup(function()
   -- use 'windwp/nvim-ts-autotag'
   use 'alvan/vim-closetag'
   use 'JoosepAlviste/nvim-ts-context-commentstring'
-  use 'abecodes/tabout.nvim'
+  -- use 'abecodes/tabout.nvim'
   use 'nvim-lua/plenary.nvim'
 
   -- Coisas LSP e TreeSitter

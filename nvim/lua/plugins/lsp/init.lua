@@ -2,3 +2,4 @@
 
 require('plugins.lsp.elixir')
 require('plugins.lsp.typescript')
+require('plugins.lsp.go')

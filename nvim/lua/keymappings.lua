@@ -101,7 +101,10 @@ noremap('i', '<C-Del>', '<C-o>de')
 noremap('n', '<leader>ç', 'i```<CR>```<CR><C-c>2kA')
 
 -- Tenho andado escrevendo muito "binding.pry", então...
-noremap('n', ',bp', 'obinding.pry<C-c>')
+-- noremap('n', ',bp', 'obinding.pry<C-c>')
+noremap('n', ',bp', ':lua writeDebuggerBreakpoint()<CR>')
+noremap('n', ',BP', ':lua writeDebuggerBreakpoint(true)<CR>')
+noremap('n', ',Bp', ':lua writeDebuggerBreakpoint(true)<CR>')
 
 -- É brincadeira que :noh<CR> não vem por padrão em algum lugar, viu...
 noremap('n', '<Esc>', ':noh<CR>')
@@ -160,6 +163,7 @@ noremap('n', '<leader>/', '/\\(<\\|=\\|>\\)\\{7\\}<CR>')
 noremap('n', ',sh', 'ggI#!/bin/sh<CR><CR><C-c>')
 -- Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo (o silent = true não ta funcionando?)
 noremap('n', ',SH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
+noremap('n', ',Sh', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
 
 -- Colocar um ponto e vírgula no final da linha
 noremap('n', '<leader>;', 'A;<C-c>')
