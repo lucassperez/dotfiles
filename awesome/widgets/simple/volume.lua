@@ -28,13 +28,13 @@ local function set_widget()
     volume = tonumber(volume)
 
     if on_or_off == 'off' then
-      val = 'X'..volume..'%'
+      val = 'X '..volume..'%'
     elseif volume >= 50 then
-      val = ' '..volume..'%'
+      val = '  '..volume..'%'
     elseif volume > 0 then
-      val = ' '..volume..'%'
+      val = '  '..volume..'%'
     else
-      val = ' '..volume..'%'
+      val = '  '..volume..'%'
     end
 
     -- file = io.open('/home/lucas/.config/awesome/widgets/anota-lua', 'a')

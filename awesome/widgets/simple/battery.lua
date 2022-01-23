@@ -94,7 +94,8 @@ widget:connect_signal(
 
       local battery = io.popen('acpi -b'):read()
       local state, percentage = battery:match('Battery %d+: (%w*), (%d*)%%')
-      local time_left, message = battery:match('(%d%d:%d%d):%d%d (.*)')
+      local hours_left, minutes_left, message = battery:match('(%d%d):(%d%d):%d%d (.*)')
+      local time_left = hours_left..'h'..minutes_left
 
       if state == 'Full' then
         text = '(:'

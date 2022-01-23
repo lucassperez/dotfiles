@@ -1,5 +1,6 @@
 local wibox = require('wibox')
-local watch = require('awful.widget.watch')
+local awful = require('awful')
+local watch = awful.widget.watch
 
 local widget = wibox.widget.background()
 
@@ -31,10 +32,20 @@ local calendar_widget = require('widgets.calendar')({
   radius = 12,
   start_sunday = true
 })
+
 widget:connect_signal(
   'button::press',
   function(_, _, _, button)
-    if button == 1 or button == 3 then calendar_widget.toggle() end
+    if button == 2 then calendar_widget.toggle() end
+  end
+)
+
+widget:connect_signal(
+  'button::press',
+  function(_, _, _, button)
+    if button == 1 or button == 3 then
+      awful.spawn('zenity --calendar --text= >/dev/null')
+    end
   end
 )
 
