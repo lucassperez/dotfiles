@@ -34,3 +34,6 @@ hi BufTabLineActive guibg=#6c6c6c                        ctermfg=15  ctermbg=242
 hi Search guibg=#ffff87
 
 hi link Define Statement
+
+match CustomTabsGroup /\t/
+hi CustomTabsGroup guifg=#999999 gui=NONE

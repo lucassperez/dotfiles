@@ -35,8 +35,10 @@ function on_attach(_, bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
   end
   local map_opts = { noremap = true, silent = true }
-  -- map('n', [[\f]],    ':lua golangImports(1000)<CR>:lua vim.lsp.buf.formatting()<CR>', map_opts)
-  map('n', [[\f]],    ':lua vim.lsp.buf.formatting()<CR>:lua golangImports(1000)<CR>:%s/\t/  /g<CR>:noh<CR>', map_opts)
+  map('n', [[\f]],    ':lua vim.lsp.buf.formatting()<CR>', map_opts)
+  -- map('n', [[\f]],    ':lua vim.lsp.buf.formatting()<CR>:%s/\t/  /g<CR>:noh<CR>', map_opts)
+  -- map('n', [[\f]],    ':lua golangImports(1000)<CR>:lua vim.lsp.buf.formatting()<CR>:%s/\t/  /g<CR>:noh<CR>', map_opts)
+  map('n', [[\f]],    ':lua golangImports(1000)<CR>:lua vim.lsp.buf.formatting()<CR>', map_opts)
   map('n', [[\i]],    ':lua golangImports(1000)<CR>', map_opts)
   map('n', 'K',    ':lua vim.lsp.buf.definition()<CR>', map_opts)
   map('n', [[\k]],     ':lua vim.lsp.buf.hover()<CR>', map_opts)

@@ -51,7 +51,9 @@ opt.encoding = 'utf8'
 -- List mode tem que estar ligado para conseguir usar o listchars
 wo.list = true
 opt.listchars = {
-  tab = '<->',
+  -- tab = '<->',
+  -- tab = '⮡ ',
+  tab = '⤷ ',
   trail = '·',
   nbsp = '·',
   extends = '»',
