@@ -124,6 +124,9 @@ bindkey -M menuselect 'q' send-break
 # https://stackoverflow.com/questions/37772712/zsh-how-to-make-tab-completion-need-no-space-to-next-word-after-cursor
 bindkey "^I" expand-or-complete-prefix
 
+# https://stackoverflow.com/questions/815686/unable-to-make-a-backward-tab-as-shift-tab-in-zsh
+bindkey '^[[Z' reverse-menu-complete
+
 # Control + esquerda/direita, respectivamente
 bindkey ";5D" backward-word
 bindkey ";5C" forward-word
