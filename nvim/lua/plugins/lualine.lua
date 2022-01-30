@@ -14,13 +14,7 @@ require('lualine').setup {
     icons_enabled = false,
     -- theme = 'everforest',
     theme = tema_modificado,
-    -- theme = 'dracula', -- trocar cor do normal mode? branco?
-    -- theme = 'nightfly', -- trocar a cor do normal mode?
-    -- theme = 'onedark', bonitinho
-    -- theme = 'onelight', parte branca do meio
-    -- theme = 'palenight',
-    -- theme = 'powerline',
-    -- theme = 'solarized_light',
+    -- theme = 'tokyonight',
     component_separators = {'', ''},
     section_separators = {'', ''},
     disabled_filetypes = {}

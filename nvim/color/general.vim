@@ -10,10 +10,14 @@ highlight Comment ctermfg=grey guifg=#a8a8a8
 """ Todas as linhas:
 highlight LineNr ctermfg=grey guifg=#a8a8a8
 """ Linha atual:
-highlight CursorLineNr cterm=NONE gui=NONE
+highlight CursorLineNr cterm=NONE gui=NONE guifg=#e2e209
+
+" Cor da coluna que pode-se colocar
+highlight ColorColumn ctermbg=239 guibg=#4e4e4e
 
 " destacar e estilizar a linha atual do cursor
-highlight CursorLine cterm=NONE ctermbg=0 gui=NONE guibg=#2e3436
+" highlight CursorLine cterm=NONE ctermbg=0 gui=NONE guibg=#2e3436
+highlight CursorLine cterm=NONE ctermbg=0 gui=NONE guibg=#4e4e4e
 
 " TODO aprender como funciona o showmode, corzinhas etc e tal
 highlight Todo ctermfg=white ctermbg=darkyellow guifg=#d9d9d9 guibg=#808000
@@ -31,9 +35,9 @@ hi NonText          guifg=#729ecb
 hi TabLine          guifg=#616163 guibg=#2e3436 gui=NONE ctermfg=242 ctermbg=0 cterm=NONE
 hi BufTabLineActive guibg=#6c6c6c                        ctermfg=15  ctermbg=242
 
-hi Search guibg=#ffff87
-
 hi link Define Statement
 
 match CustomTabsGroup /\t/
 hi CustomTabsGroup guifg=#999999 gui=NONE
+
+hi MatchParen guifg=#87ff00 gui=BOLD,UNDERLINE ctermfg=yellow cterm=BOLD,UNDERLINE

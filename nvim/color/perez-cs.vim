@@ -18,6 +18,8 @@ source $HOME/.config/nvim/color/general.vim
 " light green   #77eaae
 " bright yellow #ffff87
 
+hi Search guibg=#ffff87
+
 hi Comment guifg=#a8a8a8 guibg=NONE gui=NONE ctermfg=grey ctermbg=NONE cterm=NONE
 
 hi Type      guifg=#77eaae gui=NONE

@@ -11,9 +11,10 @@ require('plugins.tree-sitter.config')
 require('plugins.tree-sitter.elixir')
 require('plugins.completion')
 require('plugins.nvim-autopairs')
-require('plugins.my-lualine')
+require('plugins.lualine')
 require('plugins.Comment')
 require('plugins.buftabline')
+-- require('plugins.tokyonight')
 
 -- Meus próprios scritpts
 require('helper-scripts.vtr.test')

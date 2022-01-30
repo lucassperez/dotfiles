@@ -61,4 +61,5 @@ return require('packer').startup(function()
   -- Esquema de cores
   use 'ayu-theme/ayu-vim'
   use 'Shatur/neovim-ayu'
+  use 'folke/tokyonight.nvim'
 end)

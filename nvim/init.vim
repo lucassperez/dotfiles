@@ -11,6 +11,7 @@ require('init')
 EOF
 
 source $HOME/.config/nvim/color/perez-cs.vim
+" source $HOME/.config/nvim/color/general.vim
 " lua require'colorizer'.setup()
 highlight CursorLine cterm=NONE ctermbg=0 gui=NONE guibg=#434d48
 
@@ -29,9 +30,6 @@ let &titlestring='nvim'
 
 " Destacar colunas depois do 80 e 120
 let &colorcolumn='81,121'
-highlight ColorColumn ctermbg=239 guibg=#4e4e4e
-
-hi MatchParen guifg=#87ff00 gui=BOLD,UNDERLINE ctermfg=yellow cterm=BOLD,UNDERLINE
 
 " NvimTree
 source $HOME/.config/nvim/tree-config.vim
