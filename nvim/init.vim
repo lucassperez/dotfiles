@@ -50,7 +50,7 @@ hi GitGutterChangeDeleteLineNr guifg=#d75f00 gui=UNDERCURL,BOLD ctermfg=166 cter
 runtime macros/matchit.vim
 let ruby_foldable_groups='if def class module'
 
-let g:closetag_filetypes='html,eelixir,javascript,javascriptreact'
+let g:closetag_filetypes='html,eelixir,javascript,javascriptreact,template'
 
 let g:lexima_no_default_rules = v:true
 call lexima#set_default_rules()

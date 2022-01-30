@@ -1,4 +1,4 @@
-require('Comment').setup {
+require('Comment').setup({
   padding = true,
-  ignore = '^$'
-}
+  ignore = '^$',
+})
