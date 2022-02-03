@@ -1,9 +1,10 @@
 require'nvim-treesitter.configs'.setup {
   -- ensure_installed can be "all" or a list of languages { "python", "javascript" }
-  ensure_installed = {"lua", "bash", "javascript", "ruby"},
+  ensure_installed = {'lua', 'bash', 'javascript', 'ruby', 'go', 'java'},
 
   highlight = { -- enable highlighting for all file types
     enable = true, -- you can also use a table with list of langs here (e.g. { "python", "javascript" })
+    disable = {'vue'},
     custom_captures = {
       ["heredoc_content"] = "TSComment",
     },
@@ -46,7 +47,7 @@ require'nvim-treesitter.configs'.setup {
   context_commentstring = {
     enable = true,
     config = {
-      eelixir = '<%# %s %>'
+      eelixir = '<%# %s %>',
     }
   },
   -- rainbow = {
