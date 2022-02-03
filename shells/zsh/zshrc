@@ -108,6 +108,7 @@ source "$HOME/.aliases"
 
 bindkey "^F" clear-screen
 bindkey "^T" kill-line
+bindkey "^U" kill-region
 
 # OBS: Enter produz "^M"
 # https://zsh.sourceforge.io/Doc/Release/Zsh-Modules.html#Menu-selection
