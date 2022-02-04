@@ -14,7 +14,8 @@ require('plugins.completion')
 require('plugins.nvim-autopairs')
 require('plugins.lualine')
 require('plugins.Comment')
-require('plugins.buftabline')
+-- require('plugins.buftabline')
+require('plugins.barbar')
 -- require('plugins.tokyonight')
 
 -- Meus próprios scritpts

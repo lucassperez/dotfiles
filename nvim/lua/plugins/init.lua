@@ -48,7 +48,11 @@ return require('packer').startup(function()
 
   -- Ajudinha visual
   use 'hoob3rt/lualine.nvim'
-  use 'jose-elias-alvarez/buftabline.nvim'
+  use 'romgrk/barbar.nvim'
+  -- maybe try this one one day? akinsho/bufferline.nvim
+  -- use 'ap/vim-buftabline'
+  -- This one is crashing vim when too many buffers are opened and I try to change buffer
+  -- use 'jose-elias-alvarez/buftabline.nvim'
   -- Esse rainbow por algum motivo está quebrando a
   -- interpolação de strings em arquivos elixir ):
   -- use 'p00f/nvim-ts-rainbow'
