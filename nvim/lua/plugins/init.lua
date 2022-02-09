@@ -1,13 +1,20 @@
 -- https://github.com/yegappan/mru tentar esse qualquer dias desses
 -- https://github.com/neoclide/redismru.vim ou esse
 return require('packer').startup(function()
-  -- Funcionalidades de verdade
+  -- Telescope
   use {
-    'junegunn/fzf',
-    run = function () vim.fn['fzf#install']() end
+    'nvim-telescope/telescope.nvim',
+    requires = { {'nvim-lua/plenary.nvim'} }
   }
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+
+  -- Funcionalidades de verdade
+  -- use {
+  --   'junegunn/fzf',
+  --   run = function () vim.fn['fzf#install']() end
+  -- }
+  -- use 'junegunn/fzf.vim'
   use 'cohama/lexima.vim'
-  use 'junegunn/fzf.vim'
   use 'christoomey/vim-tmux-navigator'
   use 'christoomey/vim-tmux-runner'
   -- use 'intrntbrn/awesomewm-vim-tmux-navigator'

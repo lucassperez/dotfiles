@@ -17,6 +17,7 @@ require('plugins.Comment')
 -- require('plugins.buftabline')
 require('plugins.barbar')
 -- require('plugins.tokyonight')
+require('plugins.telescope')
 
 -- Meus próprios scritpts
 require('helper-scripts.vtr.test')

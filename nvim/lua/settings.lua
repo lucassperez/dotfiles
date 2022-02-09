@@ -27,10 +27,15 @@ o.lazyredraw = true
 o.backup = false
 o.writebackup = false
 o.mouse = 'a' -- habilita o mouse (a significa all). Sacrilégio!
+
 o.wildmenu = true
-o.wildmode = 'longest,list'
+-- show everything scattered, multiple per line
+-- o.wildmode = 'longest,list'
+-- show on a pop up like list, one per line
+o.wildmode = 'longest:full'
 o.wildignore = '**/node_modules/**' -- porque né, ninguém merece esse treco gigante
 o.wildignorecase = true -- auto complete case insensitive
+
 -- Novas splits não derretem meu cérebro quando criadas
 o.splitbelow = true
 o.splitright = true
@@ -59,7 +64,6 @@ opt.listchars = {
   extends = '»',
   precedes = '«',
 }
-opt.lazyredraw = true
 opt.textwidth = 0
 -- Eu odeio demais formatoptions "t", "c", "r" e "o" ):<
 -- t = auto wrap

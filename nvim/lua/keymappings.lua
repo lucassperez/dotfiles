@@ -63,10 +63,10 @@ noremap('n', '<leader>d', ':bdelete<CR>')
 -- noremap('n', '<C-l>', '<C-w>l')
 
 -- Coisas do fzf
-noremap('n', '<C-p>', ':GFiles<CR>')
-noremap('n', '<C-f>', ':Ag<CR>')
-noremap('n', '<leader>p', ':Files<CR>')
-noremap('n', '<leader>h', ':History<CR>')
+-- noremap('n', '<C-p>', ':GFiles<CR>')
+-- noremap('n', '<C-f>', ':Ag<CR>')
+-- noremap('n', '<leader>p', ':Files<CR>')
+-- noremap('n', '<leader>h', ':History<CR>')
 
 -- Copiar para o clipboard
 noremap('v', '<leader>y', '"+y')
