@@ -9,11 +9,11 @@ end
 vim.g.mapleader = ' '
 
 -- Normally C-c already does this, but after installing LSP, the text box
--- containing completions would not properly disappear when I C-c out of insert
--- mode sometimes, which did not happen with ESC.
+-- containing completions would sometimes not properly disappear when I C-c out
+-- of insert mode, which did not happen with Esc.
 map('i', '<C-c>', '<Esc>')
 
--- Fingir que tenho dois pontos ao laod do L pra ir me acostumando aos poucos
+-- Fingir que tenho dois pontos ao lado do L
 noremap('n', 'Ç', ':')
 noremap('v', 'Ç', ':')
 
@@ -105,6 +105,7 @@ noremap('n', '<leader>ç', 'i```<CR>```<CR><C-c>2kA')
 noremap('n', ',bp', ':lua writeDebuggerBreakpoint()<CR>')
 noremap('n', ',BP', ':lua writeDebuggerBreakpoint(true)<CR>')
 noremap('n', ',Bp', ':lua writeDebuggerBreakpoint(true)<CR>')
+noremap('n', ',bP', ':lua writeDebuggerBreakpoint(true)<CR>')
 
 -- É brincadeira que :noh<CR> não vem por padrão em algum lugar, viu...
 noremap('n', '<Esc>', ':noh<CR>')
@@ -121,7 +122,7 @@ noremap('n', '<Esc>', ':noh<CR>')
 -- Setar um runner pro Vim Tmux Runner
 noremap('n', '<leader>a', ':VtrAttachToPane<CR>')
 noremap('n', '<leader><C-d>', ':VtrSendCtrlD<CR>')
-noremap('n', '<leader><C-c>', ':VtrSendCtrlC<CR>')
+noremap('n', '<leader>rc', ':VtrSendCtrlC<CR>')
 
 -- linter all & linter this file
 noremap('n', '<leader>rua', ':lua runLinter {}<CR>')
@@ -164,6 +165,7 @@ noremap('n', ',sh', 'ggI#!/bin/sh<CR><CR><C-c>')
 -- Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo (o silent = true não ta funcionando?)
 noremap('n', ',SH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
 noremap('n', ',Sh', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
+noremap('n', ',sH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
 
 -- Colocar um ponto e vírgula no final da linha
 noremap('n', '<leader>;', 'A;<C-c>')
