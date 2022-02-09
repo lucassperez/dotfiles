@@ -1,0 +1,112 @@
+diff --git a/lua/bufferline/layout.lua b/lua/bufferline/layout.lua
+index d005ee1..f88b94a 100644
+--- a/lua/bufferline/layout.lua
++++ b/lua/bufferline/layout.lua
+@@ -50,7 +50,7 @@ local function calculate_buffers_width(state, base_width)
+ 
+       local is_pinned = state.is_pinned(buffer_number)
+ 
+-      if opts.closable or is_pinned then
++      if opts.show_mod_icon or opts.closable or is_pinned then
+         local is_modified = nvim.buf_get_option(buffer_number, 'modified')
+         local icon =
+           is_pinned
+@@ -62,7 +62,7 @@ local function calculate_buffers_width(state, base_width)
+ 
+         width = width
+           + strwidth(icon)
+-          + 1 -- space-after-close-icon
++          -- + 1 -- space-after-close-icon
+       end
+     end
+     sum = sum + width
+diff --git a/lua/bufferline/render.lua b/lua/bufferline/render.lua
+index d30104d..22ffbdd 100644
+--- a/lua/bufferline/render.lua
++++ b/lua/bufferline/render.lua
+@@ -211,6 +211,7 @@ local function render(update_names)
+ 
+   local click_enabled = has('tablineat') and opts.clickable
+   local has_close = opts.closable
++  local has_show_mod_icon = opts.show_mod_icon
+   local has_icons = (opts.icons == true) or (opts.icons == 'both')
+   local has_icon_custom_colors = opts.icon_custom_colors
+   local has_buffer_number = (opts.icons == 'buffer_numbers')
+@@ -268,7 +269,7 @@ local function render(update_names)
+           tostring(i)
+ 
+       bufferIndexPrefix = hl('Buffer' .. status .. 'Index')
+-      bufferIndex = number_text .. ' '
++      bufferIndex = number_text .. '1'
+     end
+ 
+     if state.is_picking_buffer then
+@@ -288,22 +289,30 @@ local function render(update_names)
+         local iconChar, iconHl = get_icon(buffer_name, getbufvar(buffer_number, '&filetype'), status)
+         local hlName = is_inactive and 'BufferInactive' or iconHl
+         iconPrefix = has_icon_custom_colors and hl('Buffer' .. status .. 'Icon') or hlName and hl(hlName) or namePrefix
+-        icon = iconChar .. ' '
++        icon = iconChar .. '@'
+       end
+     end
+ 
+     local closePrefix = ''
+     local close = ''
+-    if has_close or is_pinned then
+-      local closeIcon =
+-        is_pinned and
+-          opts.icon_pinned or
+-        (not is_modified and
+-          opts.icon_close_tab or
+-          opts.icon_close_tab_modified)
++    if has_show_mod_icon or has_close or is_pinned then
++      local closeIcon = ''
++      if is_pinned then
++        closeIcon = opts.icon_pinned
++      elseif is_modified then
++        closeIcon = opts.icon_close_tab_modified
++      else
++        closeIcon = opts.icon_close_tab
++      end
++        -- is_pinned and
++        --   opts.icon_pinned or
++        -- (not is_modified and
++        --   opts.icon_close_tab or
++        --   opts.icon_close_tab_modified)
+ 
+       closePrefix = namePrefix
+-      close = closeIcon .. ' '
++      -- close = closeIcon .. '#'
++      close = closeIcon
+ 
+       if click_enabled then
+         closePrefix =
+@@ -333,7 +342,8 @@ local function render(update_names)
+         {jumpLetterPrefix,   jumpLetter},
+         {namePrefix,         name},
+         {'',                 padding},
+-        {'',                 ' '},
++        -- {'',                 ' '},
++        {'',                 ''},
+         {closePrefix,        close},
+       }
+     }
+@@ -368,7 +378,8 @@ local function render(update_names)
+     }
+     result = result .. groups_to_string(slice_groups_right(groups, offset_available_width))
+     result = result .. string.rep(' ', offset_available_width - len(state.offset_text))
+-    result = result .. ' '
++    result = result .. '@'
++    -- result = result
+   end
+ 
+   -- Add bufferline
+@@ -411,7 +422,7 @@ local function render(update_names)
+   local current_tabpage = tabpagenr()
+   local total_tabpages  = tabpagenr('$')
+   if layout.tabpages_width > 0 then
+-    result = result .. '%=%#BufferTabpages# ' .. tostring(current_tabpage) .. '/' .. tostring(total_tabpages) .. ' '
++    result = result .. '%=%#BufferTabpages# ' .. tostring(current_tabpage) .. '/' .. tostring(total_tabpages) .. '$'
+   end
+ 
+   result = result .. hl('BufferTabpageFill')
