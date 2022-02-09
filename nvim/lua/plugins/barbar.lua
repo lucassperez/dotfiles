@@ -2,11 +2,25 @@ vim.api.nvim_set_keymap('n', '<leader>q', ':BufferPrevious<CR>', { noremap = tru
 vim.api.nvim_set_keymap('n', '<leader>w', ':BufferNext<CR>', { noremap = true, silent = false })
 vim.api.nvim_set_keymap('n', '<leader>d', ':BufferClose<CR>', { noremap = true, silent = false })
 
+vim.api.nvim_set_keymap('n', '<C-s>', ':BufferPick<CR>', { noremap = true, silent = false })
+vim.api.nvim_set_keymap('n', '<A-q>', ':BufferPrevious<CR>', { noremap = true, silent = false })
+vim.api.nvim_set_keymap('n', '<A-w>', ':BufferNext<CR>', { noremap = true, silent = false })
+vim.api.nvim_set_keymap('n', '<A-Q>', ':BufferMovePrevious<CR>', { noremap = true, silent = false })
+vim.api.nvim_set_keymap('n', '<A-W>', ':BufferMoveNext<CR>', { noremap = true, silent = false })
+vim.api.nvim_set_keymap('n', '<A-d>', ':BufferClose<CR>', { noremap = true, silent = false })
+
 vim.g.bufferline = {
   animation = false,
+
+  -- Enable/disable auto-hiding the tab bar when there is a single buffer
   auto_hide = false,
+
+  -- Enable/disable current/total tabpages indicator (top right corner)
   tabpages = true,
-  closable = true,
+
+  -- Enable/disable close button
+  closable = false,
+  show_mod_icon = true,
 
   -- left-click: go to buffer
   -- middle-click: delete buffer
@@ -34,7 +48,9 @@ vim.g.bufferline = {
   -- icon_separator_inactive = '▎',
   icon_separator_active = ' ',
   icon_separator_inactive = ' ',
-  icon_close_tab = ' x ',
+  -- This makes the close tab button "invisible", but if you click right at the
+  -- end of the filename, the buffer gets closed, because the button is there
+  icon_close_tab = ' ',
   icon_close_tab_modified = '[+]',
   icon_pinned = '車',
 
@@ -53,12 +69,12 @@ vim.g.bufferline = {
   -- assigned based on their name. Otherwise or in case all letters are
   -- already assigned, the behavior is to assign letters in order of
   -- usability (see order below)
-  semantic_letters = true,
+  semantic_letters = false,
 
   -- New buffer letters are assigned in this order. This order is
   -- optimal for the qwerty keyboard layout but might need adjustement
   -- for other layouts.
-  letters = 'asdfjklçghnmxcvbziowerutyqpASDFJKLGHNMXCVBZIOWERUTYQP',
+  letters = 'hjklasdfgçnmxcvbziowerutyqpHJKLASDFGÇNMXCVBZIOWERUTYQP',
 
   -- Sets the name of unnamed buffers. By default format is "[Buffer X]"
   -- where X is the buffer number. But only a static string is accepted here.
@@ -171,20 +187,20 @@ let bg_inactive = s:bg(['TabLineFill', 'StatusLine'], '#2e3436')
 call s:hi_all([
 \ ['BufferCurrent',        fg_current,  bg_current],
 \ ['BufferCurrentIndex',   fg_special,  bg_current],
-\ ['BufferCurrentMod',     fg_current,  bg_current],
+\ ['BufferCurrentMod',     '#c39f00',  bg_current],
 \ ['BufferCurrentSign',    fg_special,  bg_current],
 \ ['BufferCurrentTarget',  fg_target,   bg_current,   'bold'],
 \ ['BufferVisible',        fg_visible,  bg_visible],
 \ ['BufferVisibleIndex',   fg_visible,  bg_visible],
-\ ['BufferVisibleMod',     fg_visible,  bg_visible],
+\ ['BufferVisibleMod',     '#c39f00',  bg_visible],
 \ ['BufferVisibleSign',    fg_visible,  bg_visible],
 \ ['BufferVisibleTarget',  fg_target,   bg_visible,   'bold'],
 \ ['BufferInactive',       fg_inactive, bg_inactive],
 \ ['BufferInactiveIndex',  fg_subtle,   bg_inactive],
-\ ['BufferInactiveMod',    fg_inactive, bg_inactive],
+\ ['BufferInactiveMod',    '#c39f00', bg_inactive],
 \ ['BufferInactiveSign',   fg_subtle,   bg_inactive],
 \ ['BufferInactiveTarget', fg_target,   bg_inactive,  'bold'],
-\ ['BufferTabpages',       fg_special,  bg_inactive, 'bold'],
+\ ['BufferTabpages',       fg_special,  bg_inactive,  'bold'],
 \ ['BufferTabpageFill',    fg_inactive, bg_inactive],
 \ ])
 
@@ -199,3 +215,5 @@ call s:hi_link([
 " s:fg(), s:bg(), s:hi_all() and s:hi_link() is left as an exercise
 " for the reader.
 ]])
+
+-- \ ['BufferTabpageFill',    fg_inactive, '#bbc2cf'],
