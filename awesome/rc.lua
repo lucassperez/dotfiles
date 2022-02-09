@@ -81,7 +81,7 @@ awful.layout.layouts = {
   awful.layout.suit.tile.bottom,
   -- awful.layout.suit.max, -- I made mod + m toggle max layout instead of maximize
   awful.layout.suit.fair,
-  awful.layout.suit.magnifier, -- magnifier is so weird
+  -- awful.layout.suit.magnifier, -- magnifier is so weird
   -- awful.layout.suit.floating, -- Control + Super + Space toggle floating in focused client
   -- awful.layout.suit.tile.left,
   -- awful.layout.suit.tile.top,
