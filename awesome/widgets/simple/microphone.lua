@@ -71,7 +71,10 @@ widget:connect_signal('button::press', function(_,_,_,button)
     -- Weird hack, just like in volume.lua
     awful.spawn('/home/lucas/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
   elseif (button == 4) then widget:inc_vol(2)
-  elseif (button == 5) then widget:dec_vol(2) end
+  elseif (button == 5) then widget:dec_vol(2)
+  elseif (button == 2) then
+    awful.spawn('/home/lucas/.config/awesome/widgets/simple/pavucontrol+volume-update.sh -t 4')
+  end
 end)
 
 return widget
