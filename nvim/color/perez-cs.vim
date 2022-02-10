@@ -57,8 +57,16 @@ hi FoldColumn guifg=#ffffff guibg=#ffffff               ctermbg=gray ctermfg=whi
 
 " hi StatusLineNC
 " hi StatusLine
-hi Pmenu    guifg=#000000 guibg=#ad7fa8
-hi PmenuSel guifg=#000000 guibg=#a8a8a8 gui=BOLD
+
+" Aquele menu roxo esquisitinho
+" hi Pmenu    guifg=#000000 guibg=#ad7fa8
+" hi PmenuSel guifg=#000000 guibg=#a8a8a8 gui=BOLD
+
+hi Pmenu    guifg=#000000 guibg=#999999
+hi PmenuSel guifg=#c9c9c9 guibg=#0f0f0f gui=BOLD
+
+" hi Pmenu    guifg=#c9c9c9 guibg=#222222
+" hi PmenuSel guifg=#c9c9c9 guibg=#0f0f0f gui=BOLD
 
 hi TSNumber         guifg=#afffaf ctermfg=157
 hi TSFloat          guifg=#ffff00 ctermfg=yellow
