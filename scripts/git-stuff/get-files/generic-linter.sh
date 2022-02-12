@@ -50,7 +50,7 @@ if [ "$PROJECT_LANGUAGE" = ruby ]; then
   LINTER_COMMAND='bundle exec rubocop'
 elif [ "$PROJECT_LANGUAGE" = elixir ]; then
   GREP_PATTERN='\.exs?$'
-  LINTER_COMMAND='mix credo --strict'
+  LINTER_COMMAND='mix format --check-formatted && mix credo --strict'
 else
   echo Language "$LANG" is not supported
   exit 4
