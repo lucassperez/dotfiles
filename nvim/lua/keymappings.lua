@@ -39,10 +39,10 @@ noremap('n', '<leader>f', ':let @+ = expand("%")<CR>')
 -- Acho que faz sentido Y copiar do cursor até o final da linha (ver :help Y)
 noremap('n', 'Y', 'y$')
 
--- "zource" vim
-noremap('n', '<leader>zv', ':so ~/.config/nvim/init.vim<CR>')
--- "zource" lua
-noremap('n', '<leader>zl', ':luafile ~/.config/nvim/lua/init.lua<CR>')
+-- -- "zource" vim
+-- noremap('n', '<leader>zv', ':so ~/.config/nvim/init.vim<CR>')
+-- -- "zource" lua
+-- noremap('n', '<leader>zl', ':luafile ~/.config/nvim/lua/init.lua<CR>')
 
 -- Não entrar no insert mode após usar leader + o/O
 noremap('n', '<leader>o', 'o<C-c>')
@@ -121,8 +121,8 @@ noremap('n', '<Esc>', ':noh<CR>')
 
 -- Setar um runner pro Vim Tmux Runner
 noremap('n', '<leader>a', ':VtrAttachToPane<CR>')
-noremap('n', '<leader><C-d>', ':VtrSendCtrlD<CR>')
-noremap('n', '<leader>rc', ':VtrSendCtrlC<CR>')
+noremap('n', '<A-d>', ':VtrSendCtrlD<CR>')
+noremap('n', '<A-c>', ':VtrSendCtrlC<CR>')
 
 -- linter all & linter this file
 noremap('n', '<leader>rua', ':lua runLinter {}<CR>')

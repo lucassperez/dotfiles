@@ -1,3 +1,10 @@
+vim.api.nvim_set_keymap('n', '<C-p>', ':lua telescopeGitOrFindFiles()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-f>', ':Telescope live_grep<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>p', ':Telescope find_files<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>h', ':Telescope oldfiles<CR>', { noremap = true })
+
+vim.api.nvim_set_keymap('n', '<leader>zv', ':Telescope find_files cwd=/home/lucas/dotfiles/nvim/<CR>', { noremap = true })
+
 -- You dont need to set any of these options. These are the default ones. Only
 -- the loading is important
 require('telescope').setup {
@@ -36,8 +43,3 @@ function _G.telescopeGitOrFindFiles(opts)
     telescope_builtin.find_files(opts)
   end
 end
-
-vim.api.nvim_set_keymap('n', '<C-p>', ':lua telescopeGitOrFindFiles()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-f>', ':Telescope live_grep<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>p', ':Telescope find_files<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>h', ':Telescope oldfiles<CR>', { noremap = true })
