@@ -17,8 +17,8 @@ map('i', '<C-c>', '<Esc>')
 noremap('n', 'Ç', ':')
 noremap('v', 'Ç', ':')
 
--- Atalho pra mostrar a quais grupos de sintaxe a palavra
--- debaixo do cursor pertence
+-- Atalho pra mostrar a quais grupos de sintaxe
+-- a palavra debaixo do cursor pertence
 noremap('n', '<leader>m', ':TSHighlightCapturesUnderCursor<CR>')
 
 -- Novos paineis (horizontal e vertical) e fechar o atual
@@ -52,21 +52,17 @@ noremap('n', '<leader>O', 'O<C-c>')
 noremap('n', 'gx', ':!firefox <C-r><C-a><CR>')
 
 -- Ir para o buffer anterior/próximo e fechar o atual
-noremap('n', '<leader>q', ':bprevious<CR>')
-noremap('n', '<leader>w', ':bnext<CR>')
-noremap('n', '<leader>d', ':bdelete<CR>')
+-- O plugin barbar.vim estaria sobrescrevendo esses mappings de qualquer forma
+-- noremap('n', '<leader>q', ':bprevious<CR>')
+-- noremap('n', '<leader>w', ':bnext<CR>')
+-- noremap('n', '<leader>d', ':bdelete<CR>')
 
 -- Mudar de painéis segurando Control
+-- O plugin vim-tmux-navigator está fazendo isso
 -- noremap('n', '<C-h>', '<C-w>h')
 -- noremap('n', '<C-j>', '<C-w>j')
 -- noremap('n', '<C-k>', '<C-w>k')
 -- noremap('n', '<C-l>', '<C-w>l')
-
--- Coisas do fzf
--- noremap('n', '<C-p>', ':GFiles<CR>')
--- noremap('n', '<C-f>', ':Ag<CR>')
--- noremap('n', '<leader>p', ':Files<CR>')
--- noremap('n', '<leader>h', ':History<CR>')
 
 -- Copiar para o clipboard
 noremap('v', '<leader>y', '"+y')
@@ -83,7 +79,6 @@ noremap('n', '>', '>>')
 noremap('n', '<', '<<')
 
 -- Mover blocos de texto
--- TODO: Fazer um map para a mesma coisa no normal mode
 noremap('v', '<C-j>', ":m '>+1<CR>gv=gv")
 noremap('v', '<C-k>', ":m '<-2<CR>gv=gv")
 
@@ -100,8 +95,10 @@ noremap('i', '<C-Del>', '<C-o>de')
 -- Colocar 3 (ou 6) crases
 noremap('n', '<leader>ç', 'i```<CR>```<CR><C-c>2kA')
 
--- Tenho andado escrevendo muito "binding.pry", então...
--- noremap('n', ',bp', 'obinding.pry<C-c>')
+-- Se receber true como argumento, essa função escreve na linha anterior. A
+-- ideia é como os comandos `o` e `O`, só que pra um debugger (binding.pry no
+-- ruby, IEx.pry no elixir). Se segurar shift em algum momento, manda pra linha
+-- de cima (recebe true como argumento), do contrário, manda pra linha de baixo.
 noremap('n', ',bp', ':lua writeDebuggerBreakpoint()<CR>')
 noremap('n', ',BP', ':lua writeDebuggerBreakpoint(true)<CR>')
 noremap('n', ',Bp', ':lua writeDebuggerBreakpoint(true)<CR>')
@@ -114,12 +111,16 @@ noremap('n', '<Esc>', ':noh<CR>')
 -- Dependendo do tipo de arquivo, será feito algo diferente.
 -- Linguagens configuradas:
 -- - Ruby (rubocop e rspec)
--- - Elixir (credo e test)
--- Mnemônicos: rubocop all (rua), rubocop file (ruf),
---             rspec all (ra), rspec (rs), rspec near (rn), rspec directory (rd),
+-- - Elixir (credo/formatter e test)
+-- Mnemônicos: rubocop all (rua), rubocop file (ruf), rubocop main/master (rum)
+--             rspec all (ra), rspec (rs), rspec near (rn),
+--             rspec directory (rd), rspec main/master (rm)
 --             attach (<leader>a)
 
--- Setar um runner pro Vim Tmux Runner
+-- Basicamente, "ru" = linter (RUbocop) e "r" = testes (Rspec)
+
+-- Setar um runner pro Vim Tmux Runner e mandar alguns sinais úteis, como
+-- Control + d e Control + c
 noremap('n', '<leader>a', ':VtrAttachToPane<CR>')
 noremap('n', '<A-d>', ':VtrSendCtrlD<CR>')
 noremap('n', '<A-c>', ':VtrSendCtrlC<CR>')
@@ -128,18 +129,19 @@ noremap('n', '<A-c>', ':VtrSendCtrlC<CR>')
 noremap('n', '<leader>rua', ':lua runLinter {}<CR>')
 noremap('n', '<leader>ruf', ':lua runLinter { cur_file = true }<CR>')
 
--- test all, test this file, test this file this line &  test this directory
+-- test all, test this file, test this file this line & test this directory
 noremap('n', '<leader>ra', ':lua runAutomatedTest {}<CR>')
 noremap('n', '<leader>rs', ':lua runAutomatedTest { cur_file = true }<CR>')
 noremap('n', '<leader>rn', ":lua runAutomatedTest { cur_file = true, cur_line = true }<CR>")
 noremap('n', '<leader>rd', ':lua runAutomatedTest { cur_dir = true }<CR>')
 
--- Pegando os arquivos no diff com a main/master e executando rspec/rubocop
+-- Pegando os arquivos no diff com a main/master e executando testes/linters
 -- Mmenônicos: rspec-main (rm) e rubocop-main (rum)
 noremap('n', '<leader>rm', ':lua fromGit.genericTest()<CR>')
 noremap('n', '<leader>rum', ':lua fromGit.genericLinter()<CR>')
 
 -- Run last command executado no painel "anexado"
+-- Na verdade simplesmente executa !!, que só vai funcionar num shell, mesmo
 noremap('n', '<leader>rl', ':call VtrSendCommand("!!")<CR>')
 
 -- Executa o arquivo como um script a depender do seu "filetype"
