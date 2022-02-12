@@ -448,7 +448,7 @@ globalkeys = gears.table.join(
   awful.key({ modkey }, 'w',
             function () awful.client.focus.byidx(1) end,
             { group = 'client', description = 'focus by index +1', }),
-  awful.key({ modkey }, 'u',
+  awful.key({ modkey }, "'",
             awful.client.urgent.jumpto,
             { group = 'client', description = 'jump to urgent client', }),
   awful.key({ modkey }, 'Tab',
