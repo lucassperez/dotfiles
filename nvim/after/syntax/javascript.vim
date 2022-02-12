@@ -62,4 +62,3 @@
 " hi jsGlobalObjects cterm=italic ctermfg=green
 "
 " source $HOME/.config/nvim/after/syntax/javascriptreact.vim
-"

@@ -25,4 +25,3 @@
 " " tipo <div>Nome: {value}</div>
 " "                 ^     ^
 " hi jsxBraces ctermfg=blue
-"

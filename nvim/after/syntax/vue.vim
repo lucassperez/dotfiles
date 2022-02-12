@@ -37,4 +37,3 @@
 " hi cssFunctionName ctermfg=yellow
 " hi link cssFunctionComma Noise
 " hi cssAttrRegion ctermfg=117
-"

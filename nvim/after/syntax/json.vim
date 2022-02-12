@@ -13,4 +13,3 @@
 "
 " hi jsonNumber ctermfg=157
 " hi jsonBoolean ctermfg=99
-"
