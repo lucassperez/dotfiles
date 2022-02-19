@@ -1,4 +1,4 @@
-function _G.executeFileAsScript()
+function executeFileAsScript()
   local filetype = vim.bo.filetype
   local full_path_filename = vim.fn.expand('%:p')
   local filename = vim.fn.expand('%')

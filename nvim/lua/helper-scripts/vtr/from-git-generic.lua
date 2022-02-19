@@ -29,7 +29,7 @@ function genericTest()
   vim.fn.VtrSendCommand(command)
 end
 
-_G.fromGit = {
+fromGit = {
   genericLinter = genericLinter,
   genericTest = genericTest,
 }

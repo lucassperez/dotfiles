@@ -36,7 +36,7 @@ require('telescope').load_extension('fzf')
 
 local telescope_builtin = require('telescope.builtin')
 
-function _G.telescopeGitOrFindFiles(opts)
+function telescopeGitOrFindFiles(opts)
   if os.execute('git rev-parse --git-dir 2>/dev/null 1>&2') then
     telescope_builtin.git_files(opts)
   else

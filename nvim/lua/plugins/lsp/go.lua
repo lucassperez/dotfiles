@@ -1,4 +1,4 @@
-function _G.golangImports(timeout_ms)
+function golangImports(timeout_ms)
   local context = { only = { 'source.organizeImports' } }
   vim.validate { context = { context, 't', true } }
 

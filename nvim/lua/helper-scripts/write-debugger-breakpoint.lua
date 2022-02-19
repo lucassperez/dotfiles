@@ -1,4 +1,4 @@
-function _G.writeDebuggerBreakpoint(above)
+function writeDebuggerBreakpoint(above)
   local filetype = vim.bo.filetype
 
   debugger_commands = {

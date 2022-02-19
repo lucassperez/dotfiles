@@ -1,6 +1,6 @@
 -- opts is a table like this: { cur_file = true, cur_line = false }
 -- Possible options: { cur_file, cur_line, cur_dir }
-function _G.runAutomatedTest(opts)
+function runAutomatedTest(opts)
   local filetype = vim.bo.filetype
   local filename = ''
   local line = ''

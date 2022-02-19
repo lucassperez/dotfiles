@@ -1,4 +1,4 @@
-function _G.toggleBetweenTestAndFile()
+function toggleBetweenTestAndFile()
   local filetype = vim.bo.filetype
 
   functions = {
