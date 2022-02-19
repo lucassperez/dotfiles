@@ -132,6 +132,10 @@ bindkey '^[[Z' reverse-menu-complete
 bindkey ";5D" backward-word
 bindkey ";5C" forward-word
 
+# Dentro do tmux, control + esquerda/direita está gerando isso
+bindkey "5D" backward-word
+bindkey "5C" forward-word
+
 source "$ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
 
 # Será que isso devia ficar aqui?
