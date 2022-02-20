@@ -22,6 +22,9 @@
 #              - Elixir with mix test
 #              If the language is ruby, it will try rspec, even if it is not
 #              used in the project.
+#              This script uses xclip to copy the output to the clipboard, so
+#              you will need to have it installed everytime it is ran without
+#              the `noclipboard` option.
 #
 # Usage: sh generic-test.sh [OPTIONS]
 #
@@ -30,6 +33,8 @@
 #   1 - If not in a git repository
 #   2 - If neither git branch main nor master is found
 #   3 - If no matching files were found in the diff
+#   4 - If project language is not supported
+#   5 - If project language could not be determined
 ##############################
 
 if [ "$1" = noclipboard ]; then
@@ -50,8 +55,11 @@ if [ "$PROJECT_LANGUAGE" = ruby ]; then
 elif [ "$PROJECT_LANGUAGE" = elixir ]; then
   GREP_PATTERN='test/.*_test\.exs$'
   TEST_COMMAND='mix test'
+elif [ -z "$PROJECT_LANGUAGE" ]; then
+  echo Language of project could not be determined
+  exit 5
 else
-  echo Language "$LANG" is not supported
+  echo Language "$PROJECT_LANGUAGE" is not supported
   exit 4
 fi
 
@@ -81,8 +89,8 @@ if [ "$NO_CLIP" ]; then
   exit
 fi
 
-for f in $FILES; do
-  echo $f
+for f in "$FILES"; do
+  echo "$f"
 done
 
 echo "$TEST_COMMAND" "$@" $FILES | xclip -selection clipboard -rmlastnl
