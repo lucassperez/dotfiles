@@ -44,4 +44,8 @@ else
   exit 2
 fi
 
-git log "$BRANCH"^..HEAD "$@"
+if [ "$(git rev-parse --verify -q "$BRANCH"^)" ]; then
+  git log "$BRANCH"^.."$ACTUAL_BRANCH" "$@"
+else
+  git log "$BRANCH".."$ACTUAL_BRANCH" "$@"
+fi
