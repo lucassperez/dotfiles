@@ -1,4 +1,4 @@
-require'nvim-treesitter.configs'.setup {
+require('nvim-treesitter.configs').setup {
   -- ensure_installed can be "all" or a list of languages { "python", "javascript" }
   ensure_installed = {'lua', 'bash', 'javascript', 'ruby', 'go', 'java'},
 
@@ -6,7 +6,7 @@ require'nvim-treesitter.configs'.setup {
     enable = true, -- you can also use a table with list of langs here (e.g. { "python", "javascript" })
     disable = {'vue'},
     custom_captures = {
-      ["heredoc_content"] = "TSComment",
+      ['heredoc_content'] = 'TSComment',
     },
   },
   indent = {
@@ -16,10 +16,10 @@ require'nvim-treesitter.configs'.setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "gnn",
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
+      init_selection = 'gnn',
+      node_incremental = 'grn',
+      scope_incremental = 'grc',
+      node_decremental = 'grm',
     },
   },
   playground = {
@@ -66,36 +66,36 @@ require'nvim-treesitter.configs'.setup {
 
       keymaps = {
         -- You can use the capture groups defined in textobjects.scm
-        -- ["af"] = {
-        --   elixir = "(function) @function.outer",
-        --   javascript = "@function.outer"
+        -- ['af'] = {
+        --   elixir = '(function) @function.outer',
+        --   javascript = '@function.outer'
         -- },
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
+        ['ac'] = '@class.outer',
+        ['ic'] = '@class.inner',
 
         -- Or you can define your own textobjects like this
-        -- ["iF"] = {
-        --   python = "(function_definition) @function",
-        --   cpp = "(function_definition) @function",
-        --   c = "(function_definition) @function",
-        --   java = "(method_declaration) @function",
+        -- ['iF'] = {
+        --   python = '(function_definition) @function',
+        --   cpp = '(function_definition) @function',
+        --   c = '(function_definition) @function',
+        --   java = '(method_declaration) @function',
         -- },
       },
     },
     swap = {
       enable = true,
       swap_next = {
-        ["]a"] = "@parameter.inner",
+        [']a'] = '@parameter.inner',
       },
       swap_previous = {
-        ["[a"] = "@parameter.inner",
+        ['[a'] = '@parameter.inner',
       },
     },
   },
 }
 
--- vim.opt.foldmethod     = "expr"
--- vim.opt.foldexpr       = "nvim_treesitter#foldexpr()"
+-- vim.opt.foldmethod     = 'expr'
+-- vim.opt.foldexpr       = 'nvim_treesitter#foldexpr()'
 -- vim.opt.foldlevelstart = 99

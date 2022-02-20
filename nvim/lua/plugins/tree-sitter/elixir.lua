@@ -1,9 +1,9 @@
-local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.elixir = {
   install_info = {
-    url = '~/sources/tree-sitter-elixir', -- local path or git repo
+    -- url = '~/sources/tree-sitter-elixir', -- local path or git repo
     files = { 'src/parser.c' }
   },
   -- filetype = "zu", -- if filetype does not agrees with parser name
-  -- used_by = {"bar", "baz"} -- additional filetypes that use this parser
+  -- filetype_to_parsename = {"bar", "baz"} -- additional filetypes that use this parser
 }
