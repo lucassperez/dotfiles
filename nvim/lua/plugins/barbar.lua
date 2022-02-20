@@ -2,12 +2,14 @@ vim.api.nvim_set_keymap('n', '<leader>q', ':BufferPrevious<CR>', { noremap = tru
 vim.api.nvim_set_keymap('n', '<leader>w', ':BufferNext<CR>', { noremap = true, silent = false })
 vim.api.nvim_set_keymap('n', '<leader>d', ':BufferClose<CR>', { noremap = true, silent = false })
 
-vim.api.nvim_set_keymap('n', '<C-s>', ':BufferPick<CR>', { noremap = true, silent = false })
+-- vim.api.nvim_set_keymap('n', '<C-s>', ':BufferPick<CR>', { noremap = true, silent = false })
+vim.api.nvim_set_keymap('n', '<leader>p', ':BufferPick<CR>', { noremap = true, silent = false })
+vim.api.nvim_set_keymap('n', '<A-e>', ':BufferPick<CR>', { noremap = true, silent = false })
 vim.api.nvim_set_keymap('n', '<A-q>', ':BufferPrevious<CR>', { noremap = true, silent = false })
 vim.api.nvim_set_keymap('n', '<A-w>', ':BufferNext<CR>', { noremap = true, silent = false })
 vim.api.nvim_set_keymap('n', '<A-Q>', ':BufferMovePrevious<CR>', { noremap = true, silent = false })
 vim.api.nvim_set_keymap('n', '<A-W>', ':BufferMoveNext<CR>', { noremap = true, silent = false })
-vim.api.nvim_set_keymap('n', '<A-d>', ':BufferClose<CR>', { noremap = true, silent = false })
+vim.api.nvim_set_keymap('n', '<A-D>', ':BufferClose<CR>', { noremap = true, silent = false })
 
 vim.g.bufferline = {
   animation = false,
