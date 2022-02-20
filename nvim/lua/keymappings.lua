@@ -186,3 +186,11 @@ noremap('v', '<leader>R', ':lua sendLinesToTmux("visual")<CR>')
 -- Tries to find the test file of current file or vice versa.
 -- Works well with elixir and its organized and predictable paths.
 noremap('n', '<leader>e', ':lua toggleBetweenTestAndFile()<CR>')
+
+function RELOAD()
+  vim.cmd [[:so ~/.config/nvim/init.vim]]
+  vim.cmd [[:luafile ~/.config/nvim/lua/keymappings.lua]]
+  vim.cmd [[:luafile ~/.config/nvim/lua/settings.lua]]
+end
+
+noremap('n', '<leader>zl', ':lua RELOAD()<CR>')
