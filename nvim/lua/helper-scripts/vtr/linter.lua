@@ -2,7 +2,6 @@
 function runLinter(opts)
   local filetype = vim.bo.filetype
   local filename = ''
-  local line = ''
 
   -- check for current file option
   if opts.cur_file then

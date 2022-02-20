@@ -3,7 +3,7 @@
 function runAutomatedTest(opts)
   local filetype = vim.bo.filetype
   local filename = ''
-  local line = ''
+  local line_number = ''
 
   -- Checks for current file option
   if opts.cur_file then
@@ -12,20 +12,20 @@ function runAutomatedTest(opts)
 
   -- Checks for current cursor line option
   if opts.cur_line then
-    line = ':'..vim.fn.line('.')
+    line_number = ':'..vim.fn.line('.')
   end
 
   -- Checks for current directory option
   -- This should override cur_file and cur_line options
   if opts.cur_dir then
     filename = vim.fn.expand('%:h')
-    line = ''
+    line_number = ''
   end
 
   if (filetype == 'elixir') then
-    vim.fn.VtrSendCommand('mix test '..filename..line)
+    vim.fn.VtrSendCommand('mix test '..filename..line_number)
   elseif (filetype == 'ruby') then
-    vim.fn.VtrSendCommand('bundle exec rspec '..filename..line)
+    vim.fn.VtrSendCommand('bundle exec rspec '..filename..line_number)
   else
     print('Não sei executar testes automatizados para arquivos do tipo '..filetype)
   end
