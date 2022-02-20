@@ -1,6 +1,6 @@
 vim.api.nvim_set_keymap('n', '<C-p>', ':lua telescopeGitOrFindFiles()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-f>', ':Telescope live_grep<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>p', ':Telescope find_files<CR>', { noremap = true })
+-- vim.api.nvim_set_keymap('n', '<leader>p', ':Telescope find_files<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>h', ':Telescope oldfiles<CR>', { noremap = true })
 
 vim.api.nvim_set_keymap('n', '<leader>zv', ':Telescope find_files cwd=/home/lucas/dotfiles/nvim/<CR>', { noremap = true })
@@ -37,7 +37,11 @@ require('telescope').load_extension('fzf')
 local telescope_builtin = require('telescope.builtin')
 
 function telescopeGitOrFindFiles(opts)
-  if os.execute('git rev-parse --git-dir 2>/dev/null 1>&2') then
+  -- local is_git = require('telescope.utils').get_os_command_output({'git', 'rev-parse', '--git-dir'})[1]
+  -- if is_git then
+
+  local code = os.execute('git rev-parse --git-dir 2>/dev/null 1>&2')
+  if code == 0 then
     telescope_builtin.git_files(opts)
   else
     telescope_builtin.find_files(opts)
