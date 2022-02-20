@@ -28,3 +28,9 @@ require('helper-scripts.vtr.execute-script')
 require('helper-scripts.vtr.send-line-to-tmux')
 require('helper-scripts.togglebetweentestandfile')
 require('helper-scripts.write-debugger-breakpoint')
+
+-- Useful to print tables
+function P(value)
+  print(vim.inspect(value))
+  return value
+end
