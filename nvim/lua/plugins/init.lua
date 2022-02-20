@@ -1,3 +1,9 @@
+local fn = vim.fn
+local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+if fn.empty(fn.glob(install_path)) > 0 then
+  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+end
+
 -- https://github.com/yegappan/mru tentar esse qualquer dias desses
 -- https://github.com/neoclide/redismru.vim ou esse
 return require('packer').startup(function()
@@ -7,13 +13,6 @@ return require('packer').startup(function()
     requires = { {'nvim-lua/plenary.nvim'} }
   }
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
-
-  -- Funcionalidades de verdade
-  -- use {
-  --   'junegunn/fzf',
-  --   run = function () vim.fn['fzf#install']() end
-  -- }
-  -- use 'junegunn/fzf.vim'
 
   use 'cohama/lexima.vim'
   use 'christoomey/vim-tmux-navigator'
@@ -32,7 +31,7 @@ return require('packer').startup(function()
   use 'kana/vim-textobj-user'
   use 'nelstrom/vim-textobj-rubyblock'
   use 'andyl/vim-textobj-elixir'
-  use 'mhinz/vim-startify'
+  -- use 'mhinz/vim-startify'
   -- use 'windwp/nvim-ts-autotag'
   use 'alvan/vim-closetag'
   use 'JoosepAlviste/nvim-ts-context-commentstring'
@@ -81,4 +80,8 @@ return require('packer').startup(function()
   use 'ayu-theme/ayu-vim'
   use 'Shatur/neovim-ayu'
   use 'folke/tokyonight.nvim'
+
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end)
