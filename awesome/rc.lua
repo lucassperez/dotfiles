@@ -518,17 +518,17 @@ globalkeys = gears.table.join(
             { group = 'awesome', description = 'lock screen', }),
 
   awful.key({ modkey }, 'i',
-            function () awful.tag.incmwfact(0.05) end,
-            { group = 'layout', description = 'increase master width factor', }),
+            function () awful.tag.incmwfact(-0.05) end,
+            { group = 'layout', description = 'decrease master width factor', }),
   awful.key({ modkey }, 'o',
-            function () awful.client.incwfact(0.05) end,
+            function () awful.client.incwfact(-0.05) end,
             { group = 'layout', description = 'decrease client height', }),
   awful.key({ modkey }, 'p',
-            function () awful.client.incwfact(-0.05) end,
+            function () awful.client.incwfact(0.05) end,
             { group = 'layout', description = 'increase client height', }),
   awful.key({ modkey }, '#34', -- acento agudo ´
-            function () awful.tag.incmwfact(-0.05) end,
-            { group = 'layout', description = '(acute) decrease master width factor', }),
+            function () awful.tag.incmwfact(0.05) end,
+            { group = 'layout', description = '(acute) increase master width factor', }),
 
   awful.key({ modkey, control }, 'h',
             function () awful.tag.incncol( 1, nil, true) end,
@@ -557,6 +557,10 @@ globalkeys = gears.table.join(
   awful.key({ modkey }, 'Return',
             function () awful.spawn(terminal) end,
             { group = 'Launcher', description = 'open '..terminal..' terminal',  }),
+  -- The key #104 is the numpad enter
+  awful.key({ modkey }, '#104',
+            function () awful.spawn(terminal) end,
+            { group = 'Launcher', description = '(numpad enter) open '..terminal..' terminal',  }),
 
   awful.key({}, 'Print',
             function() awful.spawn('flameshot screen -c') end,
@@ -640,12 +644,12 @@ clientkeys = gears.table.join(
             { group = 'client', description = 'toggle maximize layout', }),
   -- Sometimes, the above function behaves really weird, and the original toggle
   -- maximized can be a life saver. The key #104 is the numpad enter.
-  awful.key({ modkey }, '#104',
-            function (c)
-              c.maximized = not c.maximized
-              c:raise()
-            end,
-            { group = 'client', description = '(numpad enter) toggle maximize', }),
+  -- awful.key({ modkey }, '#104',
+  --           function (c)
+  --             c.maximized = not c.maximized
+  --             c:raise()
+  --           end,
+  --           { group = 'client', description = '(numpad enter) toggle maximize', }),
   awful.key({ modkey, control, shift }, 'm',
             function (c)
               c.maximized = not c.maximized
