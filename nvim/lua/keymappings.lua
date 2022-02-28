@@ -104,6 +104,12 @@ noremap('n', ',BP', ':lua writeDebuggerBreakpoint(true)<CR>')
 noremap('n', ',Bp', ':lua writeDebuggerBreakpoint(true)<CR>')
 noremap('n', ',bP', ':lua writeDebuggerBreakpoint(true)<CR>')
 
+local elixir_pipe_pry = [[|> fn x -><CR>require IEx; IEx.pry()<CR>x<CR>end.()]]
+noremap('n', ',,bp', 'o'..elixir_pipe_pry..'<C-c>')
+noremap('n', ',,BP', 'O'..elixir_pipe_pry..'<C-c>')
+noremap('n', ',,Bp', 'O'..elixir_pipe_pry..'<C-c>')
+noremap('n', ',,bP', 'O'..elixir_pipe_pry..'<C-c>')
+
 -- É brincadeira que :noh<CR> não vem por padrão em algum lugar, viu...
 noremap('n', '<Esc>', ':noh<CR>')
 
