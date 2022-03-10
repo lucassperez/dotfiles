@@ -29,7 +29,7 @@ widget:connect_signal(
   function(_, _, _, button)
     if button == 1 or button == 3 then
       local text = ''
-      local docker_response = io.popen('docker ps --format "{{.Names}} ({{.RunningFor}})\n"')
+      local docker_response = io.popen('docker ps --format "{{.Names}} ({{.Status}})\n"')
 
       while true do
         line = docker_response:read()
