@@ -32,8 +32,8 @@ let &titlestring='nvim'
 let &colorcolumn='81,121'
 
 " NvimTree
-source $HOME/.config/nvim/tree-config.vim
-" source $HOME/.config/nvim/ported-tree-config.vim
+" source $HOME/.config/nvim/tree-config.vim
+source $HOME/.config/nvim/ported-tree-config.vim
 
 " Alterar a cor da numeração das linhas com alguma alteração (git gutter)
 set signcolumn=no
