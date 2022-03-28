@@ -78,9 +78,10 @@ modkey = 'Mod4'
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
   awful.layout.suit.tile,
+  awful.layout.suit.tile.left,
+  awful.layout.suit.fair,
   awful.layout.suit.tile.bottom,
   -- awful.layout.suit.max, -- I made mod + m toggle max layout instead of maximize
-  awful.layout.suit.fair,
   -- awful.layout.suit.magnifier, -- magnifier is so weird
   -- awful.layout.suit.floating, -- Control + Super + Space toggle floating in focused client
   -- awful.layout.suit.tile.left,
@@ -396,6 +397,12 @@ globalkeys = gears.table.join(
   awful.key({ modkey }, ']',
             function() bright_widget:dec(5) end,
             { group = 'System controls', description = 'decrease brightness', }),
+  awful.key({ modkey, shift }, '[',
+            function() awful.spawn('/home/lucas/scripts/dmenu/backlight.sh') end,
+            { group = 'System controls', description = 'Ask for a brightness' }),
+  awful.key({ modkey, shift }, ']',
+            function() awful.spawn('/home/lucas/scripts/dmenu/backlight.sh') end,
+            { group = 'System controls', description = 'Ask for a brightness' }),
 
   awful.key({ modkey }, 'n',
             function() notification_widget:toggle() end,
@@ -417,8 +424,9 @@ globalkeys = gears.table.join(
             { group = 'client', description = 'focus left global', }),
   awful.key({ modkey }, 'j',
             function ()
-              this_screen = awful.client.screen
-              actual_layout = awful.layout.get(this_screen)
+              local this_screen = awful.client.screen
+              local actual_layout = awful.layout.get(this_screen)
+
               if actual_layout == awful.layout.suit.max then
                 awful.client.focus.byidx(1)
               else
@@ -428,8 +436,9 @@ globalkeys = gears.table.join(
             { group = 'client', description = 'focus down global', }),
   awful.key({ modkey }, 'k',
             function ()
-              this_screen = awful.client.screen
-              actual_layout = awful.layout.get(this_screen)
+              local this_screen = awful.client.screen
+              local actual_layout = awful.layout.get(this_screen)
+
               if actual_layout == awful.layout.suit.max then
                 awful.client.focus.byidx(-1)
               else
@@ -630,12 +639,12 @@ clientkeys = gears.table.join(
               local actual_layout = awful.layout.get(this_screen)
 
               if actual_layout ~= awful.layout.suit.max then
-                cache = actual_layout
+                max_mayout_toggle_cache = actual_layout
                 awful.layout.set(awful.layout.suit.max)
-              elseif cache then
-                awful.layout.set(cache)
+              elseif max_mayout_toggle_cache then
+                awful.layout.set(max_mayout_toggle_cache)
               else
-                -- If there is no "last layout", goes to the first
+                -- If there is no "last layout" (cached), goes to the first one
                 awful.layout.set(awful.layout.layouts[1])
               end
 
@@ -872,14 +881,19 @@ awful.rules.rules = {
   -- { rule = { class = 'Firefox' },
   --   properties = { screen = 1, tag = '2' } },
 
+  -- xprop | grep WM_CLASS pra descobrir (xprop em geral é muito legal)
+  {
+    rule = { class = 'DBeaver' },
+    properties = { tag = '3' }
+  },
   -- Zoom and discord always on 9 and 10, respectively
   {
     rule = { class = 'zoom' },
-    properties = { screen = 1, tag = '9' }
+    properties = { tag = '9' }
   },
   {
     rule = { class = 'discord' },
-    properties = { screen = 1, tag = '0' }
+    properties = { tag = '0' }
   },
   {
     rule = { class = 'Gedit' },

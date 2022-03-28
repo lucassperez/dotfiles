@@ -12,11 +12,11 @@ widget:set_widget(text)
 widget:set_fg('#00ff00')
 text:set_text('TURBO ')
 
-function widget:random_from_list(list)
+local function random_from_list(list)
   return list[math.random(#list)]
 end
 
-function widget:random_phrase()
+local function random_phrase()
   phrases = {
     'MAX TURBO',
     'ULTRA NITRO',
@@ -32,10 +32,10 @@ function widget:random_phrase()
     'INTERDIMENSIONAL HYPERX',
     'POWER GENETIC TRANSPORTER'
   }
-  return widget:random_from_list(phrases)
+  return random_from_list(phrases)
 end
 
-function widget:random_build_phrase()
+local function random_build_phrase()
   prefixes = {
     'MAX', 'TURBO', 'ULTRA', 'NITRO', 'MEGA', 'BLASTER', 'HYPER', 'BIONIC',
     'SPACE', 'EXTREME', 'ULTIMATE', 'COSMIC', 'SUPER', 'TRANSLUSCENT',
@@ -48,30 +48,40 @@ function widget:random_build_phrase()
     'HYPERPROCESSOR', 'POWERLIGHT', 'POWER CONVERTER', 'MOLECULE GENERATOR',
     'HYPERX', 'GENETIC TRANSPORTER', 'ACCELERATOR', 'QUADRATIC ENGINES'
   }
-  return widget:random_from_list(prefixes)..' '..widget:random_from_list(suffixes)
+  return random_from_list(prefixes)..' '..random_from_list(suffixes)
 end
 
-function widget:random_verb()
+local function random_verb()
   verbs = {
     'ACTIVATED', 'STARTED', 'NEUTRALIZED', 'DESTROYED', 'INTERRUPTED',
     'ACCELERATED', 'HEATING UP', 'SHUTTING DOWN', 'DOWN', 'IGNITED',
     'TURNED ON', 'BOOTED SUCCESFULLY', 'RECOVERED', 'SENT TO INTERDIMENSIONAL RIFT',
     'TOOK OFF', 'LANDED'
   }
-  return widget:random_from_list(verbs)
+  return random_from_list(verbs)
+end
+
+local function update_brightness_microphone_and_volume_icons()
+  -- This just works with my own brightness, microphone and volume widgets
+  require('widgets.simple.volume'):update_widget('amixer -D pulse sget Master')
+  require('widgets.simple.microphone'):update_widget('amixer sget Capture')
+  -- require('widgets.simple.brightness'):update_widget('xbacklight')
+  require('widgets.simple.brightness'):roundNearest5()
 end
 
 function widget:send_turbo_notification()
+  update_brightness_microphone_and_volume_icons()
+
   if naughty.suspended then return end
 
   naughty.destroy_all_notifications()
 
   if math.random(2) == 1 then
-    phrase = widget:random_phrase()
+    phrase = random_phrase()
   else
-    phrase = widget:random_build_phrase()
+    phrase = random_build_phrase()
   end
-  phrase = phrase..' '..widget:random_verb()
+  phrase = phrase..' '..random_verb()
 
   naughty.notify({
     title = phrase,

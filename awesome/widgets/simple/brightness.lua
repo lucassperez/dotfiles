@@ -28,20 +28,43 @@ end
 
 set_widget()
 
-local function update_widget(cmd)
+function widget:update_widget(cmd)
   awful.spawn.easy_async(cmd, set_widget)
 end
 
 function widget:inc(delta)
   delta = delta or 5
-  -- update_widget('light -A '..delta..'%')
-  update_widget('xbacklight -inc '..delta)
+  -- widget:update_widget('light -A '..delta..'%')
+  widget:update_widget('xbacklight -inc '..delta)
 end
 
 function widget:dec(delta)
   delta = delta or 5
-  -- update_widget('light -U '..delta..'%')
-  update_widget('xbacklight -dec '..delta)
+  -- widget:update_widget('light -U '..delta..'%')
+  widget:update_widget('xbacklight -dec '..delta)
+end
+
+-- Set brightness to the nearest multiple of 5
+-- 34 becomes 35, 11 becomes 10 etc.
+-- Numbers less than 2.5 stop at 1 to avoid the screen
+-- of going completely black.
+function widget:roundNearest5()
+  local brightness = tonumber(io.popen('xbacklight'):read())
+  local unit = brightness % 10
+  local deci = brightness // 10
+  local result
+
+  if brightness < 2.5 then
+    result = 1
+  elseif unit >= 7.5 then
+    result = (deci + 1) * 10
+  elseif unit >= 2.5 then
+    result = deci * 10 + 5
+  else
+    result = deci * 10
+  end
+
+  widget:update_widget('xbacklight -set '..result)
 end
 
 widget:connect_signal('button::press', function(_,_,_,button)
