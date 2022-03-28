@@ -61,6 +61,7 @@ alias redme="sh $HOME/scripts/readme-glow.sh"
 alias stoprmalldocker='echo "docker ps -aq | xargs docker stop | xargs docker rm" && docker ps -aq | xargs docker stop | xargs docker rm'
 alias lwmtheme='leftwm-theme'
 alias xspeed='echo "xset r rate 220 25" && xset r rate 220 25'
+alias xall='echo "xset r rate 220 25" && echo "xmodmap ~/.Xmodmap" && xset r rate 220 25 && xmodmap ~/.Xmodmap'
 
 alias vim='nvim'
 
