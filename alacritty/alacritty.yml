@@ -311,7 +311,11 @@ schemes:
       - { index: 16, color: '0xff9e64' }
       - { index: 17, color: '0xdb4b4b' }
 
+# colors: *ayu-mirage
 colors: *doom-one
+# colors: *tokyo-night-storm
+# colors: *tokyo-night-night
+
   # primary:
   #   background: '#212733'
   #   foreground: '#d9d7ce'
@@ -595,7 +599,7 @@ cursor:
 hints:
   # Keys used for the hint labels.
   # alphabet: "jfkdls;ahgurieowpq"
-  alphabet: "asdfhjklgçqweryuiotpzxcvbnm1234567890;,."
+  alphabet: 'asdfhjklgçqweryuiotpzxcvbnm1234567890;,.'
 
   # List with all available hints
   #
@@ -622,6 +626,14 @@ hints:
   #   - MoveViModeCursor
   #       Move the vi mode cursor to the beginning of the hint.
   enabled:
+  # UUID + hashes git (big or short)
+  - regex: '([0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}|[a-f0-9]{40})|([a-f0-9]{12})|([a-f0-9]{7})'
+    action: Paste
+    post_processing: true
+    binding:
+      key: H
+      mods: Control|Shift
+
   # https://shibumi.dev/posts/zsh-and-alacritty/
   # Multi purpose things?
   # - regex: '([0-9a-f]{12,128})|([[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3})'
@@ -633,22 +645,9 @@ hints:
   #   binding:
   #     key: P
   #     mods: Control|Shift
-  # Hashes do git/docker?
-  - regex: '([a-f0-9]{40})|([a-f0-9]{12})|([a-f0-9]{7})'
-    action: Paste
-    post_processing: true
-    binding:
-      key: H
-      mods: Control|Shift
-  # UUID
-  - regex: '[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}'
-    action: Paste
-    post_processing: true
-    binding:
-      key: I
-      mods: Control|Shift
+
   # Paths?
-  # - regex: '(\w+\.\w+|(/?\w+/)+)' #???????
+  # - regex: '(\w+\.\w+|(/?\w+/)+)' # ???????
   #   command: Paste
   #   post_processing: false
   #   binding:
