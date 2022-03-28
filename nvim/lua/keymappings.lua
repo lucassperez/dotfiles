@@ -154,6 +154,9 @@ noremap('n', '<leader>rl', ':call VtrSendCommand("!!")<CR>')
 -- Ver o script para detalhes
 noremap('n', '<leader>rr', ':lua executeFileAsScript()<CR>', true) -- silent = true
 
+-- Tenta compilar o arquivo a depender do seu "filetype"
+noremap('n', '<leader>rc', ':lua compileFile()<CR>')
+
 --- Snippets ---
 noremap('n', ',html', ':read $HOME/.config/nvim/snippets/html5<CR>i<Backspace><C-c>6jf>l')
 noremap('n', ',rfce', ":read $HOME/.config/nvim/snippets/reactfunctcomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>5k")

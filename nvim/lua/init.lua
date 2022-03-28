@@ -26,6 +26,7 @@ require('helper-scripts.vtr.linter')
 require('helper-scripts.vtr.from-git-generic')
 require('helper-scripts.vtr.execute-script')
 require('helper-scripts.vtr.send-line-to-tmux')
+require('helper-scripts.vtr.compile-file')
 require('helper-scripts.togglebetweentestandfile')
 require('helper-scripts.write-debugger-breakpoint')
 
