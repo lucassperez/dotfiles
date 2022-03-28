@@ -1,3 +1,16 @@
+-- apagar depois
+vim.api.nvim_set_keymap('n', '<C-q>', ':wqa!<CR>', { noremap = true, silent = false })
+local t = true
+local f = false
+local opt_closable = f
+local opt_modficon = t
+local icon_close = ' xxxxx'
+local icon_modif = '[+]'
+-- local opt_sep_active = '▎'
+-- local opt_sep_inacti = '▎'
+local opt_sep_active = ''
+local opt_sep_inacti = ''
+
 vim.api.nvim_set_keymap('n', '<leader>q', ':BufferPrevious<CR>', { noremap = true, silent = false })
 vim.api.nvim_set_keymap('n', '<leader>w', ':BufferNext<CR>', { noremap = true, silent = false })
 vim.api.nvim_set_keymap('n', '<leader>d', ':BufferClose<CR>', { noremap = true, silent = false })
@@ -21,8 +34,10 @@ vim.g.bufferline = {
   tabpages = true,
 
   -- Enable/disable close button
-  closable = false,
-  show_mod_icon = true,
+  closable = opt_closable,
+  -- Funcionando mais ou menos na minha branch...
+  -- Enable/disable modified icon
+  always_show_modified = opt_modficon,
 
   -- left-click: go to buffer
   -- middle-click: delete buffer
@@ -35,8 +50,9 @@ vim.g.bufferline = {
   -- Enable/disable icons
   -- if set to 'numbers', will show buffer index in the tabline
   -- if set to 'both', will show buffer index and icons in the tabline
-  -- icons = true,
+  -- icons = true, -- this shows icons
   -- icons = 'numbers',
+  -- icons = 'both',
   icons = false,
 
   -- If set, the icon color will follow its corresponding buffer
@@ -48,13 +64,16 @@ vim.g.bufferline = {
   -- Configure icons on the bufferline.
   -- icon_separator_active = '▎',
   -- icon_separator_inactive = '▎',
-  icon_separator_active = ' ',
-  icon_separator_inactive = ' ',
+  -- icon_separator_active = ' ',
+  -- icon_separator_inactive = ' ',
+  icon_separator_active = opt_sep_active,
+  icon_separator_inactive = opt_sep_inacti,
   -- This makes the close tab button "invisible", but if you click right at the
   -- end of the filename, the buffer gets closed, because the button is there
-  icon_close_tab = ' ',
-  icon_close_tab_modified = '[+]',
-  icon_pinned = '車',
+  icon_close_tab = icon_close,
+  -- icon_close_tab = '',
+  icon_close_tab_modified = icon_modif,
+  icon_pinned = ' 車',
 
   -- If true, new buffers will be inserted at the start/end of the list.
   -- Default is to insert after current buffer.
@@ -76,7 +95,7 @@ vim.g.bufferline = {
   -- New buffer letters are assigned in this order. This order is
   -- optimal for the qwerty keyboard layout but might need adjustement
   -- for other layouts.
-  letters = 'hjklasdfgçnmxcvbziowerutyqpHJKLASDFGÇNMXCVBZIOWERUTYQP',
+  letters = 'asdfhjklgçnmxcvbziowerutyqpASDFHJKLGÇNMXCVBZIOWERUTYQP',
 
   -- Sets the name of unnamed buffers. By default format is "[Buffer X]"
   -- where X is the buffer number. But only a static string is accepted here.
@@ -189,21 +208,21 @@ let bg_inactive = s:bg(['TabLineFill', 'StatusLine'], '#2e3436')
 call s:hi_all([
 \ ['BufferCurrent',        fg_current,  bg_current],
 \ ['BufferCurrentIndex',   fg_special,  bg_current],
-\ ['BufferCurrentMod',     '#c39f00',  bg_current],
+\ ['BufferCurrentMod',     fg_current,  bg_current],
 \ ['BufferCurrentSign',    fg_special,  bg_current],
 \ ['BufferCurrentTarget',  fg_target,   bg_current,   'bold'],
 \ ['BufferVisible',        fg_visible,  bg_visible],
 \ ['BufferVisibleIndex',   fg_visible,  bg_visible],
-\ ['BufferVisibleMod',     '#c39f00',  bg_visible],
+\ ['BufferVisibleMod',     fg_visible,  bg_visible],
 \ ['BufferVisibleSign',    fg_visible,  bg_visible],
 \ ['BufferVisibleTarget',  fg_target,   bg_visible,   'bold'],
 \ ['BufferInactive',       fg_inactive, bg_inactive],
 \ ['BufferInactiveIndex',  fg_subtle,   bg_inactive],
-\ ['BufferInactiveMod',    '#c39f00', bg_inactive],
+\ ['BufferInactiveMod',    fg_inactive, bg_inactive],
 \ ['BufferInactiveSign',   fg_subtle,   bg_inactive],
 \ ['BufferInactiveTarget', fg_target,   bg_inactive,  'bold'],
 \ ['BufferTabpages',       fg_special,  bg_inactive,  'bold'],
-\ ['BufferTabpageFill',    fg_inactive, bg_inactive],
+\ ['BufferTabpageFill',    fg_inactive, '#bbc2cf'],
 \ ])
 
 call s:hi_link([
@@ -218,4 +237,9 @@ call s:hi_link([
 " for the reader.
 ]])
 
+-- \ ['BufferTabpageFill',    fg_inactive, bg_inactive],
 -- \ ['BufferTabpageFill',    fg_inactive, '#bbc2cf'],
+
+-- \ ['BufferCurrentMod',     '#c39f00',  bg_current],
+-- \ ['BufferVisibleMod',     '#c39f00',  bg_visible],
+-- \ ['BufferInactiveMod',    '#c39f00', bg_inactive],
