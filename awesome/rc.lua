@@ -731,6 +731,11 @@ clientkeys = gears.table.join(
 --   )
 -- end
 
+-- Using xev, you can find the code of each number. The numpad 0 is 90, for example.
+local integer_to_numpad = {
+  [0] = 90, [1] = 87, [2] = 88, [3] = 89, [4] = 83,
+  [5] = 84, [6] = 85, [7] = 79, [8] = 80, [9] = 81,
+}
 for i = 1, 10 do
   globalkeys = gears.table.join(
     globalkeys,
@@ -739,9 +744,19 @@ for i = 1, 10 do
               function ()
                 charitable.select_tag(tags[i], awful.screen.focused())
               end,
-              { group = 'tag', description = 'view tag #'..i, }),
+              { group = 'tag', description = 'view tag #' .. i, }),
+    awful.key({ modkey }, '#' .. integer_to_numpad[i % 10],
+              function ()
+                charitable.select_tag(tags[i], awful.screen.focused())
+              end,
+              { group = 'tag', description = 'view tag #' .. i, }),
     -- Toggle tag display.
     awful.key({ modkey, control }, '#' .. i + 9,
+              function ()
+                charitable.toggle_tag(tags[i], awful.screen.focused())
+              end,
+              { group = 'tag', description = 'toggle tag #' .. i, }),
+    awful.key({ modkey, control }, '#' .. integer_to_numpad[i % 10],
               function ()
                 charitable.toggle_tag(tags[i], awful.screen.focused())
               end,
@@ -756,18 +771,38 @@ for i = 1, 10 do
                   end
                 end
               end,
-              { group = 'tag', description = 'move focused client to tag #'..i, }),
+              { group = 'tag', description = 'move focused client to tag #' .. i, }),
+    awful.key({ modkey, shift }, '#' .. integer_to_numpad[i % 10],
+              function ()
+                if client.focus then
+                  local tag = tags[i]
+                  if tag then
+                    client.focus:move_to_tag(tag)
+                  end
+                end
+              end,
+              { group = 'tag', description = 'move focused client to tag #' .. i, }),
     -- Toggle tag on focused client.
     awful.key({ modkey, control, shift }, '#' .. i + 9,
-    function ()
-      if client.focus then
-        local tag = tags[i]
-        if tag then
-          client.focus:toggle_tag(tag)
-        end
-      end
-    end,
-    { group = 'tag', description = 'toggle focused client on tag #' .. i, })
+              function ()
+                if client.focus then
+                  local tag = tags[i]
+                  if tag then
+                    client.focus:toggle_tag(tag)
+                  end
+                end
+              end,
+              { group = 'tag', description = 'toggle focused client on tag #' .. i, }),
+    awful.key({ modkey, control, shift }, '#' .. integer_to_numpad[i % 10],
+              function ()
+                if client.focus then
+                  local tag = tags[i]
+                  if tag then
+                    client.focus:toggle_tag(tag)
+                  end
+                end
+              end,
+              { group = 'tag', description = 'toggle focused client on tag #' .. i, })
   )
 end
 
@@ -849,6 +884,7 @@ awful.rules.rules = {
         'zoom',
         'Gedit',
         'Erlang',
+        'Pavucontrol',
       },
 
       -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -891,6 +927,10 @@ awful.rules.rules = {
     rule = { class = 'zoom' },
     properties = { tag = '9' }
   },
+  -- {
+  --   rule = { name = 'Zoom Meeting' },
+  --   properties = { tag = '8' }
+  -- },
   {
     rule = { class = 'discord' },
     properties = { tag = '0' }
