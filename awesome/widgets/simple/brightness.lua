@@ -68,7 +68,9 @@ function widget:roundNearest5()
 end
 
 widget:connect_signal('button::press', function(_,_,_,button)
-  if (button == 4) then widget:inc(5)
+  if (button == 1 or button == 3) then widget:roundNearest5()
+  elseif (button == 2) then widget:update_widget('xbacklight -set 50')
+  elseif (button == 4) then widget:inc(5)
   elseif (button == 5) then widget:dec(5) end
 end)
 
