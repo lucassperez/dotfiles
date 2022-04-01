@@ -27,7 +27,7 @@ fi
 
 ACTUAL_BRANCH=$(git branch --show-current)
 if [ "$ACTUAL_BRANCH" = main -o "$ACTUAL_BRANCH" = master ]; then
-  echo Currently at branch "\e[91;1m$ACTUAL_BRANCH\e[0m", executing the command "\e[1mgit log -15 $@\e[0m"
+  echo -e Currently at branch "\e[91;1m$ACTUAL_BRANCH\e[0m", executing the command "\e[1mgit log -15 $@\e[0m"
   git log -15 "$@"
   # Just exit to keep the exit code of git log, be it zero or non zero
   exit

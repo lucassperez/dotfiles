@@ -16,9 +16,9 @@ while getopts "b" flag; do
 done
 
 host="$(hostname)"
-os="$(lsb_release -ds)"
+os="$(lsb_release -ds | tr -d '"')"
 kernel="$(uname -sr)"
-uptime="$(uptime -p | sed 's/up //')"
+uptime="$(uptime | cut -d ' ' -f 7 | tr -d ,)"
 # You can uncomment this and use it if you want to
 # packages="$(dpkg -l | wc -l)"
 shell="$(basename "${SHELL}")"
