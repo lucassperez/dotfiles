@@ -9,6 +9,8 @@ export EDITOR=nvim
 
 export ERL_AFLAGS='-kernel shell_history enabled -kernel shell_history_file_bytes 1024000'
 
+export LESS='-FXR'
+
 # Cor do jq
 # A única mudança foi mudar o null para vermelho, pois antes era
 # cinza e praticamente impossível em um fundo escuro do terminal

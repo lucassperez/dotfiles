@@ -45,17 +45,17 @@ git_color() {
   #   output_styles="\e[1;35m"
   #   # Não funciona :shrug:
   if [[ $git_status =~ "nothing to commit, working tree clean" ]]; then
-    output_styles="9"
     # vermelho
+    output_styles="9"
   elif [[ $git_status =~ "nothing added to commit but untracked files present" ]]; then
-    output_styles="11"
     # amarelo
+    output_styles="11"
   elif [[ $git_status =~ "no changes added to commit" ]]; then
-    output_styles="11"
     # amarelo
+    output_styles="11"
   elif [[ $git_status =~ "Changes to be committed" ]]; then
-    output_styles="14"
     # azul claro
+    output_styles="14"
   else
     output_styles="white"
   fi
