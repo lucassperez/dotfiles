@@ -16,7 +16,7 @@ watch(
 
     local datetime = wibox.widget({
       markup = '<span foreground="#6fb4d6">'..date..'</span>  <span foreground="#ffffff">'..time..'</span>',
-      font = 'Hack 11',
+      font = 'FontAwesome 11',
       widget = wibox.widget.textbox,
     })
     widget:set_widget(datetime)

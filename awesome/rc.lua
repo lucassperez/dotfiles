@@ -88,7 +88,7 @@ awful.layout.layouts = {
   -- awful.layout.suit.tile.top,
   -- awful.layout.suit.fair.horizontal,
   -- awful.layout.suit.spiral,
-  -- awful.layout.suit.spiral.dwindle,
+  awful.layout.suit.spiral.dwindle,
   -- awful.layout.suit.max.fullscreen,
   -- awful.layout.suit.corner.nw,
   -- awful.layout.suit.corner.ne,
@@ -951,6 +951,14 @@ awful.rules.rules = {
   --   properties = { screen = 1, tag = '2' } },
 
   -- xprop | grep WM_CLASS pra descobrir (xprop em geral é muito legal)
+  {
+    rule = { class = 'Java' },
+    properties = { tag = '4' }
+  },
+  {
+    rule = { name = 'Java' },
+    properties = { tag = '4' }
+  },
   {
     rule = { class = 'DBeaver' },
     properties = { tag = '3' }
