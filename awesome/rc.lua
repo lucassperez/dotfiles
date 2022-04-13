@@ -841,6 +841,39 @@ clientbuttons = gears.table.join(
 root.keys(globalkeys)
 -- }}}
 
+-- Show titlebars for floating window except some gnome software and alacritty
+local function should_hide_titlebars(c)
+  if c.class == 'Alacritty' then return false end
+  if type(c.class) ~= "string" or type(c.name) ~= "string" then return false end
+
+  return not (
+    string.match(c.class, "^[Gg]nome-%w*") or
+    string.match(c.name, "^[Gg]nome-%w*") or
+    string.match(c.class, "^[Gg]edit") or
+    string.match(c.name, "^[Gg]edit") or
+    string.match(c.class, "^[Oo]rg%.gnome%.%w*") or
+    string.match(c.name, "^[Oo]rg%.gnome%.%w*")
+  )
+end
+
+local function titlebar_for_floating_client(c)
+  if c.floating and should_hide_titlebars(c) then
+    c:emit_signal("request::titlebars")
+  else
+    local t = c:tags()[1]
+    if t and t.layout.name == "floating" then
+      c:emit_signal("request::titlebars")
+    else
+      awful.titlebar.hide(c, "top")
+      awful.titlebar.hide(c, "bottom")
+      awful.titlebar.hide(c, "left")
+      awful.titlebar.hide(c, "right")
+    end
+  end
+end
+
+client.connect_signal("property::floating", titlebar_for_floating_client)
+
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
