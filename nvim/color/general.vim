@@ -37,7 +37,7 @@ hi BufTabLineActive guibg=#6c6c6c                        ctermfg=15  ctermbg=242
 
 hi link Define Statement
 
-match CustomTabsGroup /\t/
+autocmd VimEnter,WinEnter * match CustomTabsGroup /\t/
 hi CustomTabsGroup guifg=#999999 gui=NONE
 
 hi MatchParen guifg=#87ff00 gui=BOLD,UNDERLINE ctermfg=yellow cterm=BOLD,UNDERLINE
