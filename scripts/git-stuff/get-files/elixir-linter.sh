@@ -40,7 +40,7 @@ fi
 
 ACTUAL_BRANCH=$(git branch --show-current)
 if [ "$ACTUAL_BRANCH" = main -o "$ACTUAL_BRANCH" = master ]; then
-  [ "$NO_CLIP" ] || echo -e Current branch is "\e[91;1m$ACTUAL_BRANCH\e[0m"
+  [ "$NO_CLIP" ] || echo Current branch is "\e[91;1m$ACTUAL_BRANCH\e[0m"
   FILES=$(git diff "$ACTUAL_BRANCH" --name-only | sort -u | grep -E '\.exs?$')
 elif [ "$(git rev-parse --verify -q main)" ]; then
   FILES=$(git diff main --name-only | sort -u | grep -E '\.exs?$')
