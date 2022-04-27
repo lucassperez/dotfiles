@@ -5,11 +5,13 @@ function golangImports(timeout_ms)
   local params = vim.lsp.util.make_range_params()
   params.context = context
 
-  -- See the implementation of the textDocument/codeAction callback
-  -- (lua/vim/lsp/handler.lua) for how to do this properly.
   local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, timeout_ms)
-  if not result or next(result) == nil then return end
-  local actions = result[1].result
+  if not result then return end
+  local client_id, result = next(result)
+  if not client_id then return end
+  local client = vim.lsp.get_client_by_id(client_id)
+  if not client then return end
+  local actions = result.result
   if not actions then return end
   local action = actions[1]
 
@@ -18,13 +20,13 @@ function golangImports(timeout_ms)
   -- should be executed first.
   if action.edit or type(action.command) == 'table' then
     if action.edit then
-      vim.lsp.util.apply_workspace_edit(action.edit)
+      vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
     end
     if type(action.command) == 'table' then
-      vim.lsp.buf.execute_command(action.command)
+      vim.lsp.buf.execute_command(action.command, client.offset_encoding)
     end
   else
-    vim.lsp.buf.execute_command(action)
+    vim.lsp.buf.execute_command(action, client.offset_encoding)
   end
 end
 
