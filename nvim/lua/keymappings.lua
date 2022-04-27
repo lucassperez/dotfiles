@@ -69,7 +69,7 @@ noremap('v', '<leader>y', '"+y')
 noremap('n', '<leader>y', '"+y')
 noremap('n', '<leader>Y', '"+yg_')
 
--- Mudar a indentaçãõ continuamente
+-- Mudar a indentação continuamente
 -- https://github.com/changemewtf/dotfiles/blob/master/vim/.vimrc
 -- Modo visual
 noremap('v', '<', '<gv')
@@ -92,9 +92,6 @@ noremap('n', '<C-Right>', ':vertical resize +5<CR>')
 -- Note que pra apagar pra trás, Control + w funciona
 noremap('i', '<C-Del>', '<C-o>de')
 
--- Colocar 3 (ou 6) crases
-noremap('n', '<leader>ç', 'i```<CR>```<CR><C-c>2kA')
-
 -- Se receber true como argumento, essa função escreve na linha anterior. A
 -- ideia é como os comandos `o` e `O`, só que pra um debugger (binding.pry no
 -- ruby, IEx.pry no elixir). Se segurar shift em algum momento, manda pra linha
@@ -109,6 +106,16 @@ noremap('n', ',,bp', 'o'..elixir_pipe_pry..'<C-c>')
 noremap('n', ',,BP', 'O'..elixir_pipe_pry..'<C-c>')
 noremap('n', ',,Bp', 'O'..elixir_pipe_pry..'<C-c>')
 noremap('n', ',,bP', 'O'..elixir_pipe_pry..'<C-c>')
+
+noremap('n', ',io', 'oIO.inspect(, label: "@@")<C-c>F,')
+noremap('n', ',IO', 'OIO.inspect(, label: "@@")<C-c>F,')
+noremap('n', ',Io', 'OIO.inspect(, label: "@@")<C-c>F,')
+noremap('n', ',iO', 'OIO.inspect(, label: "@@")<C-c>F,')
+
+noremap('n', ',,io', 'o|> IO.inspect(label: "@@")<C-c>')
+noremap('n', ',,IO', 'O|> IO.inspect(label: "@@")<C-c>')
+noremap('n', ',,Io', 'O|> IO.inspect(label: "@@")<C-c>')
+noremap('n', ',,iO', 'O|> IO.inspect(label: "@@")<C-c>')
 
 -- É brincadeira que :noh<CR> não vem por padrão em algum lugar, viu...
 noremap('n', '<Esc>', ':noh<CR>')
@@ -132,30 +139,31 @@ noremap('n', '<A-d>', ':VtrSendCtrlD<CR>')
 noremap('n', '<A-c>', ':VtrSendCtrlC<CR>')
 
 -- linter all & linter this file
-noremap('n', '<leader>rua', ':lua runLinter {}<CR>')
-noremap('n', '<leader>ruf', ':lua runLinter { cur_file = true }<CR>')
+noremap('n', '<leader>rua', ':silent!wa<CR>:lua runLinter {}<CR>')
+noremap('n', '<leader>ruf', ':silent!w<CR>:lua runLinter { cur_file = true }<CR>')
 
 -- test all, test this file, test this file this line & test this directory
-noremap('n', '<leader>ra', ':lua runAutomatedTest {}<CR>')
-noremap('n', '<leader>rs', ':lua runAutomatedTest { cur_file = true }<CR>')
-noremap('n', '<leader>rn', ":lua runAutomatedTest { cur_file = true, cur_line = true }<CR>")
-noremap('n', '<leader>rd', ':lua runAutomatedTest { cur_dir = true }<CR>')
+noremap('n', '<leader>ra', ':silent!wa<CR>:lua runAutomatedTest {}<CR>')
+noremap('n', '<leader>rs', ':silent!w<CR>:lua runAutomatedTest { cur_file = true }<CR>')
+noremap('n', '<leader>rn', ":silent!w<CR>:lua runAutomatedTest { cur_file = true, cur_line = true }<CR>")
+noremap('n', '<leader>rd', ':silent!wa<CR>:lua runAutomatedTest { cur_dir = true }<CR>')
+noremap('n', '<leader>rp', ':silent!w<CR>:lua runLastTest()<CR>')
 
 -- Pegando os arquivos no diff com a main/master e executando testes/linters
 -- Mmenônicos: rspec-main (rm) e rubocop-main (rum)
-noremap('n', '<leader>rm', ':lua fromGit.genericTest()<CR>')
-noremap('n', '<leader>rum', ':lua fromGit.genericLinter()<CR>')
+noremap('n', '<leader>rm', ':silent!wa<CR>:lua fromGit.genericTest()<CR>')
+noremap('n', '<leader>rum', ':silent!wa<CR>:lua fromGit.genericLinter()<CR>')
 
 -- Run last command executado no painel "anexado"
 -- Na verdade simplesmente executa !!, que só vai funcionar num shell, mesmo
-noremap('n', '<leader>rl', ':call VtrSendCommand("!!")<CR>')
+noremap('n', '<leader>rl', ':silent!w<CR>:call VtrSendCommand("!!")<CR>')
 
 -- Executa o arquivo como um script a depender do seu "filetype"
 -- Ver o script para detalhes
-noremap('n', '<leader>rr', ':lua executeFileAsScript()<CR>', true) -- silent = true
+noremap('n', '<leader>rr', ':silent!w<CR>:lua executeFileAsScript()<CR>', true) -- silent = true
 
 -- Tenta compilar o arquivo a depender do seu "filetype"
-noremap('n', '<leader>rc', ':lua compileFile()<CR>')
+noremap('n', '<leader>rc', ':silent!w<CR>:lua compileFile()<CR>')
 
 --- Snippets ---
 noremap('n', ',html', ':read $HOME/.config/nvim/snippets/html5<CR>i<Backspace><C-c>6jf>l')
