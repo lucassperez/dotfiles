@@ -99,9 +99,18 @@ RPROMPT='%B%F{6}{$short_os_name}%f%b'
 
 source "$HOME/.aliases"
 
+# "To know the code of a key, execute cat, press enter, press the key, then Ctrl+C."
+# https://stackoverflow.com/questions/8638012/fix-key-settings-home-end-insert-delete-in-zshrc-when-running-zsh-in-terminat
+bindkey "^[[3~" delete-char
+bindkey "^[[H" beginning-of-line
+bindkey "^[[F" end-of-line
+bindkey "^H" backward-kill-word
+bindkey "^[[3;5~" kill-word
+# The "transpose-words" is such a nice command
+
 bindkey "^F" clear-screen
 bindkey "^T" kill-line
-bindkey "^U" kill-region
+bindkey "^U" backward-kill-line
 
 # OBS: Enter produz "^M"
 # https://zsh.sourceforge.io/Doc/Release/Zsh-Modules.html#Menu-selection
@@ -148,8 +157,12 @@ if tmux ls 1>/dev/null 2>&1 && [ -z "$TMUX" ]; then
   /bin/sh ~/scripts/parse-tmux-ls.sh
 else
   # ORIGINAL_TERMINAL_EMULATOR
-  if [ "$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$))" = alacritty ]; then
-    # tmux attach -t default || tmux new -s default
-    /usr/bin/tmux
-  fi
+
+  # if [ "$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$))" = alacritty ]; then
+
+  # This will not start tmux if I run alacritty with other options, like this:
+  # alacritty -t floating-alacritty -o window.opacity=1.0
+  # With the above, it would work. But do I want it? 🤔
+  if [ $(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | cut -d ' ' -f 1) = alacritty ]; then
+    `which tmux`
 fi
