@@ -1,6 +1,7 @@
 vim.api.nvim_set_keymap('n', '<C-p>', ':lua telescopeGitOrFindFiles()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-f>', ':Telescope live_grep<CR>', { noremap = true })
 -- vim.api.nvim_set_keymap('n', '<leader>p', ':Telescope find_files<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>p', ':Telescope buffers<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>h', ':Telescope oldfiles<CR>', { noremap = true })
 
 vim.api.nvim_set_keymap('n', '<leader>zv', ':Telescope find_files cwd=/home/lucas/dotfiles/nvim/<CR>', { noremap = true })
