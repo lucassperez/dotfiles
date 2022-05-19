@@ -140,14 +140,14 @@ noremap('n', '<A-c>', ':VtrSendCtrlC<CR>')
 
 -- linter all & linter this file
 noremap('n', '<leader>rua', ':silent!wa<CR>:lua runLinter {}<CR>')
-noremap('n', '<leader>ruf', ':silent!w<CR>:lua runLinter { cur_file = true }<CR>')
+noremap('n', '<leader>ruf', ':silent!wa<CR>:lua runLinter { cur_file = true }<CR>')
 
 -- test all, test this file, test this file this line & test this directory
 noremap('n', '<leader>ra', ':silent!wa<CR>:lua runAutomatedTest {}<CR>')
-noremap('n', '<leader>rs', ':silent!w<CR>:lua runAutomatedTest { cur_file = true }<CR>')
-noremap('n', '<leader>rn', ":silent!w<CR>:lua runAutomatedTest { cur_file = true, cur_line = true }<CR>")
+noremap('n', '<leader>rs', ':silent!wa<CR>:lua runAutomatedTest { cur_file = true }<CR>')
+noremap('n', '<leader>rn', ":silent!wa<CR>:lua runAutomatedTest { cur_file = true, cur_line = true }<CR>")
 noremap('n', '<leader>rd', ':silent!wa<CR>:lua runAutomatedTest { cur_dir = true }<CR>')
-noremap('n', '<leader>rp', ':silent!w<CR>:lua runLastTest()<CR>')
+noremap('n', '<leader>rp', ':silent!wa<CR>:lua runLastTest()<CR>')
 
 -- Pegando os arquivos no diff com a main/master e executando testes/linters
 -- Mmenônicos: rspec-main (rm) e rubocop-main (rum)
@@ -156,14 +156,14 @@ noremap('n', '<leader>rum', ':silent!wa<CR>:lua fromGit.genericLinter()<CR>')
 
 -- Run last command executado no painel "anexado"
 -- Na verdade simplesmente executa !!, que só vai funcionar num shell, mesmo
-noremap('n', '<leader>rl', ':silent!w<CR>:call VtrSendCommand("!!")<CR>')
+noremap('n', '<leader>rl', ':silent!wa<CR>:call VtrSendCommand("!!")<CR>')
 
 -- Executa o arquivo como um script a depender do seu "filetype"
 -- Ver o script para detalhes
-noremap('n', '<leader>rr', ':silent!w<CR>:lua executeFileAsScript()<CR>', true) -- silent = true
+noremap('n', '<leader>rr', ':silent!wa<CR>:lua executeFileAsScript()<CR>', true) -- silent = true
 
 -- Tenta compilar o arquivo a depender do seu "filetype"
-noremap('n', '<leader>rc', ':silent!w<CR>:lua compileFile()<CR>')
+noremap('n', '<leader>rc', ':silent!wa<CR>:lua compileFile()<CR>')
 
 --- Snippets ---
 noremap('n', ',html', ':read $HOME/.config/nvim/snippets/html5<CR>i<Backspace><C-c>6jf>l')
