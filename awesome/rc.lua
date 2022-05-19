@@ -75,6 +75,9 @@ browser = 'firefox'
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = 'Mod4'
 
+local control = 'Control'
+local shift = 'Shift'
+
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
   awful.layout.suit.tile,
@@ -238,7 +241,7 @@ local tags = charitable.create_tags(
       awful.layout.layouts[1],
       awful.layout.layouts[1],
       awful.layout.layouts[1],
-      awful.layout.layouts[1],
+      awful.layout.suit.spiral.dwindle,
       awful.layout.layouts[1],
    }
 )
@@ -352,8 +355,6 @@ root.buttons(
 -- }}}
 
 -- {{{ Key bindings
-local control = 'Control'
-local shift = 'Shift'
 globalkeys = gears.table.join(
 -- 122 XF86AudioLowerVolume
 -- 37  Control_L
@@ -858,9 +859,14 @@ root.keys(globalkeys)
 -- }}}
 
 -- Show titlebars for floating window except some gnome software and alacritty
-local function should_hide_titlebars(c)
+-- Floating alacritty is used in some scripts, alacritty has to be manually
+-- spawned with the name "floating-alacritty" in order to show titlebars
+local function should_show_titlebars(c)
+  if c.name == 'Zoom - Free Account' then return true end
+  if c.class == 'Zoom - Free Account' then return true end
+  if c.name == 'floating-alacritty' then return true end
   if c.class == 'Alacritty' then return false end
-  if type(c.class) ~= "string" or type(c.name) ~= "string" then return false end
+  if type(c.class) ~= 'string' or type(c.name) ~= 'string' then return false end
 
   return not (
     string.match(c.class, "^[Gg]nome-%w*") or
@@ -873,22 +879,22 @@ local function should_hide_titlebars(c)
 end
 
 local function titlebar_for_floating_client(c)
-  if c.floating and should_hide_titlebars(c) then
-    c:emit_signal("request::titlebars")
+  if c.floating and should_show_titlebars(c) then
+    c:emit_signal('request::titlebars')
   else
     local t = c:tags()[1]
-    if t and t.layout.name == "floating" then
-      c:emit_signal("request::titlebars")
+    if t and t.layout.name == 'floating' then
+      c:emit_signal('request::titlebars')
     else
-      awful.titlebar.hide(c, "top")
-      awful.titlebar.hide(c, "bottom")
-      awful.titlebar.hide(c, "left")
-      awful.titlebar.hide(c, "right")
+      awful.titlebar.hide(c, 'top')
+      awful.titlebar.hide(c, 'bottom')
+      awful.titlebar.hide(c, 'left')
+      awful.titlebar.hide(c, 'right')
     end
   end
 end
 
-client.connect_signal("property::floating", titlebar_for_floating_client)
+client.connect_signal('property::floating', titlebar_for_floating_client)
 
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
@@ -930,8 +936,13 @@ awful.rules.rules = {
         'veromix',
         'xtightvncviewer',
         'Gnome-mines',
+        'Zoom Meeting',
+        'Zoom',
         'zoom',
+        'Zoom - Free Account',
+        'Polls',
         'Gedit',
+        'FeatherPad',
         'Erlang',
         'Pavucontrol',
       },
@@ -941,6 +952,11 @@ awful.rules.rules = {
       name = {
         'Event Tester',  -- xev.
         'floating-alacritty',
+        'Zoom Meeting',
+        'Zoom',
+        'zoom',
+        'Zoom - Free Account',
+        'Polls', -- this is more zoom shitty non sense
       },
       role = {
         'AlarmWindow',  -- Thunderbird's calendar.
@@ -979,21 +995,42 @@ awful.rules.rules = {
     rule = { class = 'DBeaver' },
     properties = { tag = '3' }
   },
-  -- Zoom and discord always on 9 and 10, respectively
   {
-    rule = { class = 'zoom' },
-    properties = { tag = '9' }
+    rule = { class = 'Postman', },
+    properties = { tag = '4' }
   },
-  -- {
-  --   rule = { name = 'Zoom Meeting' },
-  --   properties = { tag = '8' }
-  -- },
+  -- Zoom and discord always on 9 and 10, respectively
+  -- I hate Zoom, on every update it changes this stuff, ffs
+  {rule = { class = 'Zoom Meeting' }, properties = { tag = '9' }},
+  {rule = { class = 'Zoom' }, properties = { tag = '9' }},
+  {rule = { class = 'zoom' }, properties = { tag = '9' }},
+  {rule = { class = 'Zoom - Free Account' }, properties = { tag = '9' }},
+  {rule = { name = 'Zoom Meeting' }, properties = { tag = '9' }},
+  {rule = { name = 'Zoom' }, properties = { tag = '9' }},
+  {rule = { name = 'zoom' }, properties = { tag = '9' }},
+  {rule = { name = 'Zoom - Free Account' }, properties = { tag = '9' }},
   {
     rule = { class = 'discord' },
     properties = { tag = '0' }
   },
   {
+    rule = { name = 'Discord' },
+    properties = { tag = '0' }
+  },
+  {
     rule = { class = 'Gedit' },
+    properties = { ontop = true }
+  },
+  {
+    rule = { class = 'FeatherPad' },
+    properties = { ontop = true }
+  },
+  {
+    rule = { class = 'Pavucontrol' },
+    properties = { ontop = true }
+  },
+  {
+    rule = { name = 'floating-alacritty' },
     properties = { ontop = true }
   },
 }
@@ -1040,7 +1077,12 @@ client.connect_signal(
     awful.titlebar(c) : setup({
       { -- Left
         awful.titlebar.widget.iconwidget(c),
-        buttons = buttons,
+        separator_widget,
+        awful.titlebar.widget.floatingbutton (c),
+        awful.titlebar.widget.ontopbutton    (c),
+        -- awful.titlebar.widget.stickybutton   (c),
+        awful.titlebar.widget.maximizedbutton(c),
+        -- buttons = buttons,
         layout  = wibox.layout.fixed.horizontal
       },
       { -- Middle
@@ -1052,10 +1094,14 @@ client.connect_signal(
         layout  = wibox.layout.flex.horizontal
       },
       { -- Right
-        awful.titlebar.widget.floatingbutton (c),
-        awful.titlebar.widget.maximizedbutton(c),
+        separator_widget,
+        -- awful.titlebar.widget.floatingbutton (c),
+        -- awful.titlebar.widget.maximizedbutton(c),
         awful.titlebar.widget.stickybutton   (c),
-        awful.titlebar.widget.ontopbutton    (c),
+        -- awful.titlebar.widget.ontopbutton    (c),
+        separator_widget,
+        separator_widget,
+        awful.titlebar.widget.minimizebutton (c),
         awful.titlebar.widget.closebutton    (c),
         layout = wibox.layout.fixed.horizontal()
       },
