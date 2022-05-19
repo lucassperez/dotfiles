@@ -1,1 +1,30 @@
-/home/lucas/.local/share/nvim/site/pack/packer/barbar.nvim-espaços-patch.diff
+diff --git a/lua/bufferline/layout.lua b/lua/bufferline/layout.lua
+index b7c838a..8db83f6 100644
+--- a/lua/bufferline/layout.lua
++++ b/lua/bufferline/layout.lua
+@@ -60,7 +60,8 @@ local function calculate_buffers_width(state, base_width)
+ 
+         width = width
+           + strwidth(icon or '')
+-          + (icon and 1 or 0) -- space-after-close-icon but only if icon is not nil
++          -- + (icon and 1 or 0) -- space-after-close-icon but only if icon is not nil
++          + 1
+       end
+     end
+     sum = sum + width
+diff --git a/lua/bufferline/render.lua b/lua/bufferline/render.lua
+index 350277d..812351c 100644
+--- a/lua/bufferline/render.lua
++++ b/lua/bufferline/render.lua
+@@ -330,9 +330,9 @@ local function render(update_names)
+         {bufferIndexPrefix,  bufferIndex},
+         {iconPrefix,         icon},
+         {jumpLetterPrefix,   jumpLetter},
+-        {namePrefix,         name},
++        {namePrefix,         ' ' .. (trailingIcon and name or (name .. ' '))},
+         {'',                 padding},
+-        {'',                 ' '},
++        -- {'',                 ' '},
+         {closePrefix,        close},
+       }
+     }
