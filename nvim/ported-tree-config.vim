@@ -1,7 +1,7 @@
 lua <<EOF
 vim.g.nvim_tree_indent_markers = 0
 vim.g.nvim_tree_git_hl = 1
-vim.g.nvim_tree_highlight_opened_files = 1
+vim.g.nvim_tree_highlight_opened_files = 1 -- why did this stop working? ):
 vim.g.nvim_tree_root_folder_modifier = ':~'
 vim.g.nvim_tree_add_trailing = 1
 vim.g.nvim_tree_group_empty = 0
@@ -36,8 +36,8 @@ vim.g.nvim_tree_icons = {
     arrow_closed = "ă",
     default = ">",
     open = "v",
-    empty = "ö",
-    empty_open = "ø",
+    empty = "ø",
+    empty_open = "ö",
     symlink = "ş",
     symlink_open = "ţ",
   },
