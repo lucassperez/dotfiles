@@ -218,8 +218,14 @@ local memory_widget = require('widgets.simple.memory')
 local charitable = require('charitable')
 -- Create tags and taglist
 local taglist_buttons = gears.table.join(
-    awful.button({}, 1, function(t) charitable.select_tag(t, awful.screen.focused()) end),
-    awful.button({}, 3, function(t) charitable.toggle_tag(t, awful.screen.focused()) end)
+    -- Toggle tags with both right click and scroll click
+    awful.button({         }, 1, function(t) charitable.select_tag(t, awful.screen.focused()) end),
+    awful.button({         }, 2, function(t) charitable.toggle_tag(t, awful.screen.focused()) end),
+    awful.button({         }, 3, function(t) charitable.toggle_tag(t, awful.screen.focused()) end),
+    -- Also toggle tags with all mouse buttons when holding control
+    awful.button({ control }, 1, function(t) charitable.toggle_tag(t, awful.screen.focused()) end),
+    awful.button({ control }, 2, function(t) charitable.toggle_tag(t, awful.screen.focused()) end),
+    awful.button({ control }, 3, function(t) charitable.toggle_tag(t, awful.screen.focused()) end)
 )
 local tags = charitable.create_tags(
    { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' },
