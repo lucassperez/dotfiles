@@ -259,6 +259,35 @@ schemes:
     selection:
       text: '#ffffff'
       background: '#ffffff'
+
+  # I didn't like the background, so I picked doom-ones background.
+  # The rest is just tokyo-night-storm
+  tokyo-night-storm: &modified-tokyo-night-storm
+    primary:
+      background: '0x282c34'
+      foreground: '0xc0caf5'
+    normal:
+      black:   '0x1D202F'
+      red:     '0xf7768e'
+      green:   '0x9ece6a'
+      yellow:  '0xe0af68'
+      blue:    '0x7aa2f7'
+      magenta: '0xbb9af7'
+      cyan:    '0x7dcfff'
+      white:   '0xa9b1d6'
+    bright:
+      black:   '0x414868'
+      red:     '0xf7768e'
+      green:   '0x9ece6a'
+      yellow:  '0xe0af68'
+      blue:    '0x7aa2f7'
+      magenta: '0xbb9af7'
+      cyan:    '0x7dcfff'
+      white:   '0xc0caf5'
+    indexed_colors:
+      - { index: 16, color: '0xff9e64' }
+      - { index: 17, color: '0xdb4b4b' }
+
   tokyo-night-storm: &tokyo-night-storm
     primary:
       background: '0x24283b'
@@ -312,9 +341,10 @@ schemes:
       - { index: 17, color: '0xdb4b4b' }
 
 # colors: *ayu-mirage
-colors: *doom-one
+# colors: *doom-one
 # colors: *tokyo-night-storm
 # colors: *tokyo-night-night
+colors: *modified-tokyo-night-storm
 
   # primary:
   #   background: '#212733'
