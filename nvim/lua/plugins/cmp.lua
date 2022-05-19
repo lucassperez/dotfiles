@@ -10,6 +10,10 @@ cmp.setup({
     -- Accept currently selected item. Set `select` to `false`
     -- to only confirm explicitly selected items.
     ['<CR>'] = cmp.mapping.confirm({ select = false }),
+
+    ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), {'i','c'}),
+    ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i','c'}),
+
   },
   sources = {
     -- Order matters here, top sources have

@@ -37,6 +37,8 @@ function on_attach(_, bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
   end
   local map_opts = { noremap = true, silent = true }
+  -- ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), {'i','c'}),
+  -- ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i','c'}),
   map('n', [[\f]],    ':lua vim.lsp.buf.formatting()<CR>', map_opts)
   -- map('n', [[\f]],    ':lua vim.lsp.buf.formatting()<CR>:%s/\t/  /g<CR>:noh<CR>', map_opts)
   -- map('n', [[\f]],    ':lua golangImports(1000)<CR>:lua vim.lsp.buf.formatting()<CR>:%s/\t/  /g<CR>:noh<CR>', map_opts)
