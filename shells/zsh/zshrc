@@ -101,12 +101,15 @@ source "$HOME/.aliases"
 
 # "To know the code of a key, execute cat, press enter, press the key, then Ctrl+C."
 # https://stackoverflow.com/questions/8638012/fix-key-settings-home-end-insert-delete-in-zshrc-when-running-zsh-in-terminat
+# Another way to know what a combination produces is to hit Control + V and then the combination/key.
 bindkey "^[[3~" delete-char
 bindkey "^[[H" beginning-of-line
 bindkey "^[[F" end-of-line
 bindkey "^H" backward-kill-word
 bindkey "^[[3;5~" kill-word
 # The "transpose-words" is such a nice command
+# ^_ is "Control + /", although ESC+t and ESC+T are already mapped to transpose
+bindkey "^_" transpose-words
 
 bindkey "^F" clear-screen
 bindkey "^T" kill-line
@@ -128,7 +131,7 @@ bindkey -M menuselect 'q' send-break
 bindkey "^I" expand-or-complete-prefix
 
 # https://stackoverflow.com/questions/815686/unable-to-make-a-backward-tab-as-shift-tab-in-zsh
-bindkey '^[[Z' reverse-menu-complete
+bindkey '^[[Z' reverse-menu-complete # shift tab
 
 # Control + esquerda/direita, respectivamente
 bindkey ";5D" backward-word
@@ -165,4 +168,5 @@ else
   # With the above, it would work. But do I want it? 🤔
   if [ $(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | cut -d ' ' -f 1) = alacritty ]; then
     `which tmux`
+  fi
 fi
