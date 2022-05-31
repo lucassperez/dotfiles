@@ -87,6 +87,9 @@ fi
 # Meus apelidos
 source "$HOME/.aliases"
 
+# Minhas funções
+source "$HOME/.aliases"
+
 # Git Branch
 git_color() {
   # I have to keep track of last exit code so I can return it, otherwise

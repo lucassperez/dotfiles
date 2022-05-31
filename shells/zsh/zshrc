@@ -98,6 +98,7 @@ RPROMPT='%B%F{6}{$short_os_name}%f%b'
 # RPROMPT='%B%F{6}{$(lang_or_zsh)}%f%b'
 
 source "$HOME/.aliases"
+source "$HOME/.functions"
 
 # "To know the code of a key, execute cat, press enter, press the key, then Ctrl+C."
 # https://stackoverflow.com/questions/8638012/fix-key-settings-home-end-insert-delete-in-zshrc-when-running-zsh-in-terminat

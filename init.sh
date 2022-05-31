@@ -39,6 +39,9 @@ fi
 echo "Creating symlink to: \e[1;36m$HOME/.aliases\e[0m"
 ln -sfni "$DIR/shells/aliases" "$HOME/.aliases"
 
+echo "Creating symlink to: \e[1;36m$HOME/.functions\e[0m"
+ln -sfni "$DIR/shells/functions" "$HOME/.functions"
+
 echo "Creating symlink to: \e[1;36m$HOME/.config/kitty\e[0m"
 ln -sfni "$DIR/kitty/" "$HOME/.config/kitty"
 

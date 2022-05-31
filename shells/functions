@@ -1,0 +1,20 @@
+# vim: ft=sh
+
+simplexev() {
+  xev | awk -F '[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
+}
+
+redme() {
+  if [ -f "$1" ]; then
+    glow -p "$1"
+  elif [ -d "$1" ]; then
+    filename=$(ls "$1" | grep -i readme)
+    glow -p "$1/$filename"
+  elif [ -z "$1" ]; then
+    ls | grep -i readme | xargs glow -p
+  else
+    exit 1
+  fi
+}
+
+[ -f "$HOME/.local/.functions.local" ] && source "$HOME/.local/.functions.local"
