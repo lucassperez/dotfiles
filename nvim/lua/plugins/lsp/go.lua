@@ -32,11 +32,13 @@ end
 
 -- vim.api.nvim_command('autocmd BufWritePre *.go lua golangImports(1000)')
 
-function on_attach(_, bufnr)
+local function on_attach(_, bufnr)
   local function map(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
   end
+
   local map_opts = { noremap = true, silent = true }
+
   -- ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), {'i','c'}),
   -- ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i','c'}),
   map('n', [[\f]],    ':lua vim.lsp.buf.formatting()<CR>', map_opts)
@@ -47,6 +49,9 @@ function on_attach(_, bufnr)
   map('n', 'K',    ':lua vim.lsp.buf.definition()<CR>', map_opts)
   map('n', [[\k]],     ':lua vim.lsp.buf.hover()<CR>', map_opts)
   map('n', [[\K]], ':lua vim.lsp.buf.signature_help()<CR>', map_opts)
+  map('n', '[d', ':lua vim.diagnostic.goto_prev()<CR>', map_opts)
+  map('n', ']d', ':lua vim.diagnostic.goto_next()<CR>', map_opts)
+  map('n', [[\d]], ':lua vim.diagnostic.open_float()<CR>', map_opts)
 end
 
 require('lspconfig').gopls.setup({
@@ -61,4 +66,3 @@ require('lspconfig').gopls.setup({
     },
   },
 })
-
