@@ -240,7 +240,7 @@ local tags = charitable.create_tags(
       awful.layout.layouts[1],
       awful.layout.layouts[1],
       awful.layout.layouts[1],
-      awful.layout.layouts[1],
+      awful.layout.suit.spiral.dwindle,
       awful.layout.suit.spiral.dwindle,
       awful.layout.layouts[1],
    }
@@ -956,7 +956,8 @@ awful.rules.rules = {
         'Zoom',
         'zoom',
         'Zoom - Free Account',
-        'Polls', -- this is more zoom shitty non sense
+        'Polls', -- all of this is more zoom shitty non sense
+        'Breakout Rooms - In Progress',
       },
       role = {
         'AlarmWindow',  -- Thunderbird's calendar.

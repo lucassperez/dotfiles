@@ -36,14 +36,8 @@ local calendar_widget = require('widgets.calendar')({
 widget:connect_signal(
   'button::press',
   function(_, _, _, button)
-    if button == 2 then calendar_widget.toggle() end
-  end
-)
-
-widget:connect_signal(
-  'button::press',
-  function(_, _, _, button)
-    if button == 1 or button == 3 then
+    if button == 2 then calendar_widget.toggle()
+    elseif button == 1 or button == 3 then
       awful.spawn('zenity --calendar --text= >/dev/null')
     end
   end
