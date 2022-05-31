@@ -40,7 +40,7 @@ return require('packer').startup(function()
 
   -- Coisas LSP e TreeSitter
   use 'neovim/nvim-lspconfig'
-  -- use 'jose-elias-alvarez/null-ls.nvim'
+  use 'jose-elias-alvarez/null-ls.nvim'
   use 'jose-elias-alvarez/nvim-lsp-ts-utils'
   use {
     'nvim-treesitter/nvim-treesitter',
