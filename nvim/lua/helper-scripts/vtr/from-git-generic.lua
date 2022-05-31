@@ -7,11 +7,15 @@ function genericLinter()
 
   local command =
     -- io.popen('sh ~/scripts/git-stuff/get-files/'..filetype..'-linter.sh noclipboard')
-    io.popen('sh ~/scripts/git-stuff/get-files/generic-linter.sh noclipboard')
+    io.popen('~/scripts/git-stuff/get-files/generic-linter.sh noclipboard')
     :read('*a')
     :gsub('\n', '')
 
-  vim.fn.VtrSendCommand(command)
+  if command ~= '' then
+    vim.fn.VtrSendCommand(command)
+  else
+    print('genericLinter: Nenhum arquivo encontrado')
+  end
 end
 
 function genericTest()
@@ -26,7 +30,11 @@ function genericTest()
     :read('*a')
     :gsub('\n', '')
 
-  vim.fn.VtrSendCommand(command)
+  if command ~= '' then
+    vim.fn.VtrSendCommand(command)
+  else
+    print('genericTest: Nenhum arquivo encontrado')
+  end
 end
 
 fromGit = {
