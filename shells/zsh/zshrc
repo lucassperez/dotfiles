@@ -37,55 +37,58 @@ command_not_found_handler() {
   fi
 }
 
-git_color() {
-  local git_status="$(git status 2> /dev/null)"
-  local output_styles=""
-
-  # if [[ $git_status =~ "rebas" ]]; then
-  #   output_styles="\e[1;35m"
-  #   # Não funciona :shrug:
-  if [[ $git_status =~ "nothing to commit, working tree clean" ]]; then
-    # vermelho
-    output_styles="9"
-  elif [[ $git_status =~ "nothing added to commit but untracked files present" ]]; then
-    # amarelo
-    output_styles="11"
-  elif [[ $git_status =~ "no changes added to commit" ]]; then
-    # amarelo
-    output_styles="11"
-  elif [[ $git_status =~ "Changes to be committed" ]]; then
-    # azul claro
-    output_styles="14"
-  else
-    output_styles="white"
-  fi
-  output_styles="%F{$output_styles}$1%f"
-
-  if [[ $git_status =~ "is ahead" ]]; then
-    output_styles="%S$output_styles%s"
-  elif [[ $git_status =~ "diverged" ]]; then
-    output_styles="%K{red}%F{black} D %f%k$output_styles"
-  elif [[ $git_status =~ "behind" ]]; then
-    output_styles="%U$output_styles%u"
-  fi
-
-  echo "$output_styles"
-}
-
 autoload -Uz vcs_info
 precmd() { vcs_info }
-zstyle ':vcs_info:git:*' formats '(%b)'
 setopt PROMPT_SUBST
+
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git*' check-for-changes true
+zstyle ':vcs_info:git*' unstagedstr '%F{11}'
+zstyle ':vcs_info:git*' stagedstr '%F{14}'
+
+# === Minimal one line prompt
+
+zstyle ':vcs_info:git*+set-message:*' hooks my-git-remote-comparison-styling
+zstyle ':vcs_info:git*' formats ' %F{9}%u%c%m%b'
+PROMPT='%B%F{green}%~${vcs_info_msg_0_}%u%s%0(?.. %F{magenta}[%?])%f%b λ '
+
+# ===  Big two line prompt
+
+# zstyle ':vcs_info:git*' formats '%F{9}%u%c%m(%b)'
+# zstyle ':vcs_info:git*+set-message:*' hooks my-git-remote-comparison-styling
+# PROMPT='%B%F{green}%n@%m%F{white}:%F{blue}%~
+# %B${vcs_info_msg_0_}%u%s%0(?..%F{magenta}[%?])%f%bλ '
 
 # Cores escuras / claras
 # vermelho | verde | amarelo | azul | magenta | ciano | branco | preto/cinza
 #   1/9    |  2/10 |   3/11  | 4/12 |   5/13  |  6/14 |  7/15  |     8/16
 # https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Prompt-Expansion
-PROMPT='%B%F{green}%n@%m%F{white}:%F{blue}%~
-%B$(git_color ${vcs_info_msg_0_})%0(?..%F{magenta}[%?])%f%bλ '
+
++vi-my-git-remote-comparison-styling() {
+  local git_status="$(git status 2> /dev/null)"
+
+  case $git_status in
+    *ahead*)
+      hook_com[misc]='%S'
+      ;;
+    *diverged*)
+      hook_com[misc]='%K{red}%F{black} D %f%k '
+      ;;
+    *behind*)
+      hook_com[misc]='%U'
+      ;;
+  esac
+
+  local unstaged_files=$(git status --porcelain 2>/dev/null)
+  if [ -n "$unstaged_files" ]; then
+    hook_com[misc]+='%F{11}'
+  fi
+}
+
+# short_os_name=$(grep ^ID= /etc/os-release | cut -b 4-6)
+# RPROMPT='%B%F{6}{$short_os_name}%f%b'
 # RPROMPT='%B%F{6}{zsh}%f%b'
-short_os_name=$(grep ^ID= /etc/os-release | cut -b 4-6)
-RPROMPT='%B%F{6}{$short_os_name}%f%b'
+# RPROMPT='%B%F{6}%*%f%b'
 
 # This is cute, but too slow.
 # It shows at the right the version of the programming language used at current
@@ -99,6 +102,8 @@ RPROMPT='%B%F{6}{$short_os_name}%f%b'
 
 source "$HOME/.aliases"
 source "$HOME/.functions"
+
+# Run bindkey to see all bindings
 
 # "To know the code of a key, execute cat, press enter, press the key, then Ctrl+C."
 # https://stackoverflow.com/questions/8638012/fix-key-settings-home-end-insert-delete-in-zshrc-when-running-zsh-in-terminat
@@ -130,6 +135,7 @@ bindkey -M menuselect 'q' send-break
 
 # https://stackoverflow.com/questions/37772712/zsh-how-to-make-tab-completion-need-no-space-to-next-word-after-cursor
 bindkey "^I" expand-or-complete-prefix
+# bindkey "^I" complete-word
 
 # https://stackoverflow.com/questions/815686/unable-to-make-a-backward-tab-as-shift-tab-in-zsh
 bindkey '^[[Z' reverse-menu-complete # shift tab
