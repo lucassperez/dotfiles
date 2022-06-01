@@ -864,6 +864,8 @@ root.keys(globalkeys)
 local function should_show_titlebars(c)
   if c.name == 'Zoom - Free Account' then return true end
   if c.class == 'Zoom - Free Account' then return true end
+  if c.name == 'zoom' then return true end
+  if c.class == 'zoom' then return true end
   if c.name == 'floating-alacritty' then return true end
   if c.class == 'Alacritty' then return false end
   if type(c.class) ~= 'string' or type(c.name) ~= 'string' then return false end
