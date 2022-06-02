@@ -11,6 +11,8 @@ export ERL_AFLAGS='-kernel shell_history enabled -kernel shell_history_file_byte
 
 export LESS='-FXR'
 
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+
 # Cor do jq
 # A única mudança foi mudar o null para vermelho, pois antes era
 # cinza e praticamente impossível em um fundo escuro do terminal

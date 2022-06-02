@@ -70,7 +70,7 @@ echo "Creating symlink to: \e[1;36m$HOME/.tmux.conf\e[0m"
 ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 
 if [ "$INSTALL_WM" = i ]; then
-  [ -d "$HOME/.config/i3" ] || mkdir "$HOME/.config/i3" -pv
+  [ -d "$HOME/.config/i3" ] || mkdir -pv "$HOME/.config/i3"
 
   echo "Creating symlink to: \e[1;36m$HOME/.config/i3/config\e[0m"
   ln -sfni "$DIR/i3/config" "$HOME/.config/i3/config"
@@ -81,7 +81,7 @@ if [ "$INSTALL_WM" = i ]; then
   echo "Creating symlink to: \e[1;36m$HOME/.config/i3/blocklets-scripts\e[0m"
   ln -sfni "$DIR/i3/blocklets-scripts" "$HOME/.config/i3/blocklets-scripts"
 
-  [ -d "$HOME/.config/polybar" ] || mkdir "$HOME/.config/polybar"
+  [ -d "$HOME/.config/polybar" ] || mkdir -pv "$HOME/.config/polybar"
 
   echo "Creating symlink to: \e[1;36m$HOME/.config/polybar/launch.sh\e[0m"
   ln -sfni "$DIR/polybar/launch.sh" "$HOME/.config/polybar/launch.sh"
@@ -93,7 +93,7 @@ if [ "$INSTALL_WM" = i ]; then
   ln -sfni "$DIR/polybar/config/scripts" "$HOME/.config/polybar/config/scripts"
 
 elif [ "$INSTALL_WM" = a ]; then
-  [ -d "$HOME/.config/awesome" ] || mkdir "$HOME/.config/awesome" -pv
+  [ -d "$HOME/.config/awesome" ] || mkdir -pv "$HOME/.config/awesome"
 
   echo "Creating symlink to: \e[1;36m$HOME/.config/awesome/rc.lua\e[0m"
   ln -sfni "$DIR/awesome/rc.lua" "$HOME/.config/awesome/rc.lua"
@@ -110,3 +110,7 @@ ln -sfni "$DIR/xinput/xinputrc" "$HOME/.xinputrc"
 
 echo "Creating symlink to: \e[1;36m$HOME/.mime.types\e[0m"
 ln -sfni "$DIR/mime.types" "$HOME/.mime.types"
+
+mkdir -pv "$HOME/.config/docker"
+echo "Creating symlink to: \e[1;36m$HOME/.config/docker/config.json\e[0m"
+ln -sfni "$DIR/docker/config.json" "$HOME/.config/docker/config.json"
