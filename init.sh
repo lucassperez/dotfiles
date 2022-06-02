@@ -114,3 +114,7 @@ ln -sfni "$DIR/mime.types" "$HOME/.mime.types"
 mkdir -pv "$HOME/.config/docker"
 echo "Creating symlink to: \e[1;36m$HOME/.config/docker/config.json\e[0m"
 ln -sfni "$DIR/docker/config.json" "$HOME/.config/docker/config.json"
+
+mkdir -pv "$HOME/.config/tig"
+echo "Creating symlink to: \e[1;36m$HOME/.config/tig/config\e[0m"
+ln -sfni "$DIR/docker/config.json" "$HOME/.config/tig/config"

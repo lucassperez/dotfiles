@@ -39,6 +39,7 @@ alias gk='git checkout'
 alias gb='git branch'
 alias gsh='git stash'
 alias gshp='git stash pop'
+alias ts='tig status'
 alias pwdcp="pwd | tr -d '\n' | xclip -selection clipboard && pwd"
 alias normalizechmod='~/scripts/chmod-back-to-normal.sh'
 alias browsersync='browser-sync start --server --directory --files **/*'

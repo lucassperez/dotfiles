@@ -1,0 +1,10 @@
+# https://raw.githubusercontent.com/jonas/tig/master/tigrc
+
+# disable history
+set history-size = 0
+color cursor default black normal
+color main-head red default bold
+color main-ref green default normal
+
+color title-blur white black
+color title-focus yellow black bold
