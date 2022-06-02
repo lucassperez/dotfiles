@@ -1,4 +1,5 @@
 source "$HOME/.asdf/asdf.sh"
+# source "$ASDF_DIR/asdf.sh" I don't know why this does not work
 fpath=(${ASDF_DIR}/completions $ZDOTDIR/completions $fpath)
 
 autoload -Uz compinit
@@ -10,7 +11,7 @@ compinit
 _comp_options+=(globdots)
 
 setopt hist_ignore_all_dups inc_append_history
-HISTFILE=~/.cache/zsh/history
+HISTFILE="$XDG_CACHE_HOME/zsh/history"
 HISTSIZE=4000
 SAVEHIST=4000
 
@@ -164,7 +165,7 @@ sh "$HOME/scripts/lambda-fetch.sh"
 # https://www.tecmint.com/tips-for-tmux-terminal-sessions/
 if tmux ls 1>/dev/null 2>&1 && [ -z "$TMUX" ]; then
   printf "Já existe pelo menos uma instância do \e[32mtmux\e[0m rodando:\n"
-  /bin/sh ~/scripts/parse-tmux-ls.sh
+  . "$HOME/scripts/parse-tmux-ls.sh"
 else
   # ORIGINAL_TERMINAL_EMULATOR
 

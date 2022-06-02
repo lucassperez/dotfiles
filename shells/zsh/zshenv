@@ -1,9 +1,9 @@
 # https://zsh.sourceforge.io/Intro/intro_3.html
 # https://www.reddit.com/r/zsh/comments/3ubrdr/proper_way_to_set_zdotdir/
 
-export ZDOTDIR="$HOME/.config/zsh"
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
-export PATH="$HOME/.asdf/installs/golang/1.18/packages/bin:$HOME/sources/apache-maven-3.8.4/bin:$PATH"
+export PATH="$ASDF_DIR/installs/golang/1.18/packages/bin:$HOME/sources/apache-maven-3.8.4/bin:$PATH"
 
 export EDITOR=nvim
 
