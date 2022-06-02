@@ -14,6 +14,9 @@ read INSTALL_WM
 echo "Creating symlink to: \e[1;36m$HOME/.config/alacritty\e[0m"
 ln -sfni "$DIR/alacritty/" "$HOME/.config/alacritty"
 
+echo "Creating symlink to: \e[1;36m$HOME/.profile\e[0m"
+ln -sfni "$DIR/shells/profile" "$HOME/.profile"
+
 if [ "$INSTALL_SHELL" = z ]; then
   echo "Creating symlink to: \e[1;36m$HOME/.zshenv\e[0m"
   ln -sfni "$DIR/shells/zsh/zshenv" "$HOME/.zshenv"
