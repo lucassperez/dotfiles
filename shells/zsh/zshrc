@@ -50,8 +50,8 @@ zstyle ':vcs_info:git*' stagedstr '%F{14}'
 # === Minimal one line prompt
 
 zstyle ':vcs_info:git*+set-message:*' hooks my-git-remote-comparison-styling
-zstyle ':vcs_info:git*' formats ' %F{9}%u%c%m%b'
-PROMPT='%B%F{green}%~${vcs_info_msg_0_}%u%s%0(?.. %F{magenta}[%?])%f%b λ '
+zstyle ':vcs_info:git*' formats ' %F{9}%u%m%c%b'
+PROMPT='%B%F{green}%~${vcs_info_msg_0_}%u%s%0(?.. %F{magenta}%?)%f%b λ '
 
 # ===  Big two line prompt
 
@@ -66,6 +66,11 @@ PROMPT='%B%F{green}%~${vcs_info_msg_0_}%u%s%0(?.. %F{magenta}[%?])%f%b λ '
 # https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Prompt-Expansion
 
 +vi-my-git-remote-comparison-styling() {
+  local unstaged_files=$(git status --porcelain 2>/dev/null)
+  if [ -n "$unstaged_files" ]; then
+    hook_com[misc]='%F{11}'
+  fi
+
   local git_status="$(git status 2> /dev/null)"
 
   case $git_status in
@@ -79,11 +84,6 @@ PROMPT='%B%F{green}%~${vcs_info_msg_0_}%u%s%0(?.. %F{magenta}[%?])%f%b λ '
       hook_com[misc]='%U'
       ;;
   esac
-
-  local unstaged_files=$(git status --porcelain 2>/dev/null)
-  if [ -n "$unstaged_files" ]; then
-    hook_com[misc]+='%F{11}'
-  fi
 }
 
 # short_os_name=$(grep ^ID= /etc/os-release | cut -b 4-6)
