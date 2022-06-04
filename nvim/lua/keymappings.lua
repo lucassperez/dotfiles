@@ -53,9 +53,11 @@ noremap('n', 'gx', ':!firefox <C-r><C-a><CR>')
 
 -- Ir para o buffer anterior/próximo e fechar o atual
 -- O plugin barbar.vim estaria sobrescrevendo esses mappings de qualquer forma
--- noremap('n', '<leader>q', ':bprevious<CR>')
--- noremap('n', '<leader>w', ':bnext<CR>')
--- noremap('n', '<leader>d', ':bdelete<CR>')
+noremap('n', '<leader>q', ':bprevious<CR>')
+noremap('n', '<leader>w', ':bnext<CR>')
+noremap('n', '<leader>d', ':bdelete<CR>')
+noremap('n', '<A-q>', ':bprevious<CR>')
+noremap('n', '<A-w>', ':bnext<CR>')
 
 -- Mudar de painéis segurando Control
 -- O plugin vim-tmux-navigator está fazendo isso
@@ -179,9 +181,8 @@ noremap('n', ',go', ':read $HOME/.config/nvim/snippets/gomain<CR>i<Backspace><C-
 -- Pra usar quando tem conflitos no git
 noremap('n', '<leader>/', '/\\(<\\|=\\|>\\)\\{7\\}<CR>')
 
--- Colocar o shebang #!/bin/sh
-noremap('n', ',sh', 'ggI#!/bin/sh<CR><CR><C-c>')
 -- Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo (o silent = true não ta funcionando?)
+noremap('n', ',sh', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
 noremap('n', ',SH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
 noremap('n', ',Sh', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
 noremap('n', ',sH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
