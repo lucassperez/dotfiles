@@ -12,8 +12,12 @@ function toggleBetweenTestAndFile()
   end
 
   local path = functions[filetype]()
-  print('Switching to '..path)
-  vim.api.nvim_command('edit '..path)
+  if path == nil then
+    print('Path for the other file not found. Is your current working directory the project\'s root directory?')
+  else
+    print('Switching to '..path)
+    vim.api.nvim_command('edit '..path)
+  end
 end
 
 function elixirFunction()
@@ -22,19 +26,21 @@ function elixirFunction()
   path = ''
   found = false
   for str in string.gmatch(file_dir, '[^/]+') do
-    if found then path = path..str..'/'
+    if found then
+      path = path..str..'/'
     else
-      if not found and str == 'test' then
+      if str == 'test' then
         found = true
-        path = path..'lib/'
-        filename = vim.fn.expand('%:t'):gsub('_test.exs', '.ex')
-      elseif not found and str == 'lib' then
+        path = 'lib/'..path
+        filename = vim.fn.expand('%:t'):gsub('_test%.exs', '.ex')
+      elseif str == 'lib' then
         found = true
-        path = path..'test/'
-        filename = vim.fn.expand('%:t'):gsub('.ex', '_test.exs')
+        path = 'test/'..path
+        filename = vim.fn.expand('%:t'):gsub('%.ex', '_test.exs')
       end
     end
   end
+  if filename == nil then return nil end
   return path..filename
 end
 
@@ -48,16 +54,17 @@ end
 --   path = ''
 --   found = false
 --   for str in string.gmatch(file_dir, '[^/]+') do
---     if found then path = path..str..'/'
+--     if found then
+--       path = path..str..'/'
 --     else
 --       if not found and str == 'spec' then
 --         found = true
---         path = path..'app/'
---         filename = vim.fn.expand('%:t'):gsub('_spec.rb', '.rb')
+--         path = 'app/'..path
+--         filename = vim.fn.expand('%:t'):gsub('_spec%.rb$', '.rb')
 --       elseif not found and str == 'app' then
 --         found = true
---         path = path..'spec/'
---         filename = vim.fn.expand('%:t'):gsub('.rb', '_spec.rb')
+--         path = 'spec/'..path
+--         filename = vim.fn.expand('%:t'):gsub('%.rb$', '_spec.rb')
 --       end
 --     end
 --   end
