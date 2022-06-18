@@ -655,9 +655,15 @@ clientkeys = gears.table.join(
             end,
             { group = 'client', description = 'minimize', }),
   awful.key({ modkey }, 'm',
-            function (c)
+            function ()
               local this_screen = awful.client.screen
               local actual_layout = awful.layout.get(this_screen)
+
+              -- local actual_layout = awful.screen.focused().selected_tag
+              -- file = io.open('/home/lucas/anota-lua', 'a')
+              -- file:write(keys(x))
+              -- file:write('\n')
+              -- file:close()
 
               if actual_layout ~= awful.layout.suit.max then
                 max_mayout_toggle_cache = actual_layout
@@ -669,7 +675,7 @@ clientkeys = gears.table.join(
                 awful.layout.set(awful.layout.layouts[1])
               end
 
-              c:raise()
+              -- c:raise()
             end,
             { group = 'client', description = 'toggle maximize layout', }),
   -- Sometimes, the above function behaves really weird, and the original toggle
@@ -866,6 +872,10 @@ root.keys(globalkeys)
 -- Floating alacritty is used in some scripts, alacritty has to be manually
 -- spawned with the name "floating-alacritty" in order to show titlebars
 local function should_show_titlebars(c)
+  if c.fullscreen then return false end
+  if c.maximized then return false end
+  if c.maximized_horizontal then return false end
+  if c.maximized_vertical then return false end
   if c.name == 'Zoom - Free Account' then return true end
   if c.class == 'Zoom - Free Account' then return true end
   if c.name == 'zoom' then return true end
