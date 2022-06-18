@@ -371,6 +371,10 @@ globalkeys = gears.table.join(
 -- 180 XF86HomePage
 -- 148 XF86Calculator
 
+  awful.key({ modkey }, 'c',
+            function() awful.spawn('/home/lucas/scripts/dmenu/monitors-dmenu.sh') end,
+            { group = 'System controls', description = 'choose second monitor position and/or reset wallpaper', }),
+
   -- Volume control
   awful.key({ modkey }, ',',
             function() volume_widget:dec_vol(2) end,
