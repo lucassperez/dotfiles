@@ -1,30 +1,41 @@
+diff --git a/lua/bufferline/buffer.lua b/lua/bufferline/buffer.lua
+index 6fd809f..8abec16 100644
+--- a/lua/bufferline/buffer.lua
++++ b/lua/bufferline/buffer.lua
+@@ -43,7 +43,7 @@ local function get_name(opts, number)
+   --- @type nil|string
+   local name = buf_is_valid(number) and buf_get_name(number) or nil
+ 
+-  if name then
++  if name and name ~= '' then
+     name = buf_get_option(number, 'buftype') == 'terminal' and terminalname(name) or utils.basename(name)
+   elseif opts.no_name_title ~= nil and opts.no_name_title ~= vim.NIL then
+     name = opts.no_name_title
 diff --git a/lua/bufferline/layout.lua b/lua/bufferline/layout.lua
-index b7c838a..8db83f6 100644
+index 22b542b..2ef135c 100644
 --- a/lua/bufferline/layout.lua
 +++ b/lua/bufferline/layout.lua
-@@ -60,7 +60,8 @@ local function calculate_buffers_width(state, base_width)
+@@ -62,8 +62,8 @@ local function calculate_buffers_width(state, base_width)
+              or opts.icon_close_tab_modified)
  
          width = width
-           + strwidth(icon or '')
--          + (icon and 1 or 0) -- space-after-close-icon but only if icon is not nil
-+          -- + (icon and 1 or 0) -- space-after-close-icon but only if icon is not nil
-+          + 1
+-          + strwidth(icon)
+-          + 1 -- space-after-close-icon
++          + strwidth(icon or '')
++          -- + 1 -- space-after-close-icon
        end
      end
      sum = sum + width
 diff --git a/lua/bufferline/render.lua b/lua/bufferline/render.lua
-index 350277d..812351c 100644
+index 42a4fb1..eeb7a6e 100644
 --- a/lua/bufferline/render.lua
 +++ b/lua/bufferline/render.lua
-@@ -330,9 +330,9 @@ local function render(update_names)
-         {bufferIndexPrefix,  bufferIndex},
-         {iconPrefix,         icon},
+@@ -323,7 +323,7 @@ local function render(update_names)
          {jumpLetterPrefix,   jumpLetter},
--        {namePrefix,         name},
-+        {namePrefix,         ' ' .. (trailingIcon and name or (name .. ' '))},
+         {clickable .. namePrefix,         name},
          {'',                 padding},
 -        {'',                 ' '},
-+        -- {'',                 ' '},
++--        {'',                 ' '},
          {closePrefix,        close},
        }
      }

@@ -2,9 +2,9 @@
 vim.api.nvim_set_keymap('n', '<C-q>', ':wqa!<CR>', { noremap = true, silent = false })
 local t = true
 local f = false
-local opt_closable = f
+local opt_closable = t
 local opt_modficon = t
-local icon_close = ' xxxxx'
+local icon_close = ''
 local icon_modif = '[+]'
 -- local opt_sep_active = '▎'
 -- local opt_sep_inacti = '▎'
@@ -24,7 +24,7 @@ vim.api.nvim_set_keymap('n', '<A-Q>', ':BufferMovePrevious<CR>', { noremap = tru
 vim.api.nvim_set_keymap('n', '<A-W>', ':BufferMoveNext<CR>', { noremap = true, silent = false })
 vim.api.nvim_set_keymap('n', '<A-D>', ':BufferClose<CR>', { noremap = true, silent = false })
 
-vim.g.bufferline = {
+require('bufferline').setup({
   animation = false,
 
   -- Enable/disable auto-hiding the tab bar when there is a single buffer
@@ -77,7 +77,7 @@ vim.g.bufferline = {
 
   -- If true, new buffers will be inserted at the start/end of the list.
   -- Default is to insert after current buffer.
-  insert_at_end = false,
+  insert_at_end = true,
   insert_at_start = false,
 
   -- Sets the maximum padding width with which to surround each tab
@@ -97,149 +97,27 @@ vim.g.bufferline = {
   -- for other layouts.
   letters = 'asdfhjklgçnmxcvbziowerutyqpASDFHJKLGÇNMXCVBZIOWERUTYQP',
 
-  -- Sets the name of unnamed buffers. By default format is "[Buffer X]"
+  -- Sets the name of unnamed buffers. By default format is "[buffer X]"
   -- where X is the buffer number. But only a static string is accepted here.
   no_name_title = '[No Name]',
-}
+})
 
 vim.cmd([[
-function! s:fg(groups, default)
-   for group in a:groups
-      let hl = nvim_get_hl_by_name(group,   1)
-      if has_key(hl, 'foreground')
-         return printf("#%06x", hl.foreground)
-      end
-   endfor
-   return a:default
-endfunc
-
-function! s:bg(groups, default)
-   for group in a:groups
-      let hl = nvim_get_hl_by_name(group,   1)
-      if has_key(hl, 'background')
-         return printf("#%06x", hl.background)
-      end
-   endfor
-   return a:default
-endfunc
-
-function! s:hi_all(groups)
-   for group in a:groups
-      call call(function('s:hi'), group)
-   endfor
-endfunc
-
-function! s:hi_link(pairs)
-   for pair in a:pairs
-      execute 'hi default link ' . join(pair)
-   endfor
-endfunc
-
-function! s:hi(name, ...)
-   let fg = ''
-   let bg = ''
-   let attr = ''
-
-   if type(a:1) == 3
-      let fg   = get(a:1, 0, '')
-      let bg   = get(a:1, 1, '')
-      let attr = get(a:1, 2, '')
-   else
-      let fg   = get(a:000, 0, '')
-      let bg   = get(a:000, 1, '')
-      let attr = get(a:000, 2, '')
-   end
-
-   let has_props = v:false
-
-   let cmd = 'hi default ' . a:name
-   if !empty(fg) && fg != 'none'
-      let cmd .= ' guifg=' . fg
-      let has_props = v:true
-   end
-   if !empty(bg) && bg != 'none'
-      let cmd .= ' guibg=' . bg
-      let has_props = v:true
-   end
-   if !empty(attr) && attr != 'none'
-      let cmd .= ' gui=' . attr
-      let has_props = v:true
-   end
-   execute 'hi default clear ' a:name
-   if has_props
-      execute cmd
-   end
-endfunc
-
-let fg_target = 'red'
-
-let fg_current  = s:fg(['Normal'], '#efefef')
-let fg_visible  = s:fg(['TabLineSel'], '#efefef')
-let fg_inactive = s:fg(['TabLineFill'], '#616163')
-
-let fg_modified  = s:fg(['WarningMsg'], '#E5AB0E')
-let fg_special  = s:fg(['Special'], '#599eff')
-let fg_subtle  = s:fg(['NonText', 'Comment'], '#555555')
-
-let bg_current  = s:bg(['Normal'], 'NONE')
-let bg_visible  = s:bg(['TabLineSel', 'Normal'], '#6c6c6c')
-let bg_inactive = s:bg(['TabLineFill', 'StatusLine'], '#2e3436')
-
-" Meaning of terms:
-"
-" format: "Buffer" + status + part
-"
-" status:
-"     *Current: current buffer
-"     *Visible: visible but not current buffer
-"    *Inactive: invisible but not current buffer
-"
-" part:
-"        *Icon: filetype icon
-"       *Index: buffer index
-"         *Mod: when modified
-"        *Sign: the separator between buffers
-"      *Target: letter in buffer-picking mode
-"
-" BufferTabpages: tabpage indicator
-" BufferTabpageFill: filler after the buffer section
-" BufferOffset: offset section, created with set_offset()
-
-call s:hi_all([
-\ ['BufferCurrent',        fg_current,  bg_current],
-\ ['BufferCurrentIndex',   fg_special,  bg_current],
-\ ['BufferCurrentMod',     fg_current,  bg_current],
-\ ['BufferCurrentSign',    fg_special,  bg_current],
-\ ['BufferCurrentTarget',  fg_target,   bg_current,   'bold'],
-\ ['BufferVisible',        fg_visible,  bg_visible],
-\ ['BufferVisibleIndex',   fg_visible,  bg_visible],
-\ ['BufferVisibleMod',     fg_visible,  bg_visible],
-\ ['BufferVisibleSign',    fg_visible,  bg_visible],
-\ ['BufferVisibleTarget',  fg_target,   bg_visible,   'bold'],
-\ ['BufferInactive',       fg_inactive, bg_inactive],
-\ ['BufferInactiveIndex',  fg_subtle,   bg_inactive],
-\ ['BufferInactiveMod',    fg_inactive, bg_inactive],
-\ ['BufferInactiveSign',   fg_subtle,   bg_inactive],
-\ ['BufferInactiveTarget', fg_target,   bg_inactive,  'bold'],
-\ ['BufferTabpages',       fg_special,  bg_inactive,  'bold'],
-\ ['BufferTabpageFill',    fg_inactive, '#bbc2cf'],
-\ ])
-
-call s:hi_link([
-\ ['BufferCurrentIcon',  'BufferCurrent'],
-\ ['BufferVisibleIcon',  'BufferVisible'],
-\ ['BufferInactiveIcon', 'BufferInactive'],
-\ ['BufferOffset',       'BufferTabpageFill'],
-\ ])
-
-" NOTE: this is an example taken from the source, implementation of
-" s:fg(), s:bg(), s:hi_all() and s:hi_link() is left as an exercise
-" for the reader.
+hi BufferCurrent          guifg=#efefef   guibg=NONE
+hi BufferCurrentIndex     guifg=#599eff   guibg=NONE
+hi BufferCurrentMod       guifg=#efefef   guibg=NONE
+hi BufferCurrentSign      guifg=#599eff   guibg=NONE
+hi BufferCurrentTarget    guifg=red       guibg=NONE      gui=BOLD
+hi BufferVisible          guifg=#efefef   guibg=#6c6c6c
+hi BufferVisibleIndex     guifg=#efefef   guibg=#6c6c6c
+hi BufferVisibleMod       guifg=#efefef   guibg=#6c6c6c
+hi BufferVisibleSign      guifg=#efefef   guibg=#6c6c6c
+hi BufferVisibleTarget    guifg=red       guibg=#6c6c6c   gui=BOLD
+hi BufferInactive         guifg=#616163   guibg=#2e3436
+hi BufferInactiveIndex    guifg=#555555   guibg=#2e3436
+hi BufferInactiveMod      guifg=#616163   guibg=#2e3436
+hi BufferInactiveSign     guifg=#555555   guibg=#2e3436
+hi BufferInactiveTarget   guifg=red       guibg=#2e3436   gui=BOLD
+hi BufferTabpages         guifg=#599eff   guibg=#2e3436   gui=BOLD
+hi BufferTabpageFill      guifg=#616163   guibg=#bbc2cf
 ]])
-
--- \ ['BufferTabpageFill',    fg_inactive, bg_inactive],
--- \ ['BufferTabpageFill',    fg_inactive, '#bbc2cf'],
-
--- \ ['BufferCurrentMod',     '#c39f00',  bg_current],
--- \ ['BufferVisibleMod',     '#c39f00',  bg_visible],
--- \ ['BufferInactiveMod',    '#c39f00', bg_inactive],

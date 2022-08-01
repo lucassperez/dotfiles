@@ -90,3 +90,15 @@ hi TSAttribute      guifg=#34e2df ctermfg=cyan gui=NONE cterm=BOLD
 
 source ~/.config/nvim/color/react?.vim
 source ~/.config/nvim/color/html.vim
+
+" hi markdownH1Delimiter guifg=#ffffff
+" hi markdownH2Delimiter guifg=#ffffff
+" hi markdownH3Delimiter guifg=#ffffff
+" hi markdownH4Delimiter guifg=#ffffff
+" hi markdownH5Delimiter guifg=#ffffff
+" hi markdownH6Delimiter guifg=#ffffff
+" hi markdownH7Delimiter guifg=#ffffff
+" hi markdownBlockQuote guifg=#ffffff
+
+" hi NormalFloat guifg=#000000
+" hi Special guifg=#00ffff
