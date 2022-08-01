@@ -4,6 +4,8 @@ function toggleBetweenTestAndFile()
   functions = {
     elixir = elixirFunction,
     ruby = rubyFunction,
+    typescriptreact = tsReactFunction,
+    typescript = tsReactFunction,
   }
 
   if not functions[filetype] then
@@ -23,8 +25,8 @@ end
 function elixirFunction()
   local file_dir = vim.fn.expand('%:h')
 
-  path = ''
-  found = false
+  local path = ''
+  local found = false
   for str in string.gmatch(file_dir, '[^/]+') do
     if found then
       path = path..str..'/'
@@ -42,6 +44,24 @@ function elixirFunction()
   end
   if filename == nil then return nil end
   return path..filename
+end
+
+-- Switches to test files with the same name and on the same directory,
+-- but with ".test" as file extension
+function tsReactFunction()
+  local file_dir = vim.fn.expand('%:h')
+  local file_name = vim.fn.expand('%:t')
+  local extension = vim.fn.expand('%:e')
+
+  local path = ''
+  if string.match(file_name, '%w*%.test%.'..extension..'$') then
+    path = string.gsub(file_name, '%.test%.'..extension..'$', '.'..extension)
+  elseif string.match(file_name, '%w*%.'..extension..'$') then
+    path = string.gsub(file_name, '%.'..extension..'$', '.test.'..extension)
+  end
+
+  if path == '' then return nil end
+  return file_dir..'/'..path
 end
 
 -- function rubyFunction()

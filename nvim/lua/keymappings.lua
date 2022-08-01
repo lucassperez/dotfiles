@@ -81,8 +81,11 @@ noremap('n', '>', '>>')
 noremap('n', '<', '<<')
 
 -- Mover blocos de texto
-noremap('v', '<C-j>', ":m '>+1<CR>gv=gv")
-noremap('v', '<C-k>', ":m '<-2<CR>gv=gv")
+-- Não funcona com o visual block?
+noremap('v', '<M-j>', ':m .+1<CR>gv=gv')
+noremap('v', '<M-k>', ':m .-2<CR>gv=gv')
+noremap('n', '<M-j>', ':m .+1<CR>==')
+noremap('n', '<M-k>', ':m .-2<CR>==')
 
 -- Mudar o tamanho dos painéis
 noremap('n', '<C-Down>', ':resize -3<CR>')
@@ -143,6 +146,8 @@ noremap('n', '<A-c>', ':VtrSendCtrlC<CR>')
 -- linter all & linter this file
 noremap('n', '<leader>rua', ':silent!wa<CR>:lua runLinter {}<CR>')
 noremap('n', '<leader>ruf', ':silent!wa<CR>:lua runLinter { cur_file = true }<CR>')
+-- The "n" stands for "near", makes sense to me to be equal to "ruf", "f" for "file"
+noremap('n', '<leader>run', ':silent!wa<CR>:lua runLinter { cur_file = true }<CR>')
 
 -- test all, test this file, test this file this line & test this directory
 noremap('n', '<leader>ra', ':silent!wa<CR>:lua runAutomatedTest {}<CR>')
@@ -158,11 +163,12 @@ noremap('n', '<leader>rum', ':silent!wa<CR>:lua fromGit.genericLinter()<CR>')
 
 -- Run last command executado no painel "anexado"
 -- Na verdade simplesmente executa !!, que só vai funcionar num shell, mesmo
-noremap('n', '<leader>rl', ':silent!wa<CR>:call VtrSendCommand("!!")<CR>')
+noremap('n', '<leader>rl', ":silent!wa<CR>:call VtrSendCommand('!!')<CR>")
 
 -- Executa o arquivo como um script a depender do seu "filetype"
 -- Ver o script para detalhes
 noremap('n', '<leader>rr', ':silent!wa<CR>:lua executeFileAsScript()<CR>', true) -- silent = true
+noremap('n', '<leader>R', ':lua autoExecuteOnSave()<CR>', true)
 
 -- Tenta compilar o arquivo a depender do seu "filetype"
 noremap('n', '<leader>rc', ':silent!wa<CR>:lua compileFile()<CR>')
@@ -198,8 +204,8 @@ noremap('n', '<leader>-', ':wincmd _<CR>:wincmd |<CR>')
 noremap('n', '<leader>=', ':wincmd =<CR>')
 
 -- Send current line (or lines in visual mode) to attached tmux pane
-noremap('n', '<leader>R', ':lua sendLinesToTmux("normal")<CR>')
-noremap('v', '<leader>R', ':lua sendLinesToTmux("visual")<CR>')
+-- noremap('n', '<leader>R', ':lua sendLinesToTmux("normal")<CR>')
+-- noremap('v', '<leader>R', ':lua sendLinesToTmux("visual")<CR>')
 
 -- Tries to find the test file of current file or vice versa.
 -- Works well with elixir and its organized and predictable paths.
