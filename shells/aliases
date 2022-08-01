@@ -62,8 +62,9 @@ alias glmain="$HOME/scripts/git-stuff/get-files/generic-linter.sh"
 alias gtmain="$HOME/scripts/git-stuff/get-files/generic-test.sh"
 alias stoprmalldocker='echo "docker ps -aq | xargs docker stop | xargs docker rm" && docker ps -aq | xargs docker stop | xargs docker rm'
 alias lwmtheme='leftwm-theme'
+alias enabletouchpadtap='~/scripts/enable-touchpad-tap.sh'
 alias xspeed='echo "xset r rate 220 25" && xset r rate 220 25'
-alias xall='echo "xset r rate 220 25" && echo "xmodmap ~/.Xmodmap" && xset r rate 220 25 && xmodmap ~/.Xmodmap'
+alias xall='echo "xset r rate 220 25" && echo "xmodmap ~/.Xmodmap" && echo "~/scripts/enable-touchpad-tap.sh" && xset r rate 220 25 && xmodmap ~/.Xmodmap && ~/scripts/enable-touchpad-tap.sh'
 
 alias vim='nvim'
 

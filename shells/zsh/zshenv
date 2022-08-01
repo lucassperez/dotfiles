@@ -3,7 +3,7 @@
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
-export PATH="$ASDF_DIR/installs/golang/1.18/packages/bin:$HOME/sources/apache-maven-3.8.4/bin:$PATH"
+export PATH="$HOME/.asdf/installs/golang/1.18/packages/bin:$HOME/sources/apache-maven-3.8.4/bin:$PATH"
 
 export EDITOR=nvim
 
@@ -12,6 +12,10 @@ export ERL_AFLAGS='-kernel shell_history enabled -kernel shell_history_file_byte
 export LESS='-FXR'
 
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+
+# Run clipmenu --help to see all options
+# https://github.com/cdown/clipmenu
+export CM_HISTLENGTH=10
 
 # Cor do jq
 # A única mudança foi mudar o null para vermelho, pois antes era

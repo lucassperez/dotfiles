@@ -4,8 +4,7 @@ simplexev() {
   xev | awk -F '[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
 }
 
-redme() {
-  if [ -f "$1" ]; then
+redme() { if [ -f "$1" ]; then
     glow -p "$1"
   elif [ -d "$1" ]; then
     filename=$(ls "$1" | grep -i readme)
@@ -15,6 +14,19 @@ redme() {
   else
     exit 1
   fi
+}
+
+testmix() {
+  if [ "$1" = '-f' ]; then
+    res=$(mix test --failed)
+    echo $res | mix test --failed | grep "test.*_test\.exs:.*(test)" | sort -n
+    return
+  fi
+
+  mix test $@
+
+  res=$(mix test --failed)
+  echo $res | mix test --failed | grep "test.*_test\.exs:.*(test)" | sort -n
 }
 
 [ -f "$HOME/.local/.functions.local" ] && source "$HOME/.local/.functions.local"

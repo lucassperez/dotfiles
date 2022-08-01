@@ -42,6 +42,11 @@ autoload -Uz vcs_info
 precmd() { vcs_info }
 setopt PROMPT_SUBST
 
+# Cores escuras / claras
+# vermelho | verde | amarelo | azul | magenta | ciano | branco | preto/cinza
+#   1/9    |  2/10 |   3/11  | 4/12 |   5/13  |  6/14 |  7/15  |     8/16
+# https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Prompt-Expansion
+
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:git*' check-for-changes true
 zstyle ':vcs_info:git*' unstagedstr '%F{11}'
@@ -60,30 +65,27 @@ PROMPT='%B%F{green}%~${vcs_info_msg_0_}%u%s%0(?.. %F{magenta}%?)%f%b λ '
 # PROMPT='%B%F{green}%n@%m%F{white}:%F{blue}%~
 # %B${vcs_info_msg_0_}%u%s%0(?..%F{magenta}[%?])%f%bλ '
 
-# Cores escuras / claras
-# vermelho | verde | amarelo | azul | magenta | ciano | branco | preto/cinza
-#   1/9    |  2/10 |   3/11  | 4/12 |   5/13  |  6/14 |  7/15  |     8/16
-# https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Prompt-Expansion
-
 +vi-my-git-remote-comparison-styling() {
-  local unstaged_files=$(git status --porcelain 2>/dev/null)
-  if [ -n "$unstaged_files" ]; then
-    hook_com[misc]='%F{11}'
-  fi
-
   local git_status="$(git status 2> /dev/null)"
 
   case $git_status in
     *ahead*)
-      hook_com[misc]='%S'
+      hook_com[misc]+='%S'
       ;;
     *diverged*)
-      hook_com[misc]='%K{red}%F{black} D %f%k '
+      hook_com[misc]+='%K{red}%F{black} D %f%k '
       ;;
     *behind*)
-      hook_com[misc]='%U'
+      hook_com[misc]+='%U'
       ;;
   esac
+
+  local unstaged_files=$(git status --porcelain 2>/dev/null)
+  if [ -n "$unstaged_files" ]; then
+    hook_com[misc]+='%F{11}'
+  else
+    hook_com[misc]+='%F{red}'
+  fi
 }
 
 # short_os_name=$(grep ^ID= /etc/os-release | cut -b 4-6)
@@ -160,7 +162,9 @@ eval "$(zoxide init zsh)"
 # https://superuser.com/questions/1585256/inserting-ssh-agent-into-i3wms-startup-so-its-available-to-all-processes-in-th
 # eval $(keychain --eval --agents ssh --quick --quiet)
 
-sh "$HOME/scripts/lambda-fetch.sh"
+# . "$HOME/scripts/lambda-fetch.sh"
+# . "$HOME/scripts/ufetch-debian.sh"
+neofetch
 
 # https://www.tecmint.com/tips-for-tmux-terminal-sessions/
 if tmux ls 1>/dev/null 2>&1 && [ -z "$TMUX" ]; then

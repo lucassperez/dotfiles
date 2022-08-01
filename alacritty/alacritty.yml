@@ -263,7 +263,8 @@ schemes:
   # I didn't like the background, so I picked doom-ones background.
   # I also changed the black and bright black, since they were pretty much
   # invisible with the new background.
-  # The rest is just tokyo-night-storm
+  # I also made the "normal" colors darker, because they were the same
+  # as the "bright" colors.
   tokyo-night-storm: &modified-tokyo-night-storm
     primary:
       background: '0x282c34'
@@ -272,12 +273,12 @@ schemes:
       # black:   '0x1D202F'
       # black:   '0x6d6d6d'
       black:   '0x414868'
-      red:     '0xf7768e'
-      green:   '0x9ece6a'
-      yellow:  '0xe0af68'
-      blue:    '0x7aa2f7'
-      magenta: '0xbb9af7'
-      cyan:    '0x7dcfff'
+      red:     '0xd95b72'
+      green:   '0x7db046'
+      yellow:  '0xbf8e47'
+      blue:    '0x5368db'
+      magenta: '0xa771d9'
+      cyan:    '0x5b98de'
       white:   '0xa9b1d6'
     bright:
       # black:   '0x414868'

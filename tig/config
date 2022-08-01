@@ -1,5 +1,7 @@
 # https://raw.githubusercontent.com/jonas/tig/master/tigrc
 
+set vertical-split = yes
+
 # disable history
 set history-size = 0
 color cursor default black normal
