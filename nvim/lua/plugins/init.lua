@@ -7,6 +7,8 @@ end
 -- https://github.com/yegappan/mru tentar esse qualquer dias desses
 -- https://github.com/neoclide/redismru.vim ou esse
 return require('packer').startup(function()
+  use 'wbthomason/packer.nvim'
+
   -- Telescope
   use {
     'nvim-telescope/telescope.nvim',
@@ -54,6 +56,8 @@ return require('packer').startup(function()
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-nvim-lua'
   use 'hrsh7th/cmp-nvim-lsp'
+
+  use 'L3MON4D3/LuaSnip'
 
   use 'onsails/lspkind-nvim'
 

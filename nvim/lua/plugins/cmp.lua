@@ -4,6 +4,9 @@ local cmp = require('cmp')
 local lspkind = require('lspkind')
 
 cmp.setup({
+  snippet = {
+    expand = function(args) require('luasnip').lsp_expand(args.body) end
+  },
   mapping = {
     ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
 
@@ -22,6 +25,7 @@ cmp.setup({
     { name = 'nvim_lsp' },
     { name = 'path', trailing_slash = true },
     { name = 'buffer', keyword_length = 2 },
+    -- Maybe start using luasnip and add it here?
   },
   formatting = {
     format = lspkind.cmp_format({
