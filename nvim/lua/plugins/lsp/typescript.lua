@@ -10,8 +10,9 @@ local on_attach = function(client, bufnr)
   local map_opts = { noremap = true, silent = true }
 
   map('n', [[\f]], ':lua vim.lsp.buf.formatting()<CR>', map_opts)
+  -- map('n', [[\f]], ':TSLspImportAll<CR>:TSLspOrganize<CR>:lua vim.lsp.buf.formatting()<CR>', map_opts)
   map('n', 'K', ':lua vim.lsp.buf.definition()<CR>', map_opts)
-  map('n', [[\k]], ':lua vim.lsp.buf.hover()', map_opts)
+  map('n', [[\k]], ':lua vim.lsp.buf.hover()<CR>', map_opts)
   map('n', [[\K]], ':lua vim.lsp.buf.signature_help()<CR>', map_opts)
   map('n', [[\n]], ':lua vim.lsp.buf.rename()<CR>', map_opts)
   map('n', [[\r]], ':lua vim.lsp.buf.references()<CR>', map_opts)
