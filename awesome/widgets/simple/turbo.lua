@@ -10,7 +10,8 @@ local text = wibox.widget({
 local widget = wibox.widget.background()
 widget:set_widget(text)
 widget:set_fg('#00ff00')
-text:set_text('TURBO ')
+-- text:set_text('TURBO ')
+text:set_text('ARMENGAÇÃO ')
 
 local function random_from_list(list)
   return list[math.random(#list)]

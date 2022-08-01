@@ -62,6 +62,7 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. 'my-theme.lua')
 
 -- This is used later as the default terminal and editor to run.
 terminal = 'alacritty'
+floating_terminal='alacritty -t floating-alacritty -o window.opacity=1.0'
 -- Even though my EDITOR env is set to nvim, this does not always work
 -- editor = os.getenv('EDITOR') or 'editor'
 editor = 'nvim'
@@ -104,7 +105,8 @@ awful.layout.layouts = {
 -- Create a launcher widget and a main menu
 myawesomemenu = {
   { 'hotkeys', function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
-  { 'manual', terminal .. ' -e man awesome' },
+  -- { 'manual', terminal .. ' -e man awesome' },
+  { 'manual', floating_terminal .. ' -e man awesome' },
   { 'edit config', editor_cmd .. ' ' .. awesome.conffile },
   { 'restart', awesome.restart },
   { 'quit', function() awesome.quit() end },
@@ -118,6 +120,7 @@ mymainmenu = awful.menu({
     menu_awesome,
     menu_terminal,
     { 'open browser', browser },
+    { 'campo minado', 'gnome-mines' },
     { 'lock screen', 'slock' },
   }
 })
@@ -374,6 +377,12 @@ globalkeys = gears.table.join(
   awful.key({ modkey }, 'c',
             function() awful.spawn('/home/lucas/scripts/dmenu/monitors-dmenu.sh') end,
             { group = 'System controls', description = 'choose second monitor position and/or reset wallpaper', }),
+  -- awful.key({ modkey }, 'y',
+  --           function() awful.spawn('/home/lucas/scripts/dmenu/copyq.sh') end,
+  --           { group = 'System controls', description = 'Copyq dmenu script', }),
+  awful.key({ modkey }, 'y',
+            function() awful.spawn('clipmenu -i -h 21 -p "Clipboard" -sb "#008080" -nb "#000000"') end,
+            { group = 'System controls', description = 'Clipmenu', }),
 
   -- Volume control
   awful.key({ modkey }, ',',
@@ -472,12 +481,20 @@ globalkeys = gears.table.join(
               awful.client.focus.global_bydirection('right')
             end,
             { group = 'client', description = 'focus right global', }),
-  awful.key({ modkey }, 'q',
+  awful.key({ modkey, shift }, 'q',
             function () awful.client.focus.byidx(-1) end,
             { group = 'client', description = 'focus by index -1', }),
-  awful.key({ modkey }, 'w',
+  awful.key({ modkey, shift }, 'w',
             function () awful.client.focus.byidx(1) end,
             { group = 'client', description = 'focus by index +1', }),
+
+  awful.key({ modkey }, 'q',
+            function () awful.screen.focus_relative(-1) end,
+            { group = 'monitor', description = 'focus relative -1', }),
+  awful.key({ modkey }, 'w',
+            function () awful.screen.focus_relative(1) end,
+            { group = 'monitor', description = 'focus relative +1', }),
+
   awful.key({ modkey }, "'",
             awful.client.urgent.jumpto,
             { group = 'client', description = 'jump to urgent client', }),
@@ -591,6 +608,12 @@ globalkeys = gears.table.join(
   awful.key({ modkey }, '#104',
             function () awful.spawn(terminal) end,
             { group = 'Launcher', description = '(numpad enter) open '..terminal..' terminal',  }),
+  awful.key({ modkey, control }, 'Return',
+            function () awful.spawn(floating_terminal) end,
+            { group = 'Launcher', description = 'open floating '..terminal..' terminal',  }),
+  awful.key({ modkey, control }, '#104',
+            function () awful.spawn(floating_terminal) end,
+            { group = 'Launcher', description = '(numpad enter) open floating '..terminal..' terminal',  }),
 
   awful.key({}, 'Print',
             function() awful.spawn('flameshot screen -c') end,
@@ -884,14 +907,17 @@ local function should_show_titlebars(c)
   if c.class == 'Alacritty' then return false end
   if type(c.class) ~= 'string' or type(c.name) ~= 'string' then return false end
 
-  return not (
-    string.match(c.class, "^[Gg]nome-%w*") or
+  if string.match(c.class, "^[Gg]nome-%w*") or
     string.match(c.name, "^[Gg]nome-%w*") or
     string.match(c.class, "^[Gg]edit") or
     string.match(c.name, "^[Gg]edit") or
     string.match(c.class, "^[Oo]rg%.gnome%.%w*") or
     string.match(c.name, "^[Oo]rg%.gnome%.%w*")
-  )
+  then
+    return false
+  end
+
+  return true
 end
 
 local function titlebar_for_floating_client(c)
@@ -926,7 +952,20 @@ awful.rules.rules = {
       keys = clientkeys,
       buttons = clientbuttons,
       screen = awful.screen.preferred,
-      placement = awful.placement.no_overlap+awful.placement.no_offscreen
+      placement = awful.placement.no_overlap+awful.placement.no_offscreen,
+      callback = function(c) -- make gnome things floating
+        if c.class == 'Org.gnome.Nautilus' then return end
+        if type(c.class) ~= 'string' then return end
+
+        if c.class == 'Zoom - Free Account' or
+          string.match(c.class, "^[Gg]nome-%w*") or
+          string.match(c.class, "^[Gg]edit") or
+          string.match(c.class, "^[Oo]rg%.gnome%.%w*")
+        then
+          c.floating = true
+          awful.placement.centered(c, nil)
+        end
+      end
     }
   },
 
@@ -951,13 +990,11 @@ awful.rules.rules = {
         'Wpa_gui',
         'veromix',
         'xtightvncviewer',
-        'Gnome-mines',
         'Zoom Meeting',
         'Zoom',
         'zoom',
         'Zoom - Free Account',
         'Polls',
-        'Gedit',
         'FeatherPad',
         'Erlang',
         'Pavucontrol',
@@ -1148,6 +1185,8 @@ awful.spawn.with_shell('unclutter')
 awful.spawn.with_shell('xset s off')
 awful.spawn.with_shell('xset -dpms')
 awful.spawn.with_shell('numlockx on')
+awful.spawn.with_shell('~/scripts/enable-touchpad-tap.sh')
+awful.spawn.with_shell('clipmenud')
 -- awful.spawn.with_shell('copyq')
 -- mic_widget:set_exact_vol(30)
 -- volume_widget:set_exact_vol(50)

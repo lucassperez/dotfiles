@@ -33,7 +33,8 @@ end
 widget:connect_signal(
   'button::press',
   function(_, _, _, button)
-    local processes = io.popen('ps axh -o cmd,%mem --sort=-%mem')
+    -- local processes = io.popen('ps axh -o cmd,%mem --sort=-%mem')
+    local processes = io.popen('ps axhc -o cmd,%mem --sort=-%mem')
     local n_most_memory_consuming = 15
     local message = ''
 
@@ -43,10 +44,10 @@ widget:connect_signal(
     -- This should never realistic happen, though.
     if button == 1 or button == 3 then
       for i = 1, (n_most_memory_consuming - 1) do
-        process, mem = processes:read():match('(.*)%s*(.*)')
-        message = message..processes:read()..'\n'
+        -- process, mem = processes:read():match('(.*)%s*(.*)')
+        message = message..(processes:read():gsub("Isolated Web Co", "Firefox"))..'\n'
       end
-      message = message..processes:read()
+      message = message..processes:read():gsub("Isolated Web Co", "Firefox")
     end
 
     naughty.notify({

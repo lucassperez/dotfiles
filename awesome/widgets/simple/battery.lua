@@ -36,9 +36,16 @@ watch(
       bg = nil
     elseif percentage <= 30 then
       color = '#ff6600'
+      last_battery_warn = nil
     elseif percentage <= 40 then
+      -- if was_higher_than_twenty then
+      --   should_send_message = true
+      --   was_higher_than_twenty = false
+      -- end
       color = '#ff9900'
     elseif percentage <= 50 then
+      -- should_send_message = false
+      -- was_higher_than_twenty = true
       color = '#ffcc00'
     elseif percentage <= 60 then
       color = '#ffff00'
@@ -82,6 +89,25 @@ watch(
     text:set_text(message)
     widget:set_fg(color)
     widget:set_bg(bg)
+
+    -- if should_send_message and state ~= 'Charging'then
+    if status ~= 'Charging' and
+       percentage <= 20 and
+       (last_battery_warn == nil or os.difftime(os.time(), last_battery_warn) > 300) -- 5 minutes since last warning
+    then
+      naughty.notify({
+        title = '\nBateria baixa!',
+        text = tostring(percentage)..'%',
+        urgency = 'critical', -- this doesn't work, how cool is that
+        timeout = 300,
+        position = 'top_middle',
+        height = 80,
+        ignore_suspend = true, -- do I really want this?
+        bg = '#ff0000',
+      })
+      -- should_send_message = false
+      last_battery_warn = os.time()
+    end
   end,
   widget
 )
@@ -101,7 +127,14 @@ widget:connect_signal(
         text = 'Time left unknown 🤔'
       else
         local hours_left, minutes_left, message = battery:match('(%d%d):(%d%d):%d%d (.*)')
-        local time_left = hours_left..'h'..minutes_left
+        local time_left
+        if hours_left == '00' then
+          time_left = minutes_left:gsub('^0', '')..' minutes'
+        elseif minutes_left == '00' then
+          time_left = hours_left:gsub('^0', '').. ' hours'
+        else
+          time_left = hours_left:gsub('^0', '').. ' hours and '..minutes_left:gsub('^0', '')..' minutes'
+        end
 
         if message then
           text = time_left..' '..message
@@ -119,7 +152,7 @@ widget:connect_signal(
       end
 
       naughty.notify({
-        title = state,
+        title = percentage..'% '..state,
         text = text,
         urgency = urgency, -- this doesn't work, how cool is that
         bg = bg,
