@@ -9,6 +9,8 @@ end
 return require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
+  use 'folke/lsp-colors.nvim'
+
   -- Telescope
   use {
     'nvim-telescope/telescope.nvim',
@@ -73,7 +75,7 @@ return require('packer').startup(function()
   -- use 'jose-elias-alvarez/buftabline.nvim'
   -- Esse rainbow por algum motivo está quebrando a
   -- interpolação de strings em arquivos elixir ):
-  -- use 'p00f/nvim-ts-rainbow'
+  use 'p00f/nvim-ts-rainbow'
 
   -- Coisas que tem a ver com cores e visual
   use 'rktjmp/lush.nvim'

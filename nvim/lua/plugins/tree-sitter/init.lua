@@ -1,4 +1,4 @@
-require('nvim-treesitter.configs').setup {
+require('nvim-treesitter.configs').setup({
   -- ensure_installed can be "all" or a list of languages { "python", "javascript" }
   ensure_installed = {'lua', 'bash', 'javascript', 'ruby', 'go', 'java'},
 
@@ -50,13 +50,19 @@ require('nvim-treesitter.configs').setup {
       eelixir = '<%# %s %>',
     }
   },
-  -- rainbow = {
-  --   enable=true,
-  --   extended_mode=true,
-  --   max_file_lines=1000,
-  --   termcolors = {'209','40','170','220','208','205'},
-  --   colors = {'#ff875f', '#00d700', '#d75fd7', '#ffd700', '#ff8700', '#ff5faf'}
-  -- },
+  rainbow = {
+    -- https://github.com/p00f/nvim-ts-rainbow/issues/30
+    enable = true,
+    disable = function(p)
+        if p == 'clojure' then return false end
+        return true
+      end,
+    extended_mode = true,
+    max_file_lines = 1000,
+    termcolors = {'209','40','170','220','208','205'},
+    -- colors = {'#ff875f', '#00d700', '#d75fd7', '#ffd700', '#ff8700', '#ff5faf'}
+    colors = {'#ff875f', '#00d700', '#d75fd7', '#ffd700', }
+  },
   textobjects = {
     select = {
       enable = true,
@@ -94,7 +100,7 @@ require('nvim-treesitter.configs').setup {
       },
     },
   },
-}
+})
 
 -- vim.opt.foldmethod     = 'expr'
 -- vim.opt.foldexpr       = 'nvim_treesitter#foldexpr()'
