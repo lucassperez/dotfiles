@@ -27,7 +27,8 @@ if [ "$0" = "/etc/gdm3/Xsession" -a "$DESKTOP_SESSION" = "awesome" ]; then
     export $(gnome-keyring-daemon -s)
 fi
 
-[ -x "$HOME/scripts/enable-touchpad-tap.sh" ] && . "$HOME/scripts/enable-touchpad-tap.sh"
+# Alterei no driver em /usr/share/X11/xorg.conf.d/40-libinput.conf
+# [ -x "$HOME/scripts/enable-touchpad-tap.sh" ] && . "$HOME/scripts/enable-touchpad-tap.sh"
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then

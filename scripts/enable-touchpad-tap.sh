@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ "$#" = 0 ]; then
-  touchpad_device_name=$(xinput --list --name-only | grep -i "touchpad") || exit
+  touchpad_device_name=$(xinput --list --name-only | grep -i "touchpad" | head -n 1) || exit
 else
   touchpad_device_name="$1"
 fi
