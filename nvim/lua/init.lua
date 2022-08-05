@@ -21,6 +21,7 @@ require('plugins.barbar')
 -- require('plugins.tokyonight')
 require('plugins.telescope')
 require('plugins.nvim-tree')
+require('plugins.conjure')
 
 -- Meus próprios scritpts
 require('helper-scripts.vtr.test')

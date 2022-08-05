@@ -7,6 +7,7 @@ local noremap = function(mode, key, result, silent)
 end
 
 vim.g.mapleader = ' '
+vim.g.maplocalleader = ','
 
 -- Normally C-c already does this, but after installing LSP, the text box
 -- containing completions would sometimes not properly disappear when I C-c out

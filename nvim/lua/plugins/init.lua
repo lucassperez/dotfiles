@@ -9,12 +9,35 @@ end
 return require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
-  use 'folke/lsp-colors.nvim'
+  -- Clojure needs things
+  use {
+    'Olical/conjure',
+    ft = { 'clojure' },
+    -- config = function() -- why is this not working?
+    --   vim.cmd[[
+    --   let g:conjure#log#hud#height=0.5
+    --   let g:conjure#log#break_length=20
+    --   let g:conjure#log#wrap='true'
+    --   ]]
+    -- end,
+  }
+  use {
+    'guns/vim-sexp',
+    ft = { 'clojure' },
+    config = function()
+      vim.cmd[[unmap <C-w>]]
+      vim.cmd[[noremap <C-w> :BufferNext<CR>]]
+    end
+  }
+  use {
+    'tpope/vim-sexp-mappings-for-regular-people',
+    ft = { 'clojure' },
+  }
 
   -- Telescope
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { {'nvim-lua/plenary.nvim'} }
+    requires = { {'nvim-lua/plenary.nvim'} },
   }
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
@@ -52,6 +75,7 @@ return require('packer').startup(function()
   }
   use 'nvim-treesitter/nvim-treesitter-textobjects'
   use 'nvim-treesitter/playground'
+  use 'folke/lsp-colors.nvim'
 
   use 'hrsh7th/nvim-cmp'
   use 'hrsh7th/cmp-path'
@@ -86,6 +110,13 @@ return require('packer').startup(function()
   use 'ayu-theme/ayu-vim'
   use 'Shatur/neovim-ayu'
   use 'folke/tokyonight.nvim'
+  use({
+    'projekt0n/github-nvim-theme',
+    -- config = function()
+    --   require('github-theme').setup({})
+    -- end
+  })
+
 
   if packer_bootstrap then
     require('packer').sync()
