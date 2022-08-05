@@ -100,5 +100,6 @@ source ~/.config/nvim/color/html.vim
 " hi markdownH7Delimiter guifg=#ffffff
 " hi markdownBlockQuote guifg=#ffffff
 
-" hi NormalFloat guifg=#000000
-" hi Special guifg=#00ffff
+" hi NormalFloat guifg=#ffffff guibg=#000000
+" hi NormalFloat guifg=#ffffff guibg=#282c34
+hi NormalFloat guifg=#ffffff guibg=#202124
