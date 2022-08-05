@@ -10,14 +10,12 @@ local on_attach = function(_, bufnr)
   end
   local map_opts = { noremap = true, silent = true }
 
-  map('n', [[\f]],    ':lua vim.lsp.buf.formatting()<CR>', map_opts)
-  -- vim.cmd('command! LspDiagLine lua vim.lsp.diagnostic.show_line_diagnostics()')
-  -- map('n', '?',     ':lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', map_opts)
+  map('n', [[\f]], ':lua vim.lsp.buf.formatting()<CR>', map_opts)
   map('n', 'K',    ':lua vim.lsp.buf.definition()<CR>', map_opts)
-  map('n', [[\k]],     ':lua vim.lsp.buf.hover()<CR>', map_opts)
+  map('n', [[\k]], ':lua vim.lsp.buf.hover()<CR>', map_opts)
   map('n', [[\K]], ':lua vim.lsp.buf.signature_help()<CR>', map_opts)
-  map('n', '[d', ':lua vim.diagnostic.goto_prev()<CR>', map_opts)
-  map('n', ']d', ':lua vim.diagnostic.goto_next()<CR>', map_opts)
+  map('n', '[d',   ':lua vim.diagnostic.goto_prev()<CR>', map_opts)
+  map('n', ']d',   ':lua vim.diagnostic.goto_next()<CR>', map_opts)
   map('n', [[\d]], ':lua vim.diagnostic.open_float()<CR>', map_opts)
 end
 

@@ -11,14 +11,14 @@ local on_attach = function(client, bufnr)
 
   map('n', [[\f]], ':lua vim.lsp.buf.formatting()<CR>', map_opts)
   -- map('n', [[\f]], ':TSLspImportAll<CR>:TSLspOrganize<CR>:lua vim.lsp.buf.formatting()<CR>', map_opts)
-  map('n', 'K', ':lua vim.lsp.buf.definition()<CR>', map_opts)
+  map('n', 'K',    ':lua vim.lsp.buf.definition()<CR>', map_opts)
   map('n', [[\k]], ':lua vim.lsp.buf.hover()<CR>', map_opts)
   map('n', [[\K]], ':lua vim.lsp.buf.signature_help()<CR>', map_opts)
   map('n', [[\n]], ':lua vim.lsp.buf.rename()<CR>', map_opts)
   map('n', [[\r]], ':lua vim.lsp.buf.references()<CR>', map_opts)
   -- map('n', [[\i]], ':lua vim.lsp.buf.implementation()<CR>', map_opts)
-  map('n', '[d', ':lua vim.diagnostic.goto_prev()<CR>', map_opts)
-  map('n', ']d', ':lua vim.diagnostic.goto_next()<CR>', map_opts)
+  map('n', '[d',   ':lua vim.diagnostic.goto_prev()<CR>', map_opts)
+  map('n', ']d',   ':lua vim.diagnostic.goto_next()<CR>', map_opts)
   map('n', [[\d]], ':lua vim.diagnostic.open_float()<CR>', map_opts)
 
   map('n', [[\i]], ':TSLspImportAll<CR>:TSLspOrganize<CR>', map_opts)
@@ -47,11 +47,11 @@ lspconfig.tsserver.setup({
 
 local null_ls = require('null-ls')
 null_ls.setup({
-    sources = {
-        -- null_ls.builtins.diagnostics.eslint,
-        null_ls.builtins.diagnostics.eslint_d,
-        null_ls.builtins.code_actions.eslint,
-        null_ls.builtins.formatting.prettier
-    },
-    on_attach = on_attach
+  sources = {
+    -- null_ls.builtins.diagnostics.eslint,
+    null_ls.builtins.diagnostics.eslint_d,
+    null_ls.builtins.code_actions.eslint,
+    null_ls.builtins.formatting.prettier
+  },
+  on_attach = on_attach
 })
