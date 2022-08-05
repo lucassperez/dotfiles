@@ -52,6 +52,7 @@ end
 
 function autoExecuteOnSave()
   local command, printMessage = getRunCommand()
+  local filename = vim.fn.expand('%')
 
   if command == nil then
     print(printMessage)
@@ -59,9 +60,11 @@ function autoExecuteOnSave()
   end
 
   vim.api.nvim_create_autocmd('BufWritePost', {
-    group = vim.api.nvim_create_augroup('AutoXOnSave', { clear = true }),
+    group = vim.api.nvim_create_augroup('AutoExecuteOnSave', { clear = true }),
     callback = function()
       vim.fn.VtrSendCommand(command)
     end,
   })
+
+  print('Auto run started for '..filename)
 end
