@@ -12,6 +12,8 @@ local runCommands = {
 local function getRunCommand()
   local first_line = vim.fn.getline(1)
   local prog_shebang = string.match(first_line, '^%s*#%s*!%s*([%w/ -]+)')
+  local full_path_filename = vim.fn.expand('%:p')
+  local filename = vim.fn.expand('%')
 
   if prog_shebang then
     return prog_shebang..' '..full_path_filename,
@@ -19,8 +21,6 @@ local function getRunCommand()
   end
 
   local filetype = vim.bo.filetype
-  local full_path_filename = vim.fn.expand('%:p')
-  local filename = vim.fn.expand('%')
 
   if filetype == 'rust' then
     -- Could use vim.fn.expand('%:r'), but I have no idea which is better/faster
