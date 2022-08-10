@@ -4,37 +4,13 @@ if fn.empty(fn.glob(install_path)) > 0 then
   packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
 
--- https://github.com/yegappan/mru tentar esse qualquer dias desses
--- https://github.com/neoclide/redismru.vim ou esse
 return require('packer').startup(function()
   use 'wbthomason/packer.nvim'
+  -- use 'lewis6991/impatient.nvim'
 
-  -- Clojure needs things
-  use {
-    'Olical/conjure',
-    ft = { 'clojure' },
-    -- config = function() -- why is this not working?
-    --   vim.cmd[[
-    --   let g:conjure#log#hud#height=0.5
-    --   let g:conjure#log#break_length=20
-    --   let g:conjure#log#wrap='true'
-    --   ]]
-    -- end,
-  }
-  -- use {
-  --   'guns/vim-sexp',
-  --   ft = { 'clojure' },
-  --   config = function() -- this is also not working
-  --     vim.cmd('unmap <C-w>')
-  --     vim.cmd('noremap <C-w> :BufferNext<CR>')
-  --     vim.cmd('let g:sexp_enable_insert_mode_mappings = 0') -- The insert mode mappings are messing the auto close on quotes
-  --   end
-  -- }
-  -- use {
-  --   'tpope/vim-sexp-mappings-for-regular-people',
-  --   ft = { 'clojure' },
-  -- }
-  -- F**k this
+  -- Clojure things
+  use { 'Olical/conjure', ft = { 'clojure' }, }
+  use { 'guns/vim-sexp', ft = { 'clojure' }, }
 
   -- Telescope
   use {
@@ -43,10 +19,9 @@ return require('packer').startup(function()
   }
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
-  use 'cohama/lexima.vim'
   use 'christoomey/vim-tmux-navigator'
   use 'christoomey/vim-tmux-runner'
-  -- use 'intrntbrn/awesomewm-vim-tmux-navigator'
+  use 'cohama/lexima.vim'
   use 'windwp/nvim-autopairs'
   use 'tpope/vim-surround'
   use 'tpope/vim-ragtag'
@@ -60,11 +35,8 @@ return require('packer').startup(function()
   use 'kana/vim-textobj-user'
   use 'nelstrom/vim-textobj-rubyblock'
   use 'andyl/vim-textobj-elixir'
-  -- use 'mhinz/vim-startify'
-  -- use 'windwp/nvim-ts-autotag'
   use 'alvan/vim-closetag'
   use 'JoosepAlviste/nvim-ts-context-commentstring'
-  -- use 'abecodes/tabout.nvim'
   use 'nvim-lua/plenary.nvim'
 
   -- Coisas LSP e TreeSitter
@@ -95,12 +67,8 @@ return require('packer').startup(function()
   -- Ajudinha visual
   use 'hoob3rt/lualine.nvim'
   use 'romgrk/barbar.nvim'
-  -- maybe try this one one day? akinsho/bufferline.nvim
-  -- use 'ap/vim-buftabline'
   -- This one is crashing vim when too many buffers are opened and I try to change buffer
   -- use 'jose-elias-alvarez/buftabline.nvim'
-  -- Esse rainbow por algum motivo está quebrando a
-  -- interpolação de strings em arquivos elixir ):
   use 'p00f/nvim-ts-rainbow'
 
   -- Coisas que tem a ver com cores e visual

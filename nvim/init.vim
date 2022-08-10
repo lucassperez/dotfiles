@@ -15,13 +15,6 @@ source $HOME/.config/nvim/color/perez-cs.vim
 " lua require'colorizer'.setup()
 highlight CursorLine cterm=NONE ctermbg=0 gui=NONE guibg=#434d48
 
-" Customizando FZF
-let g:fzf_layout = { 'down': '30%' }
-let g:fzf_preview_window = ['right:65%:hidden', 'ctrl-/']
-
-" Opções pro buftabs
-let g:buftabline_indicators=1 " mostrar se tem alteração no arquivo ou não
-
 """ Configurações gerais """
 let &titlestring='nvim'
 " Antes do lualine, eu usava isso e não queria deletar (:
@@ -68,6 +61,7 @@ hi lualine_x_diff_removed_visual   guifg=#ec2929
 runtime macros/matchit.vim
 let ruby_foldable_groups='if def class module'
 
+" auto close tags
 let g:closetag_filetypes='html,eelixir,javascript,javascriptreact,typescript,typescriptreact,template,vue'
 
 function! SynGroup()
@@ -76,3 +70,65 @@ function! SynGroup()
 endfun
 
 nnoremap <F1> :call SynGroup()<CR>
+
+" vim-sexp mappings
+let g:sexp_mappings = {
+      \ 'sexp_outer_list':                'af',
+      \ 'sexp_inner_list':                'if',
+      \ 'sexp_outer_top_list':            'aF',
+      \ 'sexp_inner_top_list':            'iF',
+      \ 'sexp_outer_string':              'as',
+      \ 'sexp_inner_string':              'is',
+      \ 'sexp_outer_element':             'ae',
+      \ 'sexp_inner_element':             'ie',
+      \ 'sexp_move_to_prev_bracket':      '(',
+      \ 'sexp_move_to_next_bracket':      ')',
+      \ 'sexp_move_to_prev_element_head': '<M-b>',
+      \ 'sexp_move_to_next_element_head': '<M-w>',
+      \ 'sexp_move_to_prev_element_tail': 'g<M-e>',
+      \ 'sexp_move_to_next_element_tail': '<M-e>',
+      \ 'sexp_flow_to_prev_close':        '<M-[>',
+      \ 'sexp_flow_to_next_open':         '<M-]>',
+      \ 'sexp_flow_to_prev_open':         '<M-{>',
+      \ 'sexp_flow_to_next_close':        '<M-}>',
+      \ 'sexp_flow_to_prev_leaf_head':    '<M-S-b>',
+      \ 'sexp_flow_to_next_leaf_head':    '<M-S-w>',
+      \ 'sexp_flow_to_prev_leaf_tail':    '<M-S-g>',
+      \ 'sexp_flow_to_next_leaf_tail':    '<M-S-e>',
+      \ 'sexp_move_to_prev_top_element':  '[[',
+      \ 'sexp_move_to_next_top_element':  ']]',
+      \ 'sexp_select_prev_element':       '[e',
+      \ 'sexp_select_next_element':       ']e',
+      \ 'sexp_indent':                    '==',
+      \ 'sexp_indent_top':                '=-',
+      \ 'sexp_round_head_wrap_list':      '<LocalLeader>i',
+      \ 'sexp_round_tail_wrap_list':      '<LocalLeader>I',
+      \ 'sexp_square_head_wrap_list':     '<LocalLeader>[',
+      \ 'sexp_square_tail_wrap_list':     '<LocalLeader>]',
+      \ 'sexp_curly_head_wrap_list':      '<LocalLeader>{',
+      \ 'sexp_curly_tail_wrap_list':      '<LocalLeader>}',
+      \ 'sexp_round_head_wrap_element':   '<LocalLeader>w',
+      \ 'sexp_round_tail_wrap_element':   '<LocalLeader>W',
+      \ 'sexp_square_head_wrap_element':  '<LocalLeader>e[',
+      \ 'sexp_square_tail_wrap_element':  '<LocalLeader>e]',
+      \ 'sexp_curly_head_wrap_element':   '<LocalLeader>e{',
+      \ 'sexp_curly_tail_wrap_element':   '<LocalLeader>e}',
+      \ 'sexp_insert_at_list_head':       '<LocalLeader>h',
+      \ 'sexp_insert_at_list_tail':       '<LocalLeader>l',
+      \ 'sexp_splice_list':               '<LocalLeader>@',
+      \ 'sexp_convolute':                 '<LocalLeader>?',
+      \ 'sexp_raise_list':                '<LocalLeader>o',
+      \ 'sexp_raise_element':             '<LocalLeader>O',
+      \ 'sexp_swap_list_backward':        '<M-k>',
+      \ 'sexp_swap_list_forward':         '<M-j>',
+      \ 'sexp_swap_element_backward':     '<M-h>',
+      \ 'sexp_swap_element_forward':      '<M-l>',
+      \ 'sexp_emit_head_element':         '<M-.>',
+      \ 'sexp_emit_tail_element':         '<M-;>',
+      \ 'sexp_capture_prev_element':      '<M-,>',
+      \ 'sexp_capture_next_element':      '<M-/>',
+      \ }
+
+let g:lexima_enable_basic_rules = 0
+let g:lexima_enable_newline_rules = 0
+let g:lexima_enable_endwise_rules = 1
