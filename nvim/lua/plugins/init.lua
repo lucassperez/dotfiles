@@ -21,18 +21,20 @@ return require('packer').startup(function()
     --   ]]
     -- end,
   }
-  use {
-    'guns/vim-sexp',
-    ft = { 'clojure' },
-    config = function()
-      vim.cmd[[unmap <C-w>]]
-      vim.cmd[[noremap <C-w> :BufferNext<CR>]]
-    end
-  }
-  use {
-    'tpope/vim-sexp-mappings-for-regular-people',
-    ft = { 'clojure' },
-  }
+  -- use {
+  --   'guns/vim-sexp',
+  --   ft = { 'clojure' },
+  --   config = function() -- this is also not working
+  --     vim.cmd('unmap <C-w>')
+  --     vim.cmd('noremap <C-w> :BufferNext<CR>')
+  --     vim.cmd('let g:sexp_enable_insert_mode_mappings = 0') -- The insert mode mappings are messing the auto close on quotes
+  --   end
+  -- }
+  -- use {
+  --   'tpope/vim-sexp-mappings-for-regular-people',
+  --   ft = { 'clojure' },
+  -- }
+  -- F**k this
 
   -- Telescope
   use {
