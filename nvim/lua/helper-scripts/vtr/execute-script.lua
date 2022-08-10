@@ -26,7 +26,7 @@ local function getRunCommand()
     -- Could use vim.fn.expand('%:r'), but I have no idea which is better/faster
     filename_without_extension = filename:match('(.*)%.rs$')
     return 'rustc '..filename..' && ./'..filename_without_extension,
-           'Compiling and hopefully running '..filename
+           'Hopefully compiling and running '..filename
   end
 
   command = runCommands[filetype]
@@ -41,18 +41,35 @@ end
 function executeFileAsScript()
   local command, printMessage = getRunCommand()
 
-  if command == nil then
-    print(printMessage)
-    return
-  end
-
-  vim.fn.VtrSendCommand(command)
+  if command then vim.fn.VtrSendCommand(command) end
   print(printMessage)
 end
 
+_auto_execute_on_save_running = nil
+
 function autoExecuteOnSave()
-  local command, printMessage = getRunCommand()
   local filename = vim.fn.expand('%')
+
+  if _auto_execute_on_save_running and
+     _auto_execute_on_save_running ~= filename
+  then
+    print('Auto run is already on for '.._auto_execute_on_save_running)
+    return
+  end
+
+  if _auto_execute_on_save_running then
+    print('Auto run stopped')
+    vim.api.nvim_create_autocmd('BufWritePost', {
+      group = vim.api.nvim_create_augroup('AutoExecuteOnSave', { clear = true }),
+      callback = function() end,
+    })
+    _auto_execute_on_save_running = nil
+    return
+  end
+
+  _auto_execute_on_save_running = filename
+
+  local command, printMessage = getRunCommand()
 
   if command == nil then
     print(printMessage)
