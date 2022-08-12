@@ -1,54 +1,16 @@
-function toggleBetweenTestAndFile()
-  local filetype = vim.bo.filetype
-
-  functions = {
-    elixir = elixirFunction,
-    ruby = rubyFunction,
-    typescriptreact = tsReactFunction,
-    typescript = tsReactFunction,
-  }
-
-  if not functions[filetype] then
-    print('Filetype '..filetype..' not supported')
-    return
-  end
-
-  local path = functions[filetype]()
-  if path == nil then
-    print('Path for the other file not found. Is your current working directory the project\'s root directory?')
+local function elixirFunction()
+  local filename = vim.fn.expand('%')
+  if filename:match('^test/.*') then
+    result = filename:gsub('^test/(.*)_test.exs$', 'lib/%1.ex')
   else
-    print('Switching to '..path)
-    vim.api.nvim_command('edit '..path)
+    result = filename:gsub('^lib/(.*).ex$', 'test/%1_test.exs')
   end
-end
-
-function elixirFunction()
-  local file_dir = vim.fn.expand('%:h')
-
-  local path = ''
-  local found = false
-  for str in string.gmatch(file_dir, '[^/]+') do
-    if found then
-      path = path..str..'/'
-    else
-      if str == 'test' then
-        found = true
-        path = 'lib/'..path
-        filename = vim.fn.expand('%:t'):gsub('_test%.exs', '.ex')
-      elseif str == 'lib' then
-        found = true
-        path = 'test/'..path
-        filename = vim.fn.expand('%:t'):gsub('%.ex', '_test.exs')
-      end
-    end
-  end
-  if filename == nil then return nil end
-  return path..filename
+  return result
 end
 
 -- Switches to test files with the same name and on the same directory,
 -- but with ".test" as file extension
-function tsReactFunction()
+local function tsReactFunction()
   local file_dir = vim.fn.expand('%:h')
   local file_name = vim.fn.expand('%:t')
   local extension = vim.fn.expand('%:e')
@@ -62,6 +24,16 @@ function tsReactFunction()
 
   if path == '' then return nil end
   return file_dir..'/'..path
+end
+
+local function clojureFunction()
+  local filename = vim.fn.expand('%')
+  if filename:match('^test/.*') then
+    result = filename:gsub('^test/(.*)_test.clj$', 'src/%1.clj')
+  else
+    result = filename:gsub('^src/(.*).clj$', 'test/%1_test.clj')
+  end
+  return result
 end
 
 -- function rubyFunction()
@@ -90,3 +62,28 @@ end
 --   end
 --   return path..filename
 -- end
+
+function toggleBetweenTestAndFile()
+  local filetype = vim.bo.filetype
+
+  functions = {
+    elixir = elixirFunction,
+    ruby = rubyFunction,
+    typescriptreact = tsReactFunction,
+    typescript = tsReactFunction,
+    clojure = clojureFunction,
+  }
+
+  if not functions[filetype] then
+    print('Filetype '..filetype..' not supported')
+    return
+  end
+
+  local path = functions[filetype]()
+  if path == nil then
+    print('Path for the other file not found. Is your current working directory the project\'s root directory?')
+  else
+    print('Switching to '..path)
+    vim.api.nvim_command('edit '..path)
+  end
+end
