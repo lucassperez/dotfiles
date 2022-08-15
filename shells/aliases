@@ -64,7 +64,7 @@ alias stoprmalldocker='echo "docker ps -aq | xargs docker stop | xargs docker rm
 alias lwmtheme='leftwm-theme'
 alias enabletouchpadtap='~/scripts/enable-touchpad-tap.sh'
 alias xspeed='echo "xset r rate 220 25" && xset r rate 220 25'
-alias xall='echo "xset r rate 220 25" && echo "xmodmap ~/.Xmodmap" && echo "~/scripts/enable-touchpad-tap.sh" && xset r rate 220 25 && xmodmap ~/.Xmodmap && ~/scripts/enable-touchpad-tap.sh'
+alias xall='~/scripts/conf-keyboard.sh && ~/scripts/enable-touchpad-tap.sh'
 
 alias vim='nvim'
 
