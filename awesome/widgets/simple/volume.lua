@@ -21,27 +21,28 @@ local function set_widget()
   awful.spawn.easy_async(
   'amixer -D pulse sget Master',
   function(out)
-    local volume, on_or_off = string.match(out, 'Front Left.*%[(%d+)%%%].*%[(%w+)%]')
+    local volume, on_or_off = string.match(out, 'Front Left: Playback %d* %[(%d+)%%%].*%[(%w+)%]\n')
     if not volume then
       volume, on_or_off = string.match(out, 'Mono: Playback.*%[(%d+)%%%].*%[(%w+)%]')
     end
-    volume = tonumber(volume)
 
     if on_or_off == 'off' then
       val = 'X '..volume..'%'
-    elseif volume >= 50 then
-      val = '  '..volume..'%'
-    elseif volume > 0 then
-      val = '  '..volume..'%'
     else
-      val = '  '..volume..'%'
+      volume = tonumber(volume)
+      if volume >= 50 then
+        val = '  '..volume..'%'
+      elseif volume > 0 then
+        val = '  '..volume..'%'
+      else
+        val = '  '..volume..'%'
+      end
     end
 
-    -- file = io.open('/home/lucas/.config/awesome/widgets/anota-lua', 'a')
+    -- file = io.open('/home/lucas/.config/awesome/widgets/simple/anota-lua', 'a')
     -- file:write(out..'\n')
     -- file:write(volume..'\n')
     -- file:write(on_or_off..'\n')
-    -- file:write(volume_number..'\n')
     -- file:write('--\n')
     -- file:close()
 
@@ -62,12 +63,12 @@ end
 
 function widget:inc_vol(delta)
   delta = delta or 5
-  widget:update_widget('amixer -D pulse sset Master '..delta..'%+')
+  widget:update_widget('pactl set-sink-volume @DEFAULT_SINK@ +'..delta..'% +'..delta..'%')
 end
 
 function widget:dec_vol(delta)
   delta = delta or 5
-  widget:update_widget('amixer -D pulse sset Master '..delta..'%-')
+  widget:update_widget('pactl set-sink-volume @DEFAULT_SINK@ -'..delta..'% -'..delta..'%')
 end
 
 function widget:set_exact_vol(value)

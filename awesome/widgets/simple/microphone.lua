@@ -21,7 +21,7 @@ local function set_widget()
   awful.spawn.easy_async(
   'amixer sget Capture',
   function(out)
-    local val, is_on = string.match(out, 'Front Left.*%[(%d+)%%%].*%[(%w+)%]')
+    local val, is_on = string.match(out, 'Front Left: Capture %d* %[(%d+)%%%].*%[(%w+)%]\n')
 
     if is_on == 'on' then
       val = ' '..val..'%'
@@ -46,17 +46,17 @@ end
 
 function widget:inc_vol(delta)
   delta = delta or 5
-  widget:update_widget('amixer sset Capture '..delta..'%+')
+  widget:update_widget('pactl set-source-volume @DEFAULT_SOURCE@ +'..delta..'% +'..delta..'%')
 end
 
 function widget:dec_vol(delta)
   delta = delta or 5
-  widget:update_widget('amixer sset Capture '..delta..'%-')
+  widget:update_widget('pactl set-source-volume @DEFAULT_SOURCE@ -'..delta..'% -'..delta..'%')
 end
 
 function widget:set_exact_vol(value)
   value = value or 50
-  widget:update_widget('amixer sset Capture '..value..'%')
+  widget:update_widget('amixer sset Capture '..value..'%,'..value..'%')
 end
 
 widget:connect_signal('button::press', function(_,_,_,button)
