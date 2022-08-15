@@ -196,6 +196,11 @@ _G.packer_plugins = {
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
   },
+  ["nvim-surround"] = {
+    loaded = true,
+    path = "/home/lucas/.local/share/nvim/site/pack/packer/start/nvim-surround",
+    url = "https://github.com/kylechui/nvim-surround"
+  },
   ["nvim-tree.lua"] = {
     loaded = true,
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/nvim-tree.lua",
@@ -282,11 +287,6 @@ _G.packer_plugins = {
     only_cond = false,
     path = "/home/lucas/.local/share/nvim/site/pack/packer/opt/vim-sexp",
     url = "https://github.com/guns/vim-sexp"
-  },
-  ["vim-surround"] = {
-    loaded = true,
-    path = "/home/lucas/.local/share/nvim/site/pack/packer/start/vim-surround",
-    url = "https://github.com/tpope/vim-surround"
   },
   ["vim-textobj-elixir"] = {
     loaded = true,

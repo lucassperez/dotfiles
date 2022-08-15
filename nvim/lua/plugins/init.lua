@@ -23,7 +23,7 @@ return require('packer').startup(function()
   use 'christoomey/vim-tmux-runner'
   use 'cohama/lexima.vim'
   use 'windwp/nvim-autopairs'
-  use 'tpope/vim-surround'
+  use 'kylechui/nvim-surround'
   use 'tpope/vim-ragtag'
   use 'numToStr/Comment.nvim'
   use 'mattn/emmet-vim'
