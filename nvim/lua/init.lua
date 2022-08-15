@@ -13,7 +13,9 @@ require('plugins.tree-sitter.typescript')
 require('plugins.cmp')
 -- require('plugins.luasnip')
 require('plugins.nvim-surround')
-require('plugins.nvim-autopairs')
+-- Nvim autopairs suddenly stopped working when pressing enter inside parens ):
+-- Which is very sad, because on nvim-autopairs I had better rules
+-- require('plugins.nvim-autopairs')
 require('plugins.lualine')
 require('plugins.Comment')
 -- require('plugins.buftabline')

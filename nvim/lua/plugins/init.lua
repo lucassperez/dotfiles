@@ -29,7 +29,10 @@ return require('packer').startup(function()
   use 'christoomey/vim-tmux-navigator'
   use 'christoomey/vim-tmux-runner'
   use 'cohama/lexima.vim'
-  use 'windwp/nvim-autopairs'
+
+  -- use 'windwp/nvim-autopairs'
+  use 'jiangmiao/auto-pairs'
+
   use 'kylechui/nvim-surround'
   use 'tpope/vim-ragtag'
   use 'numToStr/Comment.nvim'

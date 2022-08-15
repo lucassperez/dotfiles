@@ -7,6 +7,8 @@ npairs.setup({
   enable_check_bracket_line = false,
   map_c_h = true,  -- Map the <C-h> key to delete a pair
   map_c_w = true, -- map <c-w> to delete a pair if possible
+  map_cr = true,
+  map_bs = true,
 })
 
 npairs.add_rules {
