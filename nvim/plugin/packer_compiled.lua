@@ -231,6 +231,13 @@ _G.packer_plugins = {
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
   },
+  ["parinfer-rust"] = {
+    loaded = false,
+    needs_bufread = false,
+    only_cond = false,
+    path = "/home/lucas/.local/share/nvim/site/pack/packer/opt/parinfer-rust",
+    url = "https://github.com/eraserhd/parinfer-rust"
+  },
   playground = {
     loaded = true,
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/playground",
@@ -320,7 +327,7 @@ vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
 time([[Defining lazy-load filetype autocommands]], true)
-vim.cmd [[au FileType clojure ++once lua require("packer.load")({'conjure', 'vim-sexp'}, { ft = "clojure" }, _G.packer_plugins)]]
+vim.cmd [[au FileType clojure ++once lua require("packer.load")({'vim-sexp', 'parinfer-rust', 'conjure'}, { ft = "clojure" }, _G.packer_plugins)]]
 time([[Defining lazy-load filetype autocommands]], false)
 vim.cmd("augroup END")
 if should_profile then save_profiles() end

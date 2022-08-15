@@ -4,6 +4,8 @@ if fn.empty(fn.glob(install_path)) > 0 then
   packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
 
+vim.cmd('let g:sexp_enable_insert_mode_mappings = 0')
+
 return require('packer').startup(function()
   use 'wbthomason/packer.nvim'
   -- use 'lewis6991/impatient.nvim'
@@ -11,6 +13,11 @@ return require('packer').startup(function()
   -- Clojure things
   use { 'Olical/conjure', ft = { 'clojure' }, }
   use { 'guns/vim-sexp', ft = { 'clojure' }, }
+  use { -- I don't even know how parinfer works
+    'eraserhd/parinfer-rust',
+    run = 'cargo build --release',
+    ft = { 'clojure', },
+  }
 
   -- Telescope
   use {
@@ -80,12 +87,12 @@ return require('packer').startup(function()
   use 'ayu-theme/ayu-vim'
   use 'Shatur/neovim-ayu'
   use 'folke/tokyonight.nvim'
-  use({
+  use {
     'projekt0n/github-nvim-theme',
     -- config = function()
     --   require('github-theme').setup({})
     -- end
-  })
+  }
 
 
   if packer_bootstrap then
