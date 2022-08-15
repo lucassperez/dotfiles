@@ -1,9 +1,9 @@
 local function elixirFunction()
   local filename = vim.fn.expand('%')
-  if filename:match('^test/.*') then
-    result = filename:gsub('^test/(.*)_test.exs$', 'lib/%1.ex')
+  if filename:match('test/.*') then
+    result = filename:gsub('^(.*)test/(.*)_test.exs$', 'lib/%2.ex')
   else
-    result = filename:gsub('^lib/(.*).ex$', 'test/%1_test.exs')
+    result = filename:gsub('^(.*)lib/(.*).ex$', 'test/%2_test.exs')
   end
   return result
 end
@@ -28,10 +28,10 @@ end
 
 local function clojureFunction()
   local filename = vim.fn.expand('%')
-  if filename:match('^test/.*') then
-    result = filename:gsub('^test/(.*)_test.clj$', 'src/%1.clj')
+  if filename:match('test/.*') then
+    result = filename:gsub('^(.*)test/(.*)_test.clj$', 'src/%2.clj')
   else
-    result = filename:gsub('^src/(.*).clj$', 'test/%1_test.clj')
+    result = filename:gsub('^(.*)src/(.*).clj$', 'test/%2_test.clj')
   end
   return result
 end
@@ -63,23 +63,23 @@ end
 --   return path..filename
 -- end
 
-function toggleBetweenTestAndFile()
-  local filetype = vim.bo.filetype
-
-  functions = {
+filenameFunctions = {
     elixir = elixirFunction,
     ruby = rubyFunction,
     typescriptreact = tsReactFunction,
     typescript = tsReactFunction,
     clojure = clojureFunction,
-  }
+}
 
-  if not functions[filetype] then
+local function toggleBetweenTestAndFile()
+  local filetype = vim.bo.filetype
+
+  if not filenameFunctions[filetype] then
     print('Filetype '..filetype..' not supported')
     return
   end
 
-  local path = functions[filetype]()
+  local path = filenameFunctions[filetype]()
   if path == nil then
     print('Path for the other file not found. Is your current working directory the project\'s root directory?')
   else
@@ -87,3 +87,8 @@ function toggleBetweenTestAndFile()
     vim.api.nvim_command('edit '..path)
   end
 end
+
+testAndFile = {
+  toggle = toggleBetweenTestAndFile,
+  filenamesFunctions = filenameFunctions,
+}

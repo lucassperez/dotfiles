@@ -210,7 +210,7 @@ noremap('n', '<leader>=', ':wincmd =<CR>')
 
 -- Tries to find the test file of current file or vice versa.
 -- Works well with elixir and its organized and predictable paths.
-noremap('n', '<leader>e', ':lua toggleBetweenTestAndFile()<CR>')
+noremap('n', '<leader>e', ':lua testAndFile.toggle()<CR>')
 
 function RELOAD()
   vim.cmd [[:so ~/.config/nvim/init.vim]]

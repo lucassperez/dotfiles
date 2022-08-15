@@ -1,3 +1,17 @@
+local function kaochaFilename(opts)
+  if not opts.cur_file then return '' end
+
+  local filename = vim.fn.expand('%h')
+  if not filename:match('^.*test/.*_test.clj$') then
+    filename = testAndFile.filenamesFunctions.clojure()
+  end
+
+  return ' --focus '..
+            filename
+              :gsub('^(.*)test/(.*)_test.clj$', '%2-test')
+              :gsub('/', '.')
+end
+
 -- opts is a table like this: { cur_file = true, cur_line = false }
 -- Possible options: { cur_file, cur_line, cur_dir }
 function runAutomatedTest(opts)
@@ -28,6 +42,12 @@ function runAutomatedTest(opts)
     vim.fn.VtrSendCommand('bundle exec rspec '..filename..line_number)
   elseif (filetype == 'typescriptreact' or filetype == 'typescript') then
     vim.fn.VtrSendCommand('yarn test '..filename)
+  elseif (filetype == 'clojure') then
+    if io.open('bin/kaocha') then
+      vim.fn.VtrSendCommand('lein kaocha'..kaochaFilename(opts))
+    else
+      vim.fn.VtrSendCommand('lein test '..filename)
+    end
   else
     print('Não sei executar testes automatizados para arquivos do tipo '..filetype)
   end
