@@ -32,7 +32,7 @@ end
 
 -- vim.api.nvim_command('autocmd BufWritePre *.go lua golangImports(1000)')
 
-local function on_attach(_, bufnr)
+local function on_attach(client, bufnr)
   local function map(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
   end
@@ -52,6 +52,8 @@ local function on_attach(_, bufnr)
   map('n', '[d',   ':lua vim.diagnostic.goto_prev()<CR>', map_opts)
   map('n', ']d',   ':lua vim.diagnostic.goto_next()<CR>', map_opts)
   map('n', [[\d]], ':lua vim.diagnostic.open_float()<CR>', map_opts)
+
+  vim.api.nvim_set_current_dir(client.config.root_dir)
 end
 
 require('lspconfig').gopls.setup({

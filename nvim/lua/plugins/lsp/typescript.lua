@@ -24,6 +24,8 @@ local on_attach = function(client, bufnr)
   map('n', [[\i]], ':TSLspImportAll<CR>:TSLspOrganize<CR>', map_opts)
 
   -- vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()')
+
+  vim.api.nvim_set_current_dir(client.config.root_dir)
 end
 
 lspconfig.tsserver.setup({

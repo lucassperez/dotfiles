@@ -4,7 +4,7 @@
 -- https://elixirforum.com/t/neovim-nvim-lsp-elixir/31230/11
 -- A callback that will get called when a buffer connects to the language server.
 -- Here we create any key maps that we want to have on that buffer.
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   local function map(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
   end
@@ -17,6 +17,8 @@ local on_attach = function(_, bufnr)
   map('n', '[d',   ':lua vim.diagnostic.goto_prev()<CR>', map_opts)
   map('n', ']d',   ':lua vim.diagnostic.goto_next()<CR>', map_opts)
   map('n', [[\d]], ':lua vim.diagnostic.open_float()<CR>', map_opts)
+
+  vim.api.nvim_set_current_dir(client.config.root_dir)
 end
 
 require('lspconfig').elixirls.setup({
