@@ -11,6 +11,7 @@ end
 -- require('lualine').setup()
 require('lualine').setup {
   options = {
+    -- globalstatus = true,
     icons_enabled = false,
     -- theme = 'everforest',
     theme = tema_modificado,
