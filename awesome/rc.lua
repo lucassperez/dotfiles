@@ -1023,15 +1023,6 @@ awful.rules.rules = {
     callback = function(c) awful.placement.centered(c, nil) end
   },
 
-  -- No titlebars, please
-  -- Add titlebars to normal clients and dialogs
-  -- {
-  --   rule_any = {
-  --     type = { 'normal', 'dialog' }
-  --   },
-  --   properties = { titlebars_enabled = true }
-  -- },
-
   -- Set Firefox to always map on the tag named '2' on screen 1.
   -- { rule = { class = 'Firefox' },
   --   properties = { screen = 1, tag = '2' } },
@@ -1053,6 +1044,11 @@ awful.rules.rules = {
     rule = { class = 'Postman', },
     properties = { tag = '4' }
   },
+  -- None of this works with spotify, ffs
+  { rule = { class = 'spotify' }, properties = { tag = '6' } },
+  { rule = { class = 'Spotify' }, properties = { tag = '6' } },
+  { rule = { class = '[Ss]potify' }, properties = { tag = '6' } },
+  { rule = { name = 'Spotify' }, properties = { tag = '6' } },
   -- Zoom and discord always on 9 and 10, respectively
   -- I hate Zoom, on every update it changes this stuff, ffs
   {rule = { class = 'Zoom Meeting' }, properties = { tag = '9' }},
@@ -1181,7 +1177,7 @@ awful.spawn.with_shell('nm-applet')
 awful.spawn.with_shell('flameshot')
 awful.spawn.with_shell('xcompmgr -c -l0 -t0 -r0 -o.00')
 awful.spawn.with_shell('xset r rate 220 25')
-awful.spawn.with_shell('unclutter')
+-- awful.spawn.with_shell('unclutter')
 awful.spawn.with_shell('xset s off')
 awful.spawn.with_shell('xset -dpms')
 awful.spawn.with_shell('numlockx on')
@@ -1191,3 +1187,13 @@ awful.spawn.with_shell('xplugd')
 -- awful.spawn.with_shell('copyq')
 -- mic_widget:set_exact_vol(30)
 -- volume_widget:set_exact_vol(50)
+
+-- client.connect_signal("property::class", function(c)
+--    if c.class == "Spotify" then
+--       c:move_to_tag(screen[1].tags[6])
+--    end
+-- end)
+
+-- https://www.reddit.com/r/awesomewm/comments/6cwevs/the_purpose_of_run_lua_code/
+-- Okay, I guess
+prt = function(...) naughty.notify {text = table.concat({ ... }, '\t')} end

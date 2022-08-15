@@ -38,14 +38,8 @@ watch(
       color = '#ff6600'
       last_battery_warn = nil
     elseif percentage <= 40 then
-      -- if was_higher_than_twenty then
-      --   should_send_message = true
-      --   was_higher_than_twenty = false
-      -- end
       color = '#ff9900'
     elseif percentage <= 50 then
-      -- should_send_message = false
-      -- was_higher_than_twenty = true
       color = '#ffcc00'
     elseif percentage <= 60 then
       color = '#ffff00'
@@ -90,8 +84,11 @@ watch(
     widget:set_fg(color)
     widget:set_bg(bg)
 
-    -- if should_send_message and state ~= 'Charging'then
-    if status ~= 'Charging' and
+    -- file = io.open('/home/lucas/.config/awesome/widgets/simple/anota-lua', 'a')
+    -- file:write(os.date("%Y-%m-%d-%H:%M:%S")..': '..state..' '..percentage..'\n')
+    -- file:close()
+
+    if state ~= 'Charging' and
        percentage <= 20 and
        (last_battery_warn == nil or os.difftime(os.time(), last_battery_warn) > 300) -- 5 minutes since last warning
     then
@@ -105,7 +102,6 @@ watch(
         ignore_suspend = true, -- do I really want this?
         bg = '#ff0000',
       })
-      -- should_send_message = false
       last_battery_warn = os.time()
     end
   end,

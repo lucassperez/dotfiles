@@ -35,6 +35,7 @@ widget:connect_signal(
   function(_, _, _, button)
     -- local processes = io.popen('ps axh -o cmd,%mem --sort=-%mem')
     local processes = io.popen('ps axhc -o cmd,%mem --sort=-%mem')
+    local free_memory = io.popen('free -h | grep "^Mem:"'):read():match('Mem:%s*[%w,]*%s*([%w,]*)')
     local n_most_memory_consuming = 15
     local message = ''
 
@@ -51,7 +52,7 @@ widget:connect_signal(
     end
 
     naughty.notify({
-      title = n_most_memory_consuming..' maiores consumos de memória',
+      title = n_most_memory_consuming..' maiores consumos de memória ('..free_memory..')',
       text = message,
     })
   end
