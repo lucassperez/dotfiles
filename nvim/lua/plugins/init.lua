@@ -13,11 +13,6 @@ return require('packer').startup(function()
   -- Clojure things
   use { 'Olical/conjure', ft = { 'clojure' }, }
   use { 'guns/vim-sexp', ft = { 'clojure' }, }
-  use { -- I don't even know how parinfer works
-    'eraserhd/parinfer-rust',
-    run = 'cargo build --release',
-    ft = { 'clojure', },
-  }
 
   -- Telescope
   use {
@@ -88,15 +83,17 @@ return require('packer').startup(function()
   use 'norcalli/nvim-colorizer.lua'
 
   -- Esquema de cores
-  use 'ayu-theme/ayu-vim'
-  use 'Shatur/neovim-ayu'
-  use 'folke/tokyonight.nvim'
-  use {
-    'projekt0n/github-nvim-theme',
-    -- config = function()
-    --   require('github-theme').setup({})
-    -- end
-  }
+  -- use 'ayu-theme/ayu-vim'
+  -- use 'Shatur/neovim-ayu'
+  -- use 'folke/tokyonight.nvim'
+  -- use 'EdenEast/nightfox.nvim'
+  -- use { "catppuccin/nvim", as = "catppuccin" }
+  -- use {
+  --   'projekt0n/github-nvim-theme',
+  --   -- config = function()
+  --   --   require('github-theme').setup({})
+  --   -- end
+  -- }
 
 
   if packer_bootstrap then

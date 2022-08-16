@@ -16,6 +16,7 @@ require('lualine').setup {
     -- theme = 'everforest',
     theme = tema_modificado,
     -- theme = 'tokyonight',
+    -- theme = 'catppuccin',
     component_separators = {'', ''},
     section_separators = {'', ''},
     disabled_filetypes = {}
