@@ -9,6 +9,7 @@ npairs.setup({
   map_c_w = true, -- map <c-w> to delete a pair if possible
   map_cr = true,
   map_bs = true,
+  check_ts = true,
 })
 
 npairs.add_rules {

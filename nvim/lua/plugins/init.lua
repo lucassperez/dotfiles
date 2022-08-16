@@ -28,11 +28,12 @@ return require('packer').startup(function()
 
   use 'christoomey/vim-tmux-navigator'
   use 'christoomey/vim-tmux-runner'
+  -- Weird, but using lexima for endwise complete and putting new line + indent
+  -- when, eg, pressing enter inside parens
+  -- I think nvim-autopairs should be able to do it, but having lexima as well
+  -- is apparently make it buggy
   use 'cohama/lexima.vim'
-
-  -- use 'windwp/nvim-autopairs'
-  use 'jiangmiao/auto-pairs'
-
+  use 'windwp/nvim-autopairs'
   use 'kylechui/nvim-surround'
   use 'tpope/vim-ragtag'
   use 'numToStr/Comment.nvim'

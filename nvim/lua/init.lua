@@ -16,11 +16,11 @@ require('plugins.nvim-surround')
 -- Nvim autopairs suddenly stopped working when pressing enter inside parens ):
 -- Which is very sad, because on nvim-autopairs I had better rules
 -- require('plugins.nvim-autopairs')
+require('plugins.nvim-autopairs')
 require('plugins.lualine')
 require('plugins.Comment')
 -- require('plugins.buftabline')
 require('plugins.barbar')
--- require('plugins.tokyonight')
 require('plugins.telescope')
 require('plugins.nvim-tree')
 require('plugins.conjure')
