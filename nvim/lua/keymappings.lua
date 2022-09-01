@@ -13,6 +13,7 @@ vim.g.maplocalleader = ','
 -- containing completions would sometimes not properly disappear when I C-c out
 -- of insert mode, which did not happen with Esc.
 map('i', '<C-c>', '<Esc>')
+map('i', '<C-j>', '<Esc>')
 
 -- Fingir que tenho dois pontos ao lado do L
 noremap('n', 'Ç', ':')

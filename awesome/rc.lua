@@ -104,27 +104,26 @@ awful.layout.layouts = {
 -- {{{ Menu
 -- Create a launcher widget and a main menu
 myawesomemenu = {
-  { 'hotkeys', function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
-  -- { 'manual', terminal .. ' -e man awesome' },
-  { 'manual', floating_terminal .. ' -e man awesome' },
-  { 'edit config', editor_cmd .. ' ' .. awesome.conffile },
-  { 'restart', awesome.restart },
-  { 'quit', function() awesome.quit() end },
+  { 'Hotkeys', function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
+  { 'Manual', floating_terminal .. ' -e man awesome' },
+  { 'Edit config', editor_cmd .. ' ' .. awesome.conffile },
+  { 'Restart', awesome.restart },
+  { 'Quit', function() awesome.quit() end },
 }
 
-local menu_awesome = { 'awesome', myawesomemenu, beautiful.awesome_icon }
-local menu_terminal = { 'open terminal', terminal }
+local menu_awesome = { 'Awesome', myawesomemenu, beautiful.awesome_icon }
 
 mymainmenu = awful.menu({
   items = {
     menu_awesome,
-    menu_terminal,
-    { 'open browser', browser },
-    { 'campo minado', 'gnome-mines' },
-    { 'lock screen', 'slock' },
+    { '&Terminal', terminal },
+    { '&Browser', browser },
+    { '&Campo Minado', 'gnome-mines' },
+    { '&Lock Screen', 'slock' },
   }
 })
 
+-- local menu_terminal = { 'open terminal', terminal }
 -- if has_fdo then
 --   mymainmenu = freedesktop.menu.build({
 --     before = { menu_awesome },
@@ -678,21 +677,21 @@ clientkeys = gears.table.join(
             end,
             { group = 'client', description = 'minimize', }),
   awful.key({ modkey }, 'm',
-            function ()
-              local this_screen = awful.client.screen
+            function (c)
+              local this_screen = c.screen
               local actual_layout = awful.layout.get(this_screen)
+              -- local actual_layout = awful.screen.focused().selected_tag.layout
 
-              -- local actual_layout = awful.screen.focused().selected_tag
               -- file = io.open('/home/lucas/anota-lua', 'a')
-              -- file:write(keys(x))
+              -- file:write(actual_layout.name)
               -- file:write('\n')
               -- file:close()
 
               if actual_layout ~= awful.layout.suit.max then
-                max_mayout_toggle_cache = actual_layout
+                last_layout = actual_layout
                 awful.layout.set(awful.layout.suit.max)
-              elseif max_mayout_toggle_cache then
-                awful.layout.set(max_mayout_toggle_cache)
+              elseif last_layout then
+                awful.layout.set(last_layout)
               else
                 -- If there is no "last layout" (cached), goes to the first one
                 awful.layout.set(awful.layout.layouts[1])
@@ -978,6 +977,9 @@ awful.rules.rules = {
         'copyq',  -- Includes session name in class.
         'pinentry',
         'Devtools',
+      },
+      type = {
+        'dialog',
       },
       class = {
         'Arandr',

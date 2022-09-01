@@ -1,5 +1,5 @@
 -- npm i -g vscode-langservers-extracted
--- npm install -g cssmodules-language-server
+-- npm i -g cssmodules-language-server
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -22,6 +22,7 @@ end
 require('lspconfig').cssls.setup({
   capabilities = capabilities,
   on_attach = cssls_on_attach,
+  -- cmd = { 'asdf', 'shell', 'nodejs', '16.14.2', '&&', 'vscode-css-language-server', '--stdio', }
 })
 
 -- require('lspconfig').cssmodules_ls.setup({

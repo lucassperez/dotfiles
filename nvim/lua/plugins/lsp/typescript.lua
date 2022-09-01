@@ -1,5 +1,8 @@
 -- https://jose-elias-alvarez.medium.com/configuring-neovims-lsp-client-for-typescript-development-5789d58ea9c
 
+-- npm i -g typescript-language-server
+-- Também tem que ter o próprio typescript instalado, tipo com npm i -g typescript
+
 local lspconfig = require('lspconfig')
 
 local on_attach = function(client, bufnr)
