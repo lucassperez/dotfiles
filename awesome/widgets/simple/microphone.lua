@@ -5,6 +5,8 @@
 -- Mic widget
 -------------------------------------------------
 
+-- Requires pactl command (openSUSE: pulseaudio-utils)
+
 local awful = require('awful')
 local wibox = require('wibox')
 
@@ -19,15 +21,26 @@ widget:set_fg('#d6ce6f')
 
 local function set_widget()
   awful.spawn.easy_async(
-  'amixer sget Capture',
+  'pactl get-source-volume @DEFAULT_SOURCE@',
   function(out)
-    local val, is_on = string.match(out, 'Front Left: Capture %d* %[(%d+)%%%].*%[(%w+)%]\n')
+    local volume = string.match(out, '^Volume: front%-left:.* (%d+)%%')
+    local mute =
+      io.popen('pactl get-source-mute @DEFAULT_SOURCE@')
+        :read()
+        :match('^Mute: (%w+)$')
 
-    if is_on == 'on' then
-      val = ' '..val..'%'
+    if mute == 'no' then
+      val = ' '..volume..'%'
     else
-      val = ' '..val..'%'
+      val = ' '..volume..'%'
     end
+
+    -- file = io.open('/home/lucas/.config/awesome/widgets/simple/anota-lua', 'a')
+    -- file:write(out..'\n')
+    -- file:write(volume..'\n')
+    -- file:write(mute..'\n')
+    -- file:write('--\n')
+    -- file:close()
 
     text:set_text(val)
   end
@@ -37,11 +50,12 @@ end
 set_widget()
 
 function widget:update_widget(cmd)
+  cmd = cmd or 'pactl get-source-volume @DEFAULT_SOURCE@'
   awful.spawn.easy_async(cmd, set_widget)
 end
 
 function widget:toggle()
-  widget:update_widget('amixer sset Capture toggle')
+  widget:update_widget('pactl set-source-mute @DEFAULT_SOURCE@ toggle')
 end
 
 function widget:inc_vol(delta)
@@ -56,7 +70,7 @@ end
 
 function widget:set_exact_vol(value)
   value = value or 50
-  widget:update_widget('amixer sset Capture '..value..'%,'..value..'%')
+  widget:update_widget('pactl set-source-volume @DEFAULT_SOURCE@  '..value..'%')
 end
 
 widget:connect_signal('button::press', function(_,_,_,button)

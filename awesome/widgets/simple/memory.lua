@@ -3,7 +3,7 @@ local watch = require('awful.widget.watch')
 local naughty = require('naughty')
 
 local text = wibox.widget({
-    font = 'Font Awesome 11',
+    font = 'FontAwesome 11',
     widget = wibox.widget.textbox,
 })
 
@@ -15,7 +15,14 @@ watch(
   'free -h',
   10,
   function(widget, stdout, stderr, exitreason, exitcode)
-    local free_memory = stdout:match('Mem:%s*[%w,]*%s*([%w,]*)')
+    local free_memory = stdout:match('Mem:%s*[%w,.]*%s*([%w,.]*)')
+
+    -- file = io.open('/home/lucas/.config/awesome/widgets/simple/anota-lua', 'a')
+    -- file:write(stdout..'\n')
+    -- file:write(free_memory..'\n')
+    -- file:write('--\n')
+    -- file:close()
+
     text:set_text(free_memory)
   end,
   widget

@@ -5,11 +5,13 @@
 -- Mic widget
 -------------------------------------------------
 
+-- Requires pactl command (openSUSE: pulseaudio-utils)
+
 local awful = require('awful')
 local wibox = require('wibox')
 
 local text = wibox.widget({
-    font = 'Font Awesome 11',
+    font = 'FontAwesome 11',
     widget = wibox.widget.textbox,
 })
 
@@ -19,14 +21,15 @@ widget:set_fg('#d986c0')
 
 local function set_widget()
   awful.spawn.easy_async(
-  'amixer -D pulse sget Master',
+  'pactl get-sink-volume @DEFAULT_SINK@ && pactl get-sink-mute @DEFAULT_SINK@',
   function(out)
-    local volume, on_or_off = string.match(out, 'Front Left: Playback %d* %[(%d+)%%%].*%[(%w+)%]\n')
-    if not volume then
-      volume, on_or_off = string.match(out, 'Mono: Playback.*%[(%d+)%%%].*%[(%w+)%]')
-    end
+    local volume = string.match(out, '^Volume: front%-left: *%d+ */ *(%d+)%%')
+    local mute =
+      io.popen('pactl get-source-mute @DEFAULT_SOURCE@')
+        :read()
+        :match('^Mute: (%w+)$')
 
-    if on_or_off == 'off' then
+    if mute == 'yes' then
       val = 'X '..volume..'%'
     else
       volume = tonumber(volume)
@@ -54,11 +57,12 @@ end
 set_widget()
 
 function widget:update_widget(cmd)
+  cmd = cmd or 'pactl get-sink-volume @DEFAULT_SINK@'
   awful.spawn.easy_async(cmd, set_widget)
 end
 
 function widget:toggle()
-  widget:update_widget('amixer -D pulse sset Master toggle')
+  widget:update_widget('pactl set-sink-mute @DEFAULT_SINK@ toggle')
 end
 
 function widget:inc_vol(delta)
@@ -73,10 +77,10 @@ end
 
 function widget:set_exact_vol(value)
   value = value or 50
-  widget:update_widget('amixer -D pulse sset Master '..value..'%')
+  widget:update_widget('pactl set-sink-volume @DEFAULT_SINK@ '..value..'%')
 end
 
-widget:connect_signal('button::press', function(_,_,_,button)
+widget:connect_signal('button::press', function(_, _, _, button)
   if (button == 1) then widget:toggle()
   elseif (button == 3) then
     -- awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
