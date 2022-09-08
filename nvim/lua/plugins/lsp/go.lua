@@ -53,7 +53,10 @@ local function on_attach(client, bufnr)
   map('n', ']d',   ':lua vim.diagnostic.goto_next()<CR>', map_opts)
   map('n', [[\d]], ':lua vim.diagnostic.open_float()<CR>', map_opts)
 
-  vim.api.nvim_set_current_dir(client.config.root_dir)
+  map('n', [[\n]], ':lua vim.lsp.buf.rename()<CR>', map_opts) -- this is so nice
+
+  local root_dir = client.config.root_dir
+  if root_dir then vim.api.nvim_set_current_dir(root_dir) end
 end
 
 require('lspconfig').gopls.setup({
