@@ -1005,6 +1005,7 @@ awful.rules.rules = {
         'Erlang',
         'Pavucontrol',
         'kmines',
+        'kate',
       },
 
       -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -1075,7 +1076,7 @@ awful.rules.rules = {
     properties = { tag = '0' }
   },
   {
-    rule = { class = 'Gedit' },
+    rule = { class = 'Gedit', 'kate', },
     properties = { ontop = true }
   },
   {
