@@ -113,12 +113,16 @@ myawesomemenu = {
 
 local menu_awesome = { 'Awesome', myawesomemenu, beautiful.awesome_icon }
 
+local function getMineSweeper()
+  return os.execute('which gnome-mines') and 'gnome-mines' or 'kmines'
+end
+
 mymainmenu = awful.menu({
   items = {
     menu_awesome,
     { '&Terminal', terminal },
     { '&Browser', browser },
-    { '&Campo Minado', 'gnome-mines' },
+    { '&Campo Minado', getMineSweeper() },
     { '&Lock Screen', 'slock' },
   }
 })
@@ -1000,6 +1004,7 @@ awful.rules.rules = {
         'FeatherPad',
         'Erlang',
         'Pavucontrol',
+        'kmines',
       },
 
       -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -1187,8 +1192,8 @@ awful.spawn.with_shell('numlockx on')
 awful.spawn.with_shell('clipmenud')
 awful.spawn.with_shell('xplugd')
 -- awful.spawn.with_shell('copyq')
--- mic_widget:set_exact_vol(30)
--- volume_widget:set_exact_vol(50)
+microphone_widget:set_exact_vol(30)
+volume_widget:set_exact_vol(50)
 
 -- client.connect_signal("property::class", function(c)
 --    if c.class == "Spotify" then
