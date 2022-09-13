@@ -69,7 +69,7 @@ PROMPT='%B%F{green}%~${vcs_info_msg_0_}%u%s%0(?.. %F{magenta}%?)%f%b λ '
   local git_status="$(git status 2> /dev/null)"
 
   case $git_status in
-    *'No commits yet'*)
+    *'No commits yet'*'nothing to commit'*)
       hook_com[misc]+='%F{white}'
       return
       ;;
