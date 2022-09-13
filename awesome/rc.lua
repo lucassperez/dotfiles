@@ -397,7 +397,9 @@ globalkeys = gears.table.join(
   awful.key({ modkey }, '/',
             function() volume_widget:toggle() end,
             { group = 'System controls', description = 'toggle mute volume', }),
-
+  awful.key({ modkey }, ';',
+            function() volume_widget:toggle() end,
+            { group = 'System controls', description = 'toggle mute volume', }),
   awful.key({}, 'XF86AudioRaiseVolume', function() volume_widget:inc_vol(5) end),
   awful.key({}, 'XF86AudioLowerVolume', function() volume_widget:dec_vol(5) end),
   awful.key({}, 'XF86AudioMute', function() volume_widget:toggle() end),
@@ -412,11 +414,20 @@ globalkeys = gears.table.join(
   awful.key({ modkey, control }, '/',
             function() microphone_widget:toggle() end,
             { group = 'System controls', description = 'toggle mute microphone', }),
-  awful.key({ modkey, shift }, '/',
+  awful.key({ modkey, control }, ';',
             function() microphone_widget:toggle() end,
             { group = 'System controls', description = 'toggle mute microphone', }),
+  awful.key({ control }, 'XF86AudioRaiseVolume', function() microphone_widget:inc_vol(5) end),
+  awful.key({ control }, 'XF86AudioLowerVolume', function() microphone_widget:dec_vol(5) end),
+  awful.key({ control }, 'XF86AudioMute', function() microphone_widget:toggle() end),
 
   awful.key({ modkey, control, shift }, '/',
+            function()
+              -- awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
+              awful.spawn('/home/lucas/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
+            end,
+            { group = 'System controls', description = 'open pulsemixer', }),
+  awful.key({ modkey, control, shift }, ';',
             function()
               -- awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
               awful.spawn('/home/lucas/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
@@ -436,6 +447,8 @@ globalkeys = gears.table.join(
   awful.key({ modkey, shift }, ']',
             function() awful.spawn('/home/lucas/scripts/dmenu/backlight.sh') end,
             { group = 'System controls', description = 'Ask for a brightness' }),
+  awful.key({}, 'XF86MonBrightnessUp', function() bright_widget:inc(5) end),
+  awful.key({}, 'XF86MonBrightnessDown', function() bright_widget:dec(5) end),
 
   awful.key({ modkey }, 'n',
             function() notification_widget:toggle() end,

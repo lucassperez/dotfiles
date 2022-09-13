@@ -25,7 +25,7 @@ local function set_widget()
   function(out)
     local volume = string.match(out, '^Volume: front%-left: *%d+ */ *(%d+)%%')
     local mute =
-      io.popen('pactl get-source-mute @DEFAULT_SOURCE@')
+      io.popen('pactl get-sink-mute @DEFAULT_SINK@')
         :read()
         :match('^Mute: (%w+)$')
 
