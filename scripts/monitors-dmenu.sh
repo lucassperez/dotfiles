@@ -2,8 +2,13 @@
 
 script_path="$HOME/scripts/monitores.sh"
 
+if ! [ -x "$script_path" ]; then
+  echo "Monitor script not found in $script_path"
+  exit 2
+fi
+
 # options="left\ntop\nright\nbot\nsingle"
-options="right\nbot\nleft\ntop\nsingle\nwallpaper"
+options="right\nbot\nleft\ntop\nsingle\nwallpaper\nsame screen on both monitors"
 
 arg=$( \
   echo $options | \
