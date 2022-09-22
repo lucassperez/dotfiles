@@ -124,7 +124,11 @@ widget:connect_signal(
       else
         local hours_left, minutes_left, message = battery:match('(%d%d):(%d%d):%d%d (.*)')
         local time_left
-        if hours_left == '00' then
+
+        if hours_left == nil then
+          time_left = 'Couldn\'t get rate information from battery'
+          message = ''
+        elseif hours_left == '00' then
           time_left = minutes_left:gsub('^0', '')..' minutes'
         elseif minutes_left == '00' then
           time_left = hours_left:gsub('^0', '').. ' hours'
