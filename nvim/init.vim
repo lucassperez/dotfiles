@@ -34,6 +34,11 @@ hi GitGutterChangeLineNr       guifg=#c39f00 gui=ITALIC,BOLD    ctermfg=3   cter
 hi GitGutterDeleteLineNr       guifg=#ec2929 gui=UNDERLINE,BOLD ctermfg=red cterm=UNDERLINE,BOLD
 hi GitGutterChangeDeleteLineNr guifg=#d75f00 gui=UNDERCURL,BOLD ctermfg=166 cterm=UNDERCURL,BOLD
 
+hi DiffAdd guibg=NONE
+hi DiffChange guibg=NONE
+hi DiffDelete guibg=NONE
+hi DiffText guibg=NONE
+
 hi lualine_x_diff_added_command  guifg=#00af00
 hi lualine_x_diff_added_inactive guifg=#00af00
 hi lualine_x_diff_added_insert   guifg=#00af00
@@ -132,3 +137,16 @@ let g:sexp_mappings = {
 let g:lexima_enable_basic_rules = 0
 let g:lexima_enable_newline_rules = 1
 let g:lexima_enable_endwise_rules = 1
+
+" https://stackoverflow.com/questions/3878692/how-to-create-an-alias-for-a-command-in-vim
+fun! SetupCommandAlias(from, to)
+  exec 'cnoreabbrev <expr> '.a:from
+        \ .' ((getcmdtype() is# ":" && getcmdline() is# "'.a:from.'")'
+        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+endfun
+call SetupCommandAlias('W',   'w')
+call SetupCommandAlias('Wq',  'wq')
+call SetupCommandAlias('Wqa', 'wqa')
+call SetupCommandAlias('Wa',  'wa')
+call SetupCommandAlias('Q',   'q')
+call SetupCommandAlias('Qa',  'qa')

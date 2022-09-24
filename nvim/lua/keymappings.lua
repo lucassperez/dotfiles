@@ -9,6 +9,13 @@ end
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
+-- Go to command mode without using shift
+noremap('n', ';', ':')
+noremap('v', ';', ':')
+
+-- Don't lose content of register when pasting
+noremap('v', '<leader>p', '"_dP')
+
 -- Normally C-c already does this, but after installing LSP, the text box
 -- containing completions would sometimes not properly disappear when I C-c out
 -- of insert mode, which did not happen with Esc.
