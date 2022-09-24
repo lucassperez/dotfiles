@@ -1,0 +1,102 @@
+# Coisas para se fazer antes:
+## Criar chave ssh e configurá-la com o github
+mkdir -p ~/.ssh
+cd ~/.ssh
+ssh-keygen -t ed25519
+cd ~
+
+sudo zypper ar -cfp 90 https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/ packman
+sudo zypper refresh
+sudo zypper dup --from packman --allow-vendor-change
+sudo zypper install --from packman ffmpeg gstreamer-plugins-{good,bad,ugly,libav} libavcodec-full vlc-codecs
+
+# No samsung https://www.reddit.com/r/openSUSE/comments/t7127q/sound_card_is_not_being_detected/
+sudo zypper install sof-firmware
+
+cd ~
+sudo zypper in git
+git clone git@github.com:lucassperez/dotfiles
+cd dotfiles
+# DO SOMETHING
+cd ~
+
+mkdir -p ~/sources
+cd sources
+git clone git@github.com:haikarainen/light.git
+cd light
+./autogen.sh
+./configure
+make
+sudo make install
+cd ~
+
+sudo zypper in NetworkManager-applet
+sudo zypper in pulseaudio-utils
+sudo zypper in acpi
+sudo zypper in pavucontrol
+
+# This installed shitloads of packages, 136 I think,
+# but at least made icons looks nice -- w00t
+sudo zypper in texlive-fontawesome
+
+sudo zypepr in xcompmgr
+# Shuold I install libnotify-tools? It has "notify-send"
+sudo zypper in libnotify-tools
+
+cd ~
+sudo zypper in libX11-devel libXft-devel libXinerama-devel
+mkdir -p ~/sources
+cd sources
+git clone https://github.com/lucassperez/dmenu-simple-build
+make
+sudo make install
+cd ~/sources
+sudo zypper in xsel
+sudo zypper in libXfixes-devel
+git clone git@github.com:cdown/clipnotify.git
+cd clipnotify
+make
+sudo make install
+cd ..
+git clone git@github.com:cdown/clipmenu.git
+cd clipmenu
+sudo make install
+cd ~
+
+cd ~
+cd sources
+git clone git@github.com:troglobit/xplugd.git
+cd xplugd
+sudo zypper in libXrandr-devel libXi-devel
+./autogen.sh
+./configure
+make
+make all
+sudo make install
+cd ~
+
+cd ~/sources
+git clone git@github.com:Airblader/unclutter-xfixes.git
+cd unclutter-xfixes
+sudo zypper in libev-devel asciidoc
+make
+sudo make install
+ln -s ~/sources/unclutter-xfixes/unclutter ~/.local/bin/unclutter
+# https://www.reddit.com/r/linuxquestions/comments/257q2t/a_command_called_unclutter_runs_on_startup_but_i/
+sudo touch /etc/default/unclutter
+cd ~
+
+# Is zoom really important?
+# wget https://zoom.us/client/latest/zoom_openSUSE_x86_64.rpm
+# mkdir -p ~/Downloads
+# wget -O ~/Downloads/zoom-package-signing-key.pub https://zoom.us/linux/download/pubkey
+# sudo rpm --import ~/Downloads/zoom-package-signing-key.pub
+# sudo zypper install zoom_openSUSE_x86_64.rpm
+# O Zoom instala o ibus como dependência, que resolve umas chatices mas insere outras.
+# Comentar todas as linhas desses arquivos:
+# /usr/etc/X11/xim.d/ibus
+# /usr/bin/ibus-autostart
+
+# Kazam? https://launchpad.net/kazam
+
+sudo zypper in docker docker-compose

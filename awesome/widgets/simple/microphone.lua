@@ -23,7 +23,7 @@ local function set_widget()
   awful.spawn.easy_async(
   'pactl get-source-volume @DEFAULT_SOURCE@',
   function(out)
-    local volume = string.match(out, '^Volume: front%-left:.* (%d+)%%')
+    local volume = string.match(out, '^Volume: front%-left: *%d+ */ *(%d+)%%')
     local mute =
       io.popen('pactl get-source-mute @DEFAULT_SOURCE@')
         :read()

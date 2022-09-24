@@ -63,7 +63,7 @@ theme.tasklist_bg_normal = '#000000'
 theme.tasklist_bg_focus = '#000000'
 theme.tasklist_plain_task_name = false -- this means only names, without the tags for floating, maximized etc
 theme.tasklist_align = 'left'
--- theme.tasklist_font = 'Hack Mono 10'
+theme.tasklist_font = 'Hack Mono 10'
 -- theme.tasklist_font_focus = 'Hack Mono Bold 10'
 
 -- Generate taglist squares:
@@ -74,7 +74,7 @@ theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
 theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
     taglist_square_size, textcolor
 )
-theme.taglist_font = 'Hack Mono 10'
+theme.taglist_font = 'Hack Mono 11'
 theme.taglist_spacing = 2
 
 -- Variables set for theming notifications:

@@ -153,7 +153,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- }}}
 
 -- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
+-- mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a wibox for each screen and add it
@@ -339,7 +339,7 @@ awful.screen.connect_for_each_screen(
         -- separator_widget, date_widget,
         -- separator_widget, clock_widget,
         separator_widget, datetime_widget,
-        separator_widget, turbo_widget,
+                          turbo_widget,
         -- mykeyboardlayout,
         wibox.widget.systray(),
         s.mylayoutbox,
@@ -439,10 +439,10 @@ globalkeys = gears.table.join(
 
   -- Brightness control
   awful.key({ modkey }, '[',
-            function() bright_widget:inc(5) end,
+            function() bright_widget:inc(2) end,
             { group = 'System controls', description = 'increase brightness', }),
   awful.key({ modkey }, ']',
-            function() bright_widget:dec(5) end,
+            function() bright_widget:dec(2) end,
             { group = 'System controls', description = 'decrease brightness', }),
   awful.key({ modkey, shift }, '[',
             function() awful.spawn('/home/lucas/scripts/dmenu/backlight.sh') end,
@@ -1026,6 +1026,7 @@ awful.rules.rules = {
         'kmines',
         'kate',
         'Navigator',
+        'Notes',
       },
 
       -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -1039,6 +1040,7 @@ awful.rules.rules = {
         'Zoom - Free Account',
         'Polls', -- all of this is more zoom shitty non sense
         'Breakout Rooms - In Progress',
+        'xdg-su: /usr/sbin/yast2',
       },
       role = {
         'AlarmWindow',  -- Thunderbird's calendar.
@@ -1096,7 +1098,7 @@ awful.rules.rules = {
     properties = { tag = '0' }
   },
   {
-    rule = { class = 'Gedit', 'kate', },
+    rule = { class = 'Gedit', 'kate', 'notes', },
     properties = { ontop = true }
   },
   {
@@ -1206,12 +1208,13 @@ awful.spawn.with_shell('flameshot')
 awful.spawn.with_shell('xcompmgr -c -l0 -t0 -r0 -o.00')
 awful.spawn.with_shell('xset r rate 220 25')
 -- awful.spawn.with_shell('unclutter')
+awful.spawn.with_shell('~/scripts/start/start-unclutter.sh')
 awful.spawn.with_shell('xset s off')
 awful.spawn.with_shell('xset -dpms')
 awful.spawn.with_shell('numlockx on')
 -- awful.spawn.with_shell('~/scripts/enable-touchpad-tap.sh')
 awful.spawn.with_shell('clipmenud')
-awful.spawn.with_shell('xplugd')
+awful.spawn.with_shell('~/scripts/start/start-xplugd.sh')
 -- awful.spawn.with_shell('copyq')
 -- microphone_widget:set_exact_vol(30)
 -- volume_widget:set_exact_vol(50)

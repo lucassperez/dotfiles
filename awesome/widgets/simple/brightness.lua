@@ -16,6 +16,7 @@ local widget = wibox.widget.background()
 widget:set_widget(text)
 widget:set_fg('#aaeb6a')
 
+-- Is this right?
 local function calculateNearest5(string)
   local number = tonumber(string)
   local unit = number % 10
@@ -37,11 +38,22 @@ local function calculateNearest5(string)
   return result
 end
 
+local function round(string)
+  local number = tonumber(string)
+  local deci = number % 1
+
+  if deci > 0.5 then
+    return math.floor(number) + 1
+  end
+
+  return math.floor(number)
+end
+
 local function set_widget()
   awful.spawn.easy_async(
   'light',
   function(out)
-    local num_val = calculateNearest5(out)
+    local num_val = round(out)
     text:set_text(' '..num_val..'%')
   end
   )

@@ -21,7 +21,7 @@ widget:set_fg('#d986c0')
 
 local function set_widget()
   awful.spawn.easy_async(
-  'pactl get-sink-volume @DEFAULT_SINK@ && pactl get-sink-mute @DEFAULT_SINK@',
+  'pactl get-sink-volume @DEFAULT_SINK@',
   function(out)
     local volume = string.match(out, '^Volume: front%-left: *%d+ */ *(%d+)%%')
     local mute =

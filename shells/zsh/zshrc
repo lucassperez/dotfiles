@@ -22,6 +22,11 @@ unsetopt autocd beep extendedglob
 
 bindkey -e
 
+# The noclobber option makes the > throw an error
+# when the destination file already exists.
+# To force it, we have to use >| or >!
+set -o noclobber
+
 command_not_found_handler() {
   # https://askubuntu.com/questions/1226574/how-do-i-enable-zsh-package-suggestions-as-in-ubuntu-bash
   # calls the nice command-not-found handle function that shows a message
@@ -182,7 +187,9 @@ else
   # This will not start tmux if I run alacritty with other options, like this:
   # alacritty -t floating-alacritty -o window.opacity=1.0
   # With the above, it would work. But do I want it? 🤔
-  if [ $(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | cut -d ' ' -f 1) = alacritty ]; then
+  # if [ $(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | cut -d ' ' -f 1) = alacritty ]; then
+  # if ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | grep -q "^[/a-z0-9]*\(alacritty\|konsole\)"; then
+  if ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | grep -q "^[/a-z0-9]*alacritty"; then
     `which tmux`
   fi
 fi

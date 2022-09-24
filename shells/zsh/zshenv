@@ -1,9 +1,36 @@
+# vim: ft=sh
+
+prepend_to_PATH() {
+  # If no path is given, returns
+  if [ -z $1 ]; then
+    return 1
+  fi
+
+  # If given path is already in PATH, returns
+  if echo $PATH | grep -q $1; then
+    return 2
+  fi
+
+  # Can only prepend directories
+  if ! [ -d $1 ]; then
+    return 3
+  fi
+
+  PATH="$1:$PATH"
+}
+
+# export PATH="$HOME/.asdf/installs/golang/1.18/packages/bin:$HOME/sources/apache-maven-3.8.4/bin:$PATH"
+# export PATH="$HOME/.asdf/installs/golang/1.18/packages/bin:$HOME/.local/bin:$PATH"
+prepend_to_PATH $HOME/.local/bin
+prepend_to_PATH $HOME/.asdf/installs/golang/1.18/packages/bin
+
 # https://zsh.sourceforge.io/Intro/intro_3.html
 # https://www.reddit.com/r/zsh/comments/3ubrdr/proper_way_to_set_zdotdir/
-
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
-export PATH="$HOME/.asdf/installs/golang/1.18/packages/bin:$HOME/sources/apache-maven-3.8.4/bin:$PATH"
+# LOG=$HOME/zshenv-invocations
+# echo "=== $(date) ===" >>$LOG
+# echo "Caller: $0" >>$LOG
 
 export EDITOR=nvim
 
