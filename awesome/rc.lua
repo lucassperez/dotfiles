@@ -1027,6 +1027,7 @@ awful.rules.rules = {
         'kate',
         'Navigator',
         'Notes',
+        'Steam',
       },
 
       -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -1074,6 +1075,7 @@ awful.rules.rules = {
     rule = { class = 'Postman', },
     properties = { tag = '4' }
   },
+  { rule = { class = 'steam_app_' }, properties = { tag = '7', }, },
   -- None of this works with spotify, ffs
   { rule = { class = 'spotify' }, properties = { tag = '6' } },
   { rule = { class = 'Spotify' }, properties = { tag = '6' } },
