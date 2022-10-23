@@ -7,6 +7,7 @@
 local wibox = require('wibox')
 local watch = require('awful.widget.watch')
 local naughty = require('naughty')
+local beautiful = require('beautiful')
 
 local text = wibox.widget({
     font = 'FontAwesome 11',
@@ -108,14 +109,22 @@ watch(
   widget
 )
 
+local function pluralize_number(string, word)
+  without_possible_leading_zero = string:gsub('^0', '')
+  if without_possible_leading_zero == '1' then
+    return without_possible_leading_zero..' '..word
+  end
+  return without_possible_leading_zero..' '..word..'s'
+end
+
 widget:connect_signal(
   'button::press',
   function(_, _, _, button)
     if button == 1 or button == 3 then
-      local text, urgency
+      local text, urgency, bg
 
       local battery = io.popen('acpi -b'):read()
-      local state, percentage = battery:match('Battery %d+: (%w*), (%d*)%%')
+      local state, percentage = battery:match('Battery %d+: ([%w ]*), (%d*)%%')
 
       if state == 'Full' then
         text = '(:'
@@ -129,11 +138,11 @@ widget:connect_signal(
           time_left = 'Couldn\'t get rate information from battery'
           message = ''
         elseif hours_left == '00' then
-          time_left = minutes_left:gsub('^0', '')..' minutes'
+          time_left = pluralize_number(minutes_left, 'minute')
         elseif minutes_left == '00' then
-          time_left = hours_left:gsub('^0', '').. ' hours'
+          time_left = pluralize_number(hours_left, 'hour')
         else
-          time_left = hours_left:gsub('^0', '').. ' hours and '..minutes_left:gsub('^0', '')..' minutes'
+          time_left = pluralize_number(hours_left, 'hour')..' and '..pluralize_number(minutes_left, 'minute')
         end
 
         if message then
@@ -145,10 +154,11 @@ widget:connect_signal(
 
       if percentage and tonumber(percentage) <= 20 and state ~= 'Charging' then
         urgency = 'critical'
-        text = text..'\nDo something, quick!'
+        text = text..'.\nDo something, quick!'
         bg = '#ff0000' -- since the urgency doesn't seem to work, I did this silliness
       else
         urgency = 'low'
+        bg = beautiful.notification_bg
       end
 
       naughty.notify({

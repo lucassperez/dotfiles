@@ -924,6 +924,7 @@ local function should_show_titlebars(c)
   if c.class == 'zoom' then return true end
   if c.name == 'floating-alacritty' then return true end
   if c.class == 'Alacritty' then return false end
+  if c.class == 'Steam' then return false end
   if type(c.class) ~= 'string' or type(c.name) ~= 'string' then return false end
 
   if string.match(c.class, "^[Gg]nome-%w*") or
@@ -1075,21 +1076,16 @@ awful.rules.rules = {
     rule = { class = 'Postman', },
     properties = { tag = '4' }
   },
-  { rule = { class = 'steam_app_' }, properties = { tag = '7', }, },
+  -- { rule = { class = 'steam_app_' }, properties = { tag = '7', }, },
   -- None of this works with spotify, ffs
-  { rule = { class = 'spotify' }, properties = { tag = '6' } },
-  { rule = { class = 'Spotify' }, properties = { tag = '6' } },
   { rule = { class = '[Ss]potify' }, properties = { tag = '6' } },
-  { rule = { name = 'Spotify' }, properties = { tag = '6' } },
   -- Zoom and discord always on 9 and 10, respectively
   -- I hate Zoom, on every update it changes this stuff, ffs
   {rule = { class = 'Zoom Meeting' }, properties = { tag = '9' }},
-  {rule = { class = 'Zoom' }, properties = { tag = '9' }},
-  {rule = { class = 'zoom' }, properties = { tag = '9' }},
+  {rule = { class = '[Zz]oom' }, properties = { tag = '9' }},
   {rule = { class = 'Zoom - Free Account' }, properties = { tag = '9' }},
   {rule = { name = 'Zoom Meeting' }, properties = { tag = '9' }},
-  {rule = { name = 'Zoom' }, properties = { tag = '9' }},
-  {rule = { name = 'zoom' }, properties = { tag = '9' }},
+  {rule = { name = '[Zz]oom' }, properties = { tag = '9' }},
   {rule = { name = 'Zoom - Free Account' }, properties = { tag = '9' }},
   {
     rule = { class = 'discord' },
@@ -1217,6 +1213,7 @@ awful.spawn.with_shell('numlockx on')
 -- awful.spawn.with_shell('~/scripts/enable-touchpad-tap.sh')
 awful.spawn.with_shell('clipmenud')
 awful.spawn.with_shell('~/scripts/start/start-xplugd.sh')
+-- awful.spawn.with_shell('redshift -c ~/.config/redshift/redshift.conf')
 -- awful.spawn.with_shell('copyq')
 -- microphone_widget:set_exact_vol(30)
 -- volume_widget:set_exact_vol(50)
