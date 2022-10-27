@@ -11,9 +11,9 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-# LOG="$HOME/profile-invocations"
-# echo "=== $(date) ===" >>$LOG
-# echo "Caller: $0" >>$LOG
+LOG="$HOME/profile-invocations"
+echo "=== $(date) ===" >>$LOG
+echo "Caller: $0" >>$LOG
 # echo "DESKTOP_SESSION: $DESKTOP_SESSION" >>$LOG
 # echo "GDMSESSION: $GDMSESSION" >>$LOG
 # https://faq.i3wm.org/question/2498/ssh-sessions-in-i3.1.html
@@ -21,12 +21,14 @@
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
+export SHELL=`which zsh`
 
 if [ "$0" = "/etc/gdm3/Xsession" -a "$DESKTOP_SESSION" = "i3" ]; then
     export $(gnome-keyring-daemon -s)
 fi
 
-if [ "$0" = "/etc/gdm3/Xsession" -a "$DESKTOP_SESSION" = "awesome" ]; then
+# if [ "$0" = "/etc/gdm3/Xsession" -a "$DESKTOP_SESSION" = "awesome" ]; then
+if [ "$DESKTOP_SESSION" = "awesome" ]; then
     export $(gnome-keyring-daemon -s)
 fi
 
@@ -34,12 +36,12 @@ fi
 # [ -x "$HOME/scripts/enable-touchpad-tap.sh" ] && . "$HOME/scripts/enable-touchpad-tap.sh"
 
 # if running bash
-if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-      . "$HOME/.bashrc"
-    fi
-fi
+# if [ -n "$BASH_VERSION" ]; then
+#     # include .bashrc if it exists
+#     if [ -f "$HOME/.bashrc" ]; then
+#       . "$HOME/.bashrc"
+#     fi
+# fi
 
 if [ -n "$HOME/.zshenv" ]; then
   . "$HOME/.zshenv"

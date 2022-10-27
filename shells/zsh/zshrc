@@ -173,7 +173,8 @@ eval "$(zoxide init zsh)"
 
 # . "$HOME/scripts/lambda-fetch.sh"
 # . "$HOME/scripts/ufetch-debian.sh"
-neofetch
+neofetch --ascii "$HOME/pinguim-ascii-art1" --ascii_colors 3 7
+# neofetch --ascii "$HOME/pinguim-ascii-art2" --ascii_colors 3 7
 
 # https://www.tecmint.com/tips-for-tmux-terminal-sessions/
 if tmux ls 1>/dev/null 2>&1 && [ -z "$TMUX" ]; then

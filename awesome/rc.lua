@@ -339,6 +339,7 @@ awful.screen.connect_for_each_screen(
         -- separator_widget, date_widget,
         -- separator_widget, clock_widget,
         separator_widget, datetime_widget,
+        -- separator_widget, turbo_widget,
                           turbo_widget,
         -- mykeyboardlayout,
         wibox.widget.systray(),
@@ -1029,6 +1030,7 @@ awful.rules.rules = {
         'Navigator',
         'Notes',
         'Steam',
+        'Navigator',
       },
 
       -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -1202,11 +1204,12 @@ client.connect_signal('unfocus', function(c) c.border_color = beautiful.border_n
 
 -- Start up things
 awful.spawn.with_shell('nm-applet')
-awful.spawn.with_shell('flameshot')
+-- awful.spawn.with_shell('flameshot')
+awful.spawn.with_shell('~/scripts/killall-and-start/flameshot.sh')
 awful.spawn.with_shell('xcompmgr -c -l0 -t0 -r0 -o.00')
 awful.spawn.with_shell('xset r rate 220 25')
 -- awful.spawn.with_shell('unclutter')
-awful.spawn.with_shell('~/scripts/start/start-unclutter.sh')
+awful.spawn.with_shell('~/scripts/killall-and-start/unclutter.sh')
 awful.spawn.with_shell('xset s off')
 awful.spawn.with_shell('xset -dpms')
 awful.spawn.with_shell('numlockx on')
