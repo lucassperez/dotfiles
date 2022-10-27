@@ -24,8 +24,15 @@ local function getRunCommand()
 
   if filetype == 'rust' then
     -- Could use vim.fn.expand('%:r'), but I have no idea which is better/faster
-    filename_without_extension = filename:match('(.*)%.rs$')
+    local filename_without_extension = filename:match('(.*)%.rs$')
     return 'rustc '..filename..' && ./'..filename_without_extension,
+           'Hopefully compiling and running '..filename
+  end
+
+  if filetype == 'c' then
+    local filename_without_extension = filename:match('(.*)%.c$')
+    local bin_name = filename_without_extension..'-nvim-bin'
+    return 'gcc -o '..bin_name..' '..filename..' && ./'..bin_name,
            'Hopefully compiling and running '..filename
   end
 

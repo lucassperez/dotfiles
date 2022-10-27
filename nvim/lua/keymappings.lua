@@ -90,9 +90,8 @@ noremap('n', '>', '>>')
 noremap('n', '<', '<<')
 
 -- Mover blocos de texto
--- Não funcona com o visual block?
-noremap('v', '<M-j>', ':m .+1<CR>gv=gv')
-noremap('v', '<M-k>', ':m .-2<CR>gv=gv')
+noremap('v', '<M-j>', ":m '>+1<CR>gv=gv")
+noremap('v', '<M-k>', ":m '<-2<CR>gv=gv")
 noremap('n', '<M-j>', ':m .+1<CR>==')
 noremap('n', '<M-k>', ':m .-2<CR>==')
 

@@ -19,12 +19,12 @@ local on_attach = function(client, bufnr)
   map('n', [[\K]], ':lua vim.lsp.buf.signature_help()<CR>', map_opts)
   map('n', [[\n]], ':lua vim.lsp.buf.rename()<CR>', map_opts)
   map('n', [[\r]], ':lua vim.lsp.buf.references()<CR>', map_opts)
-  -- map('n', [[\i]], ':lua vim.lsp.buf.implementation()<CR>', map_opts)
   map('n', '[d',   ':lua vim.diagnostic.goto_prev()<CR>', map_opts)
   map('n', ']d',   ':lua vim.diagnostic.goto_next()<CR>', map_opts)
   map('n', [[\d]], ':lua vim.diagnostic.open_float()<CR>', map_opts)
 
   map('n', [[\i]], ':TSLspImportAll<CR>:TSLspOrganize<CR>', map_opts)
+  map('n', [[\I]], ':lua vim.lsp.buf.implementation()<CR>', map_opts)
 
   -- vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()')
 
