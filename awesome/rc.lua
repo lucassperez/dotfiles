@@ -414,6 +414,9 @@ globalkeys = gears.table.join(
   awful.key({ modkey, control }, '/',
             function() microphone_widget:toggle() end,
             { group = 'System controls', description = 'toggle mute microphone', }),
+  awful.key({ modkey, shift }, '/',
+            function() microphone_widget:toggle() end,
+            { group = 'System controls', description = 'toggle mute microphone', }),
   awful.key({ modkey, control }, ';',
             function() microphone_widget:toggle() end,
             { group = 'System controls', description = 'toggle mute microphone', }),
@@ -936,7 +939,7 @@ local function should_show_titlebars(c)
   return true
 end
 
-local function titlebar_for_floating_client(c)
+local function titlebar_for_floating_or_maximized_client(c)
   if c.floating and should_show_titlebars(c) then
     c:emit_signal('request::titlebars')
   else
@@ -952,7 +955,10 @@ local function titlebar_for_floating_client(c)
   end
 end
 
-client.connect_signal('property::floating', titlebar_for_floating_client)
+client.connect_signal('property::floating', titlebar_for_floating_or_maximized_client)
+client.connect_signal('property::maximized', titlebar_for_floating_or_maximized_client)
+client.connect_signal('property::maximized_vertical', titlebar_for_floating_or_maximized_client)
+client.connect_signal('property::maximized_horizontal', titlebar_for_floating_or_maximized_client)
 
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
@@ -1019,6 +1025,7 @@ awful.rules.rules = {
         'Pavucontrol',
         'kmines',
         'kate',
+        'Navigator',
       },
 
       -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -1206,8 +1213,8 @@ awful.spawn.with_shell('numlockx on')
 awful.spawn.with_shell('clipmenud')
 awful.spawn.with_shell('xplugd')
 -- awful.spawn.with_shell('copyq')
-microphone_widget:set_exact_vol(30)
-volume_widget:set_exact_vol(50)
+-- microphone_widget:set_exact_vol(30)
+-- volume_widget:set_exact_vol(50)
 
 -- client.connect_signal("property::class", function(c)
 --    if c.class == "Spotify" then
