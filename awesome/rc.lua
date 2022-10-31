@@ -113,16 +113,12 @@ myawesomemenu = {
 
 local menu_awesome = { 'Awesome', myawesomemenu, beautiful.awesome_icon }
 
-local function getMineSweeper()
-  return os.execute('which gnome-mines') and 'gnome-mines' or 'kmines'
-end
-
 mymainmenu = awful.menu({
   items = {
     menu_awesome,
     { '&Terminal', terminal },
     { '&Browser', browser },
-    { '&Campo Minado', getMineSweeper() },
+    { '&Campo Minado', 'gnome-mines' },
     { '&Lock Screen', 'slock' },
   }
 })
