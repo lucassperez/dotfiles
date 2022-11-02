@@ -877,7 +877,7 @@ tag.connect_signal(
   'request::screen',
   function(t)
     t.selected = false
-    for s in capi.screen do
+    for s in screen do
       if s ~= t.screen then
         t.screen = s
         return
@@ -1211,7 +1211,7 @@ awful.spawn.with_shell('xset -dpms')
 awful.spawn.with_shell('numlockx on')
 -- awful.spawn.with_shell('~/scripts/enable-touchpad-tap.sh')
 awful.spawn.with_shell('clipmenud')
-awful.spawn.with_shell('~/scripts/start/start-xplugd.sh')
+awful.spawn.with_shell('~/scripts/killall-and-start/xplugd.sh')
 -- awful.spawn.with_shell('redshift -c ~/.config/redshift/redshift.conf')
 -- awful.spawn.with_shell('copyq')
 -- microphone_widget:set_exact_vol(30)
