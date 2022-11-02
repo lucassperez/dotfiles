@@ -11,7 +11,7 @@ fi
 options="right\nbot\nleft\ntop\nsingle\nwallpaper\nsame screen on both monitors"
 
 arg=$( \
-  echo $options | \
+  printf $options | \
     dmenu \
     -h 21 \
     -p "(Monitores) Escolha a posição" \
