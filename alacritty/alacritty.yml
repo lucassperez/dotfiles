@@ -480,7 +480,7 @@ schemes:
       - { index: 16, color: '#F5A97F' }
       - { index: 17, color: '#F4DBD6' }
 
-  catppuccin-macchiato: &modified-catppuccin-macchiato
+  modified-catppuccin-macchiato: &modified-catppuccin-macchiato
     primary:
       background: '0x282c34'
       foreground: '0xc0caf5'
