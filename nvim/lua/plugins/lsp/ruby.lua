@@ -5,7 +5,7 @@ local function on_attach(client, bufnr)
   local map_opts = { noremap = true, silent = true }
   -- I'm not sure these work with solargraph,
   -- but at least the go to definition does work
-  map('n', [[\f]], ':lua vim.lsp.buf.formatting()<CR>', map_opts)
+  map('n', [[\f]], ':lua vim.lsp.buf.format({async=true})<CR>', map_opts)
   map('n', 'K',    ':lua vim.lsp.buf.definition()<CR>', map_opts)
   map('n', [[\k]], ':lua vim.lsp.buf.hover()<CR>', map_opts)
   map('n', [[\K]], ':lua vim.lsp.buf.signature_help()<CR>', map_opts)

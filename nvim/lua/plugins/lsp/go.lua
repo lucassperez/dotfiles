@@ -41,10 +41,10 @@ local function on_attach(client, bufnr)
 
   -- ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), {'i','c'}),
   -- ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i','c'}),
-  -- map('n', [[\f]],    ':lua vim.lsp.buf.formatting()<CR>', map_opts)
-  -- map('n', [[\f]],    ':lua vim.lsp.buf.formatting()<CR>:%s/\t/  /g<CR>:noh<CR>', map_opts)
-  -- map('n', [[\f]],    ':lua golangImports(1000)<CR>:lua vim.lsp.buf.formatting()<CR>:%s/\t/  /g<CR>:noh<CR>', map_opts)
-  map('n', [[\f]], ':lua golangImports(1000)<CR>:lua vim.lsp.buf.formatting()<CR>', map_opts)
+  -- map('n', [[\f]],    ':lua vim.lsp.buf.format({async=true})<CR>', map_opts)
+  -- map('n', [[\f]],    ':lua vim.lsp.buf.format({async=true})<CR>:%s/\t/  /g<CR>:noh<CR>', map_opts)
+  -- map('n', [[\f]],    ':lua golangImports(1000)<CR>:lua vim.lsp.buf.format({async=true})<CR>:%s/\t/  /g<CR>:noh<CR>', map_opts)
+  map('n', [[\f]], ':lua golangImports(1000)<CR>:lua vim.lsp.buf.format({async=true})<CR>', map_opts)
   map('n', [[\i]], ':lua golangImports(1000)<CR>', map_opts)
   map('n', [[\I]], ':lua vim.lsp.buf.implementation()<CR>', map_opts)
   map('n', [[\r]], ':lua vim.lsp.buf.references()<CR>', map_opts)

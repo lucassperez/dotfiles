@@ -10,7 +10,7 @@ local function cssls_on_attach(client, bufnr)
   end
   local map_opts = { noremap = true, silent = true }
   -- map('n', 'K',    ':lua vim.lsp.buf.definition()<CR>', map_opts) -- I wish
-  map('n', [[\f]], ':lua vim.lsp.buf.formatting()<CR>', map_opts)
+  map('n', [[\f]], ':lua vim.lsp.buf.format({async=true})<CR>', map_opts)
   map('n', [[\k]], ':lua vim.lsp.buf.hover()<CR>', map_opts)
   map('n', '[d',   ':lua vim.diagnostic.goto_prev()<CR>', map_opts)
   map('n', ']d',   ':lua vim.diagnostic.goto_next()<CR>', map_opts)

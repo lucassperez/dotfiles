@@ -12,8 +12,8 @@ local on_attach = function(client, bufnr)
 
   local map_opts = { noremap = true, silent = true }
 
-  map('n', [[\f]], ':lua vim.lsp.buf.formatting()<CR>', map_opts)
-  -- map('n', [[\f]], ':TSLspImportAll<CR>:TSLspOrganize<CR>:lua vim.lsp.buf.formatting()<CR>', map_opts)
+  map('n', [[\f]], ':lua vim.lsp.buf.format({async=true})<CR>', map_opts)
+  -- map('n', [[\f]], ':TSLspImportAll<CR>:TSLspOrganize<CR>:lua vim.lsp.buf.format({async=true})<CR>', map_opts)
   map('n', 'K',    ':lua vim.lsp.buf.definition()<CR>', map_opts)
   map('n', [[\k]], ':lua vim.lsp.buf.hover()<CR>', map_opts)
   map('n', [[\K]], ':lua vim.lsp.buf.signature_help()<CR>', map_opts)
@@ -26,7 +26,7 @@ local on_attach = function(client, bufnr)
   map('n', [[\i]], ':TSLspImportAll<CR>:TSLspOrganize<CR>', map_opts)
   map('n', [[\I]], ':lua vim.lsp.buf.implementation()<CR>', map_opts)
 
-  -- vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()')
+  -- vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.format()')
 
   vim.api.nvim_set_current_dir(client.config.root_dir)
 end
