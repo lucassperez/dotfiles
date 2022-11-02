@@ -1,6 +1,7 @@
 # vim: ft=sh
 
-export SHELL=`which zsh`
+# passwdshell=`grep $USER /etc/passwd | sed 's/.*:\(.*\)$/\1/'`
+# export SHELL=${passwdshell:-$SHELL}
 
 prepend_to_PATH() {
   # If no path is given, returns
