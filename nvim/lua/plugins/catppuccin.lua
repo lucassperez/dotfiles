@@ -43,6 +43,7 @@ require('catppuccin').setup({
       ColorColumn = { bg = '#4e4e4e' },
       Pmenu       = { bg = '#090d24' },
       NormalFloat = { bg = '#090d24' },
+      Visual      = { bg = '#61677d',  style = { 'bold' } },
 
       CursorLineNr = { fg = '#e2e209' },
       SignColumn   = { fg = '#a8a8a8' },
