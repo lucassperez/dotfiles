@@ -1,12 +1,35 @@
+local function ruby_function(filename)
+  local extension = filename:match('.*%.(.*)$')
+  if extension == 'ru' then
+    return 'rackup '
+  else
+    return 'ruby '
+  end
+end
+
+local function rust_function(filename)
+  local filename_without_extension = filename:match('(.*)%.rs$')
+  return 'rustc '..filename..' && ./'..filename_without_extension,
+         'Hopefully compiling and running '..filename
+end
+
+local function c_function(filename)
+  local filename_without_extension = filename:match('(.*)%.c$')
+  local bin_name = filename_without_extension..'-nvim-bin'
+  return 'gcc -o '..bin_name..' '..filename..' && ./'..bin_name,
+         'Hopefully compiling and running '..filename
+end
+
 local runCommands = {
   elixir = 'elixir ',
-  ruby = 'ruby ',
+  ruby = ruby_function,
   sh = 'sh ',
   javascript = 'node ',
   lua = 'lua ',
-  -- rust = 'rustc ', oh no
+  rust = rust_function,
   go = 'go run ',
   clojure = 'clj -M ',
+  c = c_function,
 }
 
 local function getRunCommand()
@@ -22,23 +45,11 @@ local function getRunCommand()
 
   local filetype = vim.bo.filetype
 
-  if filetype == 'rust' then
-    -- Could use vim.fn.expand('%:r'), but I have no idea which is better/faster
-    local filename_without_extension = filename:match('(.*)%.rs$')
-    return 'rustc '..filename..' && ./'..filename_without_extension,
-           'Hopefully compiling and running '..filename
-  end
-
-  if filetype == 'c' then
-    local filename_without_extension = filename:match('(.*)%.c$')
-    local bin_name = filename_without_extension..'-nvim-bin'
-    return 'gcc -o '..bin_name..' '..filename..' && ./'..bin_name,
-           'Hopefully compiling and running '..filename
-  end
-
   command = runCommands[filetype]
   if command == nil then
     return nil, 'Não sei executar arquivos do tipo '..filetype
+  elseif type(command) == 'function' then
+    return command(filename)
   end
 
   return command..full_path_filename,
