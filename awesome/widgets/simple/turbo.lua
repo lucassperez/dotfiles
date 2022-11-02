@@ -62,7 +62,7 @@ local function random_verb()
   return random_from_list(verbs)
 end
 
-local function update_brightness_microphone_and_volume_icons()
+function widget:update_brightness_microphone_and_volume_icons()
   -- This just works with my own brightness, microphone and volume widgets
   require('widgets.simple.volume'):update_widget('amixer -D pulse sget Master')
   require('widgets.simple.microphone'):update_widget('amixer sget Capture')
@@ -71,7 +71,7 @@ local function update_brightness_microphone_and_volume_icons()
 end
 
 function widget:send_turbo_notification()
-  update_brightness_microphone_and_volume_icons()
+  widget:update_brightness_microphone_and_volume_icons()
 
   if naughty.suspended then return end
 
