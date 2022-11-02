@@ -1,4 +1,4 @@
-vim.g.catppuccin_flavour = 'macchiato' -- latte, frappe, macchiato, mocha
+vim.g.catppuccin_flavour = 'frappe' -- latte, frappe, macchiato, mocha
 
 require('catppuccin').setup({
   transparent_background = true,
@@ -34,47 +34,43 @@ require('catppuccin').setup({
       },
     },
     cmp = true,
-    gitgutter = true,
     telescope = true,
-    nvimtree = {
-      enabled = true,
-      show_root = true,
-      transparent_panel = false,
-    },
+    nvimtree = false,
   },
   custom_highlights = function(colors)
     return {
-      CursorLine = { bg = '#3a3b3c' },
-      Comment = { fg = '#8a8a8a', },
-      -- ['@comment'] = { fg = '#a8a8a8', },
-      SignColumn = { fg = '#a8a8a8', },
-      LineNr = { fg = '#8a8a8a' },
-      CursorLineNr = { fg = '#e2e209' },
-      -- EndOfBuffer = { fg = '#729ecb', 'bold' },
-      -- NonText = { fg = '#729ecb', 'bold' },
-      -- VertSplit = { fg = 'NONE' }
+      CursorLine  = { bg = '#3a3b3c' },
       ColorColumn = { bg = '#4e4e4e' },
-      Pmenu = { bg = '#090d24' },
+      Pmenu       = { bg = '#090d24' },
       NormalFloat = { bg = '#090d24' },
+
+      CursorLineNr = { fg = '#e2e209' },
+      SignColumn   = { fg = '#a8a8a8' },
+      LineNr       = { fg = '#8a8a8a' },
+      Comment      = { fg = '#8a8a8a' },
+      NonText      = { fg = '#729ecb',  style = { 'bold' } },
+      VertSplit    = { fg = 'NONE',     style = { 'reverse' } },
+      StatusLine   = { fg = 'NONE',     style = { 'bold', 'reverse' } },
+      StatusLineNC = { fg = 'NONE',     style = { 'reverse' } },
+      MoreMsg      = { fg = 'SeaGreen', style = { 'bold' } },
     }
   end,
 })
 
-vim.cmd [[colorscheme catppuccin]]
-vim.cmd [[hi NonText     guifg=#729ecb gui=bold]]
-vim.cmd [[hi clear EndOfBuffer]]
-vim.cmd [[hi link EndOfBuffer NonText]]
-vim.cmd [[hi VertSplit   guifg=none gui=reverse]]
-vim.cmd [[hi StatusLine    guifg=none gui=bold,reverse]]
-vim.cmd [[hi StatusLineNC  guifg=none gui=reverse]]
-vim.cmd [[hi clear MsgSeparator]]
-vim.cmd [[hi link MsgSeparator StatusLine]]
-vim.cmd [[hi MoreMsg guifg=SeaGreen gui=bold]]
-vim.cmd [[hi @parameter  gui=none]]
-vim.cmd [[
-  autocmd VimEnter,WinEnter * match CustomTabsGroup /\t/
-  hi CustomTabsGroup guifg=#999999 gui=NONE
-]]
+vim.cmd([[
+colorscheme catppuccin
+hi clear EndOfBuffer
+hi link EndOfBuffer NonText
+hi clear MsgSeparator
+hi link MsgSeparator StatusLine
+match CustomTabs /\t/
+hi CustomTabs guifg=#999999 gui=NONE
+match CustomTrailingWhiteSpaces /\s\+$/
+hi link CustomTrailingWhiteSpaces NonText
+" Serring ['@parameter'] = { style = {} } would clear
+" everything else and leave it without colors
+hi @parameter gui=NONE
+]])
 
 --[[
 Talvez mudar esses também?
