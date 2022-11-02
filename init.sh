@@ -3,6 +3,23 @@
 cd $(dirname "$0")
 DIR=$(pwd)
 
+recursively_symlink_scripts() {
+  local current_dir=$1
+  local destination_path=$2
+  for f in `ls`; do
+    if [ -d $f ]; then
+      cd $f
+      printf "Creating \e[1m$destination_path/$f\e[0m if it does not already exists\n"
+      mkdir -p "$destination_path/$f"
+      recursively_symlink_scripts `pwd` "$destination_path/$f"
+      cd ..
+    elif [ -x $f ] || echo "$f" | grep -q '\.sh$'; then
+      printf "Creating symlink to: \e[1;36m$destination_path/$f\e[0m\n"
+      ln -sfni "$current_dir/$f" "$destination_path/$f"
+    fi
+  done
+}
+
 echo Bash or Zsh?
 printf "z = Zsh, any other = Bash: "
 read INSTALL_SHELL
@@ -53,19 +70,9 @@ ln -sfni "$DIR/nvim/" "$HOME/.config/nvim"
 
 [ -d "$HOME/scripts" ] || mkdir "$HOME/scripts" -pv
 
-printf Creating symlinks to the following scripts to "\e[1;36m$HOME/scripts\e[0m" directory\n:
-printf Files:"\t \e[1mparse-tmux-ls.sh\e[0m, \e[1mlambda-fetch.sh\e[0m, \e[1mchmod-back-to-normal.sh\e[0m, \e[1msimplexev.sh\e[0m, \e[1msetwallpaper.sh, enable-touchpad-tap.sh, conf-keyboard.sh\e[0m\n"
-printf Folders:" \e[1mgit-stuff/\e[0m, \e[1mtmux-chtsh/\e[0m, \e[1memoji/\e[0m\n"
-ln -sfni "$DIR/scripts/parse-tmux-ls.sh" "$HOME/scripts"
-ln -sfni "$DIR/scripts/lambda-fetch.sh" "$HOME/scripts"
-ln -sfni "$DIR/scripts/chmod-back-to-normal.sh" "$HOME/scripts"
-ln -sfni "$DIR/scripts/simplexev.sh" "$HOME/scripts"
-ln -sfni "$DIR/scripts/setwallpaper.sh" "$HOME/scripts"
-ln -sfni "$DIR/scripts/enable-touchpad-tap.sh" "$HOME/scripts"
-ln -sfni "$DIR/scripts/conf-keyboard.sh" "$HOME/scripts"
-ln -sfni "$DIR/scripts/git-stuff" "$HOME/scripts"
-ln -sfni "$DIR/scripts/tmux-chtsh" "$HOME/scripts"
-ln -sfni "$DIR/scripts/emoji" "$HOME/scripts"
+cd "$DIR/scripts"
+recursively_symlink_scripts "$DIR" "$HOME/scripts"
+cd $DIR
 
 printf "Creating symlink to: \e[1;36m$HOME/.tmux.conf\e[0m\n"
 ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
