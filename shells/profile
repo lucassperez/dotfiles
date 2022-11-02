@@ -11,9 +11,10 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-LOG="$HOME/profile-invocations"
-echo "=== $(date) ===" >>$LOG
-echo "Caller: $0" >>$LOG
+# LOG="$HOME/profile-invocations"
+# echo "=== $(date) ===" >>$LOG
+# echo "Shell: $SHELL">>$LOG
+# echo "Caller: $0" >>$LOG
 # echo "DESKTOP_SESSION: $DESKTOP_SESSION" >>$LOG
 # echo "GDMSESSION: $GDMSESSION" >>$LOG
 # https://faq.i3wm.org/question/2498/ssh-sessions-in-i3.1.html

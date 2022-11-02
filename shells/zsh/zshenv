@@ -1,5 +1,7 @@
 # vim: ft=sh
 
+export SHELL=`which zsh`
+
 prepend_to_PATH() {
   # If no path is given, returns
   if [ -z $1 ]; then
@@ -37,6 +39,8 @@ export EDITOR=nvim
 export ERL_AFLAGS='-kernel shell_history enabled -kernel shell_history_file_bytes 1024000'
 
 export LESS='-FXR'
+
+export PAGER=less
 
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 
