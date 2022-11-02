@@ -30,7 +30,7 @@ local function random_phrase()
     'INTERGALATIC POWERLIGHT',
     'NANO POWER CONVERTER',
     'SUBSPACE MOLECULE GENERATOR',
-    'INTERDIMENSIONAL HYPERX',
+    'INTERDIMENSIONAL FIFINE',
     'POWER GENETIC TRANSPORTER'
   }
   return random_from_list(phrases)
@@ -47,7 +47,7 @@ local function random_build_phrase()
   }
   suffixes ={
     'HYPERPROCESSOR', 'POWERLIGHT', 'POWER CONVERTER', 'MOLECULE GENERATOR',
-    'HYPERX', 'GENETIC TRANSPORTER', 'ACCELERATOR', 'QUADRATIC ENGINES'
+    'FIFINE', 'GENETIC TRANSPORTER', 'ACCELERATOR', 'QUADRATIC ENGINES'
   }
   return random_from_list(prefixes)..' '..random_from_list(suffixes)
 end
