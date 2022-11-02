@@ -1,10 +1,15 @@
 #!/bin/sh
 
-if [ "$#" = 0 ]; then
-  touchpad_device_name=$(xinput --list --name-only | grep -i "touchpad" | head -n 1) || exit
-else
-  touchpad_device_name="$1"
-fi
+echo To be fair, it is probably better to activate this
+echo at the file /usr/share/X11/xorg.conf.d/40-libinput.conf,
+echo using the Option \"Tapping\" \"on\", and while at that,
+echo probably also put Option \"NaturalScrolling\" \"True\".
 
-printf "Using $touchpad_device_name as the touchpad device's name.\n"
-xinput set-prop "$touchpad_device_name" "libinput Tapping Enabled" 1
+# if [ "$#" = 0 ]; then
+#   touchpad_device_name=$(xinput --list --name-only | grep -i "touchpad" | head -n 1) || exit
+# else
+#   touchpad_device_name="$1"
+# fi
+
+# printf "Using $touchpad_device_name as the touchpad device's name.\n"
+# xinput set-prop "$touchpad_device_name" "libinput Tapping Enabled" 1
