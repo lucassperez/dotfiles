@@ -103,3 +103,8 @@ source ~/.config/nvim/color/html.vim
 " hi NormalFloat guifg=#ffffff guibg=#000000
 " hi NormalFloat guifg=#ffffff guibg=#282c34
 hi NormalFloat guifg=#ffffff guibg=#202124
+
+" Isso tava deixando o arquivo todo vermelho
+" toda vez que tinha algum # erro de sintaxe,
+" tipo wtf? Que porra.
+hi error guibg=none

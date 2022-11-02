@@ -1,5 +1,6 @@
 set termguicolors
 set background=dark
+
 " Normal é o background geral
 hi Normal ctermbg=NONE guibg=NONE
 
@@ -17,7 +18,7 @@ highlight ColorColumn ctermbg=239 guibg=#4e4e4e
 
 " destacar e estilizar a linha atual do cursor
 " highlight CursorLine cterm=NONE ctermbg=0 gui=NONE guibg=#2e3436
-highlight CursorLine cterm=NONE ctermbg=0 gui=NONE guibg=#4e4e4e
+highlight CursorLine cterm=NONE ctermbg=0 gui=NONE guibg=#434d48
 
 " TODO aprender como funciona o showmode, corzinhas etc e tal
 highlight Todo ctermfg=white ctermbg=darkyellow guifg=#d9d9d9 guibg=#808000

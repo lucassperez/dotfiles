@@ -87,7 +87,7 @@ return require('packer').startup(function()
   -- use 'Shatur/neovim-ayu'
   -- use 'folke/tokyonight.nvim'
   -- use 'EdenEast/nightfox.nvim'
-  -- use { "catppuccin/nvim", as = "catppuccin" }
+  use { "catppuccin/nvim", as = "catppuccin" }
   -- use {
   --   'projekt0n/github-nvim-theme',
   --   -- config = function()

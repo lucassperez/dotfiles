@@ -25,7 +25,7 @@ require('plugins.nvim-tree')
 require('plugins.conjure')
 
 -- require('plugins.tokyonight')
--- require('plugins.catppuccin')
+require('plugins.catppuccin')
 
 -- Meus próprios scritpts
 require('helper-scripts.vtr.test')

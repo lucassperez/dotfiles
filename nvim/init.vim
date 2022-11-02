@@ -10,10 +10,9 @@ lua <<EOF
 require('init')
 EOF
 
-source $HOME/.config/nvim/color/perez-cs.vim
+" source $HOME/.config/nvim/color/perez-cs.vim
 " source $HOME/.config/nvim/color/general.vim
 " lua require'colorizer'.setup()
-highlight CursorLine cterm=NONE ctermbg=0 gui=NONE guibg=#434d48
 
 """ Configurações gerais """
 let &titlestring='nvim'
