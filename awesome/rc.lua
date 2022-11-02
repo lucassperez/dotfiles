@@ -62,6 +62,7 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. 'my-theme.lua')
 
 -- This is used later as the default terminal and editor to run.
 terminal = 'alacritty'
+-- terminal = 'kitty'
 floating_terminal='alacritty -t floating-alacritty -o window.opacity=1.0'
 -- Even though my EDITOR env is set to nvim, this does not always work
 -- editor = os.getenv('EDITOR') or 'editor'
@@ -612,18 +613,33 @@ globalkeys = gears.table.join(
   --           { group = 'Launcher', description = 'run prompt', }),
   awful.key({ modkey }, 'd',
             -- function () awful.spawn('dmenu_run -i -h 21 -p "search" -sb "#008080" -nb "#363636"') end,
-            function () awful.spawn('dmenu_run -i -h 21 -p "search" -sb "#008080" -nb "#000000"') end,
+            -- function () awful.spawn('dmenu_run -i -h 21 -p "search" -sb "#008080" -nb "#000000"') end,
+            function () awful.spawn('dmenu_run -i -h 21 -p "search"') end,
             { group = 'Launcher', description = 'run dmenu', }),
   awful.key({ modkey }, 'b',
             function() awful.spawn(browser) end,
             { group = 'Launcher', description = 'open '..browser..' browser', }),
+
+  --[[
+    Explanation: When using tmux inside alacritty, I don't know why, but the
+    numpad enter was producing something different (on Debian it worked as
+    intented, though), which means I could not use it as enter to confirm
+    things, for example. So what I did is that I used ~/.Xmodmap to map the key
+    #104 (numpad enter) to Return, the same code as the key #36 (regular enter).
+    After doing this, pressing the combination "modkey + numpad enter" triggered
+    both "modkey+#104" and "modkey+Return" mappings, and then two terminals were
+    opened. Thus, I removed the "modkey+#104" keymap and left only the Return,
+    since now it works with numpad enter, because the latter now produces Return
+    on my computer
+  ]]
   awful.key({ modkey }, 'Return',
             function () awful.spawn(terminal) end,
             { group = 'Launcher', description = 'open '..terminal..' terminal',  }),
   -- The key #104 is the numpad enter
-  awful.key({ modkey }, '#104',
-            function () awful.spawn(terminal) end,
-            { group = 'Launcher', description = '(numpad enter) open '..terminal..' terminal',  }),
+  -- awful.key({ modkey }, '#104',
+  --           function () awful.spawn(terminal) end,
+  --           { group = 'Launcher', description = '(numpad enter) open '..terminal..' terminal',  }),
+
   awful.key({ modkey, control }, 'Return',
             function () awful.spawn(floating_terminal) end,
             { group = 'Launcher', description = 'open floating '..terminal..' terminal',  }),
@@ -919,9 +935,10 @@ local function should_show_titlebars(c)
   if c.class == 'Zoom - Free Account' then return true end
   if c.name == 'zoom' then return true end
   if c.class == 'zoom' then return true end
-  if c.name == 'floating-alacritty' then return true end
+  if c.name == 'floating-alacritty' and c.floating then return true end
   if c.class == 'Alacritty' then return false end
   if c.class == 'Steam' then return false end
+  if c.class == 'Evince' then return false end
   if type(c.class) ~= 'string' or type(c.name) ~= 'string' then return false end
 
   if string.match(c.class, "^[Gg]nome-%w*") or
