@@ -37,9 +37,6 @@ require('telescope').load_extension('fzf')
 local telescope_builtin = require('telescope.builtin')
 
 function telescopeGitOrFindFiles(opts)
-  -- local is_git = require('telescope.utils').get_os_command_output({'git', 'rev-parse', '--git-dir'})[1]
-  -- if is_git then
-
   local code = os.execute('git rev-parse --git-dir 2>/dev/null 1>&2')
   if code == 0 then
     telescope_builtin.git_files(opts)
@@ -47,3 +44,9 @@ function telescopeGitOrFindFiles(opts)
     telescope_builtin.find_files(opts)
   end
 end
+
+-- https://github.com/jchilders/dotfiles/blob/main/xdg_config/nvim/lua/core/highlights.lua
+-- vim.cmd("autocmd ColorScheme * highlight TelescopeBorder         guifg=#3e4451")
+-- vim.cmd("autocmd ColorScheme * highlight TelescopePromptBorder   guifg=#3e4451")
+-- vim.cmd("autocmd ColorScheme * highlight TelescopeResultsBorder  guifg=#3e4451")
+-- vim.cmd("autocmd ColorScheme * highlight TelescopePreviewBorder  guifg=#525865")
