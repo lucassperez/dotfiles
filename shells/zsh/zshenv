@@ -1,23 +1,31 @@
 # vim: ft=sh
 
-# passwdshell=`grep $USER /etc/passwd | sed 's/.*:\(.*\)$/\1/'`
-# export SHELL=${passwdshell:-$SHELL}
-
 prepend_to_PATH() {
   # If no path is given, returns
   if [ -z $1 ]; then
     return 1
   fi
 
-  # If given path is already in PATH, returns
-  if echo $PATH | grep -q $1; then
+  # Can only prepend directories
+  if ! [ -d $1 ]; then
     return 2
   fi
 
-  # Can only prepend directories
-  if ! [ -d $1 ]; then
-    return 3
-  fi
+  # # If given path is already in PATH, returns
+  # if echo $PATH | grep -q $1; then
+  #   # If given path is a substring of something
+  #   # already in PATH, then this will give a false
+  #   # positive, and the given path will not be added,
+  #   # even though it is not already in PATH... ):
+  #   return 3
+  # fi
+
+  # To avoid false positives, every time this function
+  # is called, it iterates over every path in PATH and
+  # checks if given path is equals to any of them or not.
+  for path in `echo $PATH | tr ':' '\n'`; do
+    [ $1 = $p ] && exit 3
+  done
 
   PATH="$1:$PATH"
 }
