@@ -643,9 +643,9 @@ globalkeys = gears.table.join(
   awful.key({ modkey, control }, 'Return',
             function () awful.spawn(floating_terminal) end,
             { group = 'Launcher', description = 'open floating '..terminal..' terminal',  }),
-  awful.key({ modkey, control }, '#104',
-            function () awful.spawn(floating_terminal) end,
-            { group = 'Launcher', description = '(numpad enter) open floating '..terminal..' terminal',  }),
+  -- awful.key({ modkey, control }, '#104',
+  --           function () awful.spawn(floating_terminal) end,
+  --           { group = 'Launcher', description = '(numpad enter) open floating '..terminal..' terminal',  }),
 
   awful.key({}, 'Print',
             function() awful.spawn('flameshot screen -c') end,
