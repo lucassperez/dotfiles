@@ -23,6 +23,8 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 
+export LESSHISTFILE="$XDG_CACHE_HOME/lesshst"
+
 if [ "$0" = "/etc/gdm3/Xsession" -a "$DESKTOP_SESSION" = "i3" ]; then
     export $(gnome-keyring-daemon -s)
 fi
@@ -30,7 +32,7 @@ fi
 # if [ "$0" = "/etc/gdm3/Xsession" -a "$DESKTOP_SESSION" = "awesome" ]; then
 if [ "$DESKTOP_SESSION" = "awesome" ]; then
     export $(gnome-keyring-daemon -s)
-    awesome-client 'require("widgets.simple.turbo"):update_brightness_microphone_and_volume_icons()'
+    /bin/env sh -c "sleep 3 && awesome-client 'require("widgets.simple.turbo"):update_brightness_microphone_and_volume_icons()'" &
 fi
 
 # Alterei no driver em /usr/share/X11/xorg.conf.d/40-libinput.conf
