@@ -1,41 +1,62 @@
 diff --git a/lua/bufferline/buffer.lua b/lua/bufferline/buffer.lua
-index 6fd809f..8abec16 100644
+index 4c9ab16..34c6da4 100644
 --- a/lua/bufferline/buffer.lua
 +++ b/lua/bufferline/buffer.lua
-@@ -43,7 +43,7 @@ local function get_name(opts, number)
-   --- @type nil|string
-   local name = buf_is_valid(number) and buf_get_name(number) or nil
+@@ -61,7 +61,7 @@ return {
+     local no_name_title = options.no_name_title()
+     local maximum_length = options.maximum_length()
  
--  if name then
-+  if name and name ~= '' then
-     name = buf_get_option(number, 'buftype') == 'terminal' and terminalname(name) or utils.basename(name)
-   elseif opts.no_name_title ~= nil and opts.no_name_title ~= vim.NIL then
-     name = opts.no_name_title
+-    if name then
++    if name and name ~= '' then
+       name = buf_get_option(bufnr, 'buftype') == 'terminal' and terminalname(name) or utils.basename(name)
+     elseif no_name_title ~= nil and no_name_title ~= vim.NIL then
+       name = no_name_title
 diff --git a/lua/bufferline/layout.lua b/lua/bufferline/layout.lua
-index 22b542b..2ef135c 100644
+index 9982d42..994dd5d 100644
 --- a/lua/bufferline/layout.lua
 +++ b/lua/bufferline/layout.lua
-@@ -62,8 +62,8 @@ local function calculate_buffers_width(state, base_width)
-              or opts.icon_close_tab_modified)
+@@ -63,23 +63,23 @@ function Layout.calculate_buffer_width(bufnr, index, use_buffer_index, use_file_
+   if buffer_data.closing then
+     width = buffer_data.real_width
+   else
+-    width = strwidth(buffer_name) + 1 + -- name + space after name
++    width = strwidth(buffer_name) + -- 1 + -- name + space after name
+       strwidth(options['icon_separator_' .. (Buffer.get_activity(bufnr) > 1 and '' or 'in') .. 'active']()) -- separator
  
-         width = width
--          + strwidth(icon)
--          + 1 -- space-after-close-icon
-+          + strwidth(icon or '')
-+          -- + 1 -- space-after-close-icon
-       end
+     if use_buffer_index then
+-      width = width + #tostring(index) + 1 -- buffer-index + space after buffer-index
++      width = width + #tostring(index) -- + 1 -- buffer-index + space after buffer-index
      end
-     sum = sum + width
+ 
+     if use_file_icon then
+       local file_icon = icons.get_icon(buf_get_name(bufnr), buf_get_option(bufnr, 'filetype'), '')
+-      width = width + strwidth(file_icon) + 1 -- icon + space after icon
++      width = width + strwidth(file_icon) -- + 1 -- icon + space after icon
+     end
+ 
+     local is_pinned = state.is_pinned(bufnr)
+     if options.closable() or is_pinned then
+       width = width + strwidth(is_pinned and options.icon_pinned() or (
+         buf_get_option(bufnr, 'modified') and options.icon_close_tab_modified() or options.icon_close_tab()
+-      )) + 1 -- pin-icon + space after pin-icon
++      )) -- + 1 -- pin-icon + space after pin-icon
+     end
+   end
+ 
 diff --git a/lua/bufferline/render.lua b/lua/bufferline/render.lua
-index 42a4fb1..eeb7a6e 100644
+index f63338a..32db0c1 100644
 --- a/lua/bufferline/render.lua
 +++ b/lua/bufferline/render.lua
-@@ -323,7 +323,7 @@ local function render(update_names)
-         {jumpLetterPrefix,   jumpLetter},
-         {clickable .. namePrefix,         name},
-         {'',                 padding},
--        {'',                 ' '},
-+--        {'',                 ' '},
-         {closePrefix,        close},
+@@ -855,8 +855,10 @@ local function generate_tabline(bufnrs, refocus)
+         {hl = clickable .. iconPrefix,      text = icon},
+         {hl = jumpLetterPrefix,             text = jumpLetter},
+         {hl = clickable .. namePrefix,      text = name},
+-        {hl = '',                           text = padding},
+-        {hl = '',                           text = ' '},
++        -- {hl = '',                           text = padding},
++        {hl = '',                           text = ''},
++        -- {hl = '',                           text = ' '},
++        {hl = '',                           text = ''},
+         {hl = closePrefix,                  text = close},
        }
      }
