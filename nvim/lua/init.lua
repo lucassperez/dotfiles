@@ -1,3 +1,9 @@
+-- Useful to print tables
+function P(value)
+  print(vim.inspect(value))
+  return value
+end
+
 -- https://vonheikemen.github.io/devlog/tools/configuring-neovim-using-lua/
 
 -- Sobre as cores:
@@ -36,9 +42,3 @@ require('helper-scripts.vtr.send-line-to-tmux')
 require('helper-scripts.vtr.compile-file')
 require('helper-scripts.togglebetweentestandfile')
 require('helper-scripts.write-debugger-breakpoint')
-
--- Useful to print tables
-function P(value)
-  print(vim.inspect(value))
-  return value
-end
