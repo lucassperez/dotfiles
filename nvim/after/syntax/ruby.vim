@@ -1,7 +1,7 @@
 " " Alterando as cores dos grupos definidos em
 " " https://github.com/vim-ruby/vim-ruby
 " " O vim-polyglot carrega esses grupos aí
-" " Lucas Perez, janeiro de 2020
+" " Lucas Perez, janeiro de 2021
 " """"""""""""""""""""""""""""""""""""""""""""
 " " Alterado linha 453 no grupo rubyKeywordAsMethod, remover "transparent"
 " """"""""""""""""""""""""""""""""""""""""""""

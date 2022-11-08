@@ -1,7 +1,7 @@
 " " Alterando as cores dos grupos definidos em
 " " https://github.com/pangloss/vim-javascript
 " " O vim-polyglot carrega esse de cima!
-" " Lucas Perez, janeiro de 2020
+" " Lucas Perez, janeiro de 2021
 " """"""""""""""""""""""""""""""""""""""""""""
 "
 " " import, export, "module" as, from, *

@@ -1,7 +1,7 @@
 " " Utilizando os grupos definidos aqui:
 " " https://github.com/MaxMEllon/vim-jsx-pretty
 " " O vim-polyglot usa esses grupos, também
-" " Lucas Perez, janeiro de 2020
+" " Lucas Perez, janeiro de 2021
 " """"""""""""""""""""""""""""""""""""""""""""
 "
 " " Tag name são as tags normaizinhas tipo html, por exemplo:
