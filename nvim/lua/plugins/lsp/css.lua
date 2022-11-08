@@ -27,7 +27,7 @@ require('lspconfig').cssls.setup({
 
 -- require('lspconfig').cssmodules_ls.setup({
 --   on_attach = function(client, bufnr)
---     client.resolved_capabilities.goto_definition = false
+--     client.server_capabilities.goto_definition = false
 --     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', ':lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true, })
 --   end,
 --   filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'scss' }

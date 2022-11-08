@@ -2,6 +2,7 @@
 
 -- npm i -g typescript-language-server
 -- Também tem que ter o próprio typescript instalado, tipo com npm i -g typescript
+-- Também deveria instalar o eslint_d com npm i -g eslint_d
 
 local lspconfig = require('lspconfig')
 
@@ -28,13 +29,18 @@ local on_attach = function(client, bufnr)
 
   -- vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.format()')
 
+  -- Fica feio, porque a quickfix vem junto com o nome dos arquivos, e daí
+  -- não dá pra ler o nome dos arquivos. Mas eu adoraria conseguir usar o
+  -- telescope pra isso.
+  -- map('n', [[\r]], ':lua require("telescope.builtin").lsp_references()<CR>', map_opts)
+
   vim.api.nvim_set_current_dir(client.config.root_dir)
 end
 
 lspconfig.tsserver.setup({
   on_attach = function(client, bufnr)
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
+    client.server_capabilities.document_formatting = false
+    client.server_capabilities.document_range_formatting = false
 
     local ts_utils = require('nvim-lsp-ts-utils')
     ts_utils.setup({
