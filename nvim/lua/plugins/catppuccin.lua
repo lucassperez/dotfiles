@@ -48,12 +48,13 @@ require('catppuccin').setup({
       CursorLineNr = { fg = '#e2e209' },
       SignColumn   = { fg = '#a8a8a8' },
       LineNr       = { fg = '#8a8a8a' },
-      Comment      = { fg = '#8a8a8a' },
+      Comment      = { fg = '#aaaaaa' },
       NonText      = { fg = '#729ecb',  style = { 'bold' } },
       VertSplit    = { fg = 'NONE',     style = { 'reverse' } },
       StatusLine   = { fg = 'NONE',     style = { 'bold', 'reverse' } },
       StatusLineNC = { fg = 'NONE',     style = { 'reverse' } },
       MoreMsg      = { fg = 'SeaGreen', style = { 'bold' } },
+      MatchParen   = { fg = '#87ff00',   style = { 'bold' } },
     }
   end,
 })
@@ -70,7 +71,8 @@ match CustomTrailingWhiteSpaces /\s\+$/
 hi link CustomTrailingWhiteSpaces NonText
 " Serring ['@parameter'] = { style = {} } would clear
 " everything else and leave it without colors
-hi @parameter gui=NONE
+hi @parameter gui=NONE cterm=NONE
+hi @namespace gui=NONE cterm=NONE
 ]])
 
 --[[
