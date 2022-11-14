@@ -1,9 +1,9 @@
 require('nvim-treesitter.configs').setup({
-  -- ensure_installed can be "all" or a list of languages { "python", "javascript" }
+  -- ensure_installed can be 'all' or a list of languages { 'python', 'javascript' }
   ensure_installed = {'lua', 'bash', 'javascript', 'ruby', 'go', 'java', 'clojure'},
 
   highlight = { -- enable highlighting for all file types
-    enable = true, -- you can also use a table with list of langs here (e.g. { "python", "javascript" })
+    enable = true, -- you can also use a table with list of langs here (e.g. { 'python', 'javascript' })
     disable = {'vue'},
     custom_captures = {
       ['heredoc_content'] = 'TSComment',
@@ -11,8 +11,7 @@ require('nvim-treesitter.configs').setup({
   },
   indent = {
     -- Funcionalidade experimental!
-    -- enable = false,
-    enable = true,
+    enable = false,
   },
   incremental_selection = {
     enable = true,
@@ -37,7 +36,7 @@ require('nvim-treesitter.configs').setup({
       focus_language = 'f',
       unfocus_language = 'F',
       update = 'R',
-      goto_node = '<cr>',
+      goto_node = '<CR>',
       show_help = '?',
     },
   },
@@ -60,8 +59,8 @@ require('nvim-treesitter.configs').setup({
       end,
     extended_mode = true,
     max_file_lines = 1000,
-    termcolors = {'209','40','170','220','208','205'},
-    -- colors = {'#ff875f', '#00d700', '#d75fd7', '#ffd700', '#ff8700', '#ff5faf'}
+    termcolors = {'209','40','170','220','208','205', },
+    -- colors = {'#ff875f', '#00d700', '#d75fd7', '#ffd700', '#ff8700', '#ff5faf', }
     colors = {'#ff875f', '#00d700', '#d75fd7', '#ffd700', }
   },
   textobjects = {
@@ -93,11 +92,23 @@ require('nvim-treesitter.configs').setup({
     },
     swap = {
       enable = true,
-      swap_next = {
-        [']a'] = '@parameter.inner',
-      },
-      swap_previous = {
-        ['[a'] = '@parameter.inner',
+      swap_next = { [']a'] = '@parameter.inner', },
+      swap_previous = { ['[a'] = '@parameter.inner', },
+    },
+    move = {
+      enable = true,
+      set_jumps = true,
+      goto_next_start = { [']f'] = '@function.outer', },
+      goto_next_end = { [']F'] = '@function.outer', },
+      goto_previous_start = { ['[f'] = '@function.outer', },
+      goto_previous_end = { ['[F'] = '@function.outer', },
+    },
+    lsp_interop = {
+      enable = true,
+      border = 'none',
+      peek_definition_code = { -- This is interesting when you don't want to go to definition, I guess
+        ['\\pk'] = '@function.outer',
+        ['\\pK'] = '@class.outer',
       },
     },
   },

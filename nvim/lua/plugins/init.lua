@@ -49,10 +49,7 @@ return require('packer').startup(function()
   use 'neovim/nvim-lspconfig'
   use 'jose-elias-alvarez/null-ls.nvim'
   use 'jose-elias-alvarez/nvim-lsp-ts-utils'
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = 'TSUpdate',
-  }
+  use { 'nvim-treesitter/nvim-treesitter', run = 'TSUpdate', }
   use 'nvim-treesitter/nvim-treesitter-textobjects'
   use 'nvim-treesitter/playground'
   use 'folke/lsp-colors.nvim'
@@ -87,14 +84,13 @@ return require('packer').startup(function()
   -- use 'Shatur/neovim-ayu'
   -- use 'folke/tokyonight.nvim'
   -- use 'EdenEast/nightfox.nvim'
-  use { "catppuccin/nvim", as = "catppuccin" }
+  use { 'catppuccin/nvim', as = 'catppuccin', }
   -- use {
   --   'projekt0n/github-nvim-theme',
   --   -- config = function()
   --   --   require('github-theme').setup({})
   --   -- end
   -- }
-
 
   if packer_bootstrap then
     require('packer').sync()
