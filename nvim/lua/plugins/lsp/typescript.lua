@@ -19,7 +19,8 @@ local on_attach = function(client, bufnr)
   map('n', [[\k]], ':lua vim.lsp.buf.hover()<CR>', map_opts)
   -- map('n', [[\K]], ':lua vim.lsp.buf.signature_help()<CR>', map_opts)
   map('n', [[\n]], ':lua vim.lsp.buf.rename()<CR>', map_opts)
-  map('n', [[\r]], ':lua vim.lsp.buf.references()<CR>', map_opts)
+  -- map('n', [[\r]], ':lua vim.lsp.buf.references()<CR>', map_opts)
+  map('n', [[\r]], ":lua require('telescope.builtin').lsp_references()<CR>", map_opts)
   map('n', '[d',   ':lua vim.diagnostic.goto_prev()<CR>', map_opts)
   map('n', ']d',   ':lua vim.diagnostic.goto_next()<CR>', map_opts)
   map('n', [[\d]], ':lua vim.diagnostic.open_float()<CR>', map_opts)
@@ -28,11 +29,6 @@ local on_attach = function(client, bufnr)
   map('n', [[\I]], ':lua vim.lsp.buf.implementation()<CR>', map_opts)
 
   -- vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.format()')
-
-  -- Fica feio, porque a quickfix vem junto com o nome dos arquivos, e daí
-  -- não dá pra ler o nome dos arquivos. Mas eu adoraria conseguir usar o
-  -- telescope pra isso.
-  -- map('n', [[\r]], ':lua require("telescope.builtin").lsp_references()<CR>', map_opts)
 
   local root_dir = client.config.root_dir
   if root_dir then vim.api.nvim_set_current_dir(root_dir) end

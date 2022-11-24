@@ -8,6 +8,9 @@ vim.api.nvim_set_keymap('n', '<leader>zv', ':Telescope find_files cwd=/home/luca
 -- You dont need to set any of these options. These are the default ones. Only
 -- the loading is important
 require('telescope').setup {
+  pickers = {
+    lsp_references = { show_line = false },
+  },
   defaults = {
     layout_config = {
       vertical = { width = 0.99, height = 0.80 },
