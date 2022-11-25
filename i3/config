@@ -123,7 +123,7 @@ exec sh ~/scripts/disable-keyboard.sh
 # exec sh ~/scripts/disable-touchpad.sh
 
 # Wallpaper
-exec sh ~/scripts/setwallpaper.sh ~/Pictures/wallpapers/wall.jpg
+exec sh ~/scripts/setwallpaper.sh ~/Pictures/wallpapers/wall
 
 ################
 ## Sytem "Numbers" (?) Need a better name

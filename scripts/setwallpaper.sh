@@ -7,4 +7,4 @@ which xwallpaper 2>/dev/null 1>&2 || exit
 
 [ "$@" ] && [ -f "$@" ] && \
   xwallpaper --zoom "$@" || \
-  xwallpaper --zoom "$HOME/Pictures/wallpapers/wall.jpg"
+  xwallpaper --zoom "$HOME/Pictures/wallpapers/wall"
