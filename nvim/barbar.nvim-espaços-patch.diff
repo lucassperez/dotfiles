@@ -1,21 +1,21 @@
 diff --git a/lua/bufferline/buffer.lua b/lua/bufferline/buffer.lua
-index 4c9ab16..34c6da4 100644
+index 901875c..3ee3fb3 100644
 --- a/lua/bufferline/buffer.lua
 +++ b/lua/bufferline/buffer.lua
-@@ -61,7 +61,7 @@ return {
+@@ -62,7 +62,7 @@ return {
      local no_name_title = options.no_name_title()
      local maximum_length = options.maximum_length()
  
 -    if name then
 +    if name and name ~= '' then
-       name = buf_get_option(bufnr, 'buftype') == 'terminal' and terminalname(name) or utils.basename(name)
+       name = buf_get_option(bufnr, 'buftype') == 'terminal' and terminalname(name) or utils.basename(name, hide_extensions)
      elseif no_name_title ~= nil and no_name_title ~= vim.NIL then
        name = no_name_title
 diff --git a/lua/bufferline/layout.lua b/lua/bufferline/layout.lua
-index 9982d42..994dd5d 100644
+index 21e0b4a..c42d042 100644
 --- a/lua/bufferline/layout.lua
 +++ b/lua/bufferline/layout.lua
-@@ -63,23 +63,23 @@ function Layout.calculate_buffer_width(bufnr, index, use_buffer_index, use_file_
+@@ -62,23 +62,23 @@ function Layout.calculate_buffer_width(bufnr, index, use_buffer_index, use_file_
    if buffer_data.closing then
      width = buffer_data.real_width
    else
@@ -29,7 +29,7 @@ index 9982d42..994dd5d 100644
      end
  
      if use_file_icon then
-       local file_icon = icons.get_icon(buf_get_name(bufnr), buf_get_option(bufnr, 'filetype'), '')
+       local file_icon = icons.get_icon(bufnr, '')
 -      width = width + strwidth(file_icon) + 1 -- icon + space after icon
 +      width = width + strwidth(file_icon) -- + 1 -- icon + space after icon
      end
@@ -44,17 +44,16 @@ index 9982d42..994dd5d 100644
    end
  
 diff --git a/lua/bufferline/render.lua b/lua/bufferline/render.lua
-index f63338a..32db0c1 100644
+index 3ff3ed6..ae83830 100644
 --- a/lua/bufferline/render.lua
 +++ b/lua/bufferline/render.lua
-@@ -855,8 +855,10 @@ local function generate_tabline(bufnrs, refocus)
+@@ -855,8 +855,9 @@ local function generate_tabline(bufnrs, refocus)
          {hl = clickable .. iconPrefix,      text = icon},
          {hl = jumpLetterPrefix,             text = jumpLetter},
          {hl = clickable .. namePrefix,      text = name},
 -        {hl = '',                           text = padding},
 -        {hl = '',                           text = ' '},
 +        -- {hl = '',                           text = padding},
-+        {hl = '',                           text = ''},
 +        -- {hl = '',                           text = ' '},
 +        {hl = '',                           text = ''},
          {hl = closePrefix,                  text = close},
