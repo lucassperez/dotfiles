@@ -36,6 +36,16 @@ local function clojureFunction()
   return result
 end
 
+function rubyFunction()
+  local filename = vim.fn.expand('%')
+  if filename:match('spec.*_spec.rb$') then
+    result = filename:gsub('^spec/(.*)_spec.rb$', 'app/%1.rb')
+  else
+    result = filename:gsub('^app/(.*).rb$', 'spec/%1_spec.rb')
+  end
+  return result
+end
+
 -- function rubyFunction()
 --   Rails projects usually don't have such a predictable and silly folder
 --   structures as a mix/phoenix project, so this does not actually work unless
