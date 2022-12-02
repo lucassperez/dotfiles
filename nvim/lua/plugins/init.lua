@@ -4,15 +4,25 @@ if fn.empty(fn.glob(install_path)) > 0 then
   packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
 
-vim.cmd('let g:sexp_enable_insert_mode_mappings = 0')
+local status, packer = pcall(require, 'packer')
+if not status then
+  return
+end
 
-return require('packer').startup(function()
+vim.cmd("let g:sexp_enable_insert_mode_mappings = 0")
+
+return packer.startup(function()
   use 'wbthomason/packer.nvim'
+
+  if packer_bootstrap then
+    require('packer').sync()
+  end
+
   -- use 'lewis6991/impatient.nvim'
 
   -- Clojure things
-  use { 'Olical/conjure', ft = { 'clojure' }, }
-  use { 'guns/vim-sexp', ft = { 'clojure' }, }
+  -- use { 'Olical/conjure', ft = { 'clojure' }, }
+  -- use { 'guns/vim-sexp', ft = { 'clojure' }, }
 
   -- Telescope
   use {
@@ -70,6 +80,7 @@ return require('packer').startup(function()
   -- Ajudinha visual
   use 'hoob3rt/lualine.nvim'
   use 'romgrk/barbar.nvim'
+  -- use { 'romgrk/barbar.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }
   -- This one is crashing vim when too many buffers are opened and I try to change buffer
   -- use 'jose-elias-alvarez/buftabline.nvim'
   use 'p00f/nvim-ts-rainbow'
@@ -91,8 +102,4 @@ return require('packer').startup(function()
   --   --   require('github-theme').setup({})
   --   -- end
   -- }
-
-  if packer_bootstrap then
-    require('packer').sync()
-  end
 end)

@@ -41,6 +41,9 @@ local function save_profiles(threshold)
       results[i] = elem[1] .. ' took ' .. elem[2] .. 'ms'
     end
   end
+  if threshold then
+    table.insert(results, '(Only showing plugins that took longer than ' .. threshold .. ' ms ' .. 'to load)')
+  end
 
   _G._packer.profile_output = results
 end
@@ -91,6 +94,11 @@ _G.packer_plugins = {
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/barbar.nvim",
     url = "https://github.com/romgrk/barbar.nvim"
   },
+  catppuccin = {
+    loaded = true,
+    path = "/home/lucas/.local/share/nvim/site/pack/packer/start/catppuccin",
+    url = "https://github.com/catppuccin/nvim"
+  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/cmp-buffer",
@@ -115,13 +123,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/colorbuddy.nvim",
     url = "https://github.com/tjdevries/colorbuddy.nvim"
-  },
-  conjure = {
-    loaded = false,
-    needs_bufread = false,
-    only_cond = false,
-    path = "/home/lucas/.local/share/nvim/site/pack/packer/opt/conjure",
-    url = "https://github.com/Olical/conjure"
   },
   ["emmet-vim"] = {
     loaded = true,
@@ -263,13 +264,6 @@ _G.packer_plugins = {
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/vim-ragtag",
     url = "https://github.com/tpope/vim-ragtag"
   },
-  ["vim-sexp"] = {
-    loaded = false,
-    needs_bufread = false,
-    only_cond = false,
-    path = "/home/lucas/.local/share/nvim/site/pack/packer/opt/vim-sexp",
-    url = "https://github.com/guns/vim-sexp"
-  },
   ["vim-textobj-elixir"] = {
     loaded = true,
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/vim-textobj-elixir",
@@ -298,13 +292,6 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
-vim.cmd [[augroup packer_load_aucmds]]
-vim.cmd [[au!]]
-  -- Filetype lazy-loads
-time([[Defining lazy-load filetype autocommands]], true)
-vim.cmd [[au FileType clojure ++once lua require("packer.load")({'conjure', 'vim-sexp'}, { ft = "clojure" }, _G.packer_plugins)]]
-time([[Defining lazy-load filetype autocommands]], false)
-vim.cmd("augroup END")
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then

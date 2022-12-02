@@ -80,7 +80,7 @@ vim.cmd [[
 ]]
 -- o.formatoptions = 'jql'
 -- https://www.reddit.com/r/neovim/comments/ppv7vr/comment/hd7v2ol/?utm_source=share&utm_medium=web2x&context=3
-vim.opt.undodir = vim.fn.stdpath('config')..'/undodir'
+opt.undodir = vim.fn.stdpath('config')..'/undodir'
 o.undofile = true -- arquivo para poder dar undo no diretório acima
 opt.complete:remove('i') -- https://medium.com/usevim/set-complete-e76b9f196f0f
 
