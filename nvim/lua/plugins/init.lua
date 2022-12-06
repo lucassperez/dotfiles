@@ -1,3 +1,5 @@
+vim.cmd("let g:sexp_enable_insert_mode_mappings = 0")
+
 local fn = vim.fn
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
@@ -9,7 +11,9 @@ if not status then
   return
 end
 
-vim.cmd("let g:sexp_enable_insert_mode_mappings = 0")
+packer.init({
+  compile_path = vim.fn.stdpath('config')..'/packer/packer_compiled.lua',
+})
 
 return packer.startup(function()
   use 'wbthomason/packer.nvim'
