@@ -1,4 +1,5 @@
-vim.cmd("let g:sexp_enable_insert_mode_mappings = 0")
+local s = 'let g:sexp_enable_insert_mode_mappings = 0'
+vim.cmd(s)
 
 local fn = vim.fn
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
@@ -21,8 +22,6 @@ return packer.startup(function()
   if packer_bootstrap then
     require('packer').sync()
   end
-
-  -- use 'lewis6991/impatient.nvim'
 
   -- Clojure things
   -- use { 'Olical/conjure', ft = { 'clojure' }, }
@@ -47,14 +46,10 @@ return packer.startup(function()
   use 'tpope/vim-ragtag'
   use 'numToStr/Comment.nvim'
   use 'mattn/emmet-vim'
-  use 'tpope/vim-fugitive'
   use 'antoinemadec/FixCursorHold.nvim'
   vim.g.cursorhold_updatetime = 100
   use 'kyazdani42/nvim-tree.lua'
   use 'airblade/vim-gitgutter'
-  use 'kana/vim-textobj-user'
-  use 'nelstrom/vim-textobj-rubyblock'
-  use 'andyl/vim-textobj-elixir'
   use 'alvan/vim-closetag'
   use 'JoosepAlviste/nvim-ts-context-commentstring'
   use 'nvim-lua/plenary.nvim'
@@ -66,7 +61,7 @@ return packer.startup(function()
   use { 'nvim-treesitter/nvim-treesitter', run = 'TSUpdate', }
   use 'nvim-treesitter/nvim-treesitter-textobjects'
   use 'nvim-treesitter/playground'
-  use 'folke/lsp-colors.nvim'
+  -- use 'folke/lsp-colors.nvim'
 
   use 'hrsh7th/nvim-cmp'
   use 'hrsh7th/cmp-path'
@@ -78,16 +73,11 @@ return packer.startup(function()
 
   use 'onsails/lspkind-nvim'
 
-  -- Marcadores de sintaxe
-  use 'elixir-editors/vim-elixir'
-
   -- Ajudinha visual
   use 'hoob3rt/lualine.nvim'
   use 'romgrk/barbar.nvim'
   -- use { 'romgrk/barbar.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }
-  -- This one is crashing vim when too many buffers are opened and I try to change buffer
-  -- use 'jose-elias-alvarez/buftabline.nvim'
-  use 'p00f/nvim-ts-rainbow'
+  -- use 'p00f/nvim-ts-rainbow'
 
   -- Coisas que tem a ver com cores e visual
   use 'rktjmp/lush.nvim'
