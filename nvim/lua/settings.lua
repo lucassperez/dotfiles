@@ -20,6 +20,8 @@ o.mouse = 'a' -- habilita o mouse (a significa all). Sacrilégio!
 o.wildignore = '**/node_modules/**' -- porque né, ninguém merece esse treco gigante
 o.wildignorecase = true -- auto complete case insensitive
 
+o.virtualedit = 'block'
+
 -- Novas splits não derretem meu cérebro quando criadas
 o.splitbelow = true
 o.splitright = true
