@@ -212,6 +212,7 @@ local docker_widget = require('widgets.simple.docker')
 local notification_widget = require('widgets.simple.notification')
 local datetime_widget = require('widgets.simple.datetime')
 local memory_widget = require('widgets.simple.memory')
+local screen_temperature = require('widgets.sct')()
 
 -- require('awesomewm-vim-tmux-navigator')({
 --   left  = {'h'},
@@ -330,6 +331,7 @@ awful.screen.connect_for_each_screen(
                           docker_widget,
         separator_widget, notification_widget,
         separator_widget, memory_widget,
+        separator_widget, screen_temperature.widget,
         separator_widget, bright_widget,
         separator_widget, microphone_widget,
         separator_widget, volume_widget,
