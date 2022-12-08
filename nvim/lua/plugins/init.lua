@@ -23,6 +23,8 @@ return packer.startup(function()
     require('packer').sync()
   end
 
+  use 'elixir-editors/vim-elixir'
+
   -- Clojure things
   -- use { 'Olical/conjure', ft = { 'clojure' }, }
   -- use { 'guns/vim-sexp', ft = { 'clojure' }, }
