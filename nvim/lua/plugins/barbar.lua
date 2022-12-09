@@ -1,15 +1,4 @@
--- apagar depois
 vim.api.nvim_set_keymap('n', '<C-q>', ':wqa!<CR>', { noremap = true, silent = false })
-local t = true
-local f = false
-local opt_closable = t
-local opt_modficon = t
-local icon_close = ''
-local icon_modif = '[+]'
--- local opt_sep_active = '▎'
--- local opt_sep_inacti = '▎'
-local opt_sep_active = ''
-local opt_sep_inacti = ''
 
 vim.api.nvim_set_keymap('n', '<leader>q', ':BufferPrevious<CR>', { noremap = true, silent = false })
 vim.api.nvim_set_keymap('n', '<leader>w', ':BufferNext<CR>', { noremap = true, silent = false })
@@ -25,6 +14,7 @@ vim.api.nvim_set_keymap('n', '<A-W>', ':BufferMoveNext<CR>', { noremap = true, s
 vim.api.nvim_set_keymap('n', '<A-D>', ':BufferClose<CR>', { noremap = true, silent = false })
 
 require('bufferline').setup({
+  -- Enable/disable animations
   animation = false,
 
   -- Enable/disable auto-hiding the tab bar when there is a single buffer
@@ -34,18 +24,25 @@ require('bufferline').setup({
   tabpages = true,
 
   -- Enable/disable close button
-  closable = opt_closable,
-  -- Funcionando mais ou menos na minha branch...
-  -- Enable/disable modified icon
-  always_show_modified = opt_modficon,
+  closable = true,
 
   -- left-click: go to buffer
   -- middle-click: delete buffer
   clickable = true,
 
+  diagnostics = {
+    [vim.diagnostic.severity.ERROR] = { enabled = true, icon = 'ﬀ' },
+    [vim.diagnostic.severity.WARN]  = { enabled = false },
+    [vim.diagnostic.severity.INFO]  = { enabled = false },
+    [vim.diagnostic.severity.HINT]  = { enabled = true },
+  },
+
   -- Excludes buffers from the tabline
   -- exclude_ft = {'javascript'},
   -- exclude_name = {'package.json'},
+
+  -- Hide inactive buffers and file extensions. Other options are `current` and `visible`
+  -- hide = { extensions = true, inactive = true },
 
   -- Enable/disable icons
   -- if set to 'numbers', will show buffer index in the tabline
@@ -64,23 +61,20 @@ require('bufferline').setup({
   -- Configure icons on the bufferline.
   -- icon_separator_active = '▎',
   -- icon_separator_inactive = '▎',
-  -- icon_separator_active = ' ',
-  -- icon_separator_inactive = ' ',
-  icon_separator_active = opt_sep_active,
-  icon_separator_inactive = opt_sep_inacti,
+  icon_separator_active = ' ',
+  icon_separator_inactive = ' ',
   -- This makes the close tab button "invisible", but if you click right at the
   -- end of the filename, the buffer gets closed, because the button is there
-  icon_close_tab = icon_close,
-  -- icon_close_tab = '',
-  icon_close_tab_modified = icon_modif,
+  icon_close_tab = '',
+  icon_close_tab_modified = '[+]',
   icon_pinned = ' 車',
 
   -- If true, new buffers will be inserted at the start/end of the list.
-  -- Default is to insert after current buffer.
+  -- Default is to insert after current buffer (both set to false).
   insert_at_end = true,
   insert_at_start = false,
 
-  -- Sets the maximum padding width with which to surround each tab
+  -- Sets the maximum and minimum padding width with which to surround each tab
   maximum_padding = 0,
   minimum_padding = 0,
 
