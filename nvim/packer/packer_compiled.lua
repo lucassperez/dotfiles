@@ -234,6 +234,11 @@ _G.packer_plugins = {
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/vim-closetag",
     url = "https://github.com/alvan/vim-closetag"
   },
+  ["vim-elixir"] = {
+    loaded = true,
+    path = "/home/lucas/.local/share/nvim/site/pack/packer/start/vim-elixir",
+    url = "https://github.com/elixir-editors/vim-elixir"
+  },
   ["vim-gitgutter"] = {
     loaded = true,
     path = "/home/lucas/.local/share/nvim/site/pack/packer/start/vim-gitgutter",

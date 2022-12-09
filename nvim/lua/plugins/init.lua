@@ -1,10 +1,9 @@
-local s = 'let g:sexp_enable_insert_mode_mappings = 0'
-vim.cmd(s)
+vim.cmd('let g:sexp_enable_insert_mode_mappings = 0')
 
 local fn = vim.fn
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
 end
 
 local status, packer = pcall(require, 'packer')
@@ -32,14 +31,14 @@ return packer.startup(function()
   -- Telescope
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { {'nvim-lua/plenary.nvim'} },
+    requires = { {'nvim-lua/plenary.nvim'}, },
   }
-  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
   use 'christoomey/vim-tmux-navigator'
   use 'christoomey/vim-tmux-runner'
   -- Weird, but using lexima for endwise complete and putting new line + indent
-  -- when, eg, pressing enter inside parens
+  -- when, eg, pressing enter inside parens.
   -- I think nvim-autopairs should be able to do it, but having lexima as well
   -- is apparently make it buggy
   use 'cohama/lexima.vim'
@@ -78,7 +77,7 @@ return packer.startup(function()
   -- Ajudinha visual
   use 'hoob3rt/lualine.nvim'
   use 'romgrk/barbar.nvim'
-  -- use { 'romgrk/barbar.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }
+  -- use { 'romgrk/barbar.nvim', requires = { 'kyazdani42/nvim-web-devicons' }, }
   -- use 'p00f/nvim-ts-rainbow'
 
   -- Coisas que tem a ver com cores e visual
@@ -96,6 +95,6 @@ return packer.startup(function()
   --   'projekt0n/github-nvim-theme',
   --   -- config = function()
   --   --   require('github-theme').setup({})
-  --   -- end
+  --   -- end,
   -- }
 end)
