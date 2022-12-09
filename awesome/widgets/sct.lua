@@ -14,17 +14,16 @@ local naughty = require('naughty')
 local beautiful = require('beautiful')
 
 local function worker(user_args)
-  local temperature = 6500 -- kelvins
+  local temperature = io.popen('xsct'):read():match('^Screen [0-9]+: temperature ~ ([0-9]+)$')
 
   local sct = wibox.widget {
     font   = 'FontAwesome 11',
-    bg = '#000',
-    paddings = 0,
+    bg     = '#000000',
     widget = wibox.widget.textbox,
   }
 
   local function get_temperature()
-     sct.markup = string.format(' %.1f', temperature/1000)
+     sct.markup = string.format(' %.1f', temperature / 1000)
   end
 
   get_temperature()

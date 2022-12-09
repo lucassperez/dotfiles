@@ -453,6 +453,15 @@ globalkeys = gears.table.join(
             { group = 'System controls', description = 'Ask for a brightness' }),
   awful.key({}, 'XF86MonBrightnessUp', function() bright_widget:inc(5) end),
   awful.key({}, 'XF86MonBrightnessDown', function() bright_widget:dec(5) end),
+  -- Screen temperature control
+  awful.key({ modkey, control }, '[',
+            function() screen_temperature.update(250) end,
+            { group = 'System controls', description = 'increase screen temperature', }),
+  awful.key({ modkey, control }, ']',
+            function() screen_temperature.update(-250) end,
+            { group = 'System controls', description = 'decrease screen temperature', }),
+  awful.key({ control }, 'XF86MonBrightnessUp', function() screen_temperature.update(250) end),
+  awful.key({ control }, 'XF86MonBrightnessDown', function() screen_temperature.update(-250) end),
 
   awful.key({ modkey }, 'n',
             function() notification_widget:toggle() end,
