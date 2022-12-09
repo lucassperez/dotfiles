@@ -1,17 +1,21 @@
 require('nvim-treesitter.configs').setup({
   -- ensure_installed can be 'all' or a list of languages { 'python', 'javascript' }
-  ensure_installed = {'lua', 'bash', 'javascript', 'ruby', 'go', 'java', 'clojure', 'comment'},
-
-  highlight = { -- enable highlighting for all file types
-    enable = true, -- you can also use a table with list of langs here (e.g. { 'python', 'javascript' })
-    disable = {'vue'},
-    custom_captures = {
-      ['heredoc_content'] = 'TSComment',
-    },
+  ensure_installed = {
+    'lua',
+    'comment',
+    'vim',
+    'help',
+    'bash',
+    'ruby',
+    'go',
+    'elixir',
+    'javascript',
   },
-  indent = {
-    -- Funcionalidade experimental!
-    enable = false,
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = false,
+  highlight = {
+    enable = true,
+    disable = { 'vue' },
   },
   incremental_selection = {
     enable = true,
@@ -21,6 +25,10 @@ require('nvim-treesitter.configs').setup({
       scope_incremental = 'grc',
       node_decremental = 'grm',
     },
+  },
+  indent = {
+    -- Funcionalidade experimental!
+    enable = false,
   },
   playground = {
     enable = true,
@@ -50,26 +58,11 @@ require('nvim-treesitter.configs').setup({
       eelixir = '<%# %s %>',
     }
   },
-  rainbow = {
-    -- https://github.com/p00f/nvim-ts-rainbow/issues/30
-    enable = true,
-    disable = function(p)
-        if p == 'clojure' then return false end
-        return true
-      end,
-    extended_mode = true,
-    max_file_lines = 1000,
-    termcolors = {'209','40','170','220','208','205', },
-    -- colors = {'#ff875f', '#00d700', '#d75fd7', '#ffd700', '#ff8700', '#ff5faf', }
-    colors = {'#ff875f', '#00d700', '#d75fd7', '#ffd700', }
-  },
   textobjects = {
     select = {
       enable = true,
-
       -- Automatically jump forward to textobj, similar to targets.vim
       lookahead = true,
-
       keymaps = {
         -- You can use the capture groups defined in textobjects.scm
         -- ['af'] = {
@@ -80,7 +73,6 @@ require('nvim-treesitter.configs').setup({
         ['if'] = '@function.inner',
         ['ac'] = '@class.outer',
         ['ic'] = '@class.inner',
-
         -- Or you can define your own textobjects like this
         -- ['iF'] = {
         --   python = '(function_definition) @function',
