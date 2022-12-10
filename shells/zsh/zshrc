@@ -1,5 +1,4 @@
 source "$HOME/.asdf/asdf.sh"
-# source "$ASDF_DIR/asdf.sh" I don't know why this does not work
 fpath=(${ASDF_DIR}/completions $ZDOTDIR/completions $fpath)
 
 autoload -Uz compinit
