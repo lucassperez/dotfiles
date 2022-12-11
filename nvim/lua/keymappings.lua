@@ -40,6 +40,13 @@ noremap('n', '<leader>c', '<C-w>c')
 map('n', 'ç', '$')
 map('v', 'ç', '$h')
 
+-- Mas se não tem, inventamos com L (e H pra ficar mais simétrico)
+-- Eu odeio a apple
+map('n', 'L', '$')
+map('v', 'L', '$h')
+map('n', 'H', '_')
+map('v', 'H', '_')
+
 -- Abrir o último arquivo editado
 noremap('n', '<leader><space>', ':e#<CR>')
 
