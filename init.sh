@@ -126,3 +126,6 @@ ln -sfni "$DIR/docker/config.json" "$HOME/.config/docker/config.json"
 mkdir -pv "$HOME/.config/tig"
 printf "Creating symlink to: \e[1;36m$HOME/.config/tig/config\e[0m\n"
 ln -sfni "$DIR/tig/config" "$HOME/.config/tig/config"
+
+printf "Creating symlink to: \e[1;36m$HOME/.config/inputrc\e[0m\n"
+ln -sfni "$DIR/inputrc" "$HOME/.config/xinputrc"

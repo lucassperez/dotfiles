@@ -24,6 +24,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 
 export LESSHISTFILE="$XDG_CACHE_HOME/lesshst"
+export INPUTRC="$XDG_CONFIG_HOME/inputrc"
 
 if [ "$0" = "/etc/gdm3/Xsession" -a "$DESKTOP_SESSION" = "i3" ]; then
     export $(gnome-keyring-daemon -s)

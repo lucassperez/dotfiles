@@ -5,6 +5,10 @@ cd ~/.ssh
 ssh-keygen -t ed25519
 cd ~
 
+# Fuck bells
+# Change /etc/inputrc or create ~/.inputrc or INPUTRC environment variable file
+# to have 'set bell-style none', for fs.
+
 sudo zypper ar -cfp 90 https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/ packman
 sudo zypper refresh
 sudo zypper dup --from packman --allow-vendor-change

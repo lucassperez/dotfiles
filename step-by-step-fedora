@@ -68,6 +68,10 @@ gsettings set org.gnome.gedit.preferences.editor display-right-margin true
 # More gnome settings because f*** bells
 gsettings set org.gnome.desktop.wm.preferences audible-bell false
 
+# Fuck, and I can't say it enough, bells
+# Change /etc/inputrc and uncomment the line with 'set bell-style none' or create this line,
+# or use ~/.inputrc or the file specified in INPUTRC environment variable to set it.
+
 # Software to install
 # Git e tmux já vêm instalados? Wtf. Jq também? Whaat. Acho que o curl também. :thinking:
 dnf install -y zsh util-linux-user xset xclip vlc gimp peek figlet acpi flameshot \
