@@ -120,7 +120,7 @@ mymainmenu = awful.menu({
     { '&Terminal', terminal },
     { '&Browser', browser },
     { '&Campo Minado', 'gnome-mines' },
-    { '&Discord', 'Discord' },
+    { '&Discord', 'discord' },
     { '&Lock Screen', 'slock' },
   }
 })
