@@ -12,7 +12,7 @@ EOF
 
 " source $HOME/.config/nvim/color/perez-cs.vim
 " source $HOME/.config/nvim/color/general.vim
-" lua require'colorizer'.setup()
+" lua require('colorizer').setup()
 
 """ Configurações gerais """
 let &titlestring='nvim'
