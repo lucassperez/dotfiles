@@ -1005,6 +1005,7 @@ awful.rules.rules = {
       callback = function(c) -- make gnome things floating (but not nautilus)
         if type(c.class) ~= 'string' then return end
         if c.class:match('[Oo]rg.[Gg]nome.[Nn]autilus') then return end
+        if c.class:match('[Gg]nome%-[Tt]erminal') then return end
 
         if c.class == 'Zoom - Free Account' or
           string.match(c.class, "^[Gg]nome-%w*") or
