@@ -52,8 +52,9 @@ local function worker(user_args)
   )
 
   local function updateTemperature(tpr)
+    tpr = tpr or 0
     temperature = temperature + tpr
-    awful.spawn('xsct ' .. temperature, false)
+    awful.spawn('xsct -d '..tpr, false)
     get_temperature()
   end
 
