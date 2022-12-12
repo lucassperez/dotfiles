@@ -1002,9 +1002,9 @@ awful.rules.rules = {
       buttons = clientbuttons,
       screen = awful.screen.preferred,
       placement = awful.placement.no_overlap+awful.placement.no_offscreen,
-      callback = function(c) -- make gnome things floating
-        if c.class == 'Org.gnome.Nautilus' then return end
+      callback = function(c) -- make gnome things floating (but not nautilus)
         if type(c.class) ~= 'string' then return end
+        if c.class:match('[Oo]rg.[Gg]nome.[Nn]autilus') then return end
 
         if c.class == 'Zoom - Free Account' or
           string.match(c.class, "^[Gg]nome-%w*") or
@@ -1087,57 +1087,28 @@ awful.rules.rules = {
   --   properties = { screen = 1, tag = '2' } },
 
   -- xprop | grep WM_CLASS pra descobrir (xprop em geral é muito legal)
-  {
-    rule = { class = 'Java' },
-    properties = { tag = '4' }
-  },
-  {
-    rule = { name = 'Java' },
-    properties = { tag = '4' }
-  },
-  {
-    rule = { class = 'DBeaver' },
-    properties = { tag = '3' }
-  },
-  {
-    rule = { class = 'Postman', },
-    properties = { tag = '4' }
-  },
+  { rule = { class = 'Java' },     properties = { tag = '4' } },
+  { rule = { name = 'Java' },      properties = { tag = '4' } },
+  { rule = { class = 'DBeaver' },  properties = { tag = '3' } },
+  { rule = { class = 'Postman', }, properties = { tag = '4' } },
+
   -- { rule = { class = 'steam_app_' }, properties = { tag = '7', }, },
-  -- None of this works with spotify, ffs
-  { rule = { class = '[Ss]potify' }, properties = { tag = '6' } },
-  -- Zoom and discord always on 9 and 10, respectively
+  -- { rule = { class = '[Ss]potify' }, properties = { tag = '6' } },
+
   -- I hate Zoom, on every update it changes this stuff, ffs
-  {rule = { class = 'Zoom Meeting' }, properties = { tag = '9' }},
-  {rule = { class = '[Zz]oom' }, properties = { tag = '9' }},
-  {rule = { class = 'Zoom - Free Account' }, properties = { tag = '9' }},
-  {rule = { name = 'Zoom Meeting' }, properties = { tag = '9' }},
-  {rule = { name = '[Zz]oom' }, properties = { tag = '9' }},
-  {rule = { name = 'Zoom - Free Account' }, properties = { tag = '9' }},
-  {
-    rule = { class = 'discord' },
-    properties = { tag = '0' }
-  },
-  {
-    rule = { name = 'Discord' },
-    properties = { tag = '0' }
-  },
-  {
-    rule = { class = 'Gedit', 'kate', 'notes', },
-    properties = { ontop = true }
-  },
-  {
-    rule = { class = 'FeatherPad' },
-    properties = { ontop = true }
-  },
-  {
-    rule = { class = 'Pavucontrol' },
-    properties = { ontop = true }
-  },
-  {
-    rule = { name = 'floating-alacritty' },
-    properties = { ontop = true }
-  },
+  { rule = { class = 'Zoom Meeting' },        properties = { tag = '9' } },
+  { rule = { class = '[Zz]oom' },             properties = { tag = '9' } },
+  { rule = { class = 'Zoom - Free Account' }, properties = { tag = '9' } },
+  { rule = { name = 'Zoom Meeting' },         properties = { tag = '9' } },
+  { rule = { name = '[Zz]oom' },              properties = { tag = '9' } },
+  { rule = { name = 'Zoom - Free Account' },  properties = { tag = '9' } },
+  { rule = { class = '[Dd]iscord' },          properties = { tag = '0' } },
+  { rule = { name = '[Dd]iscord' },           properties = { tag = '0' } },
+
+  { rule = { class = 'Gedit', 'kate', 'notes', }, properties = { ontop = true } },
+  { rule = { class = 'FeatherPad' },              properties = { ontop = true } },
+  { rule = { class = 'Pavucontrol' },             properties = { ontop = true } },
+  { rule = { name = 'floating-alacritty' },       properties = { ontop = true } },
 }
 -- }}}
 
