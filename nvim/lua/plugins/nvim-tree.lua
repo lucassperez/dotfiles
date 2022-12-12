@@ -6,12 +6,12 @@ require('nvim-tree').setup {
   open_on_tab               = true,
   update_cwd                = true,
   hijack_cursor             = false,
-  create_in_closed_folder   = true,
-  respect_buf_cwd = true,
+  respect_buf_cwd           = true,
   update_focused_file = { enable = false },
   filters = {
     dotfiles = false,
     custom = { '.git', 'node_modules', '.cache' },
+    exclude = { '.gitignore', },
   },
   actions = {
     open_file = {
