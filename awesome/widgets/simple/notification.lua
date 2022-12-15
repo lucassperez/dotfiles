@@ -1,8 +1,6 @@
 -- I don't even know what I am doing
-local awful = require('awful')
 local wibox = require('wibox')
 local naughty = require('naughty')
-local watch = require('awful.widget.watch')
 
 local text = wibox.widget({
     font = 'FontAwesome 11',
@@ -41,7 +39,7 @@ function widget:resume()
   set_widget()
 end
 
-widget:connect_signal('button::press', function(_,_,_,button)
+widget:connect_signal('button::press', function(_, _, _, button)
   if (button) then widget:toggle() end
 end)
 
