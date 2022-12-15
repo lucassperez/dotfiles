@@ -7,14 +7,17 @@
 -- https://github.com/flintforge/awesome-wm-widgets/blob/main/sct.lua
 
 local awful = require('awful')
-local spawn = require('awful.spawn')
-local watch = require('awful.widget.watch')
 local wibox = require('wibox')
-local naughty = require('naughty')
-local beautiful = require('beautiful')
 
 local function worker(user_args)
-  local temperature = io.popen('xsct'):read():match('^Screen [0-9]+: temperature ~ ([0-9]+)$')
+  -- Com mais de uma tela, isso aqui talvez não funcione por cause do ^$?
+  -- local temperature = io.popen('xsct'):read():match('^Screen [0-9]+: temperature ~ ([0-9]+)$')
+  local temperature = io.popen('xsct'):read():match('^Screen [0-9]+: temperature ~ ([0-9]+)')
+  local default_temperature = 5250
+
+  -- Ter essa variável "temperature" pra monitorar o estado não é muito bom,
+  -- pois se eu alterar a temperatura da tela por algum meio que não é o widget,
+  -- essa variável vai ficar desatualizada.
 
   local sct = wibox.widget {
     font   = 'FontAwesome 11',
@@ -28,10 +31,6 @@ local function worker(user_args)
 
   get_temperature()
 
-  local update_graphic = function(widget, stdout, _, _, _)
-    widget.colors = { colors.B }
-  end
-
   sct:connect_signal(
     'button::press',
     function(_, _, _, button)
@@ -40,7 +39,7 @@ local function worker(user_args)
       elseif button == 4 then
         temperature = temperature + 250
       elseif button == 1 or button == 2 or button == 3 then
-        temperature = 6500
+        temperature = default_temperature
       end
 
       if temperature < 1000 then temperature = 1000
@@ -52,15 +51,24 @@ local function worker(user_args)
   )
 
   local function updateTemperature(tpr)
-    tpr = tpr or 0
+    if not tpr or tpr == 0 then return end
+
     temperature = temperature + tpr
     awful.spawn('xsct -d '..tpr, false)
     get_temperature()
   end
 
+  local function setTemperature(tpr)
+    tpr = tpr or default_temperature
+    temperature = tpr
+    awful.spawn('xsct '..tpr, false)
+    get_temperature()
+  end
+
   local Sct = {
     widget = sct,
-    update = updateTemperature
+    update = updateTemperature,
+    set = setTemperature,
   }
 
   return Sct
