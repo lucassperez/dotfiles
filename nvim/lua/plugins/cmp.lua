@@ -29,6 +29,14 @@ cmp.setup({
   },
   formatting = {
     format = lspkind.cmp_format({
+      -- modes: text, text_symbol, symbol_text e symbol
+      mode = 'text',
+      menu = {
+        buffer = '[Buf]',
+        nvim_lsp = '[LSP]',
+        nvim_lua = '[Lua]',
+        path = '[Path]',
+      },
       -- symbol_map = {
       --   Text = 'Txt',
       --   Method = 'Met',
@@ -56,14 +64,6 @@ cmp.setup({
       --   Operator = 'Oprtr',
       --   TypeParameter = 'TypeParam'
       -- },
-      mode = 'text',
-      -- mode = 'symbol',
-      menu = {
-        buffer = '[Buf]',
-        nvim_lsp = '[LSP]',
-        nvim_lua = '[Lua]',
-        path = '[Path]',
-      },
     }),
   },
   view = {

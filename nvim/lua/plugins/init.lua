@@ -1,9 +1,8 @@
 vim.cmd('let g:sexp_enable_insert_mode_mappings = 0')
 
-local fn = vim.fn
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  packer_bootstrap = vim.fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
 end
 
 local status, packer = pcall(require, 'packer')
@@ -12,10 +11,10 @@ if not status then
 end
 
 packer.init({
-  compile_path = fn.stdpath('config')..'/packer/packer_compiled.lua',
+  compile_path = vim.fn.stdpath('config')..'/packer/packer_compiled.lua',
 })
 
-return packer.startup(function()
+packer.startup(function(use)
   use 'wbthomason/packer.nvim'
 
   if packer_bootstrap then
@@ -56,28 +55,47 @@ return packer.startup(function()
   use 'nvim-lua/plenary.nvim'
 
   -- Coisas LSP e TreeSitter
-  use 'neovim/nvim-lspconfig'
-  use 'williamboman/mason.nvim'
-  use 'williamboman/mason-lspconfig.nvim'
+  use {
+    'neovim/nvim-lspconfig',
+    requires = {
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+      'j-hui/fidget.nvim',
+    },
+  }
+
   use 'jose-elias-alvarez/null-ls.nvim'
   use 'jose-elias-alvarez/nvim-lsp-ts-utils'
-  use { 'nvim-treesitter/nvim-treesitter', run = 'TSUpdate', }
-  use 'nvim-treesitter/nvim-treesitter-textobjects'
-  use 'nvim-treesitter/playground'
+
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = 'TSUpdate',
+    requires = {
+      'nvim-treesitter/playground',
+    },
+  }
+
+  use {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    after = 'nvim-treesitter'
+  }
+
   -- use 'folke/lsp-colors.nvim'
-  use 'j-hui/fidget.nvim'
   -- Testar esse aqui também, aproveitar que eu já uso o lualine.
+  -- Alternativa para o fidget.
   -- use 'arkav/lualine-lsp-progress'
 
-  use 'hrsh7th/nvim-cmp'
-  use 'hrsh7th/cmp-path'
-  use 'hrsh7th/cmp-buffer'
-  use 'hrsh7th/cmp-nvim-lua'
-  use 'hrsh7th/cmp-nvim-lsp'
-
-  use 'L3MON4D3/LuaSnip'
-
-  use 'onsails/lspkind-nvim'
+  use {
+    'hrsh7th/nvim-cmp',
+    requires = {
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-nvim-lua',
+      'hrsh7th/cmp-nvim-lsp',
+      'L3MON4D3/LuaSnip',
+      'onsails/lspkind-nvim'
+    },
+  }
 
   -- Ajudinha visual
   use 'hoob3rt/lualine.nvim'
