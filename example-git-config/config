@@ -1,0 +1,11 @@
+[user]
+  name = Lucas Perez
+  email = lucas@email.com
+; [includeIf "gitdir:/home/lucas/algumacoisa"]
+;   path = /home/lucas/algumaoutracoisa/.gitconfig
+[core]
+  editor = "vi -c 'hi ColorColumn ctermbg=125 ctermfg=white' -c 'set colorcolumn=51' -c 'set textwidth=0'"
+[init]
+  defaultBranch = main
+[commit]
+  verbose = true

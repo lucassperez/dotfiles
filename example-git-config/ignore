@@ -1,0 +1,7 @@
+# https://stackoverflow.com/questions/7527982/applying-gitignore-to-committed-files
+# To do:
+# git update-index --assume-unchanged <file>
+# To undo:
+# git update-index --no-assume-unchanged <file>
+# To check which files have been through that:
+# git ls-files -v | grep '^h'
