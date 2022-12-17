@@ -29,7 +29,7 @@ require('plugins.Comment')
 require('plugins.barbar')
 require('plugins.telescope')
 require('plugins.nvim-tree')
-require('plugins.conjure')
+-- require('plugins.conjure')
 
 -- require('plugins.tokyonight')
 require('plugins.catppuccin')
