@@ -1,6 +1,11 @@
 -- vim.lsp.set_log_level('debug')
 -- Ver isso depois? https://github.com/ray-x/lsp_signature.nvim
 
+require('mason').setup()
+require('mason-lspconfig').setup({
+  ensure_installed = { 'marksman', 'gopls', }
+})
+
 require('plugins.lsp.elixir')
 require('plugins.lsp.typescript')
 -- The golang language server gopls looks for .git or go.mod file to start
