@@ -13,6 +13,7 @@ require('settings')
 
 require('plugins')
 require('plugins.lsp')
+require('plugins.fidget')
 require('plugins.tree-sitter')
 -- require('plugins.tree-sitter.elixir')
 require('plugins.tree-sitter.typescript')

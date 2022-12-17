@@ -72,3 +72,17 @@ opt.complete:remove('i') -- https://medium.com/usevim/set-complete-e76b9f196f0f
 
 -- AwsomeWM, Vim and Tmux navigator thing
 -- vim.g.tmux_navigator_insert_mode = 1
+
+-- :help vim.highlight.on_yank()
+-- Do I really want this?
+local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    vim.highlight.on_yank({
+      timeout = 80,
+      higroup = 'HighlightOnYank',
+    })
+  end,
+  group = highlight_group,
+  pattern = '*',
+})

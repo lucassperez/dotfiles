@@ -46,6 +46,7 @@ require('catppuccin').setup({
       Pmenu       = { bg = '#090d24' },
       NormalFloat = { bg = '#090d24' },
       Visual      = { bg = '#61677d',  style = { 'bold' } },
+      HighlightOnYank = { bg = '#71778d' }, -- see settings for this
 
       CursorLineNr = { fg = '#e2e209' },
       SignColumn   = { fg = '#a8a8a8' },

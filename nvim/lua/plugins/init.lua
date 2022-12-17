@@ -12,7 +12,7 @@ if not status then
 end
 
 packer.init({
-  compile_path = vim.fn.stdpath('config')..'/packer/packer_compiled.lua',
+  compile_path = fn.stdpath('config')..'/packer/packer_compiled.lua',
 })
 
 return packer.startup(function()
@@ -63,6 +63,9 @@ return packer.startup(function()
   use 'nvim-treesitter/nvim-treesitter-textobjects'
   use 'nvim-treesitter/playground'
   -- use 'folke/lsp-colors.nvim'
+  use 'j-hui/fidget.nvim'
+  -- Testar esse aqui também, aproveitar que eu já uso o lualine.
+  -- use 'arkav/lualine-lsp-progress'
 
   use 'hrsh7th/nvim-cmp'
   use 'hrsh7th/cmp-path'

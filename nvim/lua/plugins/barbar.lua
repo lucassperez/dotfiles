@@ -30,12 +30,12 @@ require('bufferline').setup({
   -- middle-click: delete buffer
   clickable = true,
 
-  diagnostics = {
-    [vim.diagnostic.severity.ERROR] = { enabled = true, icon = 'ﬀ' },
-    [vim.diagnostic.severity.WARN]  = { enabled = false },
-    [vim.diagnostic.severity.INFO]  = { enabled = false },
-    [vim.diagnostic.severity.HINT]  = { enabled = true },
-  },
+  -- diagnostics = {
+  --   [vim.diagnostic.severity.ERROR] = { enabled = true,  icon = 'E' },
+  --   [vim.diagnostic.severity.WARN]  = { enabled = false, icon = 'W' },
+  --   [vim.diagnostic.severity.INFO]  = { enabled = false, icon = 'I' },
+  --   [vim.diagnostic.severity.HINT]  = { enabled = true,  icon = 'H' },
+  -- },
 
   -- Excludes buffers from the tabline
   -- exclude_ft = {'javascript'},
@@ -103,16 +103,33 @@ hi BufferCurrentIndex     guifg=#599eff   guibg=NONE
 hi BufferCurrentMod       guifg=#efefef   guibg=NONE
 hi BufferCurrentSign      guifg=#599eff   guibg=NONE
 hi BufferCurrentTarget    guifg=red       guibg=NONE      gui=BOLD
+
 hi BufferVisible          guifg=#efefef   guibg=#6c6c6c
 hi BufferVisibleIndex     guifg=#efefef   guibg=#6c6c6c
 hi BufferVisibleMod       guifg=#efefef   guibg=#6c6c6c
 hi BufferVisibleSign      guifg=#efefef   guibg=#6c6c6c
 hi BufferVisibleTarget    guifg=red       guibg=#6c6c6c   gui=BOLD
+
 hi BufferInactive         guifg=#616163   guibg=#2e3436
 hi BufferInactiveIndex    guifg=#555555   guibg=#2e3436
 hi BufferInactiveMod      guifg=#616163   guibg=#2e3436
 hi BufferInactiveSign     guifg=#555555   guibg=#2e3436
 hi BufferInactiveTarget   guifg=red       guibg=#2e3436   gui=BOLD
+
 hi BufferTabpages         guifg=#599eff   guibg=#2e3436   gui=BOLD
 hi BufferTabpageFill      guifg=#616163   guibg=#bbc2cf
+
+""" Diagnostic icons
+" hi BufferCurrentERROR guibg=NONE guifg=#e78284 guibg=NONE
+" hi BufferCurrentWARN  guibg=NONE guifg=#e5c890 guibg=NONE
+" hi BufferCurrentINFO  guibg=NONE guifg=#99d1db guibg=NONE
+" hi BufferCurrentHINT  guibg=NONE guifg=#81c8be guibg=NONE
+" hi BufferVisibleERROR guibg=NONE guifg=#efefef guibg=#6c6c6c
+" hi BufferVisibleWARN  guibg=NONE guifg=#efefef guibg=#6c6c6c
+" hi BufferVisibleINFO  guibg=NONE guifg=#efefef guibg=#6c6c6c
+" hi BufferVisibleHINT  guibg=NONE guifg=#efefef guibg=#6c6c6c
+" hi BufferInactiveERROR guibg=NONE guifg=#616163 guibg=#2e3436
+" hi BufferInactiveWARN  guibg=NONE guifg=#616163 guibg=#2e3436
+" hi BufferInactiveINFO  guibg=NONE guifg=#616163 guibg=#2e3436
+" hi BufferInactiveHINT  guibg=NONE guifg=#616163 guibg=#2e3436
 ]])
