@@ -1,31 +1,22 @@
-local map = function(mode, key, result, noremap, silent)
-  vim.api.nvim_set_keymap(mode, key, result, { noremap = noremap, silent = silent })
+local map = function(mode, key, command, noremap, silent)
+  vim.keymap.set(mode, key, command, { noremap = noremap, silent = silent })
 end
 
-local noremap = function(mode, key, result, silent)
-  map(mode, key, result, true, silent)
+local noremap = function(mode, key, command, silent)
+  map(mode, key, command, true, silent)
 end
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
 -- Go to command mode without using shift
-noremap('n', ';', ':')
-noremap('v', ';', ':')
-
--- Don't lose content of register when pasting
--- Actually, P in visual mode already does this
--- noremap('v', '<leader>p', '"_dP')
+noremap({ 'n', 'v' }, ';', ':')
 
 -- Normally C-c already does this, but after installing LSP, the text box
 -- containing completions would sometimes not properly disappear when I C-c out
 -- of insert mode, which did not happen with Esc.
 map('i', '<C-c>', '<Esc>')
-map('i', '<C-j>', '<Esc>')
-
--- Fingir que tenho dois pontos ao lado do L
-noremap('n', 'Ç', ':')
-noremap('v', 'Ç', ':')
+map('i', '<C-j>', '<Esc>') -- why did I add this?
 
 -- Atalho pra mostrar a quais grupos de sintaxe
 -- a palavra debaixo do cursor pertence
@@ -37,15 +28,13 @@ noremap('n', '<leader>v', ':vs<CR>')
 noremap('n', '<leader>c', '<C-w>c')
 
 -- Se tem ç, tem que usar
-map('n', 'ç', '$')
-map('v', 'ç', '$h')
-
--- Mas se não tem, inventamos com L (e H pra ficar mais simétrico)
--- Eu odeio a apple
+-- Vou tirar isso por enquanto
+-- pra tentar acostumar a usar H e L
+-- map('n', 'ç', '$')
+-- map('v', 'ç', '$h')
 map('n', 'L', '$')
 map('v', 'L', '$h')
-map('n', 'H', '_')
-map('v', 'H', '_')
+map({ 'n', 'v' }, 'H', '_')
 
 -- Abrir o último arquivo editado
 noremap('n', '<leader><space>', ':e#<CR>')
@@ -55,11 +44,6 @@ noremap('n', '<leader>f', ':let @+ = expand("%")<CR>')
 
 -- Acho que faz sentido Y copiar do cursor até o final da linha (ver :help Y)
 noremap('n', 'Y', 'y$')
-
--- -- "zource" vim
--- noremap('n', '<leader>zv', ':so ~/.config/nvim/init.vim<CR>')
--- -- "zource" lua
--- noremap('n', '<leader>zl', ':luafile ~/.config/nvim/lua/init.lua<CR>')
 
 -- Não entrar no insert mode após usar leader + o/O
 noremap('n', '<leader>o', 'o<C-c>')
@@ -84,8 +68,7 @@ noremap('n', '<A-w>', ':bnext<CR>')
 -- noremap('n', '<C-l>', '<C-w>l')
 
 -- Copiar para o clipboard
-noremap('v', '<leader>y', '"+y')
-noremap('n', '<leader>y', '"+y')
+noremap({ 'n', 'v' }, '<leader>y', '"+y')
 noremap('n', '<leader>Y', '"+yg_')
 
 -- Mudar a indentação continuamente
@@ -189,7 +172,7 @@ noremap('n', '<leader>R', ':lua autoExecuteOnSave()<CR>', true)
 -- Tenta compilar o arquivo a depender do seu "filetype"
 noremap('n', '<leader>rc', ':silent!wa<CR>:lua compileFile()<CR>')
 
---- Snippets ---
+--- "Snippets" ---
 noremap('n', ',html', ':read $HOME/.config/nvim/snippets/html5<CR>i<Backspace><C-c>6jf>l')
 noremap('n', ',rfce', ":read $HOME/.config/nvim/snippets/reactfunctcomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>5k")
 noremap('n', ',cl', ':read $HOME/.config/nvim/snippets/console.log<CR>i<Backspace><C-c>==f)i')
@@ -209,19 +192,12 @@ noremap('n', ',SH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
 noremap('n', ',Sh', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
 noremap('n', ',sH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
 
--- Colocar um ponto e vírgula no final da linha
-noremap('n', '<leader>;', 'A;<C-c>')
-
 -- Abrir um programa com o programa padrão para aquele tipo de arquivo
 noremap('n', '<leader>x', ':!xdg-open %<CR><CR>')
 
 -- "Zoom" na split atual e deixar as splits o mais parecidas possível
 noremap('n', '<leader>-', ':wincmd _<CR>:wincmd |<CR>')
 noremap('n', '<leader>=', ':wincmd =<CR>')
-
--- Send current line (or lines in visual mode) to attached tmux pane
--- noremap('n', '<leader>R', ':lua sendLinesToTmux("normal")<CR>')
--- noremap('v', '<leader>R', ':lua sendLinesToTmux("visual")<CR>')
 
 -- Tries to find the test file of current file or vice versa.
 -- Works well with elixir and its organized and predictable paths.
