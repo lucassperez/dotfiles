@@ -27,7 +27,6 @@ o.splitbelow = true
 o.splitright = true
 
 -- buffer
-bo.smartindent = true -- vai tentar o seu melhor para indentar as coisas automaticamente
 bo.swapfile = false
 
 -- window
@@ -36,6 +35,7 @@ wo.number = true -- número das linhas
 wo.relativenumber = true -- números relativos (tipo distâncias) ao cursor
 wo.numberwidth = 3 -- tamanho mínimo da coluna pros números à esquerda
 wo.wrap = false -- sem wrap quando o texto chega no final da tela
+-- vim.o.breakindent is usefull if I ever want to use wrap
 
 -- opt.encoding = 'utf8' -- eu preciso mesmo passar isso?
 
