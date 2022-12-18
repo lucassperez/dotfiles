@@ -23,20 +23,10 @@ let &titlestring='nvim'
 " Destacar colunas depois do 80 e 120
 let &colorcolumn='81,121'
 
-" Alterar a cor da numeração das linhas com alguma alteração (git gutter)
-set signcolumn=no
-let g:gitgutter_signs=0
-let g:gitgutter_highlight_linenrs=1
-
-hi GitGutterAddLineNr          guifg=#00af00 gui=BOLD           ctermfg=34  cterm=BOLD
-hi GitGutterChangeLineNr       guifg=#c39f00 gui=ITALIC,BOLD    ctermfg=3   cterm=ITALIC,BOLD
-hi GitGutterDeleteLineNr       guifg=#ec2929 gui=UNDERLINE,BOLD ctermfg=red cterm=UNDERLINE,BOLD
-hi GitGutterChangeDeleteLineNr guifg=#d75f00 gui=UNDERCURL,BOLD ctermfg=166 cterm=UNDERCURL,BOLD
-
-hi DiffAdd guibg=NONE
+hi DiffAdd    guibg=NONE
 hi DiffChange guibg=NONE
 hi DiffDelete guibg=NONE
-hi DiffText guibg=NONE
+hi DiffText   guibg=NONE
 
 hi lualine_x_diff_added_command  guifg=#00af00
 hi lualine_x_diff_added_inactive guifg=#00af00
@@ -133,7 +123,7 @@ let g:sexp_mappings = {
       \ 'sexp_capture_next_element':      '<M-l>',
       \ }
 
-let g:lexima_enable_basic_rules = 0
+let g:lexima_enable_basic_rules   = 0
 let g:lexima_enable_newline_rules = 1
 let g:lexima_enable_endwise_rules = 1
 

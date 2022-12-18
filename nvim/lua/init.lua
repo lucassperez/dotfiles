@@ -8,20 +8,23 @@ end
 
 -- Sobre as cores:
 -- https://icyphox.sh/blog/nvim-lua/
+
 require('keymappings')
 require('settings')
+
+-- require('plugins.tokyonight')
+require('plugins.catppuccin')
 
 require('plugins')
 require('plugins.lsp')
 require('plugins.fidget')
+require('plugins.gitsigns')
 require('plugins.tree-sitter')
 -- require('plugins.tree-sitter.elixir')
 require('plugins.tree-sitter.typescript')
 require('plugins.cmp')
 -- require('plugins.luasnip')
 require('plugins.nvim-surround')
--- Nvim autopairs suddenly stopped working when pressing enter inside parens ):
--- Which is very sad, because on nvim-autopairs I had better rules
 require('plugins.nvim-autopairs')
 require('plugins.lualine')
 require('plugins.Comment')
@@ -30,9 +33,6 @@ require('plugins.barbar')
 require('plugins.telescope')
 require('plugins.nvim-tree')
 -- require('plugins.conjure')
-
--- require('plugins.tokyonight')
-require('plugins.catppuccin')
 
 -- Meus próprios scritpts
 require('helper-scripts.vtr.test')
