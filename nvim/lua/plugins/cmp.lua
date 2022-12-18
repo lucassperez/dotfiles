@@ -97,10 +97,3 @@ cmp.setup({
     entries = 'custom'
   }
 })
-
-vim.cmd([[
-highlight CmpItemAbbrMatch      guifg='#0000ff'
-highlight CmpItemAbbrMatchFuzzy guifg='#ff0000'
-highlight CmpItemKind gui=bold
-highlight CmpItemMenu guifg='#00ff00'
-]])
