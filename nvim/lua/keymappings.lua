@@ -166,7 +166,7 @@ noremap('n', '<leader>rl', ":silent!wa<CR>:call VtrSendCommand('!!')<CR>")
 
 -- Executa o arquivo como um script a depender do seu "filetype"
 -- Ver o script para detalhes
-noremap('n', '<leader>rr', ':silent!wa<CR>:lua executeFileAsScript()<CR>', true) -- silent = true
+noremap('n', '<leader>rr', ':silent!wa<CR>:lua executeFileAsScript()<CR>', true)
 noremap('n', '<leader>R', ':lua autoExecuteOnSave()<CR>', true)
 
 -- Tenta compilar o arquivo a depender do seu "filetype"

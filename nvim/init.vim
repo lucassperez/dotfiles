@@ -1,7 +1,7 @@
 syntax on
 " set synmaxcol=121 " caso a linha seja tão grande que ultrapasse 120 colunas, não tem
 "                   " mais marcação de sintaxe. É interessante até para a performance
-" " https://vim.fandom.com/wiki/Fix_syntax_highlighting
+" https://vim.fandom.com/wiki/Fix_syntax_highlighting
 syntax sync minlines=256
 
 filetype plugin on

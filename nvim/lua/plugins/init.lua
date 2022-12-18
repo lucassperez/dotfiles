@@ -17,10 +17,6 @@ packer.init({
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
 
-  if packer_bootstrap then
-    require('packer').sync()
-  end
-
   use 'elixir-editors/vim-elixir'
 
   -- Clojure things
@@ -120,4 +116,8 @@ packer.startup(function(use)
   --   --   require('github-theme').setup({})
   --   -- end,
   -- }
+
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end)
