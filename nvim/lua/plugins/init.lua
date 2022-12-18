@@ -42,8 +42,6 @@ packer.startup(function(use)
   use 'tpope/vim-ragtag'
   use 'numToStr/Comment.nvim'
   use 'mattn/emmet-vim'
-  use 'antoinemadec/FixCursorHold.nvim'
-  vim.g.cursorhold_updatetime = 100
   use 'kyazdani42/nvim-tree.lua'
   use 'lewis6991/gitsigns.nvim'
   use 'alvan/vim-closetag'
