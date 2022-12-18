@@ -17,7 +17,6 @@ require('plugins.catppuccin')
 
 require('plugins')
 require('plugins.lsp')
-require('plugins.fidget')
 require('plugins.gitsigns')
 require('plugins.tree-sitter')
 -- require('plugins.tree-sitter.elixir')
