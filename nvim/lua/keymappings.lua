@@ -37,7 +37,7 @@ map('v', 'L', '$h')
 map({ 'n', 'v' }, 'H', '_')
 
 -- Abrir o último arquivo editado
-noremap('n', '<leader><space>', ':e#<CR>')
+noremap('n', '<leader><Space>', ':e#<CR>')
 
 -- Copiar para o clipboard do sistema o caminho do arquivo
 noremap('n', '<leader>f', ':let @+ = expand("%")<CR>')
