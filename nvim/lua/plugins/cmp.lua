@@ -1,11 +1,12 @@
 vim.o.completeopt = 'menuone,noselect'
 
 local cmp = require('cmp')
+local luasnip = require('luasnip')
 local lspkind = require('lspkind')
 
 cmp.setup({
   snippet = {
-    expand = function(args) require('luasnip').lsp_expand(args.body) end
+    expand = function(args) luasnip.lsp_expand(args.body) end
   },
   mapping = {
     ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
@@ -14,13 +15,38 @@ cmp.setup({
     -- to only confirm explicitly selected items.
     ['<CR>'] = cmp.mapping.confirm({ select = false }),
 
-    ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), {'i','c'}),
-    ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i','c'}),
+    ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i','c' }),
+    ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i','c' }),
 
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i','c' }),
+    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i','c' }),
+    -- Meu prefixo do tmux é C-b ):
+
+    ['<M-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i','c' }),
+    ['<M-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i','c' }),
+
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
   },
   sources = {
-    -- Order matters here, top sources have
-    -- higher priorities
+    -- Order matters here,
+    -- top sources have higher priorities
     { name = 'nvim_lua' },
     { name = 'nvim_lsp' },
     { name = 'path', trailing_slash = true },
