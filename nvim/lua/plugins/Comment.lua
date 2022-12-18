@@ -1,4 +1,5 @@
 require('Comment').setup({
   padding = true,
-  ignore = '^$',
+  -- don't comment blank lines with '^$'
+  -- ignore = '^$',
 })
