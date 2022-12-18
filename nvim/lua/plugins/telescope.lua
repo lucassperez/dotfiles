@@ -49,7 +49,7 @@ function telescopeGitOrFindFiles(opts)
 end
 
 -- https://github.com/jchilders/dotfiles/blob/main/xdg_config/nvim/lua/core/highlights.lua
--- vim.cmd("autocmd ColorScheme * highlight TelescopeBorder         guifg=#3e4451")
--- vim.cmd("autocmd ColorScheme * highlight TelescopePromptBorder   guifg=#3e4451")
--- vim.cmd("autocmd ColorScheme * highlight TelescopeResultsBorder  guifg=#3e4451")
--- vim.cmd("autocmd ColorScheme * highlight TelescopePreviewBorder  guifg=#525865")
+-- vim.cmd('autocmd ColorScheme * highlight TelescopeBorder         guifg=#3e4451')
+-- vim.cmd('autocmd ColorScheme * highlight TelescopePromptBorder   guifg=#3e4451')
+-- vim.cmd('autocmd ColorScheme * highlight TelescopeResultsBorder  guifg=#3e4451')
+-- vim.cmd('autocmd ColorScheme * highlight TelescopePreviewBorder  guifg=#525865')
