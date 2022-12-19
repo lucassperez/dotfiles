@@ -25,7 +25,7 @@ require('nvim-treesitter.configs').setup({
       init_selection    = '<C-Space>',
       node_incremental  = '<C-Space>',
       scope_incremental = '<C-s>',
-      node_decremental  = '<C-Backspace>',
+      node_decremental  = '<Backspace>',
     },
   },
   indent = {
