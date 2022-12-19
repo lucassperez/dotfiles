@@ -18,10 +18,6 @@ noremap({ 'n', 'v' }, ';', ':')
 map('i', '<C-c>', '<Esc>')
 map('i', '<C-j>', '<Esc>') -- why did I add this?
 
--- Atalho pra mostrar a quais grupos de sintaxe
--- a palavra debaixo do cursor pertence
-noremap('n', '<leader>m', ':TSHighlightCapturesUnderCursor<CR>')
-
 -- Novos paineis (horizontal e vertical) e fechar o atual
 noremap('n', '<leader>s', ':sp<CR>')
 noremap('n', '<leader>v', ':vs<CR>')

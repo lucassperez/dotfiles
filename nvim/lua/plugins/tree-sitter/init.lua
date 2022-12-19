@@ -1,3 +1,5 @@
+vim.keymap.set('n', '<leader>m', ':TSHighlightCapturesUnderCursor<CR>')
+
 require('nvim-treesitter.configs').setup({
   -- ensure_installed can be 'all' or a list of languages { 'python', 'javascript' }
   ensure_installed = {
