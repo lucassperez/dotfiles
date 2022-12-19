@@ -1,5 +1,3 @@
-vim.cmd('let g:sexp_enable_insert_mode_mappings = 0')
-
 local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   packer_bootstrap = vim.fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
@@ -58,6 +56,11 @@ packer.startup(function(use)
     },
   }
 
+  -- use 'folke/lsp-colors.nvim'
+  -- Testar esse aqui também, aproveitar que eu já uso o lualine.
+  -- Alternativa para o fidget.
+  -- use 'arkav/lualine-lsp-progress'
+
   use 'jose-elias-alvarez/null-ls.nvim'
   use 'jose-elias-alvarez/nvim-lsp-ts-utils'
 
@@ -73,11 +76,6 @@ packer.startup(function(use)
     'nvim-treesitter/nvim-treesitter-textobjects',
     after = 'nvim-treesitter'
   }
-
-  -- use 'folke/lsp-colors.nvim'
-  -- Testar esse aqui também, aproveitar que eu já uso o lualine.
-  -- Alternativa para o fidget.
-  -- use 'arkav/lualine-lsp-progress'
 
   use {
     'hrsh7th/nvim-cmp',
