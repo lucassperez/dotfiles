@@ -199,9 +199,11 @@ noremap('n', '<leader>=', ':wincmd =<CR>')
 noremap('n', '<leader>e', ':lua testAndFile.toggle()<CR>')
 
 function RELOAD()
-  vim.cmd [[:so ~/.config/nvim/init.vim]]
-  vim.cmd [[:luafile ~/.config/nvim/lua/keymappings.lua]]
-  vim.cmd [[:luafile ~/.config/nvim/lua/settings.lua]]
+  config_path = vim.fn.stdpath('config')
+  vim.cmd(':so '..config_path..'/init.vim')
+  vim.cmd(':luafile '..config_path..'/lua/keymappings.lua')
+  vim.cmd(':luafile '..config_path..'/lua/settings.lua')
+  print('REALOAD(): Sourcing init.vim, lua/keymappings.lua and lua/settings.lua')
 end
 
 noremap('n', '<leader>zl', ':lua RELOAD()<CR>')
