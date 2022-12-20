@@ -928,6 +928,21 @@ clientbuttons = gears.table.join(
                function (c)
                  c:emit_signal('request::activate', 'mouse_click', { raise = true })
                  awful.mouse.client.resize(c)
+               end),
+  awful.button({ modkey, shift }, 1,
+               function (c)
+                 c:emit_signal('request::activate', 'mouse_click', { raise = true })
+                 awful.mouse.client.resize(c)
+               end),
+  awful.button({ modkey, control }, 1,
+               function (c)
+                 c:emit_signal('request::activate', 'mouse_click', { raise = true })
+                 awful.mouse.client.resize(c)
+               end),
+  awful.button({ modkey, shift, control }, 1,
+               function (c)
+                 c:emit_signal('request::activate', 'mouse_click', { raise = true })
+                 awful.mouse.client.resize(c)
                end)
 )
 
