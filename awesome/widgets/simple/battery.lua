@@ -101,7 +101,7 @@ watch(
         position = 'top_middle',
         height = 80,
         ignore_suspend = true, -- do I really want this?
-        bg = '#ff0000',
+        bg = '#ca4444',
       })
       last_battery_warn = os.time()
     end
@@ -155,7 +155,7 @@ widget:connect_signal(
       if percentage and tonumber(percentage) <= 20 and state ~= 'Charging' then
         urgency = 'critical'
         text = text..'.\nDo something, quick!'
-        bg = '#ff0000' -- since the urgency doesn't seem to work, I did this silliness
+        bg = '#ca4444' -- since the urgency doesn't seem to work, I did this silliness
       else
         urgency = 'low'
         bg = beautiful.notification_bg
