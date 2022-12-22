@@ -742,17 +742,9 @@ clientkeys = gears.table.join(
                 awful.layout.set(awful.layout.layouts[1])
               end
 
-              -- c:raise()
+              c:raise()
             end,
             { group = 'client', description = 'toggle maximize layout', }),
-  -- Sometimes, the above function behaves really weird, and the original toggle
-  -- maximized can be a life saver. The key #104 is the numpad enter.
-  -- awful.key({ modkey }, '#104',
-  --           function (c)
-  --             c.maximized = not c.maximized
-  --             c:raise()
-  --           end,
-  --           { group = 'client', description = '(numpad enter) toggle maximize', }),
   awful.key({ modkey, control, shift }, 'm',
             function (c)
               c.maximized = not c.maximized
