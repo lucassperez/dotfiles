@@ -32,6 +32,7 @@ require('plugins.barbar')
 require('plugins.telescope')
 require('plugins.nvim-tree')
 -- require('plugins.conjure')
+require('plugins.undotree')
 
 -- Meus próprios scritpts
 require('helper-scripts.vtr.test')

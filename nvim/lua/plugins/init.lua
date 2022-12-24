@@ -17,6 +17,8 @@ packer.startup(function(use)
 
   use 'elixir-editors/vim-elixir'
 
+  use 'mbbill/undotree'
+
   -- Clojure things
   -- use { 'Olical/conjure', ft = { 'clojure' }, }
   -- use { 'guns/vim-sexp', ft = { 'clojure' }, }
