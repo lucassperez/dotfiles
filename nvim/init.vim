@@ -80,6 +80,7 @@ call SetupCommandAlias('Wqa', 'wqa')
 call SetupCommandAlias('Wa',  'wa')
 call SetupCommandAlias('Q',   'q')
 call SetupCommandAlias('Qa',  'qa')
+call SetupCommandAlias('qA',  'qa')
 
 " let g:sexp_enable_insert_mode_mappings = 0
 " " vim-sexp mappings

@@ -12,6 +12,9 @@ vim.g.maplocalleader = ','
 -- Go to command mode without using shift
 noremap({ 'n', 'v' }, ';', ':')
 
+-- Cansei de fazer isso aqui sem querer
+noremap('n', 'q:', ':q')
+
 -- Normally C-c already does this, but after installing LSP, the text box
 -- containing completions would sometimes not properly disappear when I C-c out
 -- of insert mode, which did not happen with Esc.
@@ -63,9 +66,13 @@ noremap('n', '<A-w>', ':bnext<CR>')
 -- noremap('n', '<C-k>', '<C-w>k')
 -- noremap('n', '<C-l>', '<C-w>l')
 
--- Copiar para o clipboard
+-- Copiar para o clipboard do sistema
+-- Yank
 noremap({ 'n', 'v' }, '<leader>y', '"+y')
 noremap('n', '<leader>Y', '"+yg_')
+-- Delete
+noremap({ 'n', 'v' }, '<leader>d', '"+d')
+noremap('n', '<leader>D', '"+dg_')
 
 -- Mudar a indentação continuamente
 -- https://github.com/changemewtf/dotfiles/blob/master/vim/.vimrc
@@ -79,6 +86,8 @@ noremap('n', '<', '<<')
 -- Mover blocos de texto
 noremap('v', '<M-j>', ":m '>+1<CR>gv=gv")
 noremap('v', '<M-k>', ":m '<-2<CR>gv=gv")
+noremap('v', 'J', ":m '>+1<CR>gv=gv")
+noremap('v', 'K', ":m '<-2<CR>gv=gv")
 noremap('n', '<M-j>', ':m .+1<CR>==')
 noremap('n', '<M-k>', ':m .-2<CR>==')
 
