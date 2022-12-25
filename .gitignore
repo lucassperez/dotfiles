@@ -2,3 +2,4 @@ nvim/.netrwhist
 nvim/packer
 nvim/undodir
 shells/zsh/plugins/fast-syntax-highlighting
+.luarc.json

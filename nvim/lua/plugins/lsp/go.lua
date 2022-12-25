@@ -7,12 +7,16 @@ function golangImports(timeout_ms)
 
   local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, timeout_ms)
   if not result then return end
+
   local client_id, result = next(result)
   if not client_id then return end
+
   local client = vim.lsp.get_client_by_id(client_id)
   if not client then return end
+
   local actions = result.result
   if not actions then return end
+
   local action = actions[1]
 
   -- textDocument/codeAction can return either Command[] or CodeAction[]. If it
