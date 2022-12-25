@@ -2,8 +2,8 @@ local wibox = require('wibox')
 local naughty = require('naughty')
 
 local text = wibox.widget({
-    font = 'FontAwesome Mono 11',
-    widget = wibox.widget.textbox,
+  font = 'FontAwesome Mono 11',
+  widget = wibox.widget.textbox,
 })
 
 local widget = wibox.widget.background()
@@ -30,7 +30,8 @@ local function random_phrase()
     'NANO POWER CONVERTER',
     'SUBSPACE MOLECULE GENERATOR',
     'INTERDIMENSIONAL FIFINE',
-    'POWER GENETIC TRANSPORTER'
+    'POWER GENETIC TRANSPORTER',
+    '(8) UNDOTEKA (8)',
   }
   return random_from_list(phrases)
 end
@@ -44,11 +45,11 @@ local function random_build_phrase()
     'MAX', 'TURBO', 'ULTRA', 'NITRO', 'MEGA',
     'MAX', 'TURBO', 'ULTRA', 'NITRO', 'MEGA',
   }
-  suffixes ={
+  suffixes = {
     'HYPERPROCESSOR', 'POWERLIGHT', 'POWER CONVERTER', 'MOLECULE GENERATOR',
     'FIFINE', 'GENETIC TRANSPORTER', 'ACCELERATOR', 'QUADRATIC ENGINES'
   }
-  return random_from_list(prefixes)..' '..random_from_list(suffixes)
+  return random_from_list(prefixes) .. ' ' .. random_from_list(suffixes)
 end
 
 local function random_verb()
@@ -73,7 +74,7 @@ function widget:send_turbo_notification()
   else
     phrase = random_build_phrase()
   end
-  phrase = phrase..' '..random_verb()
+  phrase = phrase .. ' ' .. random_verb()
 
   naughty.notify({
     title = phrase,
@@ -82,7 +83,7 @@ function widget:send_turbo_notification()
   })
 end
 
-widget:connect_signal('button::press', function(_,_,_,button)
+widget:connect_signal('button::press', function(_, _, _, button)
   if button == 1 then widget:send_turbo_notification() end
 end)
 

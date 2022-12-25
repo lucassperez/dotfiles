@@ -63,7 +63,7 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. 'my-theme.lua')
 -- This is used later as the default terminal and editor to run.
 terminal = 'alacritty'
 -- terminal = 'kitty'
-floating_terminal='alacritty -t floating-alacritty -o window.opacity=1.0'
+floating_terminal = 'alacritty -t floating-alacritty -o window.opacity=1.0'
 -- Even though my EDITOR env is set to nvim, this does not always work
 -- editor = os.getenv('EDITOR') or 'editor'
 editor = 'nvim'
@@ -467,7 +467,7 @@ globalkeys = gears.table.join(
             function() notification_widget:toggle() end,
             { group = 'System controls', description = 'toggle notification', }),
 
-  awful.key({ modkey }, 's',      hotkeys_popup.show_help,   { description = 'show help', group='awesome' }),
+  awful.key({ modkey }, 's',      hotkeys_popup.show_help,   { description = 'show help', group = 'awesome' }),
   -- awful.key({ modkey }, 'Left',   awful.tag.viewprev,        { description = 'view previous', group = 'tag' }),
   -- awful.key({ modkey }, 'Right',  awful.tag.viewnext,        { description = 'view next', group = 'tag' }),
   awful.key({ modkey }, 'Escape', awful.tag.history.restore, { description = 'go back', group = 'tag' }),
