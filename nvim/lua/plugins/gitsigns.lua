@@ -46,14 +46,27 @@ gitsigns.setup({
     enable = false
   },
   on_attach = function(bufnr)
-    vim.keymap.set('n', '[c', function() gitsigns.prev_hunk() end)
-    vim.keymap.set('n', ']c', function() gitsigns.next_hunk() end)
+    local map_hunk_navigation = function(keymap, hunk_function, show_preview)
+      vim.keymap.set('n', keymap, function()
+        hunk_function({ wrap = false, preview = show_preview})
+        vim.schedule(function() vim.api.nvim_feedkeys('zz', 'n', false) end)
+      end)
+    end
+
+    map_hunk_navigation('[c', gitsigns.prev_hunk, false)
+    map_hunk_navigation(']c', gitsigns.next_hunk, false)
+    map_hunk_navigation('[C', gitsigns.prev_hunk, true)
+    map_hunk_navigation(']C', gitsigns.next_hunk, true)
+
     vim.keymap.set('n', ',ch', function() gitsigns.preview_hunk() end)
+    vim.keymap.set('n', ',cr', function() gitsigns.reset_hunk() end)
     vim.keymap.set('n', ',cw', function() print('Gitsigns word diff toggled: '..tostring(gitsigns.toggle_word_diff())) end)
 
     -- Text objects
     vim.keymap.set({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { silent = true })
     vim.keymap.set({'o', 'x'}, 'ah', ':<C-U>Gitsigns select_hunk<CR>', { silent = true })
+    vim.keymap.set({'o', 'x'}, 'ic', ':<C-U>Gitsigns select_hunk<CR>', { silent = true })
+    vim.keymap.set({'o', 'x'}, 'ac', ':<C-U>Gitsigns select_hunk<CR>', { silent = true })
   end,
 })
 
