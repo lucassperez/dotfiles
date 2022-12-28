@@ -8,18 +8,18 @@ cmp.setup({
   snippet = {
     expand = function(args) luasnip.lsp_expand(args.body) end
   },
-  mapping = {
-    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+  mapping = cmp.mapping.preset.insert({
+    ['<C-Space>'] = cmp.mapping.complete(),
 
     -- Accept currently selected item. Set `select` to `false`
     -- to only confirm explicitly selected items.
     ['<CR>'] = cmp.mapping.confirm({ select = false }),
 
-    ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i','c' }),
-    ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i','c' }),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
 
-    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i','c' }),
-    ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i','c' }),
+    ['<C-d>'] = cmp.mapping.scroll_docs(4),
+    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
 
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
@@ -39,7 +39,7 @@ cmp.setup({
         fallback()
       end
     end, { 'i', 's' }),
-  },
+  }),
   sources = {
     -- Order matters here,
     -- top sources have higher priorities
