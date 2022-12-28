@@ -81,6 +81,12 @@ call SetupCommandAlias('Wa',  'wa')
 call SetupCommandAlias('Q',   'q')
 call SetupCommandAlias('Qa',  'qa')
 call SetupCommandAlias('qA',  'qa')
+" This can kinda be done in lua with vim.api.nvim_create_user_command
+" vim.api.nvim_create_user_command('W',   'w', {})
+" The difference is that with vimscript, when I execute :Wa, it shows :wa, and
+" the lua version only allows commands that start with uppercase letter, so I
+" can setup the 'qA' command, for example,
+" which has questionable usefulness, but still...
 
 " let g:sexp_enable_insert_mode_mappings = 0
 " " vim-sexp mappings
