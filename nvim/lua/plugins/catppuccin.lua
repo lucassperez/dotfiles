@@ -40,7 +40,7 @@ require('catppuccin').setup({
     nvimtree = false,
   },
   custom_highlights = function(colors)
-    custom_highlights_table = {
+    local custom_highlights_table = {
       CursorLine  = { bg = '#3a3b3c' },
       ColorColumn = { bg = '#4e4e4e' },
       Pmenu       = { bg = '#090d24' },

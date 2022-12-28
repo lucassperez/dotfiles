@@ -21,43 +21,43 @@ local colors = {
 -- LuaFormatter on
 return {
   normal = {
-    a = {bg = colors.green, fg = colors.bg0, gui = 'bold'},
-    b = {bg = colors.bg3, fg = colors.fg},
-    c = {bg = colors.bg1, fg = colors.fg}
+    a = { bg = colors.green, fg = colors.bg0, gui = 'bold' },
+    b = { bg = colors.bg3, fg = colors.fg },
+    c = { bg = colors.bg1, fg = colors.fg }
   },
   insert = {
-    a = {bg = colors.fg, fg = colors.bg0, gui = 'bold'},
-    b = {bg = colors.bg3, fg = colors.fg},
-    c = {bg = colors.bg1, fg = colors.fg}
+    a = { bg = colors.fg, fg = colors.bg0, gui = 'bold' },
+    b = { bg = colors.bg3, fg = colors.fg },
+    c = { bg = colors.bg1, fg = colors.fg }
   },
   visual = {
-    a = {bg = colors.red, fg = colors.bg0, gui = 'bold'},
-    b = {bg = colors.bg3, fg = colors.fg},
-    c = {bg = colors.bg1, fg = colors.fg}
+    a = { bg = colors.red, fg = colors.bg0, gui = 'bold' },
+    b = { bg = colors.bg3, fg = colors.fg },
+    c = { bg = colors.bg1, fg = colors.fg }
   },
   replace = {
-    a = {bg = colors.orange, fg = colors.bg0, gui = 'bold'},
-    b = {bg = colors.bg3, fg = colors.fg},
-    c = {bg = colors.bg1, fg = colors.fg}
+    a = { bg = colors.orange, fg = colors.bg0, gui = 'bold' },
+    b = { bg = colors.bg3, fg = colors.fg },
+    c = { bg = colors.bg1, fg = colors.fg }
   },
   command = {
-    a = {bg = colors.aqua, fg = colors.bg0, gui = 'bold'},
-    b = {bg = colors.bg3, fg = colors.fg},
-    c = {bg = colors.bg1, fg = colors.fg}
+    a = { bg = colors.aqua, fg = colors.bg0, gui = 'bold' },
+    b = { bg = colors.bg3, fg = colors.fg },
+    c = { bg = colors.bg1, fg = colors.fg }
   },
   terminal = {
-    a = {bg = colors.purple, fg = colors.bg0, gui = 'bold'},
-    b = {bg = colors.bg3, fg = colors.fg},
-    c = {bg = colors.bg1, fg = colors.fg}
+    a = { bg = colors.purple, fg = colors.bg0, gui = 'bold' },
+    b = { bg = colors.bg3, fg = colors.fg },
+    c = { bg = colors.bg1, fg = colors.fg }
   },
   inactive = {
-    a = {bg = colors.grey2, fg = colors.preto, gui = 'bold'},
-    b = {bg = colors.grey2, fg = colors.preto},
-    c = {bg = colors.grey2, fg = colors.preto}
+    a = { bg = colors.grey2, fg = colors.preto, gui = 'bold' },
+    b = { bg = colors.grey2, fg = colors.preto },
+    c = { bg = colors.grey2, fg = colors.preto }
   },
   -- inactive = {
-  --   a = {bg = colors.bg1, fg = colors.fg, gui = 'bold'},
-  --   b = {bg = colors.bg1, fg = colors.fg},
-  --   c = {bg = colors.bg1, fg = colors.fg}
+  --   a = { bg = colors.bg1, fg = colors.fg, gui = 'bold' },
+  --   b = { bg = colors.bg1, fg = colors.fg },
+  --   c = { bg = colors.bg1, fg = colors.fg }
   -- },
 }

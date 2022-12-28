@@ -1,5 +1,6 @@
 local function elixirFunction()
   local filename = vim.fn.expand('%')
+  local result
   if filename:match('test/.*') then
     result = filename:gsub('^(.*)test/(.*)_test.exs$', 'lib/%2.ex')
   else
@@ -28,6 +29,7 @@ end
 
 local function clojureFunction()
   local filename = vim.fn.expand('%')
+  local result
   if filename:match('test/.*') then
     result = filename:gsub('^(.*)test/(.*)_test.clj$', 'src/%2.clj')
   else
@@ -38,6 +40,7 @@ end
 
 function rubyFunction()
   local filename = vim.fn.expand('%')
+  local result
   if filename:match('spec.*_spec.rb$') then
     result = filename:gsub('^spec/(.*)_spec.rb$', 'app/%1.rb')
   else
@@ -73,7 +76,7 @@ end
 --   return path..filename
 -- end
 
-filenameFunctions = {
+local filenameFunctions = {
     elixir = elixirFunction,
     ruby = rubyFunction,
     typescriptreact = tsReactFunction,

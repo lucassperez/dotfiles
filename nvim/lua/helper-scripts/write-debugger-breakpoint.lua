@@ -1,7 +1,7 @@
 function writeDebuggerBreakpoint(above)
   local filetype = vim.bo.filetype
 
-  debugger_commands = {
+  local debugger_commands = {
     elixir = 'require IEx; IEx.pry()',
     ruby = 'binding.pry',
   }

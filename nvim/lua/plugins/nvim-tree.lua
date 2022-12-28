@@ -1,5 +1,4 @@
-local tree_cb = require('nvim-tree.config').nvim_tree_callback
-require('nvim-tree').setup {
+require('nvim-tree').setup({
   disable_netrw             = false,
   hijack_netrw              = true,
   open_on_setup             = false,
@@ -77,7 +76,7 @@ require('nvim-tree').setup {
       }
     }
   }
-}
+})
 
 vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true, silent = false })
 vim.api.nvim_set_keymap('n', '<leader>n', ':NvimTreeFindFile<CR>', { noremap = true, silent = false })

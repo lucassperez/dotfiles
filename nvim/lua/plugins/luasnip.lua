@@ -1,6 +1,6 @@
-local ls = require('luasnip')
-local types = require('luasnip.util.types')
+local luasnip = require('luasnip')
+-- local types = require('luasnip.util.types')
 
-ls.config.set_config({
+luasnip.config.set_config({
   history = true
 })
