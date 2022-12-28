@@ -17,7 +17,7 @@ local function random_from_list(list)
 end
 
 local function random_phrase()
-  phrases = {
+  local phrases = {
     'MAX TURBO',
     'ULTRA NITRO',
     'MEGA BLASTER',
@@ -37,7 +37,7 @@ local function random_phrase()
 end
 
 local function random_build_phrase()
-  prefixes = {
+  local prefixes = {
     'MAX', 'TURBO', 'ULTRA', 'NITRO', 'MEGA', 'BLASTER', 'HYPER', 'BIONIC',
     'SPACE', 'EXTREME', 'ULTIMATE', 'COSMIC', 'SUPER', 'TRANSLUSCENT',
     'FINAL', 'ROBOTIC', 'INTERGALATIC', 'NANO', 'POWER', 'SUBSPACE',
@@ -45,7 +45,7 @@ local function random_build_phrase()
     'MAX', 'TURBO', 'ULTRA', 'NITRO', 'MEGA',
     'MAX', 'TURBO', 'ULTRA', 'NITRO', 'MEGA',
   }
-  suffixes = {
+  local suffixes = {
     'HYPERPROCESSOR', 'POWERLIGHT', 'POWER CONVERTER', 'MOLECULE GENERATOR',
     'FIFINE', 'GENETIC TRANSPORTER', 'ACCELERATOR', 'QUADRATIC ENGINES'
   }
@@ -53,7 +53,7 @@ local function random_build_phrase()
 end
 
 local function random_verb()
-  verbs = {
+  local verbs = {
     'ACTIVATED', 'STARTED', 'NEUTRALIZED', 'DESTROYED', 'INTERRUPTED',
     'ACCELERATED', 'HEATING UP', 'SHUTTING DOWN', 'DOWN', 'IGNITED',
     'TURNED ON', 'BOOTED SUCCESFULLY', 'RECOVERED', 'SENT TO INTERDIMENSIONAL RIFT',
@@ -69,6 +69,7 @@ function widget:send_turbo_notification()
 
   naughty.destroy_all_notifications()
 
+  local phrase
   if math.random(2) == 1 then
     phrase = random_phrase()
   else

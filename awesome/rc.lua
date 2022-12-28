@@ -42,7 +42,7 @@ do
   local in_error = false
   awesome.connect_signal(
     'debug::error',
-    function (err)
+    function(err)
       -- Make sure we don't go into an endless error loop
       if in_error then return end
       in_error = true
@@ -61,21 +61,21 @@ end
 beautiful.init(gears.filesystem.get_configuration_dir() .. 'my-theme.lua')
 
 -- This is used later as the default terminal and editor to run.
-terminal = 'alacritty'
+local terminal = 'alacritty'
 -- terminal = 'kitty'
-floating_terminal = 'alacritty -t floating-alacritty -o window.opacity=1.0'
+local floating_terminal = 'alacritty -t floating-alacritty -o window.opacity=1.0'
 -- Even though my EDITOR env is set to nvim, this does not always work
 -- editor = os.getenv('EDITOR') or 'editor'
-editor = 'nvim'
-editor_cmd = terminal .. ' -e ' .. editor
-browser = 'firefox'
+local editor = 'nvim'
+local editor_cmd = terminal .. ' -e ' .. editor
+local browser = 'firefox'
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 -- If you do not like this or do not have such a key,
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = 'Mod4'
+local modkey = 'Mod4'
 
 local control = 'Control'
 local shift = 'Shift'
@@ -104,7 +104,7 @@ awful.layout.layouts = {
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
-myawesomemenu = {
+local myawesomemenu = {
   { 'Hotkeys', function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
   { 'Manual', floating_terminal .. ' -e man awesome' },
   { 'Edit config', editor_cmd .. ' ' .. awesome.conffile },
@@ -114,7 +114,7 @@ myawesomemenu = {
 
 local menu_awesome = { 'Awesome', myawesomemenu, beautiful.awesome_icon }
 
-mymainmenu = awful.menu({
+local mymainmenu = awful.menu({
   items = {
     menu_awesome,
     { '&Terminal', terminal },
@@ -141,7 +141,7 @@ mymainmenu = awful.menu({
 --   })
 -- end
 
-mylauncher = awful.widget.launcher({
+local mylauncher = awful.widget.launcher({
   image = beautiful.awesome_icon,
   menu = mymainmenu
 })
@@ -155,20 +155,20 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- {{{ Wibar
 -- Create a wibox for each screen and add it
-local taglist_buttons = gears.table.join(
-  awful.button({}, 1, function(t) t:view_only() end),
-  awful.button(
-  { modkey }, 1,
-  function(t) if client.focus then client.focus:move_to_tag(t) end end),
-
-  awful.button({}, 3, awful.tag.viewtoggle),
-  awful.button(
-  { modkey }, 3,
-  function(t) if client.focus then client.focus:toggle_tag(t) end end),
-
-  awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
-  awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end)
-)
+-- local taglist_buttons = gears.table.join(
+--   awful.button({}, 1, function(t) t:view_only() end),
+--   awful.button(
+--   { modkey }, 1,
+--   function(t) if client.focus then client.focus:move_to_tag(t) end end),
+--
+--   awful.button({}, 3, awful.tag.viewtoggle),
+--   awful.button(
+--   { modkey }, 3,
+--   function(t) if client.focus then client.focus:toggle_tag(t) end end),
+--
+--   awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
+--   awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end)
+-- )
 
 local tasklist_buttons = gears.table.join(
   awful.button(
@@ -362,7 +362,7 @@ root.buttons(
 -- }}}
 
 -- {{{ Key bindings
-globalkeys = gears.table.join(
+local globalkeys = gears.table.join(
 -- 122 XF86AudioLowerVolume
 -- 37  Control_L
 -- 133 Super_L
@@ -379,7 +379,7 @@ globalkeys = gears.table.join(
 -- 148 XF86Calculator
 
   awful.key({ modkey }, 'c',
-            function() awful.spawn('/home/lucas/scripts/dmenu/monitors-dmenu.sh') end,
+            function() awful.spawn('/home/lucas/scripts/monitors-dmenu.sh') end,
             { group = 'System controls', description = 'choose second monitor position and/or reset wallpaper', }),
   -- awful.key({ modkey }, 'y',
   --           function() awful.spawn('/home/lucas/scripts/dmenu/copyq.sh') end,
@@ -627,7 +627,10 @@ globalkeys = gears.table.join(
             -- function () awful.spawn('dmenu_run -i -h 21 -p "search" -sb "#008080" -nb "#363636"') end,
             -- function () awful.spawn('dmenu_run -i -h 21 -p "search" -sb "#008080" -nb "#000000"') end,
             function () awful.spawn('dmenu_run -i -h 21 -p "search"') end,
-            { group = 'Launcher', description = 'run dmenu', }),
+            { group = 'Launcher', description = 'run dmenu_run', }),
+  awful.key({ modkey, control }, 'd',
+            function () awful.spawn('j4-dmenu-desktop') end,
+            { group = 'Launcher', description = 'run j4-dmenu-desktop', }),
   awful.key({ modkey }, 'b',
             function() awful.spawn(browser) end,
             { group = 'Launcher', description = 'open '..browser..' browser', }),
@@ -676,7 +679,7 @@ globalkeys = gears.table.join(
             function() turbo_widget:send_turbo_notification() end,
             { group = 'TURBO', description = 'Activate TURBO mode' }),
   -- Menubar (dmenu's brother, so it has similar keybinding)
-  awful.key({ modkey, control }, 'd',
+  awful.key({ modkey, shift }, 'd',
             function() menubar.show() end,
             { group = 'Launcher', description = 'show the menubar', }),
 
@@ -692,7 +695,7 @@ globalkeys = gears.table.join(
             { group = 'awesome', description = 'lua execute prompt', })
 )
 
-clientkeys = gears.table.join(
+local clientkeys = gears.table.join(
   awful.key({ modkey, }, 'f',
             function (c)
               c.fullscreen = not c.fullscreen
@@ -908,7 +911,7 @@ tag.connect_signal(
 -- see https://github.com/awesomeWM/awesome/issues/2780
 awful.tag.history.restore = function() end
 
-clientbuttons = gears.table.join(
+local clientbuttons = gears.table.join(
   awful.button({}, 1,
                function (c) c:emit_signal('request::activate', 'mouse_click', { raise = true }) end),
   awful.button({ modkey }, 1,
