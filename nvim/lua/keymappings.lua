@@ -31,9 +31,9 @@ noremap('n', '<leader>c', '<C-w>c')
 -- pra tentar acostumar a usar H e L
 -- map('n', 'ç', '$')
 -- map('v', 'ç', '$h')
-map('n', 'L', '$')
+map({ 'n', 'o', }, 'L', '$')
 map('v', 'L', '$h')
-map({ 'n', 'v' }, 'H', '_')
+map({ 'n', 'v', 'o', }, 'H', '^')
 
 -- Abrir o último arquivo editado
 noremap('n', '<leader><Space>', ':e#<CR>')
@@ -208,7 +208,7 @@ noremap('n', '<leader>=', ':wincmd =<CR>')
 noremap('n', '<leader>e', ':lua testAndFile.toggle()<CR>')
 
 function RELOAD()
-  config_path = vim.fn.stdpath('config')
+  local config_path = vim.fn.stdpath('config')
   vim.cmd(':so '..config_path..'/init.vim')
   vim.cmd(':luafile '..config_path..'/lua/keymappings.lua')
   vim.cmd(':luafile '..config_path..'/lua/settings.lua')
