@@ -25,6 +25,7 @@ local default_capabilities = vim.lsp.protocol.make_client_capabilities()
 default_capabilities = require('cmp_nvim_lsp').default_capabilities(default_capabilities)
 
 require('plugins.fidget')
+require('plugins.neodev')
 require('mason').setup()
 
 local mason_lspconfig = require('mason-lspconfig')
