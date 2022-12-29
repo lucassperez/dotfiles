@@ -14,8 +14,8 @@ local function default_on_attach(client, bufnr)
   -- map('n', '\\r', function() vim.lsp.buf.references() end, map_opts)
   map('n', '\\r', function() require('telescope.builtin').lsp_references() end, map_opts)
   map('n', '\\d', function() vim.diagnostic.open_float() end, map_opts)
-  map('n', '[d',  function() vim.diagnostic.goto_prev(); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
-  map('n', ']d',  function() vim.diagnostic.goto_next(); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
+  map('n', '[d',  function() vim.diagnostic.goto_prev({ wrap = false }); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
+  map('n', ']d',  function() vim.diagnostic.goto_next({ wrap = false }); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
   map('n', '\\i', function() vim.lsp.buf.implementation() end, map_opts)
   local root_dir = client.config.root_dir
   if root_dir then vim.api.nvim_set_current_dir(root_dir) end
@@ -23,6 +23,15 @@ end
 
 local default_capabilities = vim.lsp.protocol.make_client_capabilities()
 default_capabilities = require('cmp_nvim_lsp').default_capabilities(default_capabilities)
+
+local default_handlers = {
+  ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { stylize_markdown = false, })
+}
+
+local function merge_handlers_with_default_handlers(handler)
+  if not handler then return default_handlers end
+  return handler["textDocument/hover"] or default_handlers["textDocument/hover"]
+end
 
 require('plugins.fidget')
 require('plugins.neodev')
@@ -41,6 +50,7 @@ mason_lspconfig.setup_handlers({
 
     options.capabilities = options.capabilities or default_capabilities
     options.on_attach = options.on_attach or default_on_attach
+    options.handlers = merge_handlers_with_default_handlers(options.handlers)
 
     require('lspconfig')[server_name].setup(options)
   end

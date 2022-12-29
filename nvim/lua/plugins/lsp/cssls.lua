@@ -11,12 +11,12 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 --   local map = vim.keymap.set
 
 --   local map_opts = { noremap = true, buffer = bufnr }
---   map('n', '\\f', function() vim.lsp.buf.format({ async = true }) end, map_opts)
---   -- map('n', 'K',   function() vim.lsp.buf.definition() end, map_opts) -- I wish
---   map('n', '\\k', function() vim.lsp.buf.hover() end, map_opts)
---   map('n', '\\d', function() vim.diagnostic.open_float() end, map_opts)
---   map('n', '[d',  function() vim.diagnostic.goto_prev(); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
---   map('n', ']d',  function() vim.diagnostic.goto_next(); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
+  -- map('n', '\\f', function() vim.lsp.buf.format({ async = true }) end, map_opts)
+  -- -- map('n', 'K',   function() vim.lsp.buf.definition() end, map_opts) -- I wish
+  -- map('n', '\\k', function() vim.lsp.buf.hover() end, map_opts)
+  -- map('n', '\\d', function() vim.diagnostic.open_float() end, map_opts)
+  -- map('n', '[d',  function() vim.diagnostic.goto_prev({ wrap = false }); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
+  -- map('n', ']d',  function() vim.diagnostic.goto_next({ wrap = false }); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
 
 --   local root_dir = client.config.root_dir
 --   if root_dir then vim.api.nvim_set_current_dir(root_dir) end

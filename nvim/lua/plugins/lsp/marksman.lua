@@ -14,8 +14,8 @@ local function on_attach(client, bufnr)
   map('n', '\\n', function() vim.lsp.buf.rename() end, map_opts)
   map('n', '\\r', function() require('telescope.builtin').lsp_references() end, map_opts)
   map('n', '\\d', function() vim.diagnostic.open_float() end, map_opts)
-  map('n', '[d',  function() vim.diagnostic.goto_prev(); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
-  map('n', ']d',  function() vim.diagnostic.goto_next(); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
+  map('n', '[d',  function() vim.diagnostic.goto_prev({ wrap = false }); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
+  map('n', ']d',  function() vim.diagnostic.goto_next({ wrap = false }); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
 
   local root_dir = client.config.root_dir
   if root_dir then vim.api.nvim_set_current_dir(root_dir) end
