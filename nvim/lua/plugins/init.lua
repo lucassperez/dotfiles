@@ -72,12 +72,8 @@ packer.startup(function(use)
     run = 'TSUpdate',
     requires = {
       'nvim-treesitter/playground',
+      'nvim-treesitter/nvim-treesitter-textobjects',
     },
-  }
-
-  use {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-    after = 'nvim-treesitter'
   }
 
   use {
