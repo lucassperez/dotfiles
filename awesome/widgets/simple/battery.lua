@@ -21,10 +21,12 @@ watch(
   'acpi -b',
   5,
   function(widget, stdout, stderr, exitreason, exitcode)
-    local state, percentage, rest = stdout:match('Battery %d+: (%w*), (%d*)%%')
-    local percentage = tonumber(percentage)
+    local state, percentage, rest = stdout:match('Battery %d+: ([%w ]*), (%d*)%%')
+    percentage = tonumber(percentage)
 
     local message, color, bg
+
+    if percentage >= 99 then percentage = 100 end
 
     if percentage <= 10 then
       bg = '#ff0000'
@@ -69,6 +71,8 @@ watch(
     elseif state == 'Charging' then
       message = ' '..percentage..'%'
       color = '#00ff00'
+    -- elseif state == 'Not charging' then
+    --   message = '? '..percentage..'%'
     elseif percentage >= 90 then
       message = ' '..percentage..'%'
     elseif percentage >= 67 then
