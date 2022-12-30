@@ -99,6 +99,11 @@ awful.layout.layouts = {
   -- awful.layout.suit.corner.ne,
   -- awful.layout.suit.corner.sw,
   -- awful.layout.suit.corner.se,
+
+  -- Two reasons to add the max layout here:
+  -- 1. When I toggled it with my mod + m key, it started to simply appear on the list anyways
+  -- 2. I can now go to this layout with the mouse
+  awful.layout.suit.max,
 }
 -- }}}
 
