@@ -11,6 +11,7 @@ end
 
 require('keymappings')
 require('settings')
+require('commands') -- Vimscript used to create commands
 
 -- require('plugins.tokyonight')
 require('plugins.catppuccin')
@@ -25,6 +26,8 @@ require('plugins.cmp')
 -- require('plugins.luasnip')
 require('plugins.nvim-surround')
 require('plugins.nvim-autopairs')
+require('plugins.lexima')
+require('plugins.vim-closetag')
 require('plugins.lualine')
 require('plugins.Comment')
 -- require('plugins.buftabline')
@@ -32,6 +35,7 @@ require('plugins.barbar')
 require('plugins.telescope')
 require('plugins.nvim-tree')
 -- require('plugins.conjure')
+-- require('plugins.vim-sexp')
 require('plugins.undotree')
 
 -- Meus próprios scritpts

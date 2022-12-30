@@ -30,6 +30,7 @@ o.splitright = true
 bo.swapfile = false
 
 -- window
+wo.colorcolumn = '81,121'
 wo.cursorline = true
 wo.number = true -- número das linhas
 wo.relativenumber = true -- números relativos (tipo distâncias) ao cursor

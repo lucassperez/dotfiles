@@ -92,6 +92,11 @@ hi @namespace gui=NONE cterm=NONE
 " hi link elixirAlias @type
 " hi link elixirExUnitAssert elixirFunctionDeclaration
 " hi link elixirFunctionDeclaration @function
+
+" hi DiffAdd    guibg=NONE
+" hi DiffChange guibg=NONE
+" hi DiffDelete guibg=NONE
+" hi DiffText   guibg=NONE
 ]])
 
 --[[
