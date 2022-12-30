@@ -50,8 +50,16 @@ local function on_attach(client, bufnr)
   -- map('n', '\\r', function() vim.lsp.buf.references() end, map_opts)
   map('n', '\\r', function() require('telescope.builtin').lsp_references() end, map_opts)
   map('n', '\\d', function() vim.diagnostic.open_float() end, map_opts)
-  map('n', '[d',  function() vim.diagnostic.goto_prev({ wrap = false }); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
-  map('n', ']d',  function() vim.diagnostic.goto_next({ wrap = false }); vim.api.nvim_feedkeys('zz', 'n', false) end, map_opts)
+  map('n', '[d',  function()
+    local should_center = vim.diagnostic.get_prev({ wrap = false })
+    vim.diagnostic.goto_prev({ wrap = false })
+    if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end
+  end, map_opts)
+  map('n', ']d',  function()
+    local should_center = vim.diagnostic.get_next({ wrap = false })
+    vim.diagnostic.goto_next({ wrap = false })
+    if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end
+  end, map_opts)
   map('n', '\\i', function() vim.lsp.buf.implementation() end, map_opts)
   map('n', '\\I', function() GolangImports(1000) end, map_opts)
 
