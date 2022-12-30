@@ -1,4 +1,4 @@
-vim.api.nvim_set_keymap('n', '<C-p>', ':lua telescopeGitOrFindFiles()<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-p>', ':lua TelescopeGitOrFindFiles()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-f>', ':Telescope live_grep<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>P', ':Telescope buffers<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>h', ':Telescope oldfiles<CR>', { noremap = true })
@@ -7,7 +7,7 @@ vim.api.nvim_set_keymap('n', '<leader>zv', ':Telescope find_files cwd=/home/luca
 
 -- You dont need to set any of these options. These are the default ones. Only
 -- the loading is important
-require('telescope').setup {
+require('telescope').setup({
   pickers = {
     lsp_references = { show_line = false },
   },
@@ -32,14 +32,14 @@ require('telescope').setup {
                                        -- the default case_mode is "smart_case"
     },
   },
-}
+})
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
 require('telescope').load_extension('fzf')
 
 local telescope_builtin = require('telescope.builtin')
 
-function telescopeGitOrFindFiles(opts)
+function TelescopeGitOrFindFiles(opts)
   local code = os.execute('git rev-parse --git-dir 2>/dev/null 1>&2')
   if code == 0 then
     telescope_builtin.git_files(opts)

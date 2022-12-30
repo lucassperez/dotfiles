@@ -1,4 +1,4 @@
-require('buftabline').setup {
+require('buftabline').setup({
   tab_format = ' #{b}#{f} ',
   buffer_id_index = false,
   icon_colors = true,
@@ -25,4 +25,4 @@ require('buftabline').setup {
   show_tabpages = true,
   tabpage_format = ' #{n} ',
   tabpage_position = 'right',
-}
+})

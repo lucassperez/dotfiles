@@ -12,7 +12,7 @@ npairs.setup({
   check_ts = false,
 })
 
-npairs.add_rules {
+npairs.add_rules({
   -- Space inside parens
   Rule(' ', ' ')
     :with_pair(function (opts)
@@ -37,4 +37,4 @@ npairs.add_rules {
       return opts.prev_char:match('.%]') ~= nil
     end)
     :use_key(']'),
-}
+})

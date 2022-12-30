@@ -1,11 +1,11 @@
 require('nvim-tree').setup({
-  disable_netrw             = false,
-  hijack_netrw              = true,
-  open_on_setup             = false,
-  open_on_tab               = true,
-  update_cwd                = true,
-  hijack_cursor             = false,
-  respect_buf_cwd           = true,
+  disable_netrw       = false,
+  hijack_netrw        = true,
+  open_on_setup       = false,
+  open_on_tab         = true,
+  update_cwd          = true,
+  hijack_cursor       = false,
+  respect_buf_cwd     = true,
   update_focused_file = { enable = false },
   filters = {
     dotfiles = false,
@@ -92,7 +92,7 @@ hi NvimTreeGitRenamed guifg=NONE
 hi NvimTreeGitDirty   guifg=NONE
 hi NvimTreeGitDeleted guifg=NONE
 
-hi NvimTreeRootFolder   guifg=NONE gui=BOLD
+hi NvimTreeRootFolder   guifg=NONE    gui=BOLD
 hi NvimTreeOpenedFile   guifg=NONE    gui=BOLD
 hi NvimTreeIndentMarker guifg=#8094b4
 hi NvimTreeSymlink      guifg=#06989a gui=BOLD
