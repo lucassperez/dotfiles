@@ -3,24 +3,42 @@
 // Dmenu options that I was using: -sb "#008080" -nb "#363636"
 
 /*
-This is a copy of the purple theme with very few values changed:
-  selected-normal-background
-  alternate-normal-background
-  normal-background
+This is a copy of the purple theme with a few values changed:
   background
+  selected-normal-background
+  normal-background
+  alternate-normal-background
+  selected-active-background
+  active-background
+  alternate-active-background
+  active-foreground
+  selected-active-foreground
 */
 
 * {
-    selected-normal-background:  #008080;
-
-    alternate-normal-background: #363636;
-    normal-background:           #161616;
     background:                  #001212;
 
-    /* alternate-normal-background: #001212; */
-    /* normal-background:           #001010; */
-    /* background:                  #363636; */
-    /* background:                  #111111; */
+    selected-normal-background:  #008080;
+    normal-background:           #161616;
+    alternate-normal-background: #363636;
+
+    selected-active-background:  #006060;
+    active-background:           @normal-background;
+    alternate-active-background: @alternate-normal-background;
+
+    active-foreground:           #ffffff;
+    selected-active-foreground:  #ffffff;
+
+    // Original purple theme values
+    /* background:                  rgba ( 47, 30, 46, 100 % ); */
+    /* selected-normal-background:  rgba ( 129, 91, 164, 33 % ); */
+    /* normal-background:           rgba ( 47, 30, 46, 63 % ); */
+    /* alternate-normal-background: rgba ( 47, 30, 46, 63 % ); */
+    /* selected-active-background:  rgba ( 129, 91, 164, 33 % ); */
+    /* active-background:           rgba ( 47, 30, 46, 15 % ); */
+    /* alternate-active-background: rgba ( 47, 30, 46, 18 % ); */
+    /* active-foreground:           rgba ( 129, 91, 164, 100 % ); */
+    /* selected-active-foreground:  rgba ( 129, 91, 164, 100 % ); */
 
     selected-normal-foreground:  rgba ( 255, 255, 255, 100 % );
     foreground:                  rgba ( 180, 180, 180, 100 % );
@@ -30,10 +48,7 @@ This is a copy of the purple theme with very few values changed:
     blue:                        rgba ( 38, 139, 210, 100 % );
     urgent-foreground:           rgba ( 239, 97, 85, 100 % );
     alternate-urgent-background: rgba ( 47, 30, 46, 18 % );
-    active-foreground:           rgba ( 129, 91, 164, 100 % );
     lightbg:                     rgba ( 238, 232, 213, 100 % );
-    selected-active-foreground:  rgba ( 129, 91, 164, 100 % );
-    alternate-active-background: rgba ( 47, 30, 46, 18 % );
     bordercolor:                 rgba ( 239, 97, 85, 21 % );
     alternate-normal-foreground: @foreground;
     lightfg:                     rgba ( 88, 104, 117, 100 % );
@@ -45,8 +60,6 @@ This is a copy of the purple theme with very few values changed:
     alternate-urgent-foreground: @urgent-foreground;
     background-color:            rgba ( 0, 0, 0, 0 % );
     alternate-active-foreground: @active-foreground;
-    active-background:           rgba ( 47, 30, 46, 15 % );
-    selected-active-background:  rgba ( 129, 91, 164, 33 % );
 }
 window {
     background-color: @background;
