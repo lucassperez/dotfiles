@@ -91,6 +91,9 @@ dnf install awesome network-manager-applet xcompmgr autoconf automake pixman-dev
   xcb-util-image-devel xcb-util-devel libjpeg-turbo-devel libXpm-devel fontawesome-fonts \
   lxappearance light xrandr slock numlockx
 
+# Rofi things
+sudo dnf install rofi rofimoji
+
 light -N 1
 git clone git@github.com:frioux/charitable.git /home/lucas/.config/awesome/charitable
 mkdir -p ~/sources

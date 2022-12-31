@@ -18,12 +18,10 @@ recursively_symlink_scripts() {
     if [ -d $f ] && `dir_not_in_list "$f" "$dirs_list"`; then
       dirs_list="$f,$dirs_list"
       cd $f
-      printf "Creating \e[1m$destination_path/$f\e[0m if it does not already exists\n"
       mkdir -p "$destination_path/$f"
       recursively_symlink_scripts `pwd` "$destination_path/$f" "$dirs_list"
       cd ..
     elif [ -x $f ] || echo "$f" | grep -q '\.sh$'; then
-      printf "Creating symlink to: \e[1;36m$destination_path/$f\e[0m\n"
       ln -sfni "$current_dir/$f" "$destination_path/$f"
     fi
   done
