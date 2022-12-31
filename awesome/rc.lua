@@ -70,6 +70,8 @@ local editor = 'nvim'
 local editor_cmd = terminal .. ' -e ' .. editor
 local browser = 'firefox'
 
+local home = os.getenv('HOME')
+
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 -- If you do not like this or do not have such a key,
@@ -384,10 +386,10 @@ local globalkeys = gears.table.join(
 -- 148 XF86Calculator
 
   awful.key({ modkey }, 'c',
-            function() awful.spawn('/home/lucas/scripts/monitors-dmenu.sh') end,
+            function() awful.spawn(home..'/scripts/monitors-dmenu.sh') end,
             { group = 'System controls', description = 'choose second monitor position and/or reset wallpaper', }),
   -- awful.key({ modkey }, 'y',
-  --           function() awful.spawn('/home/lucas/scripts/dmenu/copyq.sh') end,
+  --           function() awful.spawn(home..'/scripts/dmenu/copyq.sh') end,
   --           { group = 'System controls', description = 'Copyq dmenu script', }),
   awful.key({ modkey }, 'y',
             function() awful.spawn('clipmenu -i -h 21 -p "Clipboard" -sb "#008080" -nb "#000000"') end,
@@ -433,13 +435,13 @@ local globalkeys = gears.table.join(
   awful.key({ modkey, control, shift }, '/',
             function()
               -- awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
-              awful.spawn('/home/lucas/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
+              awful.spawn(home..'/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
             end,
             { group = 'System controls', description = 'open pulsemixer', }),
   awful.key({ modkey, control, shift }, ';',
             function()
               -- awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
-              awful.spawn('/home/lucas/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
+              awful.spawn(home..'/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
             end,
             { group = 'System controls', description = 'open pulsemixer', }),
 
@@ -451,10 +453,10 @@ local globalkeys = gears.table.join(
             function() bright_widget:dec(2) end,
             { group = 'System controls', description = 'decrease brightness', }),
   awful.key({ modkey, shift }, '[',
-            function() awful.spawn('/home/lucas/scripts/dmenu/backlight.sh') end,
+            function() awful.spawn(home..'/scripts/dmenu/backlight.sh') end,
             { group = 'System controls', description = 'Ask for a brightness' }),
   awful.key({ modkey, shift }, ']',
-            function() awful.spawn('/home/lucas/scripts/dmenu/backlight.sh') end,
+            function() awful.spawn(home..'/scripts/dmenu/backlight.sh') end,
             { group = 'System controls', description = 'Ask for a brightness' }),
   awful.key({}, 'XF86MonBrightnessUp', function() bright_widget:inc(5) end),
   awful.key({}, 'XF86MonBrightnessDown', function() bright_widget:dec(5) end),
@@ -687,11 +689,11 @@ local globalkeys = gears.table.join(
             { group = 'Launcher', description = 'Print all screens to clipboard' }),
 
   awful.key({ modkey, shift }, 'ç',
-            function() awful.spawn('sh /home/lucas/scripts/emoji/dmenu-search-emoji.sh') end,
+            function() awful.spawn(home..'/scripts/emoji/dmenu-search-emoji.sh') end,
             { group = 'Launcher', description = 'search emojis to copy them to clipboard', }),
   awful.key({ modkey }, 'ç',
-            function() awful.spawn('rofimoji') end,
-            { group = 'Launcher', description = 'run rofimoji', }),
+            function() awful.spawn(home..'/scripts/rofi-emoji.sh') end,
+            { group = 'Launcher', description = 'run rofimoji script', }),
 
   awful.key({ modkey, control }, 'ç',
             function() turbo_widget:send_turbo_notification() end,
@@ -748,7 +750,7 @@ local clientkeys = gears.table.join(
               local actual_layout = awful.layout.get(this_screen)
               -- local actual_layout = awful.screen.focused().selected_tag.layout
 
-              -- file = io.open('/home/lucas/anota-lua', 'a')
+              -- file = io.open(home..'/anota-lua', 'a')
               -- file:write(actual_layout.name)
               -- file:write('\n')
               -- file:close()
