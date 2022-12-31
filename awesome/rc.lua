@@ -540,6 +540,9 @@ local globalkeys = gears.table.join(
               end
             end,
             { group = 'client', description = 'go to last focused client', }),
+  awful.key({ modkey, shift }, 'Tab',
+            function () awful.spawn('rofi -show window') end,
+            { group = 'client', description = 'run rofi -show window', }),
   awful.key({ modkey, shift }, 'n',
             function ()
                 local c = awful.client.restore()
@@ -618,10 +621,10 @@ local globalkeys = gears.table.join(
             function () awful.tag.incncol(-1, nil, true) end,
             { group = 'layout', description = 'decrease the number of columns', }),
 
-  awful.key({ modkey }, 'space',
+  awful.key({ modkey }, '\\',
             function () awful.layout.inc(1) end,
             { group = 'layout', description = 'select next layout', }),
-  awful.key({ modkey, shift }, 'space',
+  awful.key({ modkey, shift }, '\\',
             function () awful.layout.inc(-1) end,
             { group = 'layout', description = 'select previous layout', }),
 
@@ -640,6 +643,12 @@ local globalkeys = gears.table.join(
             function() awful.spawn(browser) end,
             { group = 'Launcher', description = 'open '..browser..' browser', }),
 
+  awful.key({ modkey }, 'space',
+            function () awful.spawn('rofi -show run') end,
+            { group = 'Launcher', description = 'run rofi -show run', }),
+  awful.key({ modkey, shift }, 'space',
+            function () awful.spawn('rofi -show drun') end,
+            { group = 'Launcher', description = 'run rofi -show drun', }),
   --[[
     Explanation: When using tmux inside alacritty, I don't know why, but the
     numpad enter was producing something different (on Debian it worked as
@@ -677,9 +686,13 @@ local globalkeys = gears.table.join(
             function() awful.spawn('flameshot full -c') end,
             { group = 'Launcher', description = 'Print all screens to clipboard' }),
 
-  awful.key({ modkey }, 'ç',
+  awful.key({ modkey, shift }, 'ç',
             function() awful.spawn('sh /home/lucas/scripts/emoji/dmenu-search-emoji.sh') end,
             { group = 'Launcher', description = 'search emojis to copy them to clipboard', }),
+  awful.key({ modkey }, 'ç',
+            function() awful.spawn('rofimoji') end,
+            { group = 'Launcher', description = 'run rofimoji', }),
+
   awful.key({ modkey, control }, 'ç',
             function() turbo_widget:send_turbo_notification() end,
             { group = 'TURBO', description = 'Activate TURBO mode' }),
