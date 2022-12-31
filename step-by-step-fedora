@@ -74,8 +74,9 @@ gsettings set org.gnome.desktop.wm.preferences audible-bell false
 
 # Software to install
 # Git e tmux já vêm instalados? Wtf. Jq também? Whaat. Acho que o curl também. :thinking:
+# Wtf, Fedora não vem com patch e ed instalados??
 dnf install -y zsh util-linux-user xset xclip vlc gimp peek figlet acpi flameshot \
-  unclutter zoxide xinput pavucontrol alsa-plugins-pulseaudio ripgrep
+  unclutter zoxide xinput pavucontrol alsa-plugins-pulseaudio ripgrep patch
 
 # Discord
 mkdir -p ~/sources/discord-tar-balls
