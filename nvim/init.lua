@@ -37,6 +37,7 @@ require('plugins.nvim-tree')
 -- require('plugins.conjure')
 -- require('plugins.vim-sexp')
 require('plugins.undotree')
+require('plugins.colorizer')
 
 -- Meus próprios scritpts
 require('helper-scripts.vtr.test')

@@ -98,7 +98,8 @@ packer.startup(function(use)
   -- Coisas que tem a ver com cores e visual
   use 'rktjmp/lush.nvim'
   use 'tjdevries/colorbuddy.nvim'
-  use 'norcalli/nvim-colorizer.lua'
+  -- use 'norcalli/nvim-colorizer.lua'
+  use 'NvChad/nvim-colorizer.lua'
 
   -- Esquema de cores
   -- use 'ayu-theme/ayu-vim'
