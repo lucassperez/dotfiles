@@ -1,8 +1,5 @@
 #!/bin/sh
 
-cd $(dirname "$0")
-DIR=$(pwd)
-
 dir_not_in_list() {
   local dir=$1
   local dirs_list=$2
@@ -27,6 +24,9 @@ recursively_symlink_scripts() {
   done
 }
 
+cd $(dirname "$0")
+DIR=$(pwd)
+
 printf "Symlinking config files for:\n"
 printf "\tAlacritty\n"
 printf "\tZsh (zshenv, zshrc, plugins/, completions/, aliases and functions)\n"
@@ -48,15 +48,15 @@ ln -sfni "$DIR/shells/functions" "$HOME/.functions"
 ln -sfni "$DIR/shells/zsh/zshenv" "$HOME/.zshenv"
 mkdir -p "$HOME/.config/zsh/"
 ln -sfni "$DIR/shells/zsh/zshrc" "$HOME/.config/zsh"
-ln -sfni "$DIR/shells/zsh/plugins/" "$HOME/.config/zsh/plugins/"
-ln -sfni "$DIR/shells/zsh/completions/" "$HOME/.config/zsh/completions/"
+ln -sfni "$DIR/shells/zsh/plugins" "$HOME/.config/zsh/plugins"
+ln -sfni "$DIR/shells/zsh/completions" "$HOME/.config/zsh/completions"
 
 ln -sfni "$DIR/nvim" "$HOME/.config/nvim"
 
 mkdir -p "$HOME/scripts/"
 # Actually moving to scripts folder and then going back
 cd "$DIR/scripts"
-recursively_symlink_scripts "$DIR/scripts" "$HOME/scripts/"
+recursively_symlink_scripts "$DIR/scripts" "$HOME/scripts"
 cd $DIR
 
 ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
@@ -64,7 +64,7 @@ ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 mkdir -p "$HOME/.config/awesome/"
 ln -sfni "$DIR/awesome/rc.lua" "$HOME/.config/awesome/rc.lua"
 ln -sfni "$DIR/awesome/my-theme.lua" "$HOME/.config/awesome/my-theme.lua"
-ln -sfni "$DIR/awesome/widgets/" "$HOME/.config/awesome/widgets/"
+ln -sfni "$DIR/awesome/widgets" "$HOME/.config/awesome/widgets"
 
 ln -sfni "$DIR/mime.types" "$HOME/.mime.types"
 ln -sfni "$DIR/xinput/xinputrc" "$HOME/.xinputrc"
