@@ -8,10 +8,6 @@ require('nvim-treesitter.configs').setup({
     'vim',
     'help',
     'bash',
-    'ruby',
-    'go',
-    'elixir',
-    'javascript',
   },
   -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
   auto_install = false,
