@@ -6,6 +6,8 @@ end
 
 local status, packer = pcall(require, 'packer')
 if not status then
+  print('Could not require packer!')
+  print('Exiting')
   return
 end
 
