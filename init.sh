@@ -47,7 +47,7 @@ ln -sfni "$DIR/shells/aliases" "$HOME/.aliases"
 ln -sfni "$DIR/shells/functions" "$HOME/.functions"
 ln -sfni "$DIR/shells/zsh/zshenv" "$HOME/.zshenv"
 mkdir -p "$HOME/.config/zsh/"
-ln -sfni "$DIR/shells/zsh/zshrc" "$HOME/.config/zsh"
+ln -sfni "$DIR/shells/zsh/zshrc" "$HOME/.config/zsh/.zshrc"
 ln -sfni "$DIR/shells/zsh/plugins" "$HOME/.config/zsh/plugins"
 ln -sfni "$DIR/shells/zsh/completions" "$HOME/.config/zsh/completions"
 
