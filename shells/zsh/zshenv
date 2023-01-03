@@ -11,21 +11,14 @@ prepend_to_PATH() {
     return 2
   fi
 
-  # # If given path is already in PATH, returns
-  # if echo $PATH | grep -q $1; then
-  #   # If given path is a substring of something
-  #   # already in PATH, then this will give a false
-  #   # positive, and the given path will not be added,
-  #   # even though it is not already in PATH... ):
-  #   return 3
-  # fi
-
-  # To avoid false positives, every time this function
-  # is called, it iterates over every path in PATH and
-  # checks if given path is equals to any of them or not.
-  for path in `echo $PATH | tr ':' '\n'`; do
-    [ $1 = $p ] && exit 3
-  done
+  # Check if the given path, $1, is present in the PATH variable.
+  # Ensuring it is either at the beggining/end of string and/or
+  # preceded/followed by : ensures we won't get false positives
+  # in case the $1 variable is a subdirectory of a directory
+  # that already is present in the PATH variable.
+  if `echo $PATH | grep -q "\(^\|:\)$1\($\|:\)"`; then
+    return 3
+  fi
 
   PATH="$1:$PATH"
 }
