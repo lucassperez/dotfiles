@@ -257,6 +257,7 @@ cd ~
 # sct
 mkdir -p ~/sources
 git clone https://github.com/faf0/sct ~/sources/sct
+cd ~/sources/sct
 make
 sudo make install
 cd ~
