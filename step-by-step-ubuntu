@@ -10,12 +10,20 @@ TODO: Create section to remove snap?
 Add NaturalScrolling True and Tapping on to
 /usr/share/X11/xorg.conf.d/40-libinput.conf
 
+# F this
+sudo snap remove firefox
+sudo add-apt-repository ppa:mozillateam/ppa
+echo 'Package: *
+Pin: release o=LP-PPA-mozillateam
+Pin-Priority: 1001' | sudo tee /etc/apt/preferences.d/mozilla-firefox
+sudo apt update
+sudo apt install -y firefox
+
 ###
 
 git clone git@github.com:lucassperez/dotfiles.git
 
 # TODO: Figure out how to handle locales in Ubuntu, because /etc/locale is missing (wtf?)
-
 
 # For gods sake!!
 gsettings set org.gnome.desktop.wm.preferences audible-bell false
@@ -96,7 +104,33 @@ cd ~
 wget -P ~/Downloads/ -- https://zoom.us/client/5.13.3.651/zoom_amd64.deb
 sudo apt -y install ~/Downloads/zoom_amd64.deb
 
-# TODO docker
+sudo apt-get install -y ca-certificates  curl  gnupg  lsb-release
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+newgrp docke
+newgrp docke
+sudo systemctl enable docker.service
+sudo systemctl start docker.service
+getent group | grep docker >/dev/null 2>&1 || sudo groupadd docker
+sudo usermod -aG docker "$USER"
+# Has to restart to use it or run newgrp docker, but this creates another shell,
+# so I really don't think it should be used in a script. Maybe at the end of
+# everything, but still.
+# Also, docker-compose I believe was moved to a docker command with the already
+# installed docker-compose-plugin, so `docker compose` should just work, but we
+# can still download this binary, I guess.
+# Also, the version might change, better check the github release page:
+# https://github.com/docker/compose/releases?page=1
+# Older versions didn't have the "v", just the version names, so be careful!
+# Apparently, version 1 releases didn't have v, and 2 ownward do.
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.14.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
 
 git clone git@github.com:lucassperez/dmenu-simple-build.git ~/sources/dmenu
 cd ~/sources/dmenu
@@ -108,7 +142,11 @@ wget -P ~/.local/bin/ https://raw.githubusercontent.com/GeorgeFilipkin/pulsemixe
 
 go install github.com/charmbracelet/glow@latest
 
-# TODO install kolourpaint, preferably with flatpak instead of snap?
+# Install flatpak and add flathub and then
+# install kolourpaint from there
+sudo apt install -y flatpak
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install -y flathub org.kde.kolourpaint
 
 # clipnotify requires libx11-dev and libxfixes-dev, while clipmenu requires xsel
 git clone git@github.com:cdown/clipnotify.git ~/sources/clipnotify
