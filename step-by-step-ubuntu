@@ -36,7 +36,7 @@ gsettings set org.gnome.gedit.preferences.editor tabs-size 2
 gsettings set org.gnome.gedit.preferences.editor display-right-margin true
 
 sudo apt update
-sudo apt install -y zsh tmux xclip vlc gimp peek figlet acpi flameshot unclutter-xfixes zoxide pavucontrol
+sudo apt install -y zsh tmux jq xclip vlc gimp peek figlet acpi flameshot unclutter-xfixes zoxide pavucontrol
 
 mkdir -p ~/.cache/zsh/
 git clone git@github.com:zdharma-continuum/fast-syntax-highlighting.git /home/lucas/.config/zsh/plugins/fast-syntax-highlighting/
