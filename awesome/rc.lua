@@ -385,6 +385,7 @@ local globalkeys = gears.table.join(
 -- 163 XF86Mail
 -- 180 XF86HomePage
 -- 148 XF86Calculator
+-- 198 XF86AudioMicMute
 
   awful.key({ modkey }, 'c',
             function() awful.spawn(home..'/scripts/monitors-dmenu.sh') end,
@@ -432,6 +433,7 @@ local globalkeys = gears.table.join(
   awful.key({ control }, 'XF86AudioRaiseVolume', function() microphone_widget:inc_vol(5) end),
   awful.key({ control }, 'XF86AudioLowerVolume', function() microphone_widget:dec_vol(5) end),
   awful.key({ control }, 'XF86AudioMute', function() microphone_widget:toggle() end),
+  awful.key({}, 'XF86AudioMicMute', function() microphone_widget:toggle() end),
 
   awful.key({ modkey, control, shift }, '/',
             function()
