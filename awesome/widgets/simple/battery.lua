@@ -26,8 +26,6 @@ watch(
 
     local message, color, bg
 
-    if percentage >= 99 then percentage = 100 end
-
     if percentage <= 10 then
       bg = '#ff0000'
       color = '#ffffff'
@@ -39,7 +37,7 @@ watch(
       bg = nil
     elseif percentage <= 30 then
       color = '#ff6600'
-      last_battery_warn = nil
+      LastBatteryWarn = nil
     elseif percentage <= 40 then
       color = '#ff9900'
     elseif percentage <= 50 then
@@ -95,7 +93,7 @@ watch(
 
     if state ~= 'Charging' and
        percentage <= 20 and
-       (last_battery_warn == nil or os.difftime(os.time(), last_battery_warn) > 300) -- 5 minutes since last warning
+       (LastBatteryWarn == nil or os.difftime(os.time(), LastBatteryWarn) > 300) -- 5 minutes since last warning
     then
       naughty.notify({
         title = '\nBateria baixa!',
@@ -107,14 +105,14 @@ watch(
         ignore_suspend = true, -- do I really want this?
         bg = '#ca4444',
       })
-      last_battery_warn = os.time()
+      LastBatteryWarn = os.time()
     end
   end,
   widget
 )
 
 local function pluralize_number(string, word)
-  without_possible_leading_zero = string:gsub('^0', '')
+  local without_possible_leading_zero = string:gsub('^0', '')
   if without_possible_leading_zero == '1' then
     return without_possible_leading_zero..' '..word
   end
@@ -125,15 +123,15 @@ widget:connect_signal(
   'button::press',
   function(_, _, _, button)
     if button == 1 or button == 3 then
-      local text, urgency, bg
+      local notif_text, urgency, bg
 
       local battery = io.popen('acpi -b'):read()
       local state, percentage = battery:match('Battery %d+: ([%w ]*), (%d*)%%')
 
       if state == 'Full' then
-        text = '(:'
+        notif_text = '(:'
       elseif state == 'Unknown' then
-        text = 'Time left unknown 🤔'
+        notif_text = 'Time left unknown 🤔'
       else
         local hours_left, minutes_left, message = battery:match('(%d%d):(%d%d):%d%d (.*)')
         local time_left
@@ -150,15 +148,15 @@ widget:connect_signal(
         end
 
         if message then
-          text = time_left..' '..message
+          notif_text = time_left..' '..message
         else
-          text = time_left
+          notif_text = time_left
         end
       end
 
       if percentage and tonumber(percentage) <= 20 and state ~= 'Charging' then
         urgency = 'critical'
-        text = text..'.\nDo something, quick!'
+        notif_text = notif_text..'.\nDo something, quick!'
         bg = '#ca4444' -- since the urgency doesn't seem to work, I did this silliness
       else
         urgency = 'low'
@@ -167,7 +165,7 @@ widget:connect_signal(
 
       naughty.notify({
         title = percentage..'% '..state,
-        text = text,
+        text = notif_text,
         urgency = urgency, -- this doesn't work, how cool is that
         bg = bg,
       })
