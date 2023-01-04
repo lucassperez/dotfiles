@@ -26,6 +26,8 @@ watch(
 
     local message, color, bg
 
+    if percentage >= 99 then percentage = 100 end
+
     if percentage <= 10 then
       bg = '#ff0000'
       color = '#ffffff'
