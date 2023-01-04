@@ -1,3 +1,5 @@
+# vi:ft=sh
+
 Update and restart, I guess
 
 Create ssh key (for example with ssh-keygen -t ed25519)
@@ -5,7 +7,7 @@ Install git
 sudo apt update
 sudo apt install git
 
-TODO: Create section to remove snap?
+# TODO: Create section to remove snap?
 
 Add NaturalScrolling True and Tapping on to
 /usr/share/X11/xorg.conf.d/40-libinput.conf
@@ -19,11 +21,13 @@ Pin-Priority: 1001' | sudo tee /etc/apt/preferences.d/mozilla-firefox
 sudo apt update
 sudo apt install -y firefox
 
-###
+### I guess we start here or at F-ing snap firefox
 
 git clone git@github.com:lucassperez/dotfiles.git
 
-# TODO: Figure out how to handle locales in Ubuntu, because /etc/locale is missing (wtf?)
+# Locales are located at /etc/default/locale in Ubuntu, but we can also
+# manipulate it with update-locale or localectl
+sudo localectl set-locale LANG=en_GB.UTF-8 LC_MESSAGES=en_GB.UTF-8 LC_MEASUREMENT=pt_BR.UTF-8 LC_TIME=pt_BR.UTF-8
 
 # For gods sake!!
 gsettings set org.gnome.desktop.wm.preferences audible-bell false
