@@ -9,14 +9,14 @@ dir_not_in_list() {
 recursively_symlink_scripts() {
   local current_dir=$1
   local destination_path=$2
-  local dirs_list=$3
+  local visited_dirs_list=$3
 
   for f in `ls`; do
-    if [ -d $f ] && `dir_not_in_list "$f" "$dirs_list"`; then
-      dirs_list="$f,$dirs_list"
+    if [ -d $f ] && `dir_not_in_list "$f" "$visited_dirs_list"`; then
+      visited_dirs_list="$f,$visited_dirs_list"
       cd $f
       mkdir -p "$destination_path/$f"
-      recursively_symlink_scripts `pwd` "$destination_path/$f" "$dirs_list"
+      recursively_symlink_scripts `pwd` "$destination_path/$f" "$visited_dirs_list"
       cd ..
     elif [ -x $f ] || echo "$f" | grep -q '\.sh$'; then
       ln -sfni "$current_dir/$f" "$destination_path/$f"
