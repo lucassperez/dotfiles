@@ -418,9 +418,9 @@ schemes:
       dim_foreground: '#CAD3F5' # text
       bright_foreground: '#CAD3F5' # text
     # Cursor colors
-    # cursor:
-    #   text: '#24273A' # base
-    #   cursor: '#F4DBD6' # rosewater
+    cursor:
+      text: '#24273A' # base
+      cursor: '#F4DBD6' # rosewater
     vi_mode_cursor:
       text: '#24273A' # base
       cursor: '#B7BDF8' # lavender
@@ -482,16 +482,17 @@ schemes:
       - { index: 17, color: '#F4DBD6' }
 
   modified-catppuccin-macchiato: &modified-catppuccin-macchiato
+    # I changed the background color, removed cursor color and
+    # selection color and also added a darker color as "normal"
+    # for each color, because bright and normal colors were
+    # all the same color. I also set a purple color for magenta,
+    # instead of the pink.
     primary:
-      background: '0x282c34'
-      foreground: '0xc0caf5'
+      background: '#282c34'
+      foreground: '#c0caf5'
       # Bright and dim foreground colors
       dim_foreground: '#CAD3F5' # text
       bright_foreground: '#CAD3F5' # text
-    # Cursor colors
-    # cursor:
-    #   text: '#24273A' # base
-    #   cursor: '#F4DBD6' # rosewater
     vi_mode_cursor:
       text: '#24273A' # base
       cursor: '#B7BDF8' # lavender
@@ -515,18 +516,26 @@ schemes:
         foreground: '#24273A' # base
         background: '#A5ADCB' # subtext0
     # Selection colors
-    selection:
-      text: '#24273A' # base
-      background: '#F4DBD6' # rosewater
     # Normal colors
+    # All the normal colors (except purple) were made from the bright ones by reducing each color
+    # #RRGGBB) by 21 (decimal), for example: If red was 3f (#3fxxxx), then the
+    # new red would be 2a. Basically, reduce the first number by 1 and the second by 5.
+    # If the red was b1, then the new would be 96.
+    # The purple was the other way around, I picked the normal pink and threw it
+    # in a css color picker and made it more purple, and then transformed it into
+    # bright using the reverse formula. Original catppuccin has pink in "magenta"
+    # instead of purple. I also created a "cyan" instead of teal for cyan, but in
+    # this case, I created first the bright color.
     normal:
       black:   '#494D64' # surface1
-      red:     '#ED8796' # red
-      green:   '#A6DA95' # green
-      yellow:  '#EED49F' # yellow
-      blue:    '#8AADF4' # blue
-      magenta: '#F5BDE6' # pink
-      cyan:    '#8BD5CA' # teal
+      red:     '#d87281' # red
+      green:   '#91c580' # green
+      yellow:  '#d0b98a' # yellow
+      blue:    '#7598d9' # blue
+      # magenta: '#e0a8d1' # pink
+      magenta: '#c9a5d7' # purple
+      # cyan:    '#76c0b5' # teal
+      cyan:    '#76b1c0' # cyan
       white:   '#B8C0E0' # subtext1
     # Bright colors
     bright:
@@ -535,8 +544,10 @@ schemes:
       green:   '#A6DA95' # green
       yellow:  '#EED49F' # yellow
       blue:    '#8AADF4' # blue
-      magenta: '#F5BDE6' # pink
-      cyan:    '#8BD5CA' # teal
+      # magenta: '#F5BDE6' # pink
+      magenta: '#d8baf2' # purple
+      # cyan:    '#8BD5CA' # teal
+      cyan:    '#8bc6d5' # cyan
       white:   '#A5ADCB' # subtext0
     # Dim colors
     dim:
@@ -556,10 +567,10 @@ schemes:
 # colors: *doom-one
 # colors: *tokyo-night-storm
 # colors: *tokyo-night-night
-colors: *modified-tokyo-night-storm
+# colors: *modified-tokyo-night-storm
 # colors: *nightfox
 # colors: *catppuccin-macchiato
-# colors: *modified-catppuccin-macchiato
+colors: *modified-catppuccin-macchiato
 
 # colors: *nordfox
 
