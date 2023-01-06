@@ -231,6 +231,27 @@ local screen_temperature = require('widgets.sct')()
 --   mod_keysym = 'Super_L',
 -- })
 
+local function toggleMaximizedLayout(c)
+  local this_screen = c.screen
+  local actual_layout = awful.layout.get(this_screen)
+  -- local actual_layout = awful.screen.focused().selected_tag.layout
+
+  -- file = io.open(home..'/anota-lua', 'a')
+  -- file:write(actual_layout.name)
+  -- file:write('\n')
+  -- file:close()
+
+  if actual_layout ~= awful.layout.suit.max then
+    LastLayout = actual_layout
+    awful.layout.set(awful.layout.suit.max)
+  elseif LastLayout then
+    awful.layout.set(LastLayout)
+  else
+    -- If there is no "last layout" (cached), goes to the first one
+    awful.layout.set(awful.layout.layouts[1])
+  end
+end
+
 local charitable = require('charitable')
 -- Create tags and taglist
 local taglist_buttons = gears.table.join(
@@ -290,10 +311,11 @@ awful.screen.connect_for_each_screen(
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(
       gears.table.join(
-        awful.button({}, 1, function () awful.layout.inc( 1) end),
-        awful.button({}, 3, function () awful.layout.inc(-1) end),
-        awful.button({}, 4, function () awful.layout.inc( 1) end),
-        awful.button({}, 5, function () awful.layout.inc(-1) end)
+        awful.button({}, 1, function() awful.layout.inc( 1) end),
+        awful.button({}, 2, function(c) toggleMaximizedLayout(c) end),
+        awful.button({}, 3, function() awful.layout.inc(-1) end),
+        awful.button({}, 4, function() awful.layout.inc( 1) end),
+        awful.button({}, 5, function() awful.layout.inc(-1) end)
       )
     )
 
@@ -748,26 +770,8 @@ local clientkeys = gears.table.join(
             end,
             { group = 'client', description = 'minimize', }),
   awful.key({ modkey }, 'm',
-            function (c)
-              local this_screen = c.screen
-              local actual_layout = awful.layout.get(this_screen)
-              -- local actual_layout = awful.screen.focused().selected_tag.layout
-
-              -- file = io.open(home..'/anota-lua', 'a')
-              -- file:write(actual_layout.name)
-              -- file:write('\n')
-              -- file:close()
-
-              if actual_layout ~= awful.layout.suit.max then
-                last_layout = actual_layout
-                awful.layout.set(awful.layout.suit.max)
-              elseif last_layout then
-                awful.layout.set(last_layout)
-              else
-                -- If there is no "last layout" (cached), goes to the first one
-                awful.layout.set(awful.layout.layouts[1])
-              end
-
+            function(c)
+              toggleMaximizedLayout(c)
               c:raise()
             end,
             { group = 'client', description = 'toggle maximize layout', }),
