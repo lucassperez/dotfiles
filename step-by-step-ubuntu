@@ -50,8 +50,10 @@ curl -LO https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_
 sudo dpkg -i ripgrep_13.0.0_amd64.deb
 mv ripgrep_13.0.0_amd64.deb ~/Downloads/
 
-# Already have network manager applet (nm-applet)
 sudo apt install -y awesome xcompmgr fonts-font-awesome light lxappearance suckless-tools numlockx xwallpaper
+
+# Otherwise, light won't work
+sudo usermod -a -G video $USER
 
 sudo apt install -y rofi
 sudo apt install -y python3-pip xdotool
@@ -198,3 +200,16 @@ If going to install ruby, will need libssl-dev
 Ubuntu's 22.04 tmux version does not have #{user}, so I will probably be desired
 to add a ~/.local/.tmux.conf.local with this:
 set -g status-right '#{?client_prefix,#[bold]!, }[#(echo $USER)@#{host}] '
+
+I tried to set the cursor on so many ways, only using lxappearance was not consistent,
+so I tried setting it in
+- /usr/share/icons/default/index.theme
+- ~/.config/gtk-3.0/settings.ini
+and also with
+gsettings set org.gnome.desktop.interface cursor-theme 'DMZ-Black'
+Which didn't really work. But after all this, I used lxappearance to set it also
+to DMZ-Black and then it finally worked, apparently.
+I also ran flatpak --user override --filesystem=/usr/share/icons/:ro, so hopefully
+flatpaks will be able to see this directory with the icons. And lastly,
+I added a ~/.xprofile with "xrdb ~/.Xresources" and a ~/.Xresources with "Xcursor.theme: DMZ-Black".
+Keep in mind that /etc/gdm3/Xsession sources ~/.xprofile.
