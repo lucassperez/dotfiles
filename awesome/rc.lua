@@ -472,10 +472,10 @@ local globalkeys = gears.table.join(
 
   -- Brightness control
   awful.key({ modkey }, '[',
-            function() bright_widget:inc(2) end,
+            function() bright_widget:inc(2.5) end,
             { group = 'System controls', description = 'increase brightness', }),
   awful.key({ modkey }, ']',
-            function() bright_widget:dec(2) end,
+            function() bright_widget:dec(2.5) end,
             { group = 'System controls', description = 'decrease brightness', }),
   awful.key({ modkey, shift }, '[',
             function() awful.spawn(home..'/scripts/dmenu/backlight.sh') end,
