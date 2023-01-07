@@ -266,7 +266,7 @@ schemes:
   # invisible with the new background.
   # I also made the "normal" colors darker, because they were the same
   # as the "bright" colors.
-  tokyo-night-storm: &modified-tokyo-night-storm
+  modified-tokyo-night-storm: &modified-tokyo-night-storm
     primary:
       background: '0x282c34'
       foreground: '0xc0caf5'
@@ -535,7 +535,7 @@ schemes:
       # magenta: '#e0a8d1' # pink
       magenta: '#c9a5d7' # purple
       # cyan:    '#76c0b5' # teal
-      cyan:    '#76b1c0' # cyan
+      cyan:    '#76b1d0' # cyan
       white:   '#B8C0E0' # subtext1
     # Bright colors
     bright:
@@ -547,7 +547,7 @@ schemes:
       # magenta: '#F5BDE6' # pink
       magenta: '#d8baf2' # purple
       # cyan:    '#8BD5CA' # teal
-      cyan:    '#8bc6d5' # cyan
+      cyan:    '#8bc6e5' # cyan
       white:   '#A5ADCB' # subtext0
     # Dim colors
     dim:
