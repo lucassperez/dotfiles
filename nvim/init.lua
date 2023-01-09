@@ -7,13 +7,20 @@ end
 local any_require_failed = false
 
 local function protected_require(path)
-  local status, result = pcall(require, path)
-  if not status then
+  local ok, result = pcall(require, path)
+  if not ok then
+    -- Only print this the first time a pcall returned an error
+    if not any_require_failed then print('ERROR!') end
+
     any_require_failed = true
     print('Could not require the path `'..path..'`')
+
+    -- Print only first line of the error
+    print('  '..string.sub(result, 1, string.find(result, '\n')))
+
     local file = io.open(vim.fn.stdpath('config')..'/nvim-require.log', 'a')
     if file then
-      file:write('['..os.date("%Y-%m-%d-%H:%M:%S")..']: '..path..'\n')
+      file:write('['..os.date('%Y-%m-%d-%H:%M:%S')..']: '..path..'\n')
       file:write(result)
       file:write('\n---\n')
       file:close()
@@ -67,5 +74,6 @@ protected_require('helper-scripts.togglebetweentestandfile')
 protected_require('helper-scripts.write-debugger-breakpoint')
 
 if any_require_failed then
+  print('---')
   print('Check file '..vim.fn.stdpath('config')..'/nvim-require.log for more information')
 end

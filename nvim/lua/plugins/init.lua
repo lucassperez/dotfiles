@@ -4,8 +4,8 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   packer_bootstrap = vim.fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
 end
 
-local status, packer = pcall(require, 'packer')
-if not status then
+local ok, packer = pcall(require, 'packer')
+if not ok then
   print('Could not require packer!')
   print('Exiting')
   return
