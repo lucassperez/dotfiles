@@ -532,11 +532,11 @@ schemes:
       green:   '#91c580' # green
       yellow:  '#d0b98a' # yellow
       blue:    '#7598d9' # blue
-      # magenta: '#e0a8d1' # pink
-      magenta: '#c9a5d7' # purple
-      # cyan:    '#76c0b5' # teal
-      cyan:    '#76b1d0' # cyan
       white:   '#B8C0E0' # subtext1
+      # magenta: '#e0a8d1' # pink
+      # cyan:    '#76c0b5' # teal
+      magenta: '#c9a5d7' # purple
+      cyan:    '#76bbd0' # cyan-ish
     # Bright colors
     bright:
       black:   '#5B6078' # surface2
@@ -544,11 +544,11 @@ schemes:
       green:   '#A6DA95' # green
       yellow:  '#EED49F' # yellow
       blue:    '#8AADF4' # blue
-      # magenta: '#F5BDE6' # pink
-      magenta: '#d8baf2' # purple
-      # cyan:    '#8BD5CA' # teal
-      cyan:    '#8bc6e5' # cyan
       white:   '#A5ADCB' # subtext0
+      # magenta: '#F5BDE6' # pink
+      # cyan:    '#8BD5CA' # teal
+      magenta: '#d8baf2' # purple
+      cyan:    '#8bd1e5' # cyan-ish
     # Dim colors
     dim:
       black:   '#494D64' # surface1
@@ -563,6 +563,79 @@ schemes:
       - { index: 16, color: '#F5A97F' }
       - { index: 17, color: '#F4DBD6' }
 
+  catppuccin-frappe: &modified-catppuccin-frappe
+    # Default colors
+    primary:
+      background: '#282c34'
+      foreground: '#c0caf5'
+        # Bright and dim foreground colors
+      dim_foreground: "#C6D0F5" # text
+      bright_foreground: "#C6D0F5" # text
+    vi_mode_cursor:
+        text: "#303446" # base
+        cursor: "#BABBF1" # lavender
+    # Search colors
+    search:
+      matches:
+        foreground: "#303446" # base
+        background: "#A5ADCE" # subtext0
+      focused_match:
+        foreground: "#303446" # base
+        background: "#A6D189" # green
+      footer_bar:
+        foreground: "#303446" # base
+        background: "#A5ADCE" # subtext0
+          # Keyboard regex hints
+      hints:
+        start:
+          foreground: "#303446" # base
+          background: "#E5C890" # yellow
+      end:
+        foreground: "#303446" # base
+        background: "#A5ADCE" # subtext0
+    # Selection colors
+    selection:
+      text: "#303446" # base
+      background: "#F2D5CF" # rosewater
+    # Normal colors
+    normal:
+      black: "#51576D" # surface1
+      red: "#d26d6f" # red
+      green: "#91b674" # green
+      yellow: "#d0b37b" # yellow
+      blue: "#7795f9" # blue
+      white: "#B5BFE2" # subtext1
+      # magenta: "#dfa3cf" # pink
+      # cyan: "#6cb3a9" # teal
+      magenta: '#c4a0d2' # purple
+      cyan:    '#76b1d0' # cyan-ish
+    # Bright colors
+    bright:
+      black: "#626880" # surface2
+      red: "#E78284" # red
+      green: "#A6D189" # green
+      yellow: "#E5C890" # yellow
+      blue: "#8CAAEE" # blue
+      white: "#A5ADCE" # subtext0
+      # magenta: "#F4B8E4" # pink
+      # cyan: "#81C8BE" # teal
+      magenta: '#d3b5ed' # purple
+      cyan:    '#8bc6e5' # cyan-ish
+    # Dim colors
+    dim:
+      black: "#51576D" # surface1
+      red: "#E78284" # red
+      green: "#A6D189" # green
+      yellow: "#E5C890" # yellow
+      blue: "#8CAAEE" # blue
+      magenta: "#F4B8E4" # pink
+      cyan: "#81C8BE" # teal
+      white: "#B5BFE2" # subtext1
+    indexed_colors:
+      - { index: 16, color: "#EF9F76" }
+      - { index: 17, color: "#F2D5CF" }
+
+
 # colors: *ayu-mirage
 # colors: *doom-one
 # colors: *tokyo-night-storm
@@ -570,7 +643,8 @@ schemes:
 # colors: *modified-tokyo-night-storm
 # colors: *nightfox
 # colors: *catppuccin-macchiato
-colors: *modified-catppuccin-macchiato
+# colors: *modified-catppuccin-macchiato
+colors: *modified-catppuccin-frappe
 
 # colors: *nordfox
 
