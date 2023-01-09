@@ -29,6 +29,8 @@ local function set_widget()
         :read()
         :match('^Mute: (%w+)$')
 
+    local val = ''
+
     if mute == 'no' then
       val = ' '..volume..'%'
     else

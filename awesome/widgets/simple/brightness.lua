@@ -20,7 +20,7 @@ widget:set_fg('#aaeb6a')
 local function calculateNearest5(string)
   local number = tonumber(string)
   local unit = number % 10
-  local deci = number // 10
+  local deci = math.floor(number / 10)
   local result
 
   if number < 2.5 then
@@ -40,6 +40,8 @@ end
 
 local function round(string)
   local number = tonumber(string)
+  if not number then return string end
+
   local deci = number % 1
 
   if deci > 0.5 then

@@ -28,20 +28,21 @@ widget:connect_signal(
   'button::press',
   function(_, _, _, button)
     if button == 1 or button == 3 then
-      local text = ''
+      local notif_text = ''
       local docker_response = io.popen('docker ps --format "{{.Names}} ({{.Status}})\n"')
+      local line
 
       while true do
-        line = docker_response:read()
+        if docker_response then line = docker_response:read() end
         if not line then break end
-        text = text..'\n'..line
+        notif_text = notif_text..'\n'..line
       end
 
-      if text == '' then text = 'No containers running' end
+      if notif_text == '' then notif_text = 'No containers running' end
 
       naughty.notify({
         title = 'Dockers',
-        text = text,
+        text = notif_text,
         icon = '/home/lucas/.config/awesome/widgets/simple/icons/docker-smaller.png',
         icon_size = 32,
       })

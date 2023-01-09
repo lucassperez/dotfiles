@@ -28,20 +28,22 @@ watch(
   widget
 )
 
-function right_pad(string, size, character)
-  character = character or ' '
-  padded_string = string
-  while #padded_string < size do
-    padded_string = padded_string..character
-  end
-  return padded_string
-end
+-- local function right_pad(string, size, character)
+--   character = character or ' '
+--   local padded_string = string
+--   while #padded_string < size do
+--     padded_string = padded_string..character
+--   end
+--   return padded_string
+-- end
 
 widget:connect_signal(
   'button::press',
   function(_, _, _, button)
     -- local processes = io.popen('ps axh -o cmd,%mem --sort=-%mem')
     local processes = io.popen('ps axhc -o cmd,%mem --sort=-%mem')
+    if not processes then return end
+
     local free_memory = io.popen('free -h | grep "^Mem:"'):read():match('Mem:%s*[%w,]*%s*([%w,]*)')
     local n_most_memory_consuming = 15
     local message = ''
@@ -51,9 +53,11 @@ widget:connect_signal(
     -- some strings, raising an exception.
     -- This should never realistic happen, though.
     if button == 1 or button == 3 then
-      for i = 1, (n_most_memory_consuming - 1) do
+      local i = 0
+      while i <= n_most_memory_consuming do
         -- process, mem = processes:read():match('(.*)%s*(.*)')
         message = message..(processes:read():gsub("Isolated Web Co", "Firefox"))..'\n'
+        i = i + 1
       end
       message = message..processes:read():gsub("Isolated Web Co", "Firefox")
     end
