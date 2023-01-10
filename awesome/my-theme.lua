@@ -160,7 +160,7 @@ theme.awesome_icon = theme_assets.awesome_icon(
     -- theme.menu_height, bgcolor, '#000000'
     theme.menu_height, '#000000', bgcolor
 )
--- theme.awesome_icon = '/home/lucas/lua-icon/copy.png'
+-- theme.awesome_icon = os.getenv('HOME')..'/lua-icon/copy.png'
 
 -- Define the icon theme for application icons. If not set then the icons
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
