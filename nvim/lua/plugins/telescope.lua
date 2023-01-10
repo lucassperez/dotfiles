@@ -5,8 +5,8 @@ vim.keymap.set('n', '<C-p>', function() TelescopeGitOrFindFiles() end, { noremap
 vim.keymap.set('n', '<C-f>', function() telescope_builtin.live_grep() end, { noremap = true })
 vim.keymap.set('n', '<leader>P', function() telescope_builtin.buffers() end, { noremap = true })
 vim.keymap.set('n', '<leader>h', function() telescope_builtin.oldfiles() end, { noremap = true })
--- vim.keymap.set('n', '<leader>zv', ':Telescope find_files cwd=/home/lucas/dotfiles/nvim/<CR>', { noremap = true })
-vim.keymap.set('n', '<leader>zv', function() telescope_builtin.find_files({ cwd='/home/lucas/dotfiles/nvim/' }) end, { noremap = true })
+-- vim.keymap.set('n', '<leader>zv', ':Telescope find_files cwd=/your/path/here/<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>zv', function() telescope_builtin.find_files({ cwd = vim.fn.stdpath('config') }) end, { noremap = true })
 
 local actions = require('telescope.actions')
 

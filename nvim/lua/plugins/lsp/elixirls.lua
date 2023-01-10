@@ -1,7 +1,7 @@
 -- Elixir Language Server
 
 return {
-  -- cmd = { '/home/lucas/sources/elixir-ls/release-directory/language_server.sh' };
+  -- cmd = { '/path/of/the/binary/elixir-ls/release-directory/language_server.sh' };
   settings = {
     elixirLS = {
       dialyzerEnabled = false,
