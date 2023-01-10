@@ -21,6 +21,11 @@ Pin-Priority: 1001' | sudo tee /etc/apt/preferences.d/mozilla-firefox
 sudo apt update
 sudo apt install -y firefox
 
+# Firefox snap reinstalled it by its own. I deleted ~/snap/firefox and also
+# changed the firefox.desktop exec to where the deb is installed. The desktop
+# file is located in /usr/share/applications/firefox.desktop. Basically set the
+# Exec to /usr/bin/firefox, which was the path shown to me by `which firefox`.
+
 ### I guess we start here or at F-ing snap firefox
 
 git clone git@github.com:lucassperez/dotfiles.git
