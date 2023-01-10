@@ -89,9 +89,8 @@ asdf plugin-add golang
 asdf install golang 1.18
 asdf global golang 1.18
 
-
 mkdir -p ~/.local/bin
-sudo apt install -y libreadline-devel
+sudo apt install -y libreadline-dev
 luarocks install luaprompt
 ln -s ~/.asdf/installs/lua/5.4.3/luarocks/bin/luap ~/.local/bin/luap
 
@@ -123,8 +122,8 @@ echo \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
-newgrp docke
-newgrp docke
+newgrp docker
+newgrp docker
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
 getent group | grep docker >/dev/null 2>&1 || sudo groupadd docker
@@ -141,7 +140,6 @@ sudo usermod -aG docker "$USER"
 # Apparently, version 1 releases didn't have v, and 2 ownward do.
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.14.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
-
 
 git clone git@github.com:lucassperez/dmenu-simple-build.git ~/sources/dmenu
 cd ~/sources/dmenu
@@ -193,7 +191,6 @@ sudo apt install -y neofetch
 ln -s ~/dotfiles/pinguim-ascii-art1 ~/.config/neofetch/ascii-art
 rm ~/.config/neofetch/config.conf
 ln -s ~/dotfiles/EXAMPLE-FILES/neofetch ~/.config/neofetch/config.conf
-
 
 ###
 
