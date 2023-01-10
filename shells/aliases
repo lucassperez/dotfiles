@@ -68,5 +68,7 @@ alias xspeed='echo "xset r rate 220 25" && xset r rate 220 25'
 alias xall='~/scripts/conf-keyboard.sh && ~/scripts/enable-touchpad-tap.sh'
 
 alias vim='nvim'
+alias nv='nvim'
+alias vn='nvim'
 
 [ -f "$HOME/.local/.aliases.local" ] && source "$HOME/.local/.aliases.local"
