@@ -10,7 +10,7 @@ compinit
 _comp_options+=(globdots)
 
 setopt hist_ignore_all_dups inc_append_history
-HISTFILE="$XDG_CACHE_HOME/zsh/history"
+HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 HISTSIZE=4000
 SAVEHIST=4000
 
@@ -111,9 +111,6 @@ PROMPT='%B%F{green}%~${vcs_info_msg_0_}%u%s%0(?.. %F{magenta}%?)%f%b λ '
 # }
 # RPROMPT='%B%F{6}{$(lang_or_zsh)}%f%b'
 
-source "$HOME/.aliases"
-source "$HOME/.functions"
-
 # Run bindkey to see all bindings
 
 # "To know the code of a key, execute cat, press enter, press the key, then Ctrl+C."
@@ -159,7 +156,9 @@ bindkey ";5C" forward-word
 bindkey "5D" backward-word
 bindkey "5C" forward-word
 
-source "$ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+# If ZDOTDIR is set, use it, otherwise, check if XDG_CONFIG_HOME is set, then use
+# it followed by /zsh, and if not, use $HOME/.config/zsh
+source "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
 
 # Será que isso devia ficar aqui?
 # Aumenta a quantidade de vezes que uma tecla é apertada quando seguramos ela
@@ -167,28 +166,40 @@ source "$ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugi
 
 eval "$(zoxide init zsh)"
 
+source "$HOME/.aliases"
+source "$HOME/.functions"
+
 # https://superuser.com/questions/1585256/inserting-ssh-agent-into-i3wms-startup-so-its-available-to-all-processes-in-th
 # eval $(keychain --eval --agents ssh --quick --quiet)
 
-# . "$HOME/scripts/lambda-fetch.sh"
-# . "$HOME/scripts/ufetch-debian.sh"
-neofetch --ascii "$HOME/.config/neofetch/ascii-art" --ascii_colors 3 7
-
 # https://www.tecmint.com/tips-for-tmux-terminal-sessions/
-if tmux ls 1>/dev/null 2>&1 && [ -z "$TMUX" ]; then
+
+# Handle auto starting tmux and neofetch so
+# they show messages in the right order.
+
+if tmux ls 1>/dev/null 2>&1; then
+  _is_there_a_tmux_session_running='sim'
+fi
+
+# if ! [ $_is_there_a_tmux_session_running ]; then
+#   # This grep regex is to avoid not opening tmux when the process was something
+#   # like /usr/bin/alacritty instead of just alacritty
+#   if ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | grep -q "^[/a-z0-9]*alacritty"; then
+#     `which tmux`
+#   fi
+# fi
+
+# Putting this after tmux makes the startup faster when we open tmux,
+# (no need to run neofetch before starting tmux and then running neofetch again),
+# and the uptime section will not be outdated when we quit tmux,
+# which probably happens when the neofetch is called before tmux.
+neofetch --ascii "${XDG_CONFIG_HOME:-$HOME/.config}/neofetch/ascii-art" --ascii_colors 3 7
+
+# But I want the message to appear after neofetch when there is already a tmux
+# session running, but not if I am currently at tmux.
+if [ $_is_there_a_tmux_session_running ] && [ -z "$TMUX" ]; then
   printf "Já existe pelo menos uma instância do \e[32mtmux\e[0m rodando:\n"
   . "$HOME/scripts/parse-tmux-ls.sh"
-else
-  # ORIGINAL_TERMINAL_EMULATOR
-
-  # if [ "$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$))" = alacritty ]; then
-
-  # This will not start tmux if I run alacritty with other options, like this:
-  # alacritty -t floating-alacritty -o window.opacity=1.0
-  # With the above, it would work. But do I want it? 🤔
-  # if [ $(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | cut -d ' ' -f 1) = alacritty ]; then
-  # if ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | grep -q "^[/a-z0-9]*\(alacritty\|konsole\)"; then
-  if ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | grep -q "^[/a-z0-9]*alacritty"; then
-    `which tmux`
-  fi
 fi
+
+unset _is_there_a_tmux_session_running
