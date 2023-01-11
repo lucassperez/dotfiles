@@ -2,7 +2,10 @@
 
 configuration {
 terminal: "alacritty";
-matching: "fuzzy";
+/* normal, regex, glob, fuzzy, prefix */
+/* rofi's fuzzy is crazy, it is prett much regex with a .* between every letter,
+it never stops matching, I don't think it gives a good experience, unfortunately */
+matching: "glob";
 kb-cancel: "Super+q,Control+c,Control+C,Control+Super+c,Control+Super+C,Escape,Control+g,Control+bracketleft";
 kb-element-next: "Tab,Super+Tab";
 kb-element-prev: "ISO_Left_Tab,Super+ISO_Left_Tab";
