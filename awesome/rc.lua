@@ -62,8 +62,10 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. 'my-theme.lua')
 
 -- This is used later as the default terminal and editor to run.
 local terminal = 'alacritty'
--- terminal = 'kitty'
+local terminal_tmux = 'alacritty -e tmux'
 local floating_terminal = 'alacritty -t floating-alacritty -o window.opacity=1.0'
+local floating_terminal_tmux = 'alacritty -t floating-alacritty -o window.opacity=1.0 -e tmux'
+
 -- Even though my EDITOR env is set to nvim, this does not always work
 -- editor = os.getenv('EDITOR') or 'editor'
 local editor = 'nvim'
@@ -78,7 +80,6 @@ local home = os.getenv('HOME')
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 local modkey = 'Mod4'
-
 local control = 'Control'
 local shift = 'Shift'
 
@@ -688,20 +689,26 @@ local globalkeys = gears.table.join(
     since now it works with numpad enter, because the latter now produces Return
     on my computer
   ]]
-  awful.key({ modkey }, 'Return',
-            function () awful.spawn(terminal) end,
+  awful.key({ shift, modkey }, 'Return',
+            function () awful.spawn(terminal_tmux) end,
             { group = 'Launcher', description = 'open '..terminal..' terminal',  }),
   -- The key #104 is the numpad enter
   -- awful.key({ modkey }, '#104',
   --           function () awful.spawn(terminal) end,
   --           { group = 'Launcher', description = '(numpad enter) open '..terminal..' terminal',  }),
+  awful.key({ modkey }, 'Return',
+            function () awful.spawn(terminal) end,
+            { group = 'Launcher', description = 'open '..terminal..' terminal with tmux running',  }),
 
-  awful.key({ modkey, control }, 'Return',
+  awful.key({ control, modkey }, 'Return',
             function () awful.spawn(floating_terminal) end,
             { group = 'Launcher', description = 'open floating '..terminal..' terminal',  }),
   -- awful.key({ modkey, control }, '#104',
   --           function () awful.spawn(floating_terminal) end,
   --           { group = 'Launcher', description = '(numpad enter) open floating '..terminal..' terminal',  }),
+  awful.key({ control, shift, modkey }, 'Return',
+            function () awful.spawn(floating_terminal_tmux) end,
+            { group = 'Launcher', description = 'open floating '..terminal..' terminal with tmux running',  }),
 
   awful.key({}, 'Print',
             function() awful.spawn('flameshot screen -c') end,
