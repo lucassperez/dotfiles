@@ -36,8 +36,10 @@ packer.startup(function(use)
   }
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
-  use 'christoomey/vim-tmux-navigator'
+  -- Tmux plugins
+  use 'aserowy/tmux.nvim'
   use 'christoomey/vim-tmux-runner'
+
   -- Weird, but using lexima for endwise complete and putting new line + indent
   -- when, eg, pressing enter inside parens.
   -- I think nvim-autopairs should be able to do it, but having lexima as well

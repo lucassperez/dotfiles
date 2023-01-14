@@ -62,7 +62,7 @@ noremap('n', '<A-q>', ':bprevious<CR>')
 noremap('n', '<A-w>', ':bnext<CR>')
 
 -- Mudar de painéis segurando Control
--- O plugin vim-tmux-navigator está fazendo isso
+-- O plugin tmux.nvim está fazendo isso
 -- noremap('n', '<C-h>', '<C-w>h')
 -- noremap('n', '<C-j>', '<C-w>j')
 -- noremap('n', '<C-k>', '<C-w>k')
