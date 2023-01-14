@@ -51,7 +51,10 @@ noremap('n', '<leader>o', 'o<C-c>')
 noremap('n', '<leader>O', 'O<C-c>')
 
 -- Abrir links no firefox (quebra quando tem # :C)
-noremap('n', 'gx', ':!firefox <C-r><C-a><CR>')
+-- O plugin nvim-various-textobjects ta fazendo isso já e de forma
+-- mais inteligente, inlcusive tratando quando tem # na url, e
+-- usando xdg-open pra abrir o site com o aplicativo padrão.
+-- noremap('n', 'gx', ':!firefox <C-r><C-a><CR>')
 
 -- Ir para o buffer anterior/próximo e fechar o atual
 -- O plugin barbar.vim estaria sobrescrevendo esses mappings de qualquer forma
@@ -197,9 +200,6 @@ noremap('n', ',sh', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
 noremap('n', ',SH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
 noremap('n', ',Sh', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
 noremap('n', ',sH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', true)
-
--- Abrir um programa com o programa padrão para aquele tipo de arquivo
-noremap('n', '<leader>x', ':!xdg-open %<CR><CR>')
 
 -- "Zoom" na split atual e deixar as splits o mais parecidas possível
 noremap('n', '<leader>-', ':wincmd _<CR>:wincmd |<CR>')

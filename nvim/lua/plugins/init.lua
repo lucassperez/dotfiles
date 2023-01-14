@@ -46,6 +46,7 @@ packer.startup(function(use)
   -- is apparently make it buggy
   use 'cohama/lexima.vim'
   use 'windwp/nvim-autopairs'
+
   use 'kylechui/nvim-surround'
   use 'tpope/vim-ragtag'
   use 'numToStr/Comment.nvim'
@@ -53,7 +54,7 @@ packer.startup(function(use)
   use 'kyazdani42/nvim-tree.lua'
   use 'lewis6991/gitsigns.nvim'
   use 'alvan/vim-closetag'
-  use 'nvim-lua/plenary.nvim'
+  use 'chrisgrieser/nvim-various-textobjs'
 
   -- Coisas LSP e TreeSitter
   use {
