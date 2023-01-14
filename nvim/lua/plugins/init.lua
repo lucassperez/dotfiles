@@ -29,7 +29,10 @@ packer.startup(function(use)
   -- Telescope
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { {'nvim-lua/plenary.nvim'}, },
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'debugloop/telescope-undo.nvim',
+    },
   }
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 

@@ -40,12 +40,14 @@ telescope.setup({
       case_mode = 'smart_case', -- or "ignore_case" or "respect_case"
       -- the default case_mode is "smart_case"
     },
+    undo = { layout_config = { preview_width = 0.7, }, },
   },
 })
 
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension somewhere AFTER the setup function:
 telescope.load_extension('fzf')
+telescope.load_extension('undo')
 
 function TelescopeGitOrFindFiles(opts)
   local code = os.execute('git rev-parse --git-dir 2>/dev/null 1>&2')
