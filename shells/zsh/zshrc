@@ -181,13 +181,13 @@ if tmux ls 1>/dev/null 2>&1; then
   _is_there_a_tmux_session_running='sim'
 fi
 
-# if ! [ $_is_there_a_tmux_session_running ]; then
-#   # This grep regex is to avoid not opening tmux when the process was something
-#   # like /usr/bin/alacritty instead of just alacritty
-#   if ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | grep -q "^[/a-z0-9]*alacritty"; then
-#     `which tmux`
-#   fi
-# fi
+if ! [ $_is_there_a_tmux_session_running ]; then
+  # This grep regex is to avoid not opening tmux when the process was something
+  # like /usr/bin/alacritty instead of just alacritty
+  if ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | grep -q "^[/a-z0-9]*alacritty"; then
+    `which tmux`
+  fi
+fi
 
 # Putting this after tmux makes the startup faster when we open tmux,
 # (no need to run neofetch before starting tmux and then running neofetch again),
