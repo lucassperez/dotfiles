@@ -40,6 +40,8 @@ watch(
 widget:connect_signal(
   'button::press',
   function(_, _, _, button)
+    if button >= 4 then return end
+
     -- local processes = io.popen('ps axh -o cmd,%mem --sort=-%mem')
     local processes = io.popen('ps axhc -o cmd,%mem --sort=-%mem')
     if not processes then return end
@@ -52,20 +54,26 @@ widget:connect_signal(
     -- processes running, this would eventually try to concatenate `nil` with
     -- some strings, raising an exception.
     -- This should never realistic happen, though.
-    if button == 1 or button == 3 then
-      local i = 0
-      while i <= n_most_memory_consuming do
-        -- process, mem = processes:read():match('(.*)%s*(.*)')
-        message = message..(processes:read():gsub("Isolated Web Co", "Firefox"))..'\n'
-        i = i + 1
-      end
-      message = message..processes:read():gsub("Isolated Web Co", "Firefox")
+    local i = 0
+    while i <= n_most_memory_consuming do
+      -- process, mem = processes:read():match('(.*)%s*(.*)')
+      message = message..(processes:read():gsub('Isolated Web Co', 'Firefox'))..'\n'
+      i = i + 1
     end
+      message = message..processes:read():gsub('Isolated Web Co', 'Firefox')
 
-    naughty.notify({
+    local notif_options = {
       title = n_most_memory_consuming..' maiores consumos de memória ('..free_memory..')',
       text = message,
-    })
+    }
+
+    if button == 2 then
+      -- set 0 for no timeout, default is 5
+      notif_options.timeout = 60
+      notif_options.bg = require('beautiful').my_red_notification_background or '#ca4444'
+    end
+
+    naughty.notify(notif_options)
   end
 )
 

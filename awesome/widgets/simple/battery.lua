@@ -66,7 +66,7 @@ watch(
     if state == 'Unknown' then
       message = ' '..percentage..'%'
     elseif state == 'Full' then
-      color = "#ffffff"
+      color = '#ffffff'
       message = ' '..percentage..'%'
     elseif state == 'Charging' then
       message = ' '..percentage..'%'
@@ -90,7 +90,7 @@ watch(
     widget:set_bg(bg)
 
     -- file = io.open('/home/lucas/.config/awesome/widgets/simple/anota-lua', 'a')
-    -- file:write(os.date("%Y-%m-%d-%H:%M:%S")..': '..state..' '..percentage..'\n')
+    -- file:write(os.date('%Y-%m-%d-%H:%M:%S')..': '..state..' '..percentage..'\n')
     -- file:close()
 
     if state ~= 'Charging' and
@@ -105,7 +105,7 @@ watch(
         position = 'top_middle',
         height = 80,
         ignore_suspend = true, -- do I really want this?
-        bg = '#ca4444',
+        bg = beautiful.my_red_notification_background or '#ca4444',
       })
       LastBatteryWarn = os.time()
     end
@@ -159,7 +159,8 @@ widget:connect_signal(
       if percentage and tonumber(percentage) <= 20 and state ~= 'Charging' then
         urgency = 'critical'
         notif_text = notif_text..'.\nDo something, quick!'
-        bg = '#ca4444' -- since the urgency doesn't seem to work, I did this silliness
+        -- since the urgency doesn't seem to work, I did this silliness
+        bg = beautiful.my_red_notification_background or '#ca4444'
       else
         urgency = 'low'
         bg = beautiful.notification_bg
