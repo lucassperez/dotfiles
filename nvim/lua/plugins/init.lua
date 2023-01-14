@@ -48,7 +48,6 @@ packer.startup(function(use)
   use 'kyazdani42/nvim-tree.lua'
   use 'lewis6991/gitsigns.nvim'
   use 'alvan/vim-closetag'
-  use 'JoosepAlviste/nvim-ts-context-commentstring'
   use 'nvim-lua/plenary.nvim'
 
   -- Coisas LSP e TreeSitter
@@ -75,6 +74,7 @@ packer.startup(function(use)
     requires = {
       'nvim-treesitter/playground',
       'nvim-treesitter/nvim-treesitter-textobjects',
+      'JoosepAlviste/nvim-ts-context-commentstring',
     },
   }
 
