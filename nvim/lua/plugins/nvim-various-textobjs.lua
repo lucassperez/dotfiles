@@ -22,10 +22,13 @@ end
 map('entireBuffer', 'gG')
 
 -- Value in key-value pair
+map('value', 'v', inner)
+map('value', 'V', inner)
 map('value', 'iv', inner)
 map('value', 'av', outer)
 
 -- Key in key-value pair
+map('key', 'K', inner)
 map('key', 'ik', inner)
 map('key', 'ak', outer)
 
