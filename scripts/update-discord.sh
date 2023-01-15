@@ -3,6 +3,7 @@
 # Esse não funciona porque o comando Discord -v bloqueia!
 # Ele abre o Discord e o script fica travado.
 # discord_ver=`./Discord/Discord -v | sed -n 's/Discord \([0\.]*\)/\1/p'`
+# Pra pegar a versão, to usando jq e o build_info.json.
 
 which jq >/dev/null || exit
 which wget >/dev/null || exit
@@ -10,9 +11,9 @@ which wget >/dev/null || exit
 mkdir -pv "$HOME/sources/discord-tar-balls"
 mkdir -pv "$HOME/.local/bin"
 
-add_old_sufix_dir() {
+add_old_sufix() {
   if [ -e $1 ]; then
-    add_old_sufix_dir "$1-OLD"
+    add_old_sufix "$1-OLD"
   else
     printf $1
   fi
@@ -36,16 +37,21 @@ discord_ver=`jq '.version' ./Discord/resources/build_info.json | tr -d '"'`
 discord_dir="$HOME/sources/discord-tar-balls/discord-$discord_ver"
 
 if [ -d "$discord_dir" ]; then
-  new_old_dir_name=`add_old_sufix_dir $discord_dir`
-  printf -- "=== Directory $discord_dir already exisists, renaming it to $new_old_dir_name ===\n"
+  new_old_dir_name=`add_old_sufix $discord_dir`
+  printf -- "=== Directory $discord_dir already exists, renaming it to $new_old_dir_name ===\n"
   mv $discord_dir $new_old_dir_name
 fi
 
 mkdir $discord_dir
 mv Discord $discord_dir
-if [ -e "$HOME/.local/bin/discord" ] || [ -L "$HOME/.local/bin/discord" ]; then
-  printf -- "=== Deleting old symlink in $HOME/.local/bin/discord ===\n"
+
+if [ -L "$HOME/.local/bin/discord" ]; then
+  printf -- "\n=== Symlink in $HOME/.local/bin/discord already exists, DELETING it! ===\n\n"
   rm "$HOME/.local/bin/discord"
+elif [ -e "$HOME/.local/bin/discord" ]; then
+  new_old_discord_path=`add_old_sufix "$HOME/.local/bin/discord"`
+  printf -- "=== File in $HOME/.local/bin/discord already exists, renaming it to $new_old_discord_path ===\n"
+  mv "$HOME/.local/bin/discord" $new_old_discord_path
 fi
 
 printf -- "=== Creating symlink to $HOME/.local/discord ===\n"
