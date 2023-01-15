@@ -221,7 +221,7 @@ local docker_widget = require('widgets.simple.docker')
 local notification_widget = require('widgets.simple.notification')
 local datetime_widget = require('widgets.simple.datetime')
 local memory_widget = require('widgets.simple.memory')
-local screen_temperature = require('widgets.sct')()
+local screen_temperature = require('widgets.simple.screen_temperature')
 
 -- require('awesomewm-vim-tmux-navigator')({
 --   left  = {'h'},
@@ -362,7 +362,7 @@ awful.screen.connect_for_each_screen(
                           docker_widget,
         separator_widget, notification_widget,
         separator_widget, memory_widget,
-        separator_widget, screen_temperature.widget,
+        separator_widget, screen_temperature,
         separator_widget, bright_widget,
         separator_widget, microphone_widget,
         separator_widget, volume_widget,
@@ -488,13 +488,13 @@ local globalkeys = gears.table.join(
   awful.key({}, 'XF86MonBrightnessDown', function() bright_widget:dec(5) end),
   -- Screen temperature control
   awful.key({ modkey, control }, '[',
-            function() screen_temperature.update(250) end,
+            function() screen_temperature:inc(250) end,
             { group = 'System controls', description = 'increase screen temperature', }),
   awful.key({ modkey, control }, ']',
-            function() screen_temperature.update(-250) end,
+            function() screen_temperature:dec(250) end,
             { group = 'System controls', description = 'decrease screen temperature', }),
-  awful.key({ control }, 'XF86MonBrightnessUp', function() screen_temperature.update(250) end),
-  awful.key({ control }, 'XF86MonBrightnessDown', function() screen_temperature.update(-250) end),
+  awful.key({ control }, 'XF86MonBrightnessUp', function() screen_temperature:inc(500) end),
+  awful.key({ control }, 'XF86MonBrightnessDown', function() screen_temperature:dec(500) end),
 
   awful.key({ modkey }, 'n',
             function() notification_widget:toggle() end,
@@ -1261,7 +1261,6 @@ awful.spawn.with_shell('~/scripts/killall-and-start/xplugd.sh')
 -- awful.spawn.with_shell('copyq')
 -- microphone_widget:set_exact_vol(30)
 -- volume_widget:set_exact_vol(50)
-screen_temperature.set()
 
 -- client.connect_signal("property::class", function(c)
 --    if c.class == "Spotify" then
