@@ -4,14 +4,17 @@
 -- Battery widget
 -------------------------------------------------
 
+-- Dependencies:
+-- acpi
+
 local wibox = require('wibox')
 local watch = require('awful.widget.watch')
 local naughty = require('naughty')
 local beautiful = require('beautiful')
 
 local text = wibox.widget({
-    font = 'FontAwesome 11',
-    widget = wibox.widget.textbox,
+  font = 'FontAwesome 11',
+  widget = wibox.widget.textbox,
 })
 
 local widget = wibox.widget.background()
@@ -64,25 +67,25 @@ watch(
     -- 1/2 icon: [44, 67)
     -- 1/4 icon: [20, 44)
     if state == 'Unknown' then
-      message = ' '..percentage..'%'
+      message = ' ' .. percentage .. '%'
     elseif state == 'Full' then
       color = '#ffffff'
-      message = ' '..percentage..'%'
+      message = ' ' .. percentage .. '%'
     elseif state == 'Charging' then
-      message = ' '..percentage..'%'
+      message = ' ' .. percentage .. '%'
       color = '#00ff00'
-    -- elseif state == 'Not charging' then
-    --   message = '? '..percentage..'%'
+      -- elseif state == 'Not charging' then
+      --   message = '? '..percentage..'%'
     elseif percentage >= 90 then
-      message = ' '..percentage..'%'
+      message = ' ' .. percentage .. '%'
     elseif percentage >= 67 then
-      message = ' '..percentage..'%'
+      message = ' ' .. percentage .. '%'
     elseif percentage >= 44 then
-      message = ' '..percentage..'%'
+      message = ' ' .. percentage .. '%'
     elseif percentage >= 20 then
-      message = ' '..percentage..'%'
+      message = ' ' .. percentage .. '%'
     else
-      message = ' '..percentage..'%'
+      message = ' ' .. percentage .. '%'
     end
 
     text:set_text(message)
@@ -94,12 +97,12 @@ watch(
     -- file:close()
 
     if state ~= 'Charging' and
-       percentage <= 20 and
-       (LastBatteryWarn == nil or os.difftime(os.time(), LastBatteryWarn) > 300) -- 5 minutes since last warning
+        percentage <= 20 and
+        (LastBatteryWarn == nil or os.difftime(os.time(), LastBatteryWarn) > 300) -- 5 minutes since last warning
     then
       naughty.notify({
         title = '\nBateria baixa!',
-        text = tostring(percentage)..'%',
+        text = tostring(percentage) .. '%',
         urgency = 'critical', -- this doesn't work, how cool is that
         timeout = 300,
         position = 'top_middle',
@@ -116,9 +119,9 @@ watch(
 local function pluralize_number(string, word)
   local without_possible_leading_zero = string:gsub('^0', '')
   if without_possible_leading_zero == '1' then
-    return without_possible_leading_zero..' '..word
+    return without_possible_leading_zero .. ' ' .. word
   end
-  return without_possible_leading_zero..' '..word..'s'
+  return without_possible_leading_zero .. ' ' .. word .. 's'
 end
 
 widget:connect_signal(
@@ -146,11 +149,11 @@ widget:connect_signal(
         elseif minutes_left == '00' then
           time_left = pluralize_number(hours_left, 'hour')
         else
-          time_left = pluralize_number(hours_left, 'hour')..' and '..pluralize_number(minutes_left, 'minute')
+          time_left = pluralize_number(hours_left, 'hour') .. ' and ' .. pluralize_number(minutes_left, 'minute')
         end
 
         if message then
-          notif_text = time_left..' '..message
+          notif_text = time_left .. ' ' .. message
         else
           notif_text = time_left
         end
@@ -158,7 +161,7 @@ widget:connect_signal(
 
       if percentage and tonumber(percentage) <= 20 and state ~= 'Charging' then
         urgency = 'critical'
-        notif_text = notif_text..'.\nDo something, quick!'
+        notif_text = notif_text .. '.\nDo something, quick!'
         -- since the urgency doesn't seem to work, I did this silliness
         bg = beautiful.my_red_notification_background or '#ca4444'
       else
@@ -167,7 +170,7 @@ widget:connect_signal(
       end
 
       naughty.notify({
-        title = percentage..'% '..state,
+        title = percentage .. '% ' .. state,
         text = notif_text,
         urgency = urgency, -- this doesn't work, how cool is that
         bg = bg,

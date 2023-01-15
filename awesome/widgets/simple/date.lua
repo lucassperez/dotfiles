@@ -2,8 +2,8 @@ local wibox = require('wibox')
 local watch = require('awful.widget.watch')
 
 local text = wibox.widget({
-    font = 'FontAwesome 11',
-    widget = wibox.widget.textbox,
+  font = 'FontAwesome 11',
+  widget = wibox.widget.textbox,
 })
 
 local widget = wibox.widget.background()
@@ -16,7 +16,7 @@ watch(
   function(widget, stdout, stderr, exitreason, exitcode)
     local old_locale = os.getenv('LANG')
     os.setlocale('pt_BR.UTF-8')
-    local msg = ' '..os.date('%a %d %b')
+    local msg = ' ' .. os.date('%a %d %b')
     os.setlocale(old_locale)
 
     text:set_text(msg)

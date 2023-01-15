@@ -4,12 +4,15 @@
 -- Bright widget
 -------------------------------------------------
 
+-- Dependencies:
+-- light
+
 local awful = require('awful')
 local wibox = require('wibox')
 
 local text = wibox.widget({
-    font = 'FontAwesome 11',
-    widget = wibox.widget.textbox,
+  font = 'FontAwesome 11',
+  widget = wibox.widget.textbox,
 })
 
 local widget = wibox.widget.background()
@@ -53,11 +56,11 @@ end
 
 local function set_widget()
   awful.spawn.easy_async(
-  'light',
-  function(out)
-    local num_val = round(out)
-    text:set_text(' '..num_val..'%')
-  end
+    'light',
+    function(out)
+      local num_val = round(out)
+      text:set_text(' ' .. num_val .. '%')
+    end
   )
 end
 
@@ -70,13 +73,13 @@ end
 
 function widget:inc(delta)
   delta = delta or 5
-  widget:update_widget('light -A '..delta..'%')
+  widget:update_widget('light -A ' .. delta .. '%')
   -- widget:update_widget('xbacklight -inc '..delta)
 end
 
 function widget:dec(delta)
   delta = delta or 5
-  widget:update_widget('light -U '..delta..'%')
+  widget:update_widget('light -U ' .. delta .. '%')
   -- widget:update_widget('xbacklight -dec '..delta)
 end
 
@@ -88,13 +91,13 @@ function widget:roundNearest5()
   -- local brightness = calculateNearest5(io.popen('xbacklight'):read())
   local result = calculateNearest5(io.popen('light'):read())
 
-  widget:update_widget('light -S '..result)
+  widget:update_widget('light -S ' .. result)
   -- widget:update_widget('xbacklight -set '..result)
 end
 
-widget:connect_signal('button::press', function(_,_,_,button)
+widget:connect_signal('button::press', function(_, _, _, button)
   if (button == 1 or button == 3) then widget:roundNearest5()
-  -- elseif (button == 2) then widget:update_widget('xbacklight -set 50')
+    -- elseif (button == 2) then widget:update_widget('xbacklight -set 50')
   elseif (button == 2) then widget:update_widget('light -S 50')
   elseif (button == 4) then widget:inc(5)
   elseif (button == 5) then widget:dec(5) end

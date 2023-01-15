@@ -3,8 +3,8 @@ local wibox = require('wibox')
 local naughty = require('naughty')
 
 local text = wibox.widget({
-    font = 'FontAwesome 11',
-    widget = wibox.widget.textbox,
+  font = 'FontAwesome 11',
+  widget = wibox.widget.textbox,
 })
 
 local widget = wibox.widget.background()

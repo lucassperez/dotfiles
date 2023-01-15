@@ -1,3 +1,7 @@
+--- Dependencies:
+--- xsct
+--- https://github.com/faf0/sct
+
 local awful = require('awful')
 local wibox = require('wibox')
 

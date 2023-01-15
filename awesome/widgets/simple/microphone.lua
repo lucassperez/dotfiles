@@ -5,7 +5,8 @@
 -- Mic widget
 -------------------------------------------------
 
--- Requires pactl command (openSUSE: pulseaudio-utils)
+-- Dependencies:
+-- pactl
 
 local awful = require('awful')
 local wibox = require('wibox')

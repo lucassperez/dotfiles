@@ -2,8 +2,8 @@ local wibox = require('wibox')
 local watch = require('awful.widget.watch')
 
 local text = wibox.widget({
-    font = 'FontAwesome 11',
-    widget = wibox.widget.textbox,
+  font = 'FontAwesome 11',
+  widget = wibox.widget.textbox,
 })
 
 local widget = wibox.widget.background()
@@ -14,7 +14,7 @@ watch(
   'date +%H:%M',
   1,
   function(widget, stdout, stderr, exitreason, exitcode)
-    local msg = ' '..stdout
+    local msg = ' ' .. stdout
     text:set_text(msg)
   end,
   widget

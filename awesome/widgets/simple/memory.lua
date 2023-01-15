@@ -3,8 +3,8 @@ local watch = require('awful.widget.watch')
 local naughty = require('naughty')
 
 local text = wibox.widget({
-    font = 'FontAwesome 11',
-    widget = wibox.widget.textbox,
+  font = 'FontAwesome 11',
+  widget = wibox.widget.textbox,
 })
 
 local widget = wibox.widget.background()
@@ -57,13 +57,13 @@ widget:connect_signal(
     local i = 0
     while i <= n_most_memory_consuming do
       -- process, mem = processes:read():match('(.*)%s*(.*)')
-      message = message..(processes:read():gsub('Isolated Web Co', 'Firefox'))..'\n'
+      message = message .. (processes:read():gsub('Isolated Web Co', 'Firefox')) .. '\n'
       i = i + 1
     end
-      message = message..processes:read():gsub('Isolated Web Co', 'Firefox')
+    message = message .. processes:read():gsub('Isolated Web Co', 'Firefox')
 
     local notif_options = {
-      title = n_most_memory_consuming..' maiores consumos de memória ('..free_memory..')',
+      title = n_most_memory_consuming .. ' maiores consumos de memória (' .. free_memory .. ')',
       text = message,
     }
 

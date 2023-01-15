@@ -1,3 +1,6 @@
+-- Dependencies:
+-- docker
+
 local wibox = require('wibox')
 local watch = require('awful.widget.watch')
 local naughty = require('naughty')
