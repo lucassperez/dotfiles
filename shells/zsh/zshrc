@@ -62,6 +62,21 @@ zstyle ':vcs_info:git*+set-message:*' hooks my-git-remote-comparison-styling
 zstyle ':vcs_info:git*' formats ' %F{9}%u%m%c%b'
 PROMPT='%B%F{green}%~${vcs_info_msg_0_}%u%s%0(?.. %F{magenta}%?)%f%b λ '
 
+# === Right prompt that shows the depth of shells, SHLVL, but only if is greater
+#     than one when not inside tmux, and if greater then two if inside tmux.
+#     This is because when inside tmux, the SHLVL is always at least two.
+
+depth_not_counting_tmux() {
+  if [ $TMUX ]; then
+    [ $SHLVL -gt 2 ] && printf "depth:$SHLVL"
+  else
+    [ $SHLVL -gt 1 ] && printf "depth:$SHLVL"
+  fi
+}
+
+# RPROMPT='%B%F{6}%2(L.{$SHLVL}.)%f%b'
+RPROMPT='%B%F{6}$(depth_not_counting_tmux)%f%b'
+
 # ===  Big two line prompt
 
 # zstyle ':vcs_info:git*' formats '%F{9}%u%c%m(%b)'
