@@ -2,6 +2,5 @@ nvim/.netrwhist
 nvim/packer
 nvim/undodir
 nvim/nvim-require.log
-shells/zsh/plugins/fast-syntax-highlighting
 .luarc.json
 .gitconfig

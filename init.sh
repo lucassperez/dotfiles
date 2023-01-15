@@ -1,12 +1,19 @@
 #!/bin/sh
 
+# If running this script first time after cloning, there is a chance
+# XDG_CONFIG_HOME is still not set, and if it is not the usual $HOME/.config,
+# things might get symlinked to werid spots!
+# Thus, the first argument passed to this script is used as the CONFIG_DIR
+CONFIG_DIR="${1:-${XDG_CONFIG_HOME:-$HOME/.config}}"
+mkdir -pv $CONFIG_DIR
+
 dir_not_in_list() {
   local dir=$1
   local dirs_list=$2
   echo "$dirs_list" | tr ',' "\n" | grep -vq "$dir"
 }
 
-recursively_symlink_scripts() {
+do_symlink_scripts_recur() {
   local current_dir=$1
   local destination_path=$2
   local visited_dirs_list=$3
@@ -16,7 +23,7 @@ recursively_symlink_scripts() {
       visited_dirs_list="$f,$visited_dirs_list"
       cd $f
       mkdir -p "$destination_path/$f"
-      recursively_symlink_scripts `pwd` "$destination_path/$f" "$visited_dirs_list"
+      do_symlink_scripts_recur `pwd` "$destination_path/$f" "$visited_dirs_list"
       cd ..
     elif [ -x $f ] || echo "$f" | grep -q '\.sh$'; then
       ln -sfni "$current_dir/$f" "$destination_path/$f"
@@ -24,6 +31,30 @@ recursively_symlink_scripts() {
   done
 }
 
+recursively_symlink_scripts() {
+  cd "$DIR/scripts"
+  do_symlink_scripts_recur "$DIR/scripts" "$HOME/scripts"
+  cd "$DIR"
+}
+
+symlink_all_files_in_dir() {
+  cd $1
+
+  local current_dir=$1
+  local destination_path=$2
+
+  for f in `ls`; do
+    if ! [ -d $f ]; then
+      ln -sfni "$current_dir/$f" "$destination_path/$f"
+    fi
+  done
+
+  cd $DIR
+}
+
+# Get this script's dir name.
+# With this, the init script can be
+# invoked from anywhere.
 cd $(dirname "$0")
 DIR=$(pwd)
 
@@ -39,43 +70,42 @@ printf "\tDocker\n"
 printf "\tTig\n"
 printf "\tRofi\n"
 
-mkdir -p "$HOME/.config/alacritty/"
-ln -sfni "$DIR/alacritty/alacritty.yml" "$HOME/.config/alacritty/alacritty.yml"
+mkdir -p "$CONFIG_DIR/alacritty/"
+ln -sfni "$DIR/alacritty/alacritty.yml" "$CONFIG_DIR/alacritty/alacritty.yml"
 
 ln -sfni "$DIR/shells/profile" "$HOME/.profile"
 ln -sfni "$DIR/shells/aliases" "$HOME/.aliases"
 ln -sfni "$DIR/shells/functions" "$HOME/.functions"
 ln -sfni "$DIR/shells/zsh/zshenv" "$HOME/.zshenv"
-mkdir -p "$HOME/.config/zsh/"
-ln -sfni "$DIR/shells/zsh/zshrc" "$HOME/.config/zsh/.zshrc"
-ln -sfni "$DIR/shells/zsh/plugins" "$HOME/.config/zsh/plugins"
-ln -sfni "$DIR/shells/zsh/completions" "$HOME/.config/zsh/completions"
+mkdir -p "$CONFIG_DIR/zsh/"
+ln -sfni "$DIR/shells/zsh/zshrc" "$CONFIG_DIR/zsh/.zshrc"
+mkdir -p "$CONFIG_DIR/zsh/plugins"
+mkdir -p "$CONFIG_DIR/zsh/completions"
+symlink_all_files_in_dir "$DIR/shells/zsh/plugins" "$CONFIG_DIR/zsh/plugins"
+symlink_all_files_in_dir "$DIR/shells/zsh/completions" "$CONFIG_DIR/zsh/completions"
 
-ln -sfni "$DIR/nvim" "$HOME/.config/nvim"
+ln -sfni "$DIR/nvim" "$CONFIG_DIR/nvim"
 
 mkdir -p "$HOME/scripts/"
-# Actually moving to scripts folder and then going back
-cd "$DIR/scripts"
-recursively_symlink_scripts "$DIR/scripts" "$HOME/scripts"
-cd $DIR
+recursively_symlink_scripts
 
 ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 
-mkdir -p "$HOME/.config/awesome/"
-ln -sfni "$DIR/awesome/rc.lua" "$HOME/.config/awesome/rc.lua"
-ln -sfni "$DIR/awesome/my-theme.lua" "$HOME/.config/awesome/my-theme.lua"
-ln -sfni "$DIR/awesome/widgets" "$HOME/.config/awesome/widgets"
+mkdir -p "$CONFIG_DIR/awesome/"
+ln -sfni "$DIR/awesome/rc.lua" "$CONFIG_DIR/awesome/rc.lua"
+ln -sfni "$DIR/awesome/my-theme.lua" "$CONFIG_DIR/awesome/my-theme.lua"
+ln -sfni "$DIR/awesome/widgets" "$CONFIG_DIR/awesome/widgets"
 
 ln -sfni "$DIR/mime.types" "$HOME/.mime.types"
 ln -sfni "$DIR/xinput/xinputrc" "$HOME/.xinputrc"
-ln -sfni "$DIR/inputrc" "$HOME/.config/inputrc"
+ln -sfni "$DIR/inputrc" "$CONFIG_DIR/inputrc"
 
-mkdir -p "$HOME/.config/docker/"
-ln -sfni "$DIR/docker/config.json" "$HOME/.config/docker/config.json"
+mkdir -p "$CONFIG_DIR/docker/"
+ln -sfni "$DIR/docker/config.json" "$CONFIG_DIR/docker/config.json"
 
-mkdir -p "$HOME/.config/tig"
-ln -sfni "$DIR/tig/config" "$HOME/.config/tig/config"
+mkdir -p "$CONFIG_DIR/tig"
+ln -sfni "$DIR/tig/config" "$CONFIG_DIR/tig/config"
 
-mkdir -p "$HOME/.config/rofi/"
-ln -sfni "$DIR/rofi/config.rasi" "$HOME/.config/rofi/config.rasi"
-ln -sfni "$DIR/rofi/meu-tema.rasi" "$HOME/.config/rofi/meu-tema.rasi"
+mkdir -p "$CONFIG_DIR/rofi/"
+ln -sfni "$DIR/rofi/config.rasi" "$CONFIG_DIR/rofi/config.rasi"
+ln -sfni "$DIR/rofi/meu-tema.rasi" "$CONFIG_DIR/rofi/meu-tema.rasi"
