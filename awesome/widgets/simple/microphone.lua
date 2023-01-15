@@ -9,10 +9,11 @@
 
 local awful = require('awful')
 local wibox = require('wibox')
+local home = os.getenv('HOME')
 
 local text = wibox.widget({
-    font = 'FontAwesome 11',
-    widget = wibox.widget.textbox,
+  font = 'FontAwesome 11',
+  widget = wibox.widget.textbox,
 })
 
 local widget = wibox.widget.background()
@@ -21,31 +22,31 @@ widget:set_fg('#d6ce6f')
 
 local function set_widget()
   awful.spawn.easy_async(
-  'pactl get-source-volume @DEFAULT_SOURCE@',
-  function(out)
-    local volume = string.match(out, '^Volume: front%-left: *%d+ */ *(%d+)%%')
-    local mute =
+    'pactl get-source-volume @DEFAULT_SOURCE@',
+    function(out)
+      local volume = string.match(out, '^Volume: front%-left: *%d+ */ *(%d+)%%')
+      local mute =
       io.popen('pactl get-source-mute @DEFAULT_SOURCE@')
-        :read()
-        :match('^Mute: (%w+)$')
+          :read()
+          :match('^Mute: (%w+)$')
 
-    local val = ''
+      local val = ''
 
-    if mute == 'no' then
-      val = ' '..volume..'%'
-    else
-      val = ' '..volume..'%'
+      if mute == 'no' then
+        val = ' ' .. volume .. '%'
+      else
+        val = ' ' .. volume .. '%'
+      end
+
+      -- file = io.open('/home/lucas/.config/awesome/widgets/simple/anota-lua', 'a')
+      -- file:write(out..'\n')
+      -- file:write(volume..'\n')
+      -- file:write(mute..'\n')
+      -- file:write('--\n')
+      -- file:close()
+
+      text:set_text(val)
     end
-
-    -- file = io.open('/home/lucas/.config/awesome/widgets/simple/anota-lua', 'a')
-    -- file:write(out..'\n')
-    -- file:write(volume..'\n')
-    -- file:write(mute..'\n')
-    -- file:write('--\n')
-    -- file:close()
-
-    text:set_text(val)
-  end
   )
 end
 
@@ -60,22 +61,22 @@ function widget:toggle()
   widget:update_widget('pactl set-source-mute @DEFAULT_SOURCE@ toggle')
 end
 
-function widget:inc_vol(delta)
+function widget:inc(delta)
   delta = delta or 5
-  widget:update_widget('pactl set-source-volume @DEFAULT_SOURCE@ +'..delta..'% +'..delta..'%')
+  widget:update_widget('pactl set-source-volume @DEFAULT_SOURCE@ +' .. delta .. '% +' .. delta .. '%')
 end
 
-function widget:dec_vol(delta)
+function widget:dec(delta)
   delta = delta or 5
-  widget:update_widget('pactl set-source-volume @DEFAULT_SOURCE@ -'..delta..'% -'..delta..'%')
+  widget:update_widget('pactl set-source-volume @DEFAULT_SOURCE@ -' .. delta .. '% -' .. delta .. '%')
 end
 
-function widget:set_exact_vol(value)
+function widget:set(value)
   value = value or 50
-  widget:update_widget('pactl set-source-volume @DEFAULT_SOURCE@  '..value..'%')
+  widget:update_widget('pactl set-source-volume @DEFAULT_SOURCE@  ' .. value .. '%')
 end
 
-widget:connect_signal('button::press', function(_,_,_,button)
+widget:connect_signal('button::press', function(_, _, _, button)
   if (button == 1) then widget:toggle()
   elseif (button == 3) then
     -- Why doesn't this update the widget afterwards? ):
@@ -83,11 +84,11 @@ widget:connect_signal('button::press', function(_,_,_,button)
     -- set_widget()
 
     -- Weird hack, just like in volume.lua
-    awful.spawn(os.getenv('HOME')..'/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
-  elseif (button == 4) then widget:inc_vol(2)
-  elseif (button == 5) then widget:dec_vol(2)
+    awful.spawn(home .. '/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
+  elseif (button == 4) then widget:inc(2)
+  elseif (button == 5) then widget:dec(2)
   elseif (button == 2) then
-    awful.spawn(os.getenv('HOME')..'/.config/awesome/widgets/simple/pavucontrol+volume-update.sh -t 4')
+    awful.spawn(home .. '/.config/awesome/widgets/simple/pavucontrol+volume-update.sh -t 4')
   end
 end)
 

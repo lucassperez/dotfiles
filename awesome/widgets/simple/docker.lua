@@ -1,25 +1,29 @@
 local wibox = require('wibox')
 local watch = require('awful.widget.watch')
 local naughty = require('naughty')
+local home = os.getenv('HOME')
 
 local text = wibox.widget({
-    font = 'FontAwesome 11',
-    widget = wibox.widget.textbox,
+  font = 'FontAwesome 11',
+  widget = wibox.widget.textbox,
 })
 
 local widget = wibox.widget.background()
 widget:set_widget(text)
 widget:set_fg('#0db7ed')
 
+-- TODO Find out why piping docker ps to wc -l doesn't work.
+--      Maybe the pipe is not supported in watch.
 watch(
-  -- TODO Find out why piping docker ps to wc -l doesn't work.
-  --      Maybe the pipe is not supported.
   'docker ps -q',
   5,
   function(widget, stdout, stderr, exitreason, exitcode)
     -- gsub also returns how many times a substitution happened
-    local _, count = stdout:gsub('\n', '\n')
-    text:set_text('🐳 '..count)
+    -- Basically counting how many new lines are present.
+    -- Select gets only the nth value returned by the given
+    -- function without allocating the memoty for the other values.
+    local count = select(2, stdout:gsub('\n', ''))
+    text:set_text('🐳 ' .. count)
   end,
   widget
 )
@@ -35,7 +39,7 @@ widget:connect_signal(
       while true do
         if docker_response then line = docker_response:read() end
         if not line then break end
-        notif_text = notif_text..'\n'..line
+        notif_text = notif_text .. '\n' .. line
       end
 
       if notif_text == '' then notif_text = 'No containers running' end
@@ -43,7 +47,7 @@ widget:connect_signal(
       naughty.notify({
         title = 'Dockers',
         text = notif_text,
-        icon = '/home/lucas/.config/awesome/widgets/simple/icons/docker-smaller.png',
+        icon = home .. '/.config/awesome/widgets/simple/icons/docker-smaller.png',
         icon_size = 32,
       })
     end

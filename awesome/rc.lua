@@ -422,10 +422,10 @@ local globalkeys = gears.table.join(
 
   -- Volume control
   awful.key({ modkey }, ',',
-            function() volume_widget:dec_vol(2) end,
+            function() volume_widget:dec(2) end,
             { group = 'System controls', description = 'decrease volume', }),
   awful.key({ modkey }, '.',
-            function() volume_widget:inc_vol(2) end,
+            function() volume_widget:inc(2) end,
             { group = 'System controls', description = 'increase volume', }),
   awful.key({ modkey }, '/',
             function() volume_widget:toggle() end,
@@ -433,16 +433,16 @@ local globalkeys = gears.table.join(
   awful.key({ modkey }, ';',
             function() volume_widget:toggle() end,
             { group = 'System controls', description = 'toggle mute volume', }),
-  awful.key({}, 'XF86AudioRaiseVolume', function() volume_widget:inc_vol(5) end),
-  awful.key({}, 'XF86AudioLowerVolume', function() volume_widget:dec_vol(5) end),
+  awful.key({}, 'XF86AudioRaiseVolume', function() volume_widget:inc(5) end),
+  awful.key({}, 'XF86AudioLowerVolume', function() volume_widget:dec(5) end),
   awful.key({}, 'XF86AudioMute', function() volume_widget:toggle() end),
 
   -- Microphone control
   awful.key({ modkey, control }, ',',
-            function() microphone_widget:dec_vol(2) end,
+            function() microphone_widget:dec(2) end,
             { group = 'System controls', description = 'decrease microphone volume', }),
   awful.key({ modkey, control }, '.',
-            function() microphone_widget:inc_vol(2) end,
+            function() microphone_widget:inc(2) end,
             { group = 'System controls', description = 'increase microphone volume', }),
   awful.key({ modkey, control }, '/',
             function() microphone_widget:toggle() end,
@@ -453,8 +453,8 @@ local globalkeys = gears.table.join(
   awful.key({ modkey, control }, ';',
             function() microphone_widget:toggle() end,
             { group = 'System controls', description = 'toggle mute microphone', }),
-  awful.key({ control }, 'XF86AudioRaiseVolume', function() microphone_widget:inc_vol(5) end),
-  awful.key({ control }, 'XF86AudioLowerVolume', function() microphone_widget:dec_vol(5) end),
+  awful.key({ control }, 'XF86AudioRaiseVolume', function() microphone_widget:inc(5) end),
+  awful.key({ control }, 'XF86AudioLowerVolume', function() microphone_widget:dec(5) end),
   awful.key({ control }, 'XF86AudioMute', function() microphone_widget:toggle() end),
   awful.key({}, 'XF86AudioMicMute', function() microphone_widget:toggle() end),
 
@@ -1259,8 +1259,8 @@ awful.spawn.with_shell('clipmenud')
 awful.spawn.with_shell('~/scripts/killall-and-start/xplugd.sh')
 -- awful.spawn.with_shell('redshift -c ~/.config/redshift/redshift.conf')
 -- awful.spawn.with_shell('copyq')
--- microphone_widget:set_exact_vol(30)
--- volume_widget:set_exact_vol(50)
+-- microphone_widget:set(30)
+-- volume_widget:set(50)
 
 -- client.connect_signal("property::class", function(c)
 --    if c.class == "Spotify" then
