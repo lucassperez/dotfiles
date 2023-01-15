@@ -61,4 +61,4 @@
 " " Umas palavras especiais, por exemplo "console", "Array" etc
 " hi jsGlobalObjects cterm=italic ctermfg=green
 "
-" source $HOME/.config/nvim/after/syntax/javascriptreact.vim
+" exec 'source ' . stdpath('config') . '/after/syntax/javascriptreact.vim'

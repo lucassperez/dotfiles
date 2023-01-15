@@ -183,13 +183,12 @@ noremap('n', '<leader>R', ':lua autoExecuteOnSave()<CR>', true)
 noremap('n', '<leader>rc', ':silent!wa<CR>:lua compileFile()<CR>')
 
 --- "Snippets" ---
-noremap('n', ',html', ':read $HOME/.config/nvim/snippets/html5<CR>i<Backspace><C-c>6jf>l')
-noremap('n', ',rfce', ":read $HOME/.config/nvim/snippets/reactfunctcomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>5k")
-noremap('n', ',rspec', ':read $HOME/.config/nvim/snippets/rubyspec<CR>i<Backspace><C-c>2j6l')
-noremap('n', ',stl', ':read $HOME/.config/nvim/snippets/styledcomps<CR>i<Backspace><C-c>j')
--- noremap('n', ',vcomp', ":read $HOME/.config/nvim/snippets/vuecomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>0")
--- noremap('n', ',exm', ":read $HOME/.config/nvim/snippets/elixirmodule<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>jS")
-noremap('n', ',go', ':read $HOME/.config/nvim/snippets/gomain<CR>i<Backspace><C-c>5jS')
+local snips_path = (vim.fn.stdpath('config'))..'/snippets'
+noremap('n', ',html', ':read '..snips_path..'/html5<CR>i<Backspace><C-c>6jf>l')
+noremap('n', ',rfce', ":read "..snips_path.."/reactfunctcomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>5k")
+-- noremap('n', ',vcomp', ":read "..snips_path.."/vuecomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>0")
+-- noremap('n', ',exm', ":read "..snips_path.."/elixirmodule<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>jS")
+noremap('n', ',go', ':read '..snips_path..'/gomain<CR>i<Backspace><C-c>5jS')
 
 -- Buscar por uma sequência de <<<<<<<, ======= ou >>>>>>>
 -- Pra usar quando tem conflitos no git

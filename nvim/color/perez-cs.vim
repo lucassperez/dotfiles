@@ -1,4 +1,5 @@
-source $HOME/.config/nvim/color/general.vim
+exec 'source ' . stdpath('config') . '/color/general.vim'
+
 " hi Normal ctermfg=231 ctermbg=234 cterm=NONE
 " 68 é um azulzinho, útil saber
 " 180 é o marromzinho
