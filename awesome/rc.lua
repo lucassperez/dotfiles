@@ -73,6 +73,8 @@ local editor_cmd = terminal .. ' -e ' .. editor
 local browser = 'firefox'
 
 local home = os.getenv('HOME')
+local config_home = os.getenv('XDG_CONFIG_HOME') or home .. '/.config'
+local scripts_dir = home .. '/scripts'
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -411,10 +413,10 @@ local globalkeys = gears.table.join(
 -- 198 XF86AudioMicMute
 
   awful.key({ modkey }, 'c',
-            function() awful.spawn(home..'/scripts/monitors-dmenu.sh') end,
+            function() awful.spawn(scripts_dir..'/monitors-dmenu.sh') end,
             { group = 'System controls', description = 'choose second monitor position and/or reset wallpaper', }),
   -- awful.key({ modkey }, 'y',
-  --           function() awful.spawn(home..'/scripts/dmenu/copyq.sh') end,
+  --           function() awful.spawn(scripts_dir..'/dmenu/copyq.sh') end,
   --           { group = 'System controls', description = 'Copyq dmenu script', }),
   awful.key({ modkey }, 'y',
             function() awful.spawn('clipmenu -i -h 21 -p "Clipboard" -sb "#008080" -nb "#000000"') end,
@@ -461,13 +463,13 @@ local globalkeys = gears.table.join(
   awful.key({ modkey, control, shift }, '/',
             function()
               -- awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
-              awful.spawn(home..'/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
+              awful.spawn(config_home..'/awesome/widgets/simple/pulsemixer+volume-update.sh')
             end,
             { group = 'System controls', description = 'open pulsemixer', }),
   awful.key({ modkey, control, shift }, ';',
             function()
               -- awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
-              awful.spawn(home..'/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
+              awful.spawn(config_home..'/awesome/widgets/simple/pulsemixer+volume-update.sh')
             end,
             { group = 'System controls', description = 'open pulsemixer', }),
 
@@ -479,10 +481,10 @@ local globalkeys = gears.table.join(
             function() bright_widget:dec(2.5) end,
             { group = 'System controls', description = 'decrease brightness', }),
   awful.key({ modkey, shift }, '[',
-            function() awful.spawn(home..'/scripts/dmenu/backlight.sh') end,
+            function() awful.spawn(scripts_dir..'/dmenu/backlight.sh') end,
             { group = 'System controls', description = 'Ask for a brightness' }),
   awful.key({ modkey, shift }, ']',
-            function() awful.spawn(home..'/scripts/dmenu/backlight.sh') end,
+            function() awful.spawn(scripts_dir..'/dmenu/backlight.sh') end,
             { group = 'System controls', description = 'Ask for a brightness' }),
   awful.key({}, 'XF86MonBrightnessUp', function() bright_widget:inc(5) end),
   awful.key({}, 'XF86MonBrightnessDown', function() bright_widget:dec(5) end),
@@ -721,10 +723,10 @@ local globalkeys = gears.table.join(
             { group = 'Launcher', description = 'Print all screens to clipboard' }),
 
   awful.key({ modkey, shift }, 'ç',
-            function() awful.spawn(home..'/scripts/emoji/dmenu-search-emoji.sh') end,
+            function() awful.spawn(scripts_dir..'/emoji/dmenu-search-emoji.sh') end,
             { group = 'Launcher', description = 'search emojis to copy them to clipboard', }),
   awful.key({ modkey }, 'ç',
-            function() awful.spawn(home..'/scripts/rofi-emoji.sh') end,
+            function() awful.spawn(scripts_dir..'/rofi-emoji.sh') end,
             { group = 'Launcher', description = 'run rofimoji script', }),
 
   awful.key({ modkey, control }, 'ç',

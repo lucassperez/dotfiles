@@ -4,7 +4,7 @@
 local wibox = require('wibox')
 local watch = require('awful.widget.watch')
 local naughty = require('naughty')
-local home = os.getenv('HOME')
+local config_home = os.getenv('XDG_CONFIG_DIR') or os.getenv('HOME') .. '/.config'
 
 local text = wibox.widget({
   font = 'FontAwesome 11',
@@ -50,7 +50,7 @@ widget:connect_signal(
       naughty.notify({
         title = 'Dockers',
         text = notif_text,
-        icon = home .. '/.config/awesome/widgets/simple/icons/docker-smaller.png',
+        icon = config_home .. '/awesome/widgets/simple/icons/docker-smaller.png',
         icon_size = 32,
       })
     end

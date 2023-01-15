@@ -10,7 +10,7 @@
 
 local awful = require('awful')
 local wibox = require('wibox')
-local home = os.getenv('HOME')
+local config_home = os.getenv('XDG_CONFIG_DIR') or os.getenv('HOME') .. '/.config'
 
 local text = wibox.widget({
   font = 'FontAwesome 11',
@@ -39,7 +39,7 @@ local function set_widget()
         val = ' ' .. volume .. '%'
       end
 
-      -- file = io.open('/home/lucas/.config/awesome/widgets/simple/anota-lua', 'a')
+      -- file = io.open(config_home..'/awesome/widgets/simple/anota-lua', 'a')
       -- file:write(out..'\n')
       -- file:write(volume..'\n')
       -- file:write(mute..'\n')
@@ -85,11 +85,11 @@ widget:connect_signal('button::press', function(_, _, _, button)
     -- set_widget()
 
     -- Weird hack, just like in volume.lua
-    awful.spawn(home .. '/.config/awesome/widgets/simple/pulsemixer+volume-update.sh')
+    awful.spawn(config_home .. '/awesome/widgets/simple/pulsemixer+volume-update.sh')
   elseif (button == 4) then widget:inc(2)
   elseif (button == 5) then widget:dec(2)
   elseif (button == 2) then
-    awful.spawn(home .. '/.config/awesome/widgets/simple/pavucontrol+volume-update.sh -t 4')
+    awful.spawn(config_home .. '/awesome/widgets/simple/pavucontrol+volume-update.sh -t 4')
   end
 end)
 
