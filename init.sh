@@ -25,7 +25,11 @@ do_symlink_scripts_recur() {
       mkdir -p "$destination_path/$f"
       do_symlink_scripts_recur `pwd` "$destination_path/$f" "$visited_dirs_list"
       cd ..
-    elif [ -x $f ] || echo "$f" | grep -q '\.sh$'; then
+    # elif [ -x $f ] || echo "$f" | grep -q '\.sh$'; then
+    # Before I was only symlinking executable files or files that ended
+    # in ".sh", but since the "emojis" dmenu script actually uses some
+    # other files, I'm just symlinking every normal file.
+    elif [ -f $f ]; then
       ln -sfni "$current_dir/$f" "$destination_path/$f"
     fi
   done
