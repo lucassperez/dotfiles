@@ -674,11 +674,11 @@ local globalkeys = gears.table.join(
             { group = 'Launcher', description = 'open '..browser..' browser', }),
 
   awful.key({ modkey }, 'space',
-            function () awful.spawn('rofi -show run') end,
-            { group = 'Launcher', description = 'run rofi -show run', }),
-  awful.key({ modkey, shift }, 'space',
             function () awful.spawn('rofi -show drun') end,
             { group = 'Launcher', description = 'run rofi -show drun', }),
+  awful.key({ modkey, shift }, 'space',
+            function () awful.spawn('rofi -show run') end,
+            { group = 'Launcher', description = 'run rofi -show run', }),
   --[[
     Explanation: When using tmux inside alacritty, I don't know why, but the
     numpad enter was producing something different (on Debian it worked as
