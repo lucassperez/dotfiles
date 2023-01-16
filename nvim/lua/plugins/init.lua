@@ -55,6 +55,7 @@ packer.startup(function(use)
   use 'lewis6991/gitsigns.nvim'
   use 'alvan/vim-closetag'
   use 'chrisgrieser/nvim-various-textobjs'
+  use 'monaqa/dial.nvim'
 
   -- Coisas LSP e TreeSitter
   use {
