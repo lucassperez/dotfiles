@@ -89,7 +89,8 @@ ln -sfni "$DIR/nvim" "$CONFIG_DIR/nvim"
 mkdir -p "$HOME/scripts/"
 recursively_symlink_scripts
 
-ln -sfni "$DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
+mkdir -p "$CONFIG_DIR/tmux"
+ln -sfni "$DIR/tmux/tmux.conf" "$CONFIG_DIR/tmux/tmux.conf"
 
 mkdir -p "$CONFIG_DIR/awesome/"
 ln -sfni "$DIR/awesome/rc.lua" "$CONFIG_DIR/awesome/rc.lua"
