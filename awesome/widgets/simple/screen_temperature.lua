@@ -43,6 +43,11 @@ function widget:dec(delta)
   widget:update_widget('xsct -d ' .. delta)
 end
 
+function widget:set(val)
+  val = val or 5250
+  widget:update_widget('xsct ' .. val)
+end
+
 widget:connect_signal('button::press', function(_, _, _, button)
   if (button == 2) then widget:update_widget('xsct 5250')
   elseif (button == 4) then widget:inc(500)

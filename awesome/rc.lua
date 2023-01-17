@@ -1263,6 +1263,7 @@ awful.spawn.with_shell('~/scripts/killall-and-start/xplugd.sh')
 -- awful.spawn.with_shell('copyq')
 -- microphone_widget:set(30)
 -- volume_widget:set(50)
+screen_temperature:set(5250)
 
 -- client.connect_signal("property::class", function(c)
 --    if c.class == "Spotify" then
