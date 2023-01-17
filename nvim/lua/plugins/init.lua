@@ -101,7 +101,6 @@ packer.startup(function(use)
   -- Ajudinha visual
   use 'hoob3rt/lualine.nvim'
   use 'romgrk/barbar.nvim'
-  -- use { 'romgrk/barbar.nvim', requires = { 'kyazdani42/nvim-web-devicons' }, }
   -- use 'p00f/nvim-ts-rainbow'
 
   -- Coisas que tem a ver com cores e visual

@@ -72,8 +72,9 @@ require('catppuccin').setup({
   end,
 })
 
+vim.cmd.colorscheme('catppuccin')
+
 vim.cmd([[
-colorscheme catppuccin
 hi clear EndOfBuffer
 hi link EndOfBuffer NonText
 hi clear MsgSeparator
