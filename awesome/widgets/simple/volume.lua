@@ -25,15 +25,17 @@ local function set_widget()
   awful.spawn.easy_async(
     'pactl get-sink-volume @DEFAULT_SINK@',
     function(out)
-      local volume = string.match(out, '^Volume: front%-left: *%d+ */ *(%d+)%%')
-      local mute =
-      io.popen('pactl get-sink-mute @DEFAULT_SINK@')
-          :read()
-          :match('^Mute: (%w+)$')
+      local volume = out:match('^Volume: front%-left: *%d+ */ *(%d+)%%')
+      if volume == nil then volume = out:match('^Volume: mono: *%d+ */ *(%d+)%%') end
+
+      local mute = io.popen('pactl get-sink-mute @DEFAULT_SINK@'):read()
+      if mute then mute = mute:match('^Mute: (%w+)$') end
 
       local val = ''
 
-      if mute == 'yes' then
+      if mute == nil then
+        val = ' ? ' .. volume .. '%'
+      elseif mute == 'yes' then
         val = 'X ' .. volume .. '%'
       else
         volume = tonumber(volume)
@@ -46,7 +48,7 @@ local function set_widget()
         end
       end
 
-      -- file = io.open(config_home..'/awesome/widgets/simple/anota-lua', 'a')
+      -- local file = io.open(config_home..'/awesome/widgets/simple/anota-lua', 'a')
       -- file:write(out..'\n')
       -- file:write(volume..'\n')
       -- file:write(on_or_off..'\n')
