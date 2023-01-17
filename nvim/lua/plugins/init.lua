@@ -72,8 +72,8 @@ packer.startup(function(use)
   -- Alternativa para o fidget.
   -- use 'arkav/lualine-lsp-progress'
 
-  use 'jose-elias-alvarez/null-ls.nvim'
-  use 'jose-elias-alvarez/nvim-lsp-ts-utils'
+  -- use 'jose-elias-alvarez/null-ls.nvim'
+  use 'jose-elias-alvarez/typescript.nvim'
 
   use {
     'nvim-treesitter/nvim-treesitter',
