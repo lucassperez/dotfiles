@@ -7,16 +7,17 @@ local function ruby_function(filename)
   end
 end
 
-local function rust_function(filename)
+local function rust_function(filename, full_path_filename)
   local filename_without_extension = filename:match('(.*)%.rs$')
-  return 'rustc '..filename..' && ./'..filename_without_extension,
+  local bin_name = filename_without_extension .. '-nvim-rust-bin'
+  return 'rustc -o '..bin_name..' '..full_path_filename..' && ./'..filename_without_extension,
          'Hopefully compiling and running '..filename
 end
 
-local function c_function(filename)
+local function c_function(filename, full_path_filename)
   local filename_without_extension = filename:match('(.*)%.c$')
-  local bin_name = filename_without_extension..'-nvim-bin'
-  return 'gcc -o '..bin_name..' '..filename..' && ./'..bin_name,
+  local bin_name = filename_without_extension..'-nvim-c-bin'
+  return 'gcc -o '..bin_name..' '..full_path_filename..' && ./'..bin_name,
          'Hopefully compiling and running '..filename
 end
 
@@ -45,11 +46,11 @@ local function getRunCommand()
 
   local filetype = vim.bo.filetype
 
-  command = runCommands[filetype]
+  local command = runCommands[filetype]
   if command == nil then
     return nil, 'Não sei executar arquivos do tipo '..filetype
   elseif type(command) == 'function' then
-    return command(filename)
+    return command(filename, full_path_filename)
   end
 
   return command..full_path_filename,
@@ -63,7 +64,7 @@ function executeFileAsScript()
   print(printMessage)
 end
 
-_auto_execute_on_save_running = nil
+local _auto_execute_on_save_running = nil
 
 function autoExecuteOnSave()
   local filename = vim.fn.expand('%')
