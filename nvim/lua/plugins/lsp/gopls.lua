@@ -2,6 +2,8 @@
 
 -- The golang language server gopls looks for .git or go.mod file to start
 
+local defaults = require('plugins.lsp.defaults')
+
 local function on_attach(client, bufnr)
   function GolangImports(timeout_ms)
     local context = { only = { 'source.organizeImports' } }
@@ -39,28 +41,10 @@ local function on_attach(client, bufnr)
     end
   end
 
+  defaults.keymaps(bufnr)
   local map = vim.keymap.set
-
   local map_opts = { noremap = true, buffer = bufnr }
-  -- map('n', '\\f', function() vim.lsp.buf.format({ async = true }) end, map_opts)
   map('n', '\\f', function() GolangImports(1000); vim.lsp.buf.format({ async = true }) end, map_opts)
-  map('n', 'K', function() vim.lsp.buf.definition() end, map_opts)
-  map('n', '\\k', function() vim.lsp.buf.hover() end, map_opts)
-  map('n', '\\n', function() vim.lsp.buf.rename() end, map_opts)
-  -- map('n', '\\r', function() vim.lsp.buf.references() end, map_opts)
-  map('n', '\\r', function() require('telescope.builtin').lsp_references() end, map_opts)
-  map('n', '\\d', function() vim.diagnostic.open_float() end, map_opts)
-  map('n', '[d',  function()
-    local should_center = vim.diagnostic.get_prev({ wrap = false })
-    vim.diagnostic.goto_prev({ wrap = false })
-    if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end
-  end, map_opts)
-  map('n', ']d',  function()
-    local should_center = vim.diagnostic.get_next({ wrap = false })
-    vim.diagnostic.goto_next({ wrap = false })
-    if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end
-  end, map_opts)
-  map('n', '\\i', function() vim.lsp.buf.implementation() end, map_opts)
   map('n', '\\I', function() GolangImports(1000) end, map_opts)
 
   -- vim.api.nvim_command('autocmd BufWritePre <buffer> lua GolangImports(1000)')
