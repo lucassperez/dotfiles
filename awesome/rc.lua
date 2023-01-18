@@ -234,14 +234,20 @@ local screen_temperature = require('widgets.simple.screen_temperature')
 --   mod_keysym = 'Super_L',
 -- })
 
-local function toggleMaximizedLayout(c)
-  local this_screen = c.screen
-  local actual_layout = awful.layout.get(this_screen)
-  -- local actual_layout = awful.screen.focused().selected_tag.layout
+local function toggleMaximizedLayout()
+  -- This function used to receive the client (c), but this is not
+  -- a good method, because if there are no clients, then no screen
+  -- would be selected.
+  -- local this_screen = c.screen
+  -- local actual_layout = awful.layout.get(this_screen)
 
-  -- file = io.open(home..'/anota-lua', 'a')
-  -- file:write(actual_layout.name)
-  -- file:write('\n')
+  local actual_layout = awful.screen.focused().selected_tag.layout
+  -- local actual_layout = mouse.screen.selected_tag.layout
+
+  -- local file = io.open(home..'/anota-lua', 'a')
+  -- file:write(tostring(actual_layout == awful.layout.suit.max)..'\n')
+  -- file:write(actual_layout.name..'\n')
+  -- file:write('---\n')
   -- file:close()
 
   if actual_layout ~= awful.layout.suit.max then
@@ -315,7 +321,7 @@ awful.screen.connect_for_each_screen(
     s.mylayoutbox:buttons(
       gears.table.join(
         awful.button({}, 1, function() awful.layout.inc( 1) end),
-        awful.button({}, 2, function(c) toggleMaximizedLayout(c) end),
+        awful.button({}, 2, function() toggleMaximizedLayout() end),
         awful.button({}, 3, function() awful.layout.inc(-1) end),
         awful.button({}, 4, function() awful.layout.inc( 1) end),
         awful.button({}, 5, function() awful.layout.inc(-1) end)
@@ -518,8 +524,7 @@ local globalkeys = gears.table.join(
             { group = 'client', description = 'focus left global', }),
   awful.key({ modkey }, 'j',
             function ()
-              local this_screen = awful.client.screen
-              local actual_layout = awful.layout.get(this_screen)
+              local actual_layout = awful.screen.focused().selected_tag.layout
 
               if actual_layout == awful.layout.suit.max then
                 awful.client.focus.byidx(1)
@@ -530,8 +535,13 @@ local globalkeys = gears.table.join(
             { group = 'client', description = 'focus down global', }),
   awful.key({ modkey }, 'k',
             function ()
-              local this_screen = awful.client.screen
-              local actual_layout = awful.layout.get(this_screen)
+              -- If there is no client, it doesn't get a screen. While this
+              -- wouldn't bring any downside to this particular function, it was
+              -- not really the correct way of getting the actual layout.
+              -- local this_screen = awful.client.screen
+              -- local actual_layout = awful.layout.get(this_screen)
+
+              local actual_layout = awful.screen.focused().selected_tag.layout
 
               if actual_layout == awful.layout.suit.max then
                 awful.client.focus.byidx(-1)
@@ -782,7 +792,7 @@ local clientkeys = gears.table.join(
             function(c)
               c.maximized_horizontal = false
               c.maximized_vertical = false
-              toggleMaximizedLayout(c)
+              toggleMaximizedLayout()
               c:raise()
             end,
             { group = 'client', description = 'toggle maximize layout', }),
