@@ -780,6 +780,8 @@ local clientkeys = gears.table.join(
             { group = 'client', description = 'minimize', }),
   awful.key({ modkey }, 'm',
             function(c)
+              c.maximized_horizontal = false
+              c.maximized_vertical = false
               toggleMaximizedLayout(c)
               c:raise()
             end,
@@ -989,25 +991,29 @@ local function should_show_titlebars(c)
   if c.maximized then return false end
   if c.maximized_horizontal then return false end
   if c.maximized_vertical then return false end
+
+  if c.class == 'Alacritty' then return false end
+  if c.class == 'Steam' then return false end
+  if c.class == 'Evince' then return false end
+
   if c.name == 'Zoom - Free Account' then return true end
   if c.class == 'Zoom - Free Account' then return true end
   if c.name == 'zoom' then return true end
   if c.class == 'zoom' then return true end
   if c.name == 'floating-alacritty' and c.floating then return true end
-  if c.class == 'Alacritty' then return false end
-  if c.class == 'Steam' then return false end
-  if c.class == 'Evince' then return false end
+
   if type(c.class) ~= 'string' or type(c.name) ~= 'string' then return false end
 
-  if string.match(c.class, "^[Gg]nome-%w*") or
+  local is_some_gnome_thing = (
+    string.match(c.class, "^[Gg]nome-%w*") or
     string.match(c.name, "^[Gg]nome-%w*") or
     string.match(c.class, "^[Gg]edit") or
     string.match(c.name, "^[Gg]edit") or
     string.match(c.class, "^[Oo]rg%.gnome%.%w*") or
     string.match(c.name, "^[Oo]rg%.gnome%.%w*")
-  then
-    return false
-  end
+  )
+
+  if is_some_gnome_thing then return false end
 
   return true
 end
