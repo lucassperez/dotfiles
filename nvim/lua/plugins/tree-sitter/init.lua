@@ -1,5 +1,10 @@
 vim.keymap.set('n', '<leader>m', ':TSHighlightCapturesUnderCursor<CR>')
 
+local function requireSpecificFiles()
+  require('plugins.tree-sitter.typescript')
+  -- require('plugins.tree-sitter.elixir')
+end
+
 require('nvim-treesitter.configs').setup({
   -- ensure_installed can be 'all' or a list of languages { 'python', 'javascript' }
   ensure_installed = {
@@ -107,3 +112,5 @@ require('nvim-treesitter.configs').setup({
 -- vim.opt.foldmethod     = 'expr'
 -- vim.opt.foldexpr       = 'nvim_treesitter#foldexpr()'
 -- vim.opt.foldlevelstart = 99
+
+requireSpecificFiles()

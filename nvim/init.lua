@@ -5,6 +5,7 @@ function P(value)
 end
 
 local any_require_failed = false
+local protected_require_log_file_path = vim.fn.stdpath('config')..'/nvim-require.log'
 
 local function protected_require(path)
   local ok, result = pcall(require, path)
@@ -18,7 +19,7 @@ local function protected_require(path)
     -- Print only first line of the error
     print('  '..string.sub(result, 1, string.find(result, '\n')))
 
-    local file = io.open(vim.fn.stdpath('config')..'/nvim-require.log', 'a')
+    local file = io.open(protected_require_log_file_path, 'a')
     if file then
       file:write('['..os.date('%Y-%m-%d-%H:%M:%S')..']: '..path..'\n')
       file:write(result)
@@ -42,10 +43,8 @@ protected_require('plugins.catppuccin')
 
 protected_require('plugins')
 protected_require('plugins.lsp')
-protected_require('plugins.gitsigns')
 protected_require('plugins.tree-sitter')
--- protected_require('plugins.tree-sitter.elixir')
-protected_require('plugins.tree-sitter.typescript')
+protected_require('plugins.gitsigns')
 protected_require('plugins.cmp')
 -- protected_require('plugins.luasnip')
 protected_require('plugins.nvim-surround')
@@ -78,5 +77,5 @@ protected_require('helper-scripts.write-debugger-breakpoint')
 
 if any_require_failed then
   print('---')
-  print('Check file '..vim.fn.stdpath('config')..'/nvim-require.log for more information')
+  print('Check file '..protected_require_log_file_path..'/nvim-require.log for more information')
 end
