@@ -39,6 +39,11 @@ require('dial.config').augends:register_group({
       prefix = '0x',
       natural = true,
     }),
+    augend.constant.new({ -- Why, python
+      elements = { 'True', 'False', 'None' },
+      word = true,
+      cyclic = true,
+    }),
   },
 })
 
