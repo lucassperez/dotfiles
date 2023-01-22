@@ -88,6 +88,17 @@ hi link CustomTrailingWhiteSpaces NonText
 hi @parameter gui=NONE cterm=NONE
 hi @namespace gui=NONE cterm=NONE
 
+" One day I woke up and go files looked like shit.
+" Function call likes "fmt.Println" and builtins like "make"
+" all had the same color as numbers, orange, and types are yellow.
+" Everything looked like shit. They used to be blue, just like
+" function declarations. So that's why I linked them to @function.
+hi clear @method.call
+hi link @method.call @function
+" hi clear @function.builtin
+" hi link @function.builtin @function
+" Actually, I think builtin really were orange
+
 " I don't want to use after/syntax/elixir.vim to change these
 " because I only want to do it when using catppuccin
 " hi link elixirAlias @type
