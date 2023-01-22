@@ -12,7 +12,7 @@ if not ok then
 end
 
 packer.init({
-  compile_path = vim.fn.stdpath('config')..'/packer/packer_compiled.lua',
+  compile_path = vim.fn.stdpath('config')..'/packages/packer_compiled.lua',
 })
 
 packer.startup(function(use)
@@ -125,6 +125,6 @@ packer.startup(function(use)
   -- }
 
   if packer_bootstrap then
-    require('packer').sync()
+    packer.sync()
   end
 end)
