@@ -148,7 +148,38 @@ noremap('n', '<Esc>', ':noh<CR>')
 
 -- Setar um runner pro Vim Tmux Runner e mandar alguns sinais úteis, como
 -- Control + d e Control + c
-noremap('n', '<leader>a', ':VtrAttachToPane<CR>')
+-- I don't know why, but one day I woke up and it stopped doing this, even
+-- though the last commit on this plugin was 6 months ago.
+-- So I created my own function that does some checks.
+local function tmuxShowPanesNumbersOnAttatchIfMultiplePanes()
+  -- If tmux no running, exits.
+  if os.getenv('TMUX') == nil then return end
+
+  -- If command somehow fails, exits.
+  -- If there is some tmux in the background, this command returns
+  -- something, even if nvim is not inside tmux, so that's why the
+  -- env var TMUX check above is necessary.
+  local tmux_panes = io.popen('tmux list-panes')
+  if tmux_panes == nil then return end
+
+  -- If only one tmux pane, exits.
+  local _ = tmux_panes:read()
+  local second_read = tmux_panes:read()
+  if second_read == nil then
+    print('No other tmux panes')
+    return
+  end
+
+  -- If more than 2 panes (at least two other than neovim itself),
+  -- shows panes' numbers on screen.
+  local third_read = tmux_panes:read()
+  if third_read then vim.cmd('silent !tmux display-panes') end
+
+  -- When only exactly two panes, attaches directly.
+  vim.cmd.VtrAttachToPane()
+end
+noremap('n', '<leader>A', ':VtrAttachToPane<CR>')
+noremap('n', '<leader>a', function() tmuxShowPanesNumbersOnAttatchIfMultiplePanes() end)
 noremap('n', '<A-d>', ':VtrSendCtrlD<CR>')
 noremap('n', '<A-c>', ':VtrSendCtrlC<CR>')
 
