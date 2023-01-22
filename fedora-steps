@@ -25,7 +25,14 @@ DAÍ EU CRIEI O ARQUIVO /etc/profile.local. ISSO FUNCIONA NO
 OPENSUSE TUMBLEWEED, MAS NÃO NO FEDORA. DAÍ EU ALTEREI O
 ARQUIVO /etc/profile DIRETAMENTE MESMO
 
-NO fedora 37 simplesmente funciona o ~/.profile
+No fedora 37 simplesmente funciona o ~/.profile
+
+I actually added GenericName to both Nautilus and Gnome Terminal desktop
+entries (/usr/share/applications/org.gnome.{Nautilus,Terminal}.desktop)
+GenericName=Nautilus
+and
+GenericName=Gnome Terminal
+This is so it would appear in parenthesis these names when searching with rofi
 
 # === COMMANDS START HERE ===
 
