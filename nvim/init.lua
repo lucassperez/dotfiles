@@ -29,6 +29,10 @@ local function protected_require(path)
   end
 end
 
+-- This is just requiring a plugin, I don't actually
+-- have a file named impatient in my nvim/lua directory!
+protected_require('impatient')
+
 -- https://vonheikemen.github.io/devlog/tools/configuring-neovim-using-lua/
 
 -- Sobre as cores:

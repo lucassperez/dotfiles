@@ -18,6 +18,8 @@ packer.init({
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
 
+  use 'lewis6991/impatient.nvim'
+
   use 'elixir-editors/vim-elixir'
 
   use 'mbbill/undotree'
