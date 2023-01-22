@@ -88,8 +88,12 @@ end
 -- Numbers less than 2.5 stop at 1 to avoid the screen
 -- of going completely black.
 function widget:roundNearest5()
-  -- local brightness = calculateNearest5(io.popen('xbacklight'):read())
-  local result = calculateNearest5(io.popen('light'):read())
+  -- local f = io.popen('xbacklight')
+  local f = io.popen('light')
+  if f == nil then return end
+
+  local result = calculateNearest5(f:read())
+  f:close()
 
   widget:update_widget('light -S ' .. result)
   -- widget:update_widget('xbacklight -set '..result)

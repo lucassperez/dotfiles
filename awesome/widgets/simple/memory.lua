@@ -62,6 +62,8 @@ widget:connect_signal(
     end
     message = message .. processes:read():gsub('Isolated Web Co', 'Firefox')
 
+    processes:close()
+
     local notif_options = {
       title = n_most_memory_consuming .. ' maiores consumos de memória (' .. free_memory .. ')',
       text = message,

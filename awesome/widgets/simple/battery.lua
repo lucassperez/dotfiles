@@ -152,6 +152,8 @@ widget:connect_signal(
           time_left = pluralize_number(hours_left, 'hour') .. ' and ' .. pluralize_number(minutes_left, 'minute')
         end
 
+        battery:close()
+
         if message then
           notif_text = time_left .. ' ' .. message
         else

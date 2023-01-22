@@ -37,13 +37,16 @@ widget:connect_signal(
     if button == 1 or button == 3 then
       local notif_text = ''
       local docker_response = io.popen('docker ps --format "{{.Names}} ({{.Status}})\n"')
-      local line
+      if docker_response == nil then return end
 
+      local line
       while true do
         if docker_response then line = docker_response:read() end
         if not line then break end
         notif_text = notif_text .. '\n' .. line
       end
+
+      docker_response:close()
 
       if notif_text == '' then notif_text = 'No containers running' end
 
