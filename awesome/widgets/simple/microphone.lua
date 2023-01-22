@@ -28,6 +28,8 @@ local function set_widget()
       local volume = out:match('^Volume: front%-left: *%d+ */ *(%d+)%%')
       if volume == nil then volume = out:match('^Volume: mono: *%d+ */ *(%d+)%%') end
 
+      volume = tostring(volume)
+
       local mute = io.popen('pactl get-source-mute @DEFAULT_SOURCE@'):read()
       if mute then mute = mute:match('^Mute: (%w+)$') end
 
