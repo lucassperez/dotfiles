@@ -43,7 +43,9 @@ function runAutomatedTest(opts)
   elseif (filetype == 'typescriptreact' or filetype == 'typescript') then
     vim.fn.VtrSendCommand('yarn test '..filename)
   elseif (filetype == 'clojure') then
-    if io.open('bin/kaocha') then
+    local file = io.open('bin/kaocha')
+    if file then
+      file:close()
       vim.fn.VtrSendCommand('lein kaocha'..kaochaFilename(opts))
     else
       vim.fn.VtrSendCommand('lein test '..filename)
@@ -74,7 +76,10 @@ function runLastTest()
       ..' | tail -1 | cut -d " " -f 4-'
     ..')'
 
-  -- local output = io.popen(command_string):read()
+  -- local p = io.popen(command_string)
+  -- if p == nil then return end
+  -- local output = p:read()
+  -- p:close()
   -- print(output)
   -- vim.fn.VtrSendCommand('echo '..output..' && $('..output..')')
   vim.fn.VtrSendCommand('vtr_last_test='..command_string)

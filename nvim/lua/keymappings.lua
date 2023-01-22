@@ -175,6 +175,8 @@ local function tmuxShowPanesNumbersOnAttatchIfMultiplePanes()
   local third_read = tmux_panes:read()
   if third_read then vim.cmd('silent !tmux display-panes') end
 
+  tmux_panes:close()
+
   -- When only exactly two panes, attaches directly.
   vim.cmd.VtrAttachToPane()
 end
