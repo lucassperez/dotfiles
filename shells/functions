@@ -4,7 +4,8 @@ simplexev() {
   xev | awk -F '[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
 }
 
-redme() { if [ -f "$1" ]; then
+redme() {
+  if [ -f "$1" ]; then
     glow -p "$1"
   elif [ -d "$1" ]; then
     filename=$(ls "$1" | grep -i readme)
@@ -27,6 +28,20 @@ testmix() {
 
   res=$(mix test --failed)
   echo $res | mix test --failed | grep "test.*_test\.exs:.*(test)" | sort -n
+}
+
+testnvim() {
+  local log=__log_testnvim__
+  printf "\n\t\e[1mnvim --headless --startuptime $log +q && tail -1 $log && rm $log\e[0m\n\n"
+  for i in `seq 10`; do
+    nvim --headless --startuptime $log +q && tail -1 $log && rm $log
+  done
+  if ! which hyperfine 2>/dev/null 1>&2; then
+    printf "\n\t\e[1mhyperfine is not installed\e[0m\n\n"
+    return
+  fi
+  printf "\n\t\e[1mhyperfine 'nvim +q' --warmup 5\e[0m\n\n"
+  hyperfine 'nvim +q' --warmup 5
 }
 
 [ -f "$HOME/.local/.functions.local" ] && source "$HOME/.local/.functions.local"
