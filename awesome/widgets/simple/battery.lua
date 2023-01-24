@@ -29,7 +29,7 @@ watch(
 
     local message, color, bg
 
-    if percentage >= 99 then percentage = 100 end
+    if percentage >= 99 and (state == 'Charging' or state == 'Not charging') then percentage = 100 end
 
     if percentage <= 10 then
       bg = '#ff0000'
@@ -92,7 +92,7 @@ watch(
     widget:set_fg(color)
     widget:set_bg(bg)
 
-    -- file = io.open('/home/lucas/.config/awesome/widgets/simple/anota-lua', 'a')
+    -- local file = io.open('/home/lucas/.config/awesome/widgets/simple/anota-lua', 'a')
     -- file:write(os.date('%Y-%m-%d-%H:%M:%S')..': '..state..' '..percentage..'\n')
     -- file:close()
 
@@ -130,7 +130,10 @@ widget:connect_signal(
     if button == 1 or button == 3 then
       local notif_text, urgency, bg
 
-      local battery = io.popen('acpi -b'):read()
+      local battery_p = io.popen('acpi -b')
+      if battery_p == nil then return end
+
+      local battery = battery_p:read()
       local state, percentage = battery:match('Battery %d+: ([%w ]*), (%d*)%%')
 
       if state == 'Full' then
@@ -152,7 +155,7 @@ widget:connect_signal(
           time_left = pluralize_number(hours_left, 'hour') .. ' and ' .. pluralize_number(minutes_left, 'minute')
         end
 
-        battery:close()
+        battery_p:close()
 
         if message then
           notif_text = time_left .. ' ' .. message
