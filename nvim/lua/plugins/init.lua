@@ -11,118 +11,194 @@ if not ok then
   return
 end
 
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost lua/plugins/init.lua source <afile> | PackerCompile profile=true
+  augroup end
+]])
+
+-- When I set this, I have to manually run
+-- PackerCompile everytime I start neovim. It sucks!
 packer.init({
-  compile_path = vim.fn.stdpath('config')..'/packages/packer_compiled.lua',
+  -- compile_path = vim.fn.stdpath('config')..'/packages/packer_compiled.lua',
+  -- display = {
+  --   open_fn = function()
+  --     return require('packer.util').float({ border = 'single' })
+  --   end,
+  -- },
+  profile = {
+    enable = true,
+    threshold = 0,
+  }
 })
 
 packer.startup(function(use)
+  -- Without lazy loading
+  -----------------------
   use 'wbthomason/packer.nvim'
-
   use 'lewis6991/impatient.nvim'
-
   use 'elixir-editors/vim-elixir'
+  use 'kylechui/nvim-surround'
+  use 'chrisgrieser/nvim-various-textobjs'
+  -- Obs: Both tmux.nvim and Plenary are also NOT lazy loaded, but listed
+  --      afterwards. Plenary appears in telescope dependencies.
 
-  use 'mbbill/undotree'
+  -- Colors and visuals
+  ---------------------
+  -- use 'folke/lsp-colors.nvim'
+  -- use 'folke/tokyonight.nvim'
+  use {
+    'catppuccin/nvim',
+    as = 'catppuccin',
+    event = 'VimEnter',
+    config = function() require('plugins.catppuccin') end,
+  }
+  use {
+    'lewis6991/gitsigns.nvim',
+    after = 'catppuccin',
+    config = function() require('plugins.gitsigns') end,
+  }
+  use {
+    'hoob3rt/lualine.nvim',
+    after = 'catppuccin',
+    config = function() require('plugins.lualine') end,
+  }
+  use {
+    'romgrk/barbar.nvim',
+    after = 'catppuccin',
+    setup = function() vim.cmd([[let bufferline = get(g:, 'bufferline', {'icons': v:false,'no_name_title': '[No Name]'})]]) end,
+    config = function() require('plugins.barbar') end,
+  }
+  use {
+    'NvChad/nvim-colorizer.lua',
+    cmd = { 'ColorizerToggle', 'ColorizerAttachToBuffer', 'ColorizerDetachFromBuffer', 'ColorizerReloadAllBuffers', },
+    config = function() require('plugins.colorizer') end,
+  }
+
+  -- Useful or somewhat useful commands
+  -------------------------------------
+  use {
+    'numToStr/Comment.nvim',
+    keys = {
+      { 'n', 'gc', },
+      { 'n', 'gb', },
+      { 'v', 'gc', },
+      { 'v', 'gb', },
+    },
+    config = function() require('plugins.Comment') end,
+  }
+  use {
+    'kyazdani42/nvim-tree.lua',
+    keys = require('plugins.nvim-tree').keys(),
+    config = function() require('plugins.nvim-tree').setup() end,
+  }
+  use {
+    'monaqa/dial.nvim',
+    keys = {
+      { 'n', '<C-a>' },
+      { 'n', '<C-x>' },
+      { 'v', '<C-a>' },
+      { 'v', '<C-x>' },
+      { 'v', 'g<C-a>' },
+      { 'v', 'g<C-x>' },
+    },
+    config = function() require('plugins.dial') end,
+  }
+  use {
+    'mbbill/undotree',
+    cmd = 'UndotreeToggle',
+    setup = function() require('plugins.undotree') end
+  }
 
   -- Clojure things
+  -----------------
   -- use { 'Olical/conjure', ft = { 'clojure' }, }
   -- use { 'guns/vim-sexp', ft = { 'clojure' }, }
 
   -- Telescope
+  ------------
   use {
     'nvim-telescope/telescope.nvim',
-    requires = {
-      'nvim-lua/plenary.nvim',
-      'debugloop/telescope-undo.nvim',
-    },
+    keys = require('plugins.telescope').keys(),
+    config = function() require('plugins.telescope').setup() end,
+    requires = { 'nvim-lua/plenary.nvim', },
   }
-  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+  use {
+    'debugloop/telescope-undo.nvim',
+    after = 'telescope.nvim',
+    -- To get fzf loaded and working with telescope, you need to call
+    -- load_extension somewhere AFTER the setup function:
+    config = function() require('telescope').load_extension('undo') end,
+  }
+  use {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    run = 'make',
+    after = 'telescope.nvim',
+    config = function() require('telescope').load_extension('fzf') end,
+  }
 
-  -- Tmux plugins
+  -- Tmux related plugins
+  -----------------------
+  -- This one is also used outside of tmux simply
+  -- to switch panes. No lazy loading.
   use 'aserowy/tmux.nvim'
-  use 'christoomey/vim-tmux-runner'
+  use {
+    'christoomey/vim-tmux-runner',
+    cond = function() return os.getenv('TMUX') ~= nil end,
+    cmd = { 'VtrAttachToPane', 'VtrSendCommand' }
+  }
+
+  -- LSP
+  ------
+  use { 'folke/neodev.nvim',                  module = 'neodev', }
+  use { 'j-hui/fidget.nvim',                  module = 'fidget', }
+  use { 'williamboman/mason.nvim',            event = 'BufReadPre', }
+  use { 'williamboman/mason-lspconfig.nvim',  after = 'mason.nvim', }
+  use { 'jose-elias-alvarez/typescript.nvim', after = 'mason.nvim', }
+  use { 'neovim/nvim-lspconfig',              event = 'BufRead',
+        config = function() require('plugins.lsp') end, }
+
+  -- Testar esse aqui também, aproveitar que eu já uso o lualine.
+  -- Alternativa para o fidget.
+  -- use 'arkav/lualine-lsp-progress'
+  -- use 'jose-elias-alvarez/null-ls.nvim'
+
+  -- TreeSitter
+  -------------
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = 'TSUpdate',
+    event = 'BufEnter',
+    config = function() require('plugins.tree-sitter') end,
+  }
+  use { 'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter', }
+  use { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter', }
+  use { 'nvim-treesitter/playground',                  after = 'nvim-treesitter', }
+
+  -- Completion and things that write in general
+  ----------------------------------------------
+  use { 'tpope/vim-ragtag', keys = '<C-x>', }
+  use { 'mattn/emmet-vim', keys = '<C-y>', }
+  use {
+    'hrsh7th/nvim-cmp',
+    event = 'InsertEnter',
+    config = function() require('plugins.cmp') end,
+  }
+  use { 'hrsh7th/cmp-path',     after = 'nvim-cmp', }
+  use { 'hrsh7th/cmp-buffer',   after = 'nvim-cmp', }
+  use { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp', }
+  use { 'L3MON4D3/LuaSnip',     module = 'luasnip', config = function() require('plugins.luasnip') end, }
+  use { 'onsails/lspkind-nvim', module = 'lspkind', }
+  use { 'hrsh7th/cmp-nvim-lsp', module = 'cmp_nvim_lsp' }
 
   -- Weird, but using lexima for endwise complete and putting new line + indent
   -- when, eg, pressing enter inside parens.
   -- I think nvim-autopairs should be able to do it, but having lexima as well
   -- is apparently make it buggy
-  use 'cohama/lexima.vim'
-  use 'windwp/nvim-autopairs'
-
-  use 'kylechui/nvim-surround'
-  use 'tpope/vim-ragtag'
-  use 'numToStr/Comment.nvim'
-  use 'mattn/emmet-vim'
-  use 'kyazdani42/nvim-tree.lua'
-  use 'lewis6991/gitsigns.nvim'
-  use 'alvan/vim-closetag'
-  use 'chrisgrieser/nvim-various-textobjs'
-  use 'monaqa/dial.nvim'
-
-  -- Coisas LSP e TreeSitter
-  use {
-    'neovim/nvim-lspconfig',
-    requires = {
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-      'j-hui/fidget.nvim',
-    },
-  }
-
-  -- use 'folke/lsp-colors.nvim'
-  -- Testar esse aqui também, aproveitar que eu já uso o lualine.
-  -- Alternativa para o fidget.
-  -- use 'arkav/lualine-lsp-progress'
-
-  -- use 'jose-elias-alvarez/null-ls.nvim'
-  use 'jose-elias-alvarez/typescript.nvim'
-
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = 'TSUpdate',
-    requires = {
-      'nvim-treesitter/playground',
-      'nvim-treesitter/nvim-treesitter-textobjects',
-      'JoosepAlviste/nvim-ts-context-commentstring',
-    },
-  }
-
-  use {
-    'hrsh7th/nvim-cmp',
-    requires = {
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-nvim-lua',
-      'hrsh7th/cmp-nvim-lsp',
-      'L3MON4D3/LuaSnip',
-      'onsails/lspkind-nvim',
-      'folke/neodev.nvim',
-    },
-  }
-
-  -- Ajudinha visual
-  use 'hoob3rt/lualine.nvim'
-  use 'romgrk/barbar.nvim'
-  -- use 'p00f/nvim-ts-rainbow'
-
-  -- Coisas que tem a ver com cores e visual
-  use 'rktjmp/lush.nvim'
-  use 'tjdevries/colorbuddy.nvim'
-  -- use 'norcalli/nvim-colorizer.lua'
-  use 'NvChad/nvim-colorizer.lua'
-
-  -- Esquema de cores
-  -- use 'ayu-theme/ayu-vim'
-  -- use 'Shatur/neovim-ayu'
-  -- use 'folke/tokyonight.nvim'
-  -- use 'EdenEast/nightfox.nvim'
-  use { 'catppuccin/nvim', as = 'catppuccin', }
-  -- use {
-  --   'projekt0n/github-nvim-theme',
-  --   -- config = function()
-  --   --   require('github-theme').setup({})
-  --   -- end,
-  -- }
+  use { 'cohama/lexima.vim',     event = 'InsertEnter', config = function() require('plugins.lexima') end, }
+  use { 'windwp/nvim-autopairs', event = 'InsertEnter', config = function() require('plugins.nvim-autopairs') end, }
+  use { 'alvan/vim-closetag',    event = 'InsertEnter', config = function() require('plugins.vim-closetag') end, }
 
   if packer_bootstrap then
     packer.sync()

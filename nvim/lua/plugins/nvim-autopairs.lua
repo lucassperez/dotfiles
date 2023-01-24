@@ -1,6 +1,8 @@
 local npairs = require('nvim-autopairs')
 local Rule = require('nvim-autopairs.rule')
 
+require('cmp').event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done())
+
 npairs.setup({
   -- ignored_next_char = '[%w%.]', -- will ignore alphanumeric and `.` symbol
   ignored_next_char = '[%w%_]',

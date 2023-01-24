@@ -2,6 +2,7 @@ local textobjs = require('various-textobjs')
 
 textobjs.setup({
   useDefaultKeymaps = false,
+  -- lookForwardLines = 5, -- Set to 0 to only look in the current line.
 })
 
 -- Functions that differentiate inner and outer

@@ -1,5 +1,5 @@
 nvim/.netrwhist
-nvim/packages/
+nvim/plugin/
 nvim/undodir
 nvim/nvim-require.log
 .luarc.json
