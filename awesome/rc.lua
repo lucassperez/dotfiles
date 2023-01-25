@@ -770,7 +770,12 @@ local clientkeys = gears.table.join(
             function (c) c:kill() end,
             { group = 'client', description = 'close', }),
   awful.key({ modkey, control}, 'space',
-            awful.client.floating.toggle,
+            function(c)
+              awful.client.floating.toggle()
+              -- Could be done like this. Is there a difference?
+              -- c.floating = not c.floating
+              c:raise()
+            end,
             { group = 'client', description = 'toggle floating', }),
   awful.key({ modkey, control}, 'Return',
             function (c) c:swap(awful.client.getmaster()) end,
@@ -1028,13 +1033,27 @@ local function should_show_titlebars(c)
   return true
 end
 
+local function request_titlebars_trying_to_keep_client_height(c)
+  -- Keep the same height as before showing titlebars,
+  -- avoiding a bottom part of the client to be
+  -- pushed out of the window.
+
+  -- TODO There are some applications that change size (shrink height a little
+  -- bit) or start straying to the top, like kolourpaint and cheese
+  -- respectively, when they are floating and I restart awesome
+  -- (mod+control+r today). Try to understand why.
+  local g = { x = c.x, y = c.y, height = c.height, width = c.width, }
+  c:emit_signal('request::titlebars')
+  c:geometry(g)
+end
+
 local function titlebar_for_floating_or_maximized_client(c)
   if c.floating and should_show_titlebars(c) then
-    c:emit_signal('request::titlebars')
+    request_titlebars_trying_to_keep_client_height(c)
   else
     local t = c:tags()[1]
     if t and t.layout.name == 'floating' then
-      c:emit_signal('request::titlebars')
+      request_titlebars_trying_to_keep_client_height(c)
     else
       awful.titlebar.hide(c, 'top')
       awful.titlebar.hide(c, 'bottom')
@@ -1068,6 +1087,10 @@ awful.rules.rules = {
         if type(c.class) ~= 'string' then return end
         if c.class:match('[Oo]rg.[Gg]nome.[Nn]autilus') then return end
         if c.class:match('[Gg]nome%-[Tt]erminal') then return end
+
+        if c.floating and should_show_titlebars(c) then
+          request_titlebars_trying_to_keep_client_height(c)
+        end
 
         if c.class == 'Zoom - Free Account' or
           string.match(c.class, "^[Gg]nome-%w*") or
