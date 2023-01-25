@@ -4,7 +4,7 @@
 ; [includeIf "gitdir:/home/lucas/algumacoisa/**"]
 ;   path = /home/lucas/algumaoutracoisa/.gitconfig
 [core]
-  editor = "vi -c 'hi ColorColumn ctermbg=125 ctermfg=white' -c 'set colorcolumn=51' -c 'set textwidth=0'"
+  editor = "env vim +0 -c 'hi ColorColumn ctermbg=125 ctermfg=white' -c 'set colorcolumn=51' -c 'set textwidth=0' -c 'map <C-q> :wq<CR>'"
 [init]
   defaultBranch = main
 [commit]
