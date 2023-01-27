@@ -18,10 +18,7 @@ vim.cmd([[
   augroup end
 ]])
 
--- When I set this, I have to manually run
--- PackerCompile everytime I start neovim. It sucks!
 packer.init({
-  -- compile_path = vim.fn.stdpath('config')..'/packages/packer_compiled.lua',
   -- display = {
   --   open_fn = function()
   --     return require('packer.util').float({ border = 'single' })
@@ -121,21 +118,25 @@ packer.startup(function(use)
   use {
     'nvim-telescope/telescope.nvim',
     keys = require('plugins.telescope').keys(),
+    -- Since some default LSP keybinds try to use telescope before
+    -- standard vim.lsp calls, I added this "module" so telescope
+    -- would be loaded when trying to use those keybindings.
+    module = 'telescope',
     config = function() require('plugins.telescope').setup() end,
     requires = { 'nvim-lua/plenary.nvim', },
-  }
-  use {
-    'debugloop/telescope-undo.nvim',
-    after = 'telescope.nvim',
-    -- To get fzf loaded and working with telescope, you need to call
-    -- load_extension somewhere AFTER the setup function:
-    config = function() require('telescope').load_extension('undo') end,
   }
   use {
     'nvim-telescope/telescope-fzf-native.nvim',
     run = 'make',
     after = 'telescope.nvim',
+    -- To get fzf loaded and working with telescope, you need to call
+    -- load_extension somewhere AFTER the setup function:
     config = function() require('telescope').load_extension('fzf') end,
+  }
+  use {
+    'debugloop/telescope-undo.nvim',
+    after = 'telescope.nvim',
+    config = function() require('telescope').load_extension('undo') end,
   }
 
   -- Tmux related plugins
@@ -156,7 +157,7 @@ packer.startup(function(use)
   use { 'williamboman/mason.nvim',            event = 'BufReadPre', }
   use { 'williamboman/mason-lspconfig.nvim',  after = 'mason.nvim', }
   use { 'jose-elias-alvarez/typescript.nvim', after = 'mason.nvim', }
-  use { 'neovim/nvim-lspconfig',              event = 'BufRead',
+  use { 'neovim/nvim-lspconfig',              after = 'mason.nvim',
         config = function() require('plugins.lsp') end, }
 
   -- Testar esse aqui também, aproveitar que eu já uso o lualine.
