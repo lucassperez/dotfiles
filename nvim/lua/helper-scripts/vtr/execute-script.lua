@@ -1,9 +1,9 @@
-local function ruby_function(filename)
+local function ruby_function(filename, full_path_filename)
   local extension = filename:match('.*%.(.*)$')
   if extension == 'ru' then
-    return 'rackup '..filename, filename
+    return 'rackup '..full_path_filename, filename
   else
-    return 'ruby '..filename, filename
+    return 'ruby '..full_path_filename, filename
   end
 end
 
