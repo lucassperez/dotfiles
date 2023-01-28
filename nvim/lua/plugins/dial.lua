@@ -17,7 +17,7 @@ local augend = require('dial.augend')
 
 require('dial.config').augends:register_group({
   default = {
-    augend.integer.alias.decimal,
+    augend.integer.alias.decimal_int,
     augend.date.alias['%Y/%m/%d'],
     augend.constant.new({
       elements = { 'true', 'false', 'nil' },
