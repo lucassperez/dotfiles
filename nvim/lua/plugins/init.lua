@@ -154,7 +154,7 @@ packer.startup(function(use)
   ------
   use { 'folke/neodev.nvim',                  module = 'neodev', }
   use { 'j-hui/fidget.nvim',                  module = 'fidget', }
-  use { 'williamboman/mason.nvim',            event = 'BufReadPre', }
+  use { 'williamboman/mason.nvim',            event = 'BufRead', }
   use { 'williamboman/mason-lspconfig.nvim',  after = 'mason.nvim', }
   use { 'jose-elias-alvarez/typescript.nvim', after = 'mason.nvim', }
   use { 'neovim/nvim-lspconfig',              after = 'mason.nvim',
