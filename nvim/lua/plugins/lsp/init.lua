@@ -7,27 +7,6 @@
 local defaults = require('plugins.lsp.defaults')
 local default_on_attach = defaults.on_attach
 local default_capabilities = defaults.capabilities
-local default_handlers = defaults.handlers
-
--- This function mutates the first argument, it changes it! Caution!
-local function mergeTables(t1, t2)
-  if type(t1) == 'table' and type(t2) == 'table' then
-    for k, v in pairs(t2) do
-      if type(v) == 'table' and type(t1[k]) == 'table' then
-        mergeTables(t1[k], v)
-      else
-        t1[k] = v
-      end
-    end
-  end
-  return t1
-end
-
-local function merge_handlers_with_default_handlers(handlers)
-  if not handlers then return default_handlers end
-  mergeTables(handlers, default_handlers)
-  return handlers
-end
 
 require('plugins.fidget')
 require('plugins.neodev')
@@ -46,7 +25,6 @@ mason_lspconfig.setup_handlers({
 
     options.capabilities = options.capabilities or default_capabilities
     options.on_attach = options.on_attach or default_on_attach
-    options.handlers = merge_handlers_with_default_handlers(options.handlers)
 
     require('lspconfig')[server_name].setup(options)
   end

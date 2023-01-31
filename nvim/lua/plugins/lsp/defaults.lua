@@ -49,13 +49,11 @@ if cmp_ok then
   default_capabilities = cmp_nvim_lsp.default_capabilities(default_capabilities)
 end
 
-local default_handlers = {
-  ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { stylize_markdown = false, })
-}
-
+-- Some specific servers calll only the keymaps and then override some
+-- keymappings, which is more flexible than calling the default on_attach
+-- function directly.
 return {
   on_attach = default_on_attach,
   capabilities = default_capabilities,
-  handlers = default_handlers,
   keymaps = default_key_maps,
 }
