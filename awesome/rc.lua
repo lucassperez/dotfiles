@@ -629,6 +629,15 @@ local globalkeys = gears.table.join(
       awful.tag.incnmaster(-1, nil, true)
     end,
     { group = 'layout', description = 'decrease the number of master clients', }),
+  awful.key({ modkey, }, 'r',
+    function()
+      local screen = awful.screen.focused()
+      if not screen then return end
+      local selected_tag = screen.selected_tag
+      if not selected_tag then return end
+      selected_tag.master_width_factor = 0.5
+    end,
+    { group = 'layout', description = 'reset master width factor', }),
 
   -- Standard program
   awful.key({ modkey, control }, 'r',
