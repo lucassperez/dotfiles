@@ -1,1 +1,5 @@
-require('fidget').setup()
+require('fidget').setup({
+  -- debug = {
+  --   logging = true,
+  -- },
+})
