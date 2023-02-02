@@ -1,39 +1,31 @@
+local function telescopeOrNvimLsp(std_function, telescope_function_name)
+  local ok, telescope = pcall(require, 'telescope.builtin')
+  if ok then
+    telescope[telescope_function_name]()
+  else
+    print('Telescope not found, using standard neovim functions')
+    std_function()
+  end
+end
+
+local function goToDiagnosticAndCenter(direction)
+  local should_center = vim.diagnostic['get_'..direction]({ wrap = false })
+  vim.diagnostic['goto_'..direction]({ wrap = false })
+  if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end
+end
+
 local function default_key_maps(bufnr)
   local map = vim.keymap.set
   local map_opts = { noremap = true, buffer = bufnr }
   map('n', '\\f', function() vim.lsp.buf.format({ async = true }) end, map_opts)
-  map('n', 'K',   function() vim.lsp.buf.definition() end, map_opts)
+  map('n', 'K',   function() telescopeOrNvimLsp(vim.lsp.buf.definition, 'lsp_definitions') end, map_opts)
   map('n', '\\k', function() vim.lsp.buf.hover() end, map_opts)
   map('n', '\\n', function() vim.lsp.buf.rename() end, map_opts)
-  map('n', '\\r', function()
-    local ok, telescope = pcall(require, 'telescope.builtin')
-    if ok then
-      telescope.lsp_references()
-    else
-      print('Telescope not found, using standard neovim functions')
-      vim.lsp.buf.references({})
-    end
-  end, map_opts)
+  map('n', '\\r', function() telescopeOrNvimLsp(vim.lsp.buf.references, 'lsp_references') end, map_opts)
   map('n', '\\d', function() vim.diagnostic.open_float() end, map_opts)
-  map('n', '\\D', function()
-    local ok, telescope = pcall(require, 'telescope.builtin')
-    if ok then
-      telescope.diagnostics()
-    else
-      print('Telescope not found, using standard neovim functions')
-      vim.diagnostic.open_float()
-    end
-  end, map_opts)
-  map('n', '[d',  function()
-    local should_center = vim.diagnostic.get_prev({ wrap = false })
-    vim.diagnostic.goto_prev({ wrap = false })
-    if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end
-  end, map_opts)
-  map('n', ']d',  function()
-    local should_center = vim.diagnostic.get_next({ wrap = false })
-    vim.diagnostic.goto_next({ wrap = false })
-    if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end
-  end, map_opts)
+  map('n', '\\D', function() telescopeOrNvimLsp(vim.diagnostic.open_float, 'diagnostics') end, map_opts)
+  map('n', '[d',  function() goToDiagnosticAndCenter('prev') end, map_opts)
+  map('n', ']d',  function() goToDiagnosticAndCenter('next') end, map_opts)
   map('n', '\\i', function() vim.lsp.buf.implementation() end, map_opts)
 end
 
