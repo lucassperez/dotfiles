@@ -85,3 +85,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+-- Folding commands
+-- :h zm, zM, zo, zR, ]z, zj
+-- "You can fold natively on nvim. Just zc to close and zo to open in normal mode."
+-- Folding options
+vim.opt.fillchars = { fold = " " }
+vim.opt.foldmethod = "indent"
+vim.opt.foldenable = false
+vim.opt.foldlevel = 99
+vim.g.markdown_folding = 1 -- enable markdown folding

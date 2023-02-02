@@ -109,6 +109,8 @@ hi link @method.call @function
 " hi DiffChange guibg=NONE
 " hi DiffDelete guibg=NONE
 " hi DiffText   guibg=NONE
+
+hi Folded guibg=#101010
 ]])
 
 --[[

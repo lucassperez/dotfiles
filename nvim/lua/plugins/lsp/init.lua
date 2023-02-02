@@ -1,3 +1,4 @@
+-- LspInfo to see log file location, but probably ~/.local/state/nvim/lsp.log
 -- vim.lsp.set_log_level('debug')
 
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
