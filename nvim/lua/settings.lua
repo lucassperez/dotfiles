@@ -19,6 +19,8 @@ o.mouse = 'a' -- habilita o mouse (a significa all). Sacrilégio!
 
 o.wildignore = '**/node_modules/**' -- porque né, ninguém merece esse treco gigante
 o.wildignorecase = true -- auto complete case insensitive
+-- https://www.reddit.com/r/neovim/comments/10rsl92/how_to_complete_longest_common_text_in_command/?sort=new
+o.wildmode = 'longest:full,full' -- completa primeiro só até o texto comum mais longo
 
 o.virtualedit = 'block'
 
