@@ -85,6 +85,8 @@ local modkey = 'Mod4'
 local control = 'Control'
 local shift = 'Shift'
 
+-- My custom layout
+local limited_tile = require('limited-tile')
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
   awful.layout.suit.tile,
@@ -108,6 +110,7 @@ awful.layout.layouts = {
   -- Two reasons to add the max layout here:
   -- 1. When I toggled it with my mod + m key, it started to simply appear on the list anyways
   -- 2. I can now go to this layout with the mouse
+  limited_tile,
   awful.layout.suit.max,
 }
 -- }}}
@@ -234,29 +237,25 @@ local screen_temperature = require('widgets.simple.screen_temperature')
 --   mod_keysym = 'Super_L',
 -- })
 
-local function toggleMaximizedLayout()
-  -- This function used to receive the client (c), but this is not
-  -- a good method, because if there are no clients, then no screen
-  -- would be selected.
-  -- local this_screen = c.screen
-  -- local actual_layout = awful.layout.get(this_screen)
+local toggleable_layouts_by_key = {
+  max          = awful.layout.suit.max,
+  limited_tile = limited_tile,
+}
+local last_layout_cache = {}
 
+local function toggleLayout(cache_key)
   local actual_layout = awful.screen.focused().selected_tag.layout
-  -- local actual_layout = mouse.screen.selected_tag.layout
+  local target_layout = toggleable_layouts_by_key[cache_key]
+  if not target_layout then return end
 
-  -- local file = io.open(home..'/anota-lua', 'a')
-  -- file:write(tostring(actual_layout == awful.layout.suit.max)..'\n')
-  -- file:write(actual_layout.name..'\n')
-  -- file:write('---\n')
-  -- file:close()
+  local cached_layout = last_layout_cache[cache_key]
 
-  if actual_layout ~= awful.layout.suit.max then
-    LastLayout = actual_layout
-    awful.layout.set(awful.layout.suit.max)
-  elseif LastLayout then
-    awful.layout.set(LastLayout)
-  else
-    -- If there is no "last layout" (cached), goes to the first one
+  if actual_layout ~= target_layout then
+    last_layout_cache[cache_key] = actual_layout
+    awful.layout.set(target_layout)
+  elseif cached_layout then
+    awful.layout.set(cached_layout)
+  else -- Fallback
     awful.layout.set(awful.layout.layouts[1])
   end
 end
@@ -321,7 +320,7 @@ awful.screen.connect_for_each_screen(
     s.mylayoutbox:buttons(
       gears.table.join(
         awful.button({}, 1, function() awful.layout.inc( 1) end),
-        awful.button({}, 2, function() toggleMaximizedLayout() end),
+        awful.button({}, 2, function() toggleLayout('max') end),
         awful.button({}, 3, function() awful.layout.inc(-1) end),
         awful.button({}, 4, function() awful.layout.inc( 1) end),
         awful.button({}, 5, function() awful.layout.inc(-1) end)
@@ -519,15 +518,28 @@ local globalkeys = gears.table.join(
   -- retain the ability to move left and right to switch monitors.
   awful.key({ modkey }, 'h',
             function ()
-              awful.client.focus.global_bydirection('left')
+              local actual_layout = awful.screen.focused().selected_tag.layout
+              if actual_layout == limited_tile then
+                client.focus = awful.client.getmaster()
+              else
+                awful.client.focus.global_bydirection('left')
+              end
             end,
             { group = 'client', description = 'focus left global', }),
   awful.key({ modkey }, 'j',
             function ()
-              local actual_layout = awful.screen.focused().selected_tag.layout
+              local selected_tag = awful.screen.focused().selected_tag
+              local actual_layout = selected_tag.layout
 
               if actual_layout == awful.layout.suit.max then
                 awful.client.focus.byidx(1)
+              elseif actual_layout == limited_tile and client.focus.x > 0 then
+                awful.client.focus.byidx(1)
+                -- If after moving we are the first master, then go forward
+                -- by the same amount of clients in the master stack.
+                if client.focus == awful.client.getmaster() then
+                  awful.client.focus.byidx(selected_tag.master_count)
+                end
               else
                 awful.client.focus.global_bydirection('down')
               end
@@ -541,10 +553,17 @@ local globalkeys = gears.table.join(
               -- local this_screen = awful.client.screen
               -- local actual_layout = awful.layout.get(this_screen)
 
-              local actual_layout = awful.screen.focused().selected_tag.layout
+              local selected_tag = awful.screen.focused().selected_tag
+              local actual_layout = selected_tag.layout
 
               if actual_layout == awful.layout.suit.max then
                 awful.client.focus.byidx(-1)
+              elseif actual_layout == limited_tile and client.focus.x > 0 then
+                awful.client.focus.byidx(-1)
+                -- Little hacky, if after moving by index -1 the current focused
+                -- client has x == 0, it means it is on the left half of the
+                -- screen, so it is in the main stack.
+                if client.focus.x == 0 then awful.client.focus.byidx(-1 * selected_tag.master_count) end
               else
                 awful.client.focus.global_bydirection('up')
               end
@@ -552,7 +571,15 @@ local globalkeys = gears.table.join(
             { group = 'client', description = 'focus up global', }),
   awful.key({ modkey }, 'l',
             function ()
-              awful.client.focus.global_bydirection('right')
+              local actual_layout = awful.screen.focused().selected_tag.layout
+              -- Again using client.focus.x to determine
+              -- if it is in the main stack
+              if actual_layout == limited_tile and client.focus.x == 0 then
+                awful.client.focus.history.previous()
+                if client.focus then client.focus:raise() end
+              else
+                awful.client.focus.global_bydirection('right')
+              end
             end,
             { group = 'client', description = 'focus right global', }),
   awful.key({ modkey, shift }, 'q',
@@ -600,10 +627,26 @@ local globalkeys = gears.table.join(
             function () awful.client.swap.global_bydirection('left') end,
             { group = 'client', description = 'swap left client global', }),
   awful.key({ modkey, shift }, 'j',
-            function () awful.client.swap.global_bydirection('down') end,
+            function ()
+              local actual_layout = awful.screen.focused().selected_tag.layout
+              if actual_layout == limited_tile then
+                -- There is no global by index ):
+                awful.client.swap.byidx(1)
+              else
+                awful.client.swap.global_bydirection('down')
+              end
+            end,
             { group = 'client', description = 'swap down client global', }),
   awful.key({ modkey, shift }, 'k',
-            function () awful.client.swap.global_bydirection('up') end,
+            function ()
+              local actual_layout = awful.screen.focused().selected_tag.layout
+              if actual_layout == limited_tile then
+                -- There is no global by index ):
+                awful.client.swap.byidx(-1)
+              else
+                awful.client.swap.global_bydirection('up')
+              end
+            end,
             { group = 'client', description = 'swap up client global', }),
   awful.key({ modkey, shift }, 'l',
             function () awful.client.swap.global_bydirection('right') end,
@@ -802,11 +845,17 @@ local clientkeys = gears.table.join(
               c.minimized = true
             end,
             { group = 'client', description = 'minimize', }),
+  awful.key({ modkey, }, 'v',
+            function(c)
+              toggleLayout('limited_tile')
+              c:raise()
+            end,
+            { group = 'client', description = 'toggle tile_só_dois layout', }),
   awful.key({ modkey }, 'm',
             function(c)
               c.maximized_horizontal = false
               c.maximized_vertical = false
-              toggleMaximizedLayout()
+              toggleLayout('max')
               c:raise()
             end,
             { group = 'client', description = 'toggle maximize layout', }),

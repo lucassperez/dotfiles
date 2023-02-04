@@ -167,6 +167,7 @@ theme.awesome_icon = theme_assets.awesome_icon(
 theme.icon_theme = nil
 
 theme.my_red_notification_background = '#ca4444'
+theme.layout_limitedtile = os.getenv('HOME')..'/.config/awesome/limited-tile/limitedtilew.png'
 
 return theme
 
