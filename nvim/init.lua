@@ -29,10 +29,6 @@ local function protected_require(path)
   end
 end
 
--- This is just requiring a plugin, I don't actually
--- have a file named impatient in my nvim/lua directory!
-protected_require('impatient')
-
 -- https://vonheikemen.github.io/devlog/tools/configuring-neovim-using-lua/
 
 -- Sobre as cores:
@@ -41,33 +37,12 @@ protected_require('impatient')
 protected_require('keymappings')
 protected_require('settings')
 protected_require('commands') -- Vimscript used to create commands
-
--- protected_require('plugins.tokyonight')
--- protected_require('plugins.catppuccin')
-
 protected_require('plugins')
--- protected_require('plugins.lsp')
--- protected_require('plugins.tree-sitter')
--- protected_require('plugins.gitsigns')
--- protected_require('plugins.cmp')
--- protected_require('plugins.luasnip')
-protected_require('plugins.nvim-surround')
--- protected_require('plugins.nvim-autopairs')
--- protected_require('plugins.lexima')
--- protected_require('plugins.vim-closetag')
--- protected_require('plugins.lualine')
--- protected_require('plugins.Comment')
-protected_require('plugins.nvim-various-textobjs')
--- protected_require('plugins.dial')
-protected_require('plugins.tmux')
--- protected_require('plugins.buftabline')
--- protected_require('plugins.barbar')
--- protected_require('plugins.telescope')
--- protected_require('plugins.nvim-tree')
--- protected_require('plugins.conjure')
--- protected_require('plugins.vim-sexp')
--- protected_require('plugins.undotree')
--- protected_require('plugins.colorizer')
+-- At some point I made the plugins/init.lua return a function that received
+-- the protected_require function and use it inside the lazy config calls,
+-- but I think lazy makes it reliable enough that the module will always be
+-- loaded when calling the plugins, so the protected_require was no longer
+-- needed for loading plugins configurations.
 
 -- Meus próprios scritpts
 protected_require('helper-scripts.vtr.test')

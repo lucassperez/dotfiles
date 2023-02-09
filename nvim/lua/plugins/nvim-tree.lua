@@ -6,7 +6,7 @@ local function keys(module)
 
   if module == nil then
     local lazy_load_triggers = {}
-    for _, v in pairs(t) do table.insert(lazy_load_triggers, { v[1], v[2] }) end
+    for _, v in pairs(t) do table.insert(lazy_load_triggers, { mode = v[1], v[2] }) end
     return lazy_load_triggers
   end
 
