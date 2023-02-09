@@ -147,7 +147,7 @@ packer.startup(function(use)
   use {
     'christoomey/vim-tmux-runner',
     cond = function() return os.getenv('TMUX') ~= nil end,
-    cmd = { 'VtrAttachToPane', 'VtrSendCommand' }
+    cmd = { 'VtrAttachToPane', 'VtrSendCommand', 'VtrSendCtrlD', 'VtrSendCtrlC', }
   }
 
   -- LSP

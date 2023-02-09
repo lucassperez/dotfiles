@@ -152,7 +152,7 @@ noremap('n', '<Esc>', ':noh<CR>')
 -- though the last commit on this plugin was 6 months ago.
 -- So I created my own function that does some checks.
 local function tmuxShowPanesNumbersOnAttatchIfMultiplePanes()
-  -- If tmux no running, exits.
+  -- If tmux not running, exits.
   if os.getenv('TMUX') == nil then return end
 
   -- If command somehow fails, exits.
@@ -173,17 +173,18 @@ local function tmuxShowPanesNumbersOnAttatchIfMultiplePanes()
   -- If more than 2 panes (at least two other than neovim itself),
   -- shows panes' numbers on screen.
   local third_read = tmux_panes:read()
+  tmux_panes:close()
   if third_read then vim.cmd('silent !tmux display-panes') end
 
-  tmux_panes:close()
-
   -- When only exactly two panes, attaches directly.
-  vim.cmd.VtrAttachToPane()
+  -- Using pcall so I can cancel it with <C-c> without
+  -- getting a giant error message.
+  pcall(vim.cmd.VtrAttachToPane)
 end
-noremap('n', '<leader>A', ':VtrAttachToPane<CR>')
-noremap('n', '<leader>a', function() tmuxShowPanesNumbersOnAttatchIfMultiplePanes() end)
-noremap('n', '<A-d>', ':VtrSendCtrlD<CR>')
-noremap('n', '<A-c>', ':VtrSendCtrlC<CR>')
+noremap('n', '<leader>A', vim.cmd.VtrAttachToPane)
+noremap('n', '<leader>a', tmuxShowPanesNumbersOnAttatchIfMultiplePanes)
+noremap('n', '<A-d>', vim.cmd.VtrSendCtrlD)
+noremap('n', '<A-c>', vim.cmd.VtrSendCtrlC)
 
 -- linter all & linter this file
 noremap('n', '<leader>rua', ':silent!wa<CR>:lua runLinter {}<CR>')
@@ -243,10 +244,10 @@ noremap('n', '<leader>e', ':lua testAndFile.toggle()<CR>')
 
 function RELOAD()
   local config_path = vim.fn.stdpath('config')
-  vim.cmd(':so '..config_path..'/init.vim')
+  vim.cmd(':so '..config_path..'/init.lua')
   vim.cmd(':luafile '..config_path..'/lua/keymappings.lua')
   vim.cmd(':luafile '..config_path..'/lua/settings.lua')
   print('REALOAD(): Sourcing init.vim, lua/keymappings.lua and lua/settings.lua')
 end
 
-noremap('n', '<leader>zl', ':lua RELOAD()<CR>')
+noremap('n', '<leader>zl', RELOAD)
