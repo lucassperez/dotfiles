@@ -21,32 +21,34 @@ end
 lazy.setup({
   -- Without lazy loading
   -----------------------
+  -- Lualine, barbar and catppuccin
+  -- are also not being lazy loaded.
   'elixir-editors/vim-elixir',
   { 'kylechui/nvim-surround', config = function() require('plugins.nvim-surround') end, },
   { 'chrisgrieser/nvim-various-textobjs', config = function() require('plugins.nvim-various-textobjs') end, },
 
   -- Colors and visuals
   ---------------------
-  -- 'folke/lsp-colors.nvim',
-  -- 'folke/tokyonight.nvim',
   {
     'catppuccin/nvim',
     name = 'catppuccin',
-    lazy = true,
+    lazy = false,
     priority = 1000,
-    init = function()
-      vim.cmd([[let bufferline = get(g:, 'bufferline', {'icons': v:false,'no_name_title': '[No Name]'})]])
+    config = function()
       require('plugins.catppuccin')
       require('plugins.gitsigns').setColors()
       require('plugins.lualine').setColors()
       require('plugins.barbar').setColors()
     end,
-    dependencies = {
-      { 'lewis6991/gitsigns.nvim', config = function() require('plugins.gitsigns').setup() end, },
-      { 'hoob3rt/lualine.nvim', config = function() require('plugins.lualine').setup() end, },
-      { 'romgrk/barbar.nvim', config = function() require('plugins.barbar').setup() end, },
-    },
   },
+  {
+    'lewis6991/gitsigns.nvim',
+    init = function() vim.cmd([[let bufferline = get(g:, 'bufferline', {'icons': v:false,'no_name_title': '[No Name]'})]]) end,
+    config = function() require('plugins.gitsigns').setup() end,
+    event = 'BufRead',
+  },
+  { 'hoob3rt/lualine.nvim', config = function() require('plugins.lualine').setup() end, },
+  { 'romgrk/barbar.nvim', config = function() require('plugins.barbar').setup() end, },
   {
     'NvChad/nvim-colorizer.lua',
     cmd = { 'ColorizerToggle', 'ColorizerAttachToBuffer', 'ColorizerDetachFromBuffer', 'ColorizerReloadAllBuffers', },

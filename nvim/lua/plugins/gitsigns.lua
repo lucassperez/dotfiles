@@ -1,6 +1,6 @@
-local gitsigns = require('gitsigns')
-
 local function setup()
+  local gitsigns = require('gitsigns')
+
   gitsigns.setup({
     signs = {
       add       = { hl = 'GitSignsAdd',    numhl = 'GitSignsAddNr',    linehl = '', },
