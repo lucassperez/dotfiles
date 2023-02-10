@@ -122,7 +122,7 @@ lazy.setup({
   },
   {
     'christoomey/vim-tmux-runner',
-    cond = function() return os.getenv('TMUX') ~= nil end,
+    enabled = function() return os.getenv('TMUX') ~= nil end,
     cmd = { 'VtrAttachToPane', 'VtrSendCommand', 'VtrSendCtrlD', 'VtrSendCtrlC', }
   },
 
