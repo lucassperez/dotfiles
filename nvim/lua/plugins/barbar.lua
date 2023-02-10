@@ -1,6 +1,4 @@
 local function setup()
-  vim.keymap.set('n', '<C-q>', ':wqa!<CR>', { noremap = true, silent = false })
-
   vim.keymap.set('n', '<leader>q', ':BufferPrevious<CR>', { noremap = true, silent = false })
   vim.keymap.set('n', '<leader>w', ':BufferNext<CR>', { noremap = true, silent = false })
   vim.keymap.set('n', '<leader>d', ':BufferClose<CR>', { noremap = true, silent = false })

@@ -28,6 +28,9 @@ noremap('n', '<leader>s', ':sp<CR>')
 noremap('n', '<leader>v', ':vs<CR>')
 noremap('n', '<leader>c', '<C-w>c')
 
+-- Salvar e fechar tudo, eita
+noremap('n', '<C-q>', ':wqa!<CR>')
+
 -- Se tem ç, tem que usar
 -- Vou tirar isso por enquanto
 -- pra tentar acostumar a usar H e L
