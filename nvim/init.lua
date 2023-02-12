@@ -1,7 +1,9 @@
 -- Useful to print tables
-function P(value)
-  print(vim.inspect(value))
-  return value
+function P(...)
+  for _, value in pairs({...}) do
+    print(vim.inspect(value))
+  end
+  return ...
 end
 
 local any_require_failed = false
