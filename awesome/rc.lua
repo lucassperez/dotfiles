@@ -214,19 +214,19 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal('property::geometry', set_wallpaper)
 
-local microphone_widget = require('widgets.simple.microphone')
-local bright_widget = require('widgets.simple.brightness')
-local volume_widget = require('widgets.simple.volume')
 local separator_widget = require('widgets.simple.separator')
 local turbo_widget = require('widgets.simple.turbo')
-local battery_widget = require('widgets.simple.battery')
-local docker_widget = require('widgets.simple.docker')
 -- local date_widget = require('widgets.simple.date')
 -- local clock_widget = require('widgets.simple.clock')
-local notification_widget = require('widgets.simple.notification')
 local datetime_widget = require('widgets.simple.datetime')
-local memory_widget = require('widgets.simple.memory')
+local battery_widget = require('widgets.simple.battery')
+local volume_widget = require('widgets.simple.volume')
+local microphone_widget = require('widgets.simple.microphone')
+local bright_widget = require('widgets.simple.brightness')
 local screen_temperature = require('widgets.simple.screen_temperature')
+local memory_widget = require('widgets.simple.memory')
+local notification_widget = require('widgets.simple.notification')
+local docker_widget = require('widgets.simple.docker')
 
 -- require('awesomewm-vim-tmux-navigator')({
 --   left  = {'h'},

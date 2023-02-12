@@ -9,7 +9,9 @@
 -- pactl
 
 local awful = require('awful')
+local watch = require('awful.widget.watch')
 local wibox = require('wibox')
+
 local config_home = os.getenv('XDG_CONFIG_DIR') or os.getenv('HOME') .. '/.config'
 
 local text = wibox.widget({
@@ -21,49 +23,51 @@ local widget = wibox.widget.background()
 widget:set_widget(text)
 widget:set_fg('#d6ce6f')
 
-local function set_widget()
-  awful.spawn.easy_async(
-    'pactl get-source-volume @DEFAULT_SOURCE@',
-    function(out)
-      local volume = out:match('^Volume: front%-left: *%d+ */ *(%d+)%%')
-      if volume == nil then volume = out:match('^Volume: mono: *%d+ */ *(%d+)%%') end
+local function calculate_widget_output(out)
+  local volume = out:match('^Volume: front%-left: *%d+ */ *(%d+)%%')
+  if volume == nil then volume = out:match('^Volume: mono: *%d+ */ *(%d+)%%') end
 
-      volume = tostring(volume)
+  volume = tostring(volume)
 
-      local f = io.popen('pactl get-source-mute @DEFAULT_SOURCE@')
-      if f == nil then return end
+  local f = io.popen('pactl get-source-mute @DEFAULT_SOURCE@')
+  if f == nil then return end
 
-      local mute = f:read()
-      if mute then mute = mute:match('^Mute: (%w+)$') end
-      f:close()
+  local mute = f:read()
+  if mute then mute = mute:match('^Mute: (%w+)$') end
+  f:close()
 
-      local val = ''
+  local val = ''
 
-      if mute == nil then
-        val = ' ? ' .. volume .. '%'
-      elseif mute == 'no' then
-        val = ' ' .. volume .. '%'
-      else
-        val = ' ' .. volume .. '%'
-      end
+  if mute == nil then
+    val = ' ? ' .. volume .. '%'
+  elseif mute == 'no' then
+    val = ' ' .. volume .. '%'
+  else
+    val = ' ' .. volume .. '%'
+  end
 
-      -- local file = io.open(config_home..'/awesome/widgets/simple/anota-lua', 'a')
-      -- file:write(out..'\n')
-      -- file:write(volume..'\n')
-      -- file:write(mute..'\n')
-      -- file:write('--\n')
-      -- file:close()
+  -- local file = io.open(config_home..'/awesome/widgets/simple/anota-lua', 'a')
+  -- file:write(out..'\n')
+  -- file:write(volume..'\n')
+  -- file:write(mute..'\n')
+  -- file:write('--\n')
+  -- file:close()
 
-      text:set_text(val)
-    end
-  )
+  text:set_text(val)
 end
 
-set_widget()
+local function draw_widget()
+  awful.spawn.easy_async('pactl get-source-volume @DEFAULT_SOURCE@', calculate_widget_output)
+end
+
+draw_widget()
+watch('pactl get-source-volume @DEFAULT_SOURCE@', 1, function(_, stdout) calculate_widget_output(stdout) end, widget)
+
+-- Widget public interface --
 
 function widget:update_widget(cmd)
   cmd = cmd or 'pactl get-source-volume @DEFAULT_SOURCE@'
-  awful.spawn.easy_async(cmd, set_widget)
+  awful.spawn.easy_async(cmd, draw_widget)
 end
 
 function widget:toggle()

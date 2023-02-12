@@ -14,7 +14,7 @@ local widget = wibox.widget.background()
 widget:set_widget(text)
 widget:set_fg('#999999')
 
-local function set_widget()
+local function draw_widget()
   awful.spawn.easy_async(
     'xsct',
     function(out)
@@ -25,11 +25,11 @@ local function set_widget()
   )
 end
 
-set_widget()
+draw_widget()
 
 function widget:update_widget(cmd)
   cmd = cmd or 'xsct'
-  awful.spawn.easy_async(cmd, set_widget)
+  awful.spawn.easy_async(cmd, draw_widget)
 end
 
 function widget:inc(delta)
