@@ -14,9 +14,10 @@ require('plugins.neodev')
 require('mason').setup()
 
 local mason_lspconfig = require('mason-lspconfig')
+local lspconfig = require('lspconfig')
 
 mason_lspconfig.setup({
-  ensure_installed = { 'marksman', 'sumneko_lua', }
+  ensure_installed = { 'lua_ls', 'marksman', }
 })
 
 mason_lspconfig.setup_handlers({
@@ -27,6 +28,6 @@ mason_lspconfig.setup_handlers({
     options.capabilities = options.capabilities or default_capabilities
     options.on_attach = options.on_attach or default_on_attach
 
-    require('lspconfig')[server_name].setup(options)
+    lspconfig[server_name].setup(options)
   end
 })
