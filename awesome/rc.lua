@@ -493,6 +493,7 @@ local globalkeys = gears.table.join(
             { group = 'System controls', description = 'Ask for a brightness' }),
   awful.key({}, 'XF86MonBrightnessUp', function() bright_widget:inc(5) end),
   awful.key({}, 'XF86MonBrightnessDown', function() bright_widget:dec(5) end),
+
   -- Screen temperature control
   awful.key({ modkey, control }, '[',
             function() screen_temperature:inc(250) end,
@@ -615,9 +616,7 @@ local globalkeys = gears.table.join(
                 local c = awful.client.restore()
                 -- Focus restored client
                 if c then
-                  c:emit_signal(
-                      'request::activate', 'key.unminimize', {raise = true}
-                  )
+                  c:emit_signal('request::activate', 'key.unminimize', { raise = true })
                 end
             end,
             { group = 'client', description = 'restore minimized', }),
@@ -630,7 +629,6 @@ local globalkeys = gears.table.join(
             function ()
               local actual_layout = awful.screen.focused().selected_tag.layout
               if actual_layout == limited_tile then
-                -- There is no global by index ):
                 awful.client.swap.byidx(1)
               else
                 awful.client.swap.global_bydirection('down')
@@ -641,7 +639,6 @@ local globalkeys = gears.table.join(
             function ()
               local actual_layout = awful.screen.focused().selected_tag.layout
               if actual_layout == limited_tile then
-                -- There is no global by index ):
                 awful.client.swap.byidx(-1)
               else
                 awful.client.swap.global_bydirection('up')
@@ -651,48 +648,8 @@ local globalkeys = gears.table.join(
   awful.key({ modkey, shift }, 'l',
             function () awful.client.swap.global_bydirection('right') end,
             { group = 'client', description = 'swap right client global', }),
+
   -- Size
-  awful.key({ modkey }, 'Left',
-    function ()
-      awful.tag.incmwfact( 0.05)
-    end,
-    { group = 'layout', description = 'increase master width factor', }),
-  awful.key({ modkey }, 'Right',
-    function ()
-      awful.tag.incmwfact(-0.05)
-    end,
-    { group = 'layout', description = 'decrease master width factor', }),
-  awful.key({ modkey }, 'Down',
-    function ()
-      awful.tag.incnmaster( 1, nil, true)
-    end,
-    { group = 'layout', description = 'increase the number of master clients', }),
-  awful.key({ modkey }, 'Up',
-    function ()
-      awful.tag.incnmaster(-1, nil, true)
-    end,
-    { group = 'layout', description = 'decrease the number of master clients', }),
-  awful.key({ modkey, }, 'r',
-    function()
-      local screen = awful.screen.focused()
-      if not screen then return end
-      local selected_tag = screen.selected_tag
-      if not selected_tag then return end
-      selected_tag.master_width_factor = 0.5
-    end,
-    { group = 'layout', description = 'reset master width factor', }),
-
-  -- Standard program
-  awful.key({ modkey, control }, 'r',
-            awesome.restart,
-            { group = 'awesome', description = 'reload awesome', }),
-  awful.key({ modkey, shift }, 'BackSpace',
-            awesome.quit,
-            { group = 'awesome', description = 'quit awesome', }),
-  awful.key({ modkey }, 'BackSpace',
-            function() awful.spawn('slock') end,
-            { group = 'awesome', description = 'lock screen', }),
-
   awful.key({ modkey }, 'i',
             function () awful.tag.incmwfact(-0.05) end,
             { group = 'layout', description = 'decrease master width factor', }),
@@ -705,14 +662,29 @@ local globalkeys = gears.table.join(
   awful.key({ modkey }, '#34', -- acento agudo ´
             function () awful.tag.incmwfact(0.05) end,
             { group = 'layout', description = '(acute) increase master width factor', }),
-
+  awful.key({ modkey, }, 'r',
+            function()
+              local screen = awful.screen.focused()
+              if not screen then return end
+              local selected_tag = screen.selected_tag
+              if not selected_tag then return end
+              selected_tag.master_width_factor = 0.5
+            end,
+            { group = 'layout', description = 'reset master width factor', }),
   awful.key({ modkey, control }, 'h',
             function () awful.tag.incncol( 1, nil, true) end,
             { group = 'layout', description = 'increase the number of columns', }),
+  awful.key({ modkey, control }, 'j',
+            function () awful.tag.incnmaster( 1, nil, true) end,
+            { group = 'layout', description = 'increase the number of master clients', }),
   awful.key({ modkey, control }, 'l',
             function () awful.tag.incncol(-1, nil, true) end,
             { group = 'layout', description = 'decrease the number of columns', }),
+  awful.key({ modkey, control }, 'k',
+            function () awful.tag.incnmaster(-1, nil, true) end,
+            { group = 'layout', description = 'decrease the number of master clients', }),
 
+  -- Select layouts
   awful.key({ modkey }, '\\',
             function () awful.layout.inc(1) end,
             { group = 'layout', description = 'select next layout', }),
@@ -720,9 +692,38 @@ local globalkeys = gears.table.join(
             function () awful.layout.inc(-1) end,
             { group = 'layout', description = 'select previous layout', }),
 
+  -- Map something to arrow keys, I guess
+  awful.key({ modkey }, 'Left',
+    function () awful.tag.incmwfact( 0.05) end,
+    { group = 'layout', description = 'increase master width factor', }),
+  awful.key({ modkey }, 'Right',
+    function () awful.tag.incmwfact(-0.05) end,
+    { group = 'layout', description = 'decrease master width factor', }),
+  awful.key({ modkey }, 'Down',
+    function () awful.tag.incnmaster( 1, nil, true) end,
+    { group = 'layout', description = 'increase the number of master clients', }),
+  awful.key({ modkey }, 'Up',
+    function () awful.tag.incnmaster(-1, nil, true) end,
+    { group = 'layout', description = 'decrease the number of master clients', }),
+
+  -- Standard program
+  awful.key({ modkey, control }, 'r',
+            awesome.restart,
+            { group = 'awesome', description = 'reload awesome', }),
+  awful.key({ modkey, shift }, 'BackSpace',
+            awesome.quit,
+            { group = 'awesome', description = 'quit awesome', }),
+  awful.key({ modkey }, 'BackSpace',
+            function() awful.spawn('slock') end,
+            { group = 'awesome', description = 'lock screen', }),
+
   -- Prompt
   -- awful.key({ modkey }, 'r', function () awful.screen.focused().mypromptbox:run() end,
   --           { group = 'Launcher', description = 'run prompt', }),
+  -- Menubar (dmenu's brother, so it has similar keybinding)
+  awful.key({ modkey, shift }, 'd',
+            function() menubar.show() end,
+            { group = 'Launcher', description = 'show the menubar', }),
   awful.key({ modkey }, 'd',
             -- function () awful.spawn('dmenu_run -i -h 21 -p "search" -sb "#008080" -nb "#363636"') end,
             -- function () awful.spawn('dmenu_run -i -h 21 -p "search" -sb "#008080" -nb "#000000"') end,
@@ -741,6 +742,7 @@ local globalkeys = gears.table.join(
   awful.key({ modkey, shift }, 'space',
             function () awful.spawn('rofi -show run') end,
             { group = 'Launcher', description = 'run rofi -show run', }),
+
   --[[
     Explanation: When using tmux inside alacritty, I don't know why, but the
     numpad enter was producing something different (on Debian it worked as
@@ -794,10 +796,6 @@ local globalkeys = gears.table.join(
   awful.key({ modkey, control }, 'ç',
             function() turbo_widget:send_turbo_notification() end,
             { group = 'TURBO', description = 'Activate TURBO mode' }),
-  -- Menubar (dmenu's brother, so it has similar keybinding)
-  awful.key({ modkey, shift }, 'd',
-            function() menubar.show() end,
-            { group = 'Launcher', description = 'show the menubar', }),
 
   awful.key({ modkey }, 'x',
             function ()
