@@ -34,7 +34,7 @@ local function setup()
     vim.keymap.set(unpack(mapping))
   end
 
-  local actions = require('telescope.actions')
+  -- local actions = require('telescope.actions')
 
   telescope.setup({
     pickers = {
@@ -53,8 +53,8 @@ local function setup()
           -- I wanted to have a "faster scrolling", but pag up/down is too fast! :sweat_smile:
           -- ['<C-p>'] = 'results_scrolling_up',
           -- ['<C-n>'] = 'results_scrolling_down',
-          ['<C-p>'] = actions.move_selection_previous + actions.move_selection_previous + actions.move_selection_previous,
-          ['<C-n>'] = actions.move_selection_next + actions.move_selection_next + actions.move_selection_next,
+          -- ['<C-p>'] = actions.move_selection_previous + actions.move_selection_previous + actions.move_selection_previous,
+          -- ['<C-n>'] = actions.move_selection_next + actions.move_selection_next + actions.move_selection_next,
         },
       },
     },
