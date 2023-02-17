@@ -147,6 +147,8 @@ lazy.setup({
   -- Alternativa para o fidget.
   -- 'arkav/lualine-lsp-progress',
   -- 'jose-elias-alvarez/null-ls.nvim',
+  -- https://github.com/jay-babu/mason-nvim-dap.nvim
+  -- https://github.com/jay-babu/mason-null-ls.nvim
 
   -- TreeSitter
   -------------
