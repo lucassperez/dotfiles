@@ -86,6 +86,7 @@ local control = 'Control'
 local shift = 'Shift'
 
 -- My custom layout
+-- It does not really work with multi monitors yet
 local limited_tile = require('limited-tile')
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -251,7 +252,14 @@ local function toggleLayout(cache_key)
   local cached_layout = last_layout_cache[cache_key]
 
   if actual_layout ~= target_layout then
-    last_layout_cache[cache_key] = actual_layout
+    -- Only update cache if actual layout is not
+    -- max nor the limited_tile
+    if actual_layout ~= toggleable_layouts_by_key.max
+       and actual_layout ~= toggleable_layouts_by_key.limited_tile
+    then
+      last_layout_cache[cache_key] = actual_layout
+    end
+
     awful.layout.set(target_layout)
   elseif cached_layout then
     awful.layout.set(cached_layout)
