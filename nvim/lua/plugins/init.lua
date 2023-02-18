@@ -157,7 +157,7 @@ lazy.setup({
   -------------
   {
     'nvim-treesitter/nvim-treesitter',
-    build = 'TSUpdate',
+    build = ':TSUpdate',
     event = 'BufReadPost',
     config = function() require('plugins.tree-sitter') end,
     dependencies = {
