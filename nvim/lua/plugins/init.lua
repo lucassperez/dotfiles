@@ -43,12 +43,15 @@ lazy.setup({
   },
   {
     'lewis6991/gitsigns.nvim',
-    init = function() vim.cmd([[let bufferline = get(g:, 'bufferline', {'icons': v:false,'no_name_title': '[No Name]'})]]) end,
     config = function() require('plugins.gitsigns').setup() end,
     event = 'BufRead',
   },
   { 'hoob3rt/lualine.nvim', config = function() require('plugins.lualine').setup() end, },
-  { 'romgrk/barbar.nvim', config = function() require('plugins.barbar').setup() end, },
+  {
+    'romgrk/barbar.nvim',
+    init = function() vim.cmd([[let bufferline = get(g:, 'bufferline', {'icons': v:false,'no_name_title': '[No Name]'})]]) end,
+    config = function() require('plugins.barbar').setup() end,
+  },
   {
     'NvChad/nvim-colorizer.lua',
     cmd = { 'ColorizerToggle', 'ColorizerAttachToBuffer', 'ColorizerDetachFromBuffer', 'ColorizerReloadAllBuffers', },
