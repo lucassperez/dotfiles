@@ -195,20 +195,23 @@ lazy.setup({
 },
 {
   lockfile = vim.fn.stdpath('config') .. '/plugins-lock.json',
-  ui = {
-  icons = {
-    cmd = '👊',
-    config = '🛠',
-    event = '📅',
-    ft = '📂',
-    init = '⚙',
-    keys = '🔑',
-    plugin = '🔌',
-    runtime = '🏃',
-    source = '📄',
-    start = '🚀',
-    task = '📌',
-    lazy = '💤 ',
+  install = {
+    colorscheme = { 'catppuccin', 'habamax' },
   },
-},
+  ui = {
+    icons = {
+      cmd = '👊',
+      config = '🛠',
+      event = '📅',
+      ft = '📂',
+      init = '⚙',
+      keys = '🔑',
+      plugin = '🔌',
+      runtime = '🏃',
+      source = '📄',
+      start = '🚀',
+      task = '📌',
+      lazy = '💤 ',
+    },
+  },
 })
