@@ -115,6 +115,10 @@ lazy.setup({
         'debugloop/telescope-undo.nvim',
         config = function() require('telescope').load_extension('undo') end,
       },
+      {
+        'molecule-man/telescope-menufacture',
+        config = function() require('telescope').load_extension('menufacture') end,
+      },
     },
   },
 
@@ -137,12 +141,13 @@ lazy.setup({
     'williamboman/mason.nvim',
     event = 'BufRead',
     cmd = 'Mason',
+    config = function() require('plugins.lsp') end,
     dependencies = {
       { 'folke/neodev.nvim', },
       { 'j-hui/fidget.nvim', },
       { 'williamboman/mason-lspconfig.nvim', },
       { 'jose-elias-alvarez/typescript.nvim', },
-      { 'neovim/nvim-lspconfig', config = function() require('plugins.lsp') end, },
+      { 'neovim/nvim-lspconfig', },
     },
   },
 

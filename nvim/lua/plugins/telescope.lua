@@ -1,11 +1,10 @@
-local function keys(module, telescope_git_or_find_files)
-
+local function keys(module, telescope_git_or_find_files, menufacture)
   local t = {
     { 'n', '<C-p>', function() telescope_git_or_find_files() end, { noremap = true }, },
-    { 'n', '<C-f>', function() module.live_grep() end, { noremap = true }, },
+    { 'n', '<C-f>', function() menufacture.live_grep() end, { noremap = true }, },
     { 'n', '<leader>P', function() module.buffers() end, { noremap = true }, },
     { 'n', '<leader>h', function() module.oldfiles() end, { noremap = true },},
-    { 'n', '<leader>zv', function() module.find_files({ cwd = vim.fn.stdpath('config') }) end, { noremap = true }, },
+    { 'n', '<leader>zv', function() menufacture.find_files({ cwd = vim.fn.stdpath('config') }) end, { noremap = true }, },
   }
 
   if module == nil then
@@ -20,17 +19,18 @@ end
 local function setup()
   local telescope = require('telescope')
   local telescope_builtin = require('telescope.builtin')
+  local menufacture = require('telescope').extensions.menufacture
 
   function TelescopeGitOrFindFiles(opts)
     local code = os.execute('git rev-parse --git-dir 2>/dev/null 1>&2')
     if code == 0 then
-      telescope_builtin.git_files(opts)
+      menufacture.git_files(opts)
     else
-      telescope_builtin.find_files(opts)
+      menufacture.find_files(opts)
     end
   end
 
-  for _, mapping in pairs(keys(telescope_builtin, TelescopeGitOrFindFiles)) do
+  for _, mapping in pairs(keys(telescope_builtin, TelescopeGitOrFindFiles, menufacture)) do
     vim.keymap.set(unpack(mapping))
   end
 
