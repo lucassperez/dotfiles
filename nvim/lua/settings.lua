@@ -1,9 +1,8 @@
 local o = vim.o -- global options
 local bo = vim.bo -- buffer options
 local wo = vim.wo -- window options
--- vim.opt if for things you would `set` in vimscript,
--- vim.g is for things you'd `let`
 local opt = vim.opt
+-- vim.opt if for things you would `set` in vimscript, vim.g is for things you'd `let`
 
 -- global
 o.confirm = true -- pede confirmação ao tentar fechar um buffer com alterações
@@ -41,8 +40,6 @@ wo.wrap = false -- sem wrap quando o texto chega no final da tela
 -- vim.o.breakindent is usefull if I ever want to use wrap
 wo.signcolumn = 'no'
 
--- opt.encoding = 'utf8' -- eu preciso mesmo passar isso?
-
 -- List mode tem que estar ligado para conseguir usar o listchars
 wo.list = true
 opt.listchars = {
@@ -65,10 +62,9 @@ opt.textwidth = 0
 -- l = não auto formata quando acaba a linha no insert mode (exatamente o que eu quero)
 -- j = junta comentários de maneira inteligente apertando J
 -- :h fo-table para mais informações
-vim.cmd [[
-  autocmd Filetype * setlocal formatoptions=jql
-]]
--- o.formatoptions = 'jql'
+vim.cmd('autocmd Filetype * setlocal formatoptions=jql')
+-- bo.formatoptions = 'jql' -- isso não funciona???
+
 -- https://www.reddit.com/r/neovim/comments/ppv7vr/comment/hd7v2ol/?utm_source=share&utm_medium=web2x&context=3
 opt.undodir = { vim.fn.stdpath('config') .. '/undodir' }
 o.undofile = true -- arquivo para poder dar undo no diretório acima
@@ -78,12 +74,7 @@ opt.complete:remove('i') -- https://medium.com/usevim/set-complete-e76b9f196f0f
 -- Do I really want this?
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.highlight.on_yank({
-      timeout = 80,
-      higroup = 'HighlightOnYank',
-    })
-  end,
+  callback = function() vim.highlight.on_yank({ timeout = 80, higroup = 'HighlightOnYank', }) end,
   group = highlight_group,
   pattern = '*',
 })

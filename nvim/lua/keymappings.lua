@@ -15,6 +15,9 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 noremap({ 'n', 'v' }, ';', ':')
 
 -- Cansei de fazer isso aqui sem querer
+-- Mas isso fica deixando os macros esquisitos de começar e principalmente
+-- acabar, porque quando aperto q o vim fica esperando pra saber se era só
+-- q mesmo ou se vai ser q:
 noremap('n', 'q:', ':q')
 
 -- Normally C-c already does this, but after installing LSP, the text box
