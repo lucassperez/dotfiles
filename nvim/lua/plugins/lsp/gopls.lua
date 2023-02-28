@@ -49,6 +49,11 @@ local function on_attach(client, bufnr)
 
   -- vim.api.nvim_command('autocmd BufWritePre <buffer> lua GolangImports(1000)')
 
+  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
+    GolangImports(1000)
+    vim.lsp.buf.format({ async = true })
+  end, { desc = 'Format and organize imports of current buffer with LSP', })
+
   local root_dir = client.config.root_dir
   if root_dir then vim.api.nvim_set_current_dir(root_dir) end
 end
