@@ -102,6 +102,7 @@ lazy.setup({
   ------------
   {
     'nvim-telescope/telescope.nvim',
+    cmd = 'Telescope',
     keys = require('plugins.telescope').keys(),
     config = function() require('plugins.telescope').setup() end,
     dependencies = {
