@@ -604,7 +604,7 @@ schemes:
       green: "#91b674" # green
       yellow: "#d0b37b" # yellow
       blue: "#7795f9" # blue
-      white: "#B5BFE2" # subtext1
+      white: "#A5ADCE" # subtext0
       # magenta: "#dfa3cf" # pink
       # cyan: "#6cb3a9" # teal
       magenta: '#c4a0d2' # purple
@@ -616,7 +616,7 @@ schemes:
       green: "#A6D189" # green
       yellow: "#E5C890" # yellow
       blue: "#8CAAEE" # blue
-      white: "#A5ADCE" # subtext0
+      white: "#B5BFE2" # subtext1
       # magenta: "#F4B8E4" # pink
       # cyan: "#81C8BE" # teal
       magenta: '#d3b5ed' # purple
