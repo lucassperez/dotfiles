@@ -73,9 +73,18 @@ depth_not_counting_tmux() {
     [ $SHLVL -gt 1 ] && printf "depth:$SHLVL"
   fi
 }
-
-# RPROMPT='%B%F{6}%2(L.{$SHLVL}.)%f%b'
 RPROMPT='%B%F{6}$(depth_not_counting_tmux)%f%b'
+# RPROMPT='%B%F{6}%2(L.{$SHLVL}.)%f%b'
+
+# Unlike the asdf version, the rtx version is pretty fast
+# I still don't use it, though
+# rtx_lang_or_nothing() {
+#   lang=`~/scripts/git-stuff/rtx-lang-version.sh`
+#   if [ $lang ]; then
+#     echo "%B%F{6}{$lang}%f%b"
+#   fi
+# }
+# RPROMPT='$(rtx_lang_or_nothing)'
 
 # ===  Big two line prompt
 
