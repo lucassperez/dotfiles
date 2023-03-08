@@ -1,5 +1,5 @@
-source "$HOME/.asdf/asdf.sh"
-fpath=(${ASDF_DIR}/completions $ZDOTDIR/completions $fpath)
+fpath=($ZDOTDIR/completions $fpath)
+eval "$(rtx activate zsh)"
 
 autoload -Uz compinit
 zstyle ':completion:*' menu select

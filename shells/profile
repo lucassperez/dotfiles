@@ -70,10 +70,7 @@ prepend_to_PATH() {
   PATH="$1:$PATH"
 }
 
-# export PATH="$HOME/.asdf/installs/golang/1.18/packages/bin:$HOME/sources/apache-maven-3.8.4/bin:$PATH"
-# export PATH="$HOME/.asdf/installs/golang/1.18/packages/bin:$HOME/.local/bin:$PATH"
 prepend_to_PATH $HOME/.local/bin
-prepend_to_PATH $HOME/.asdf/installs/golang/1.18/packages/bin
 
 if [ "$0" = "/etc/gdm3/Xsession" -a "$DESKTOP_SESSION" = "i3" ]; then
     export $(gnome-keyring-daemon -s)
