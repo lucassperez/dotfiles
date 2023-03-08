@@ -68,31 +68,29 @@ mkdir -p ~/.config
 mkdir -p ~/.config/awesome
 git clone git@github.com:frioux/charitable.git ~/.config/awesome/charitable
 
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.2
-# To use asdf in this script we have to source it first.
-# This line will be in some shell config file, but for now it has to be manually done.
-. "$HOME/.asdf/asdf.sh"
+# Rtx instead of asdf
+curl https://rtx.pub/rtx-latest-linux-x64 > ~/rtx_bin_downloaded_for_now
+chmod +x ~/rtx_bin_downloaded_for_now
+sudo mv ~/rtx_bin_downloaded_for_now /usr/local/bin/rtx
 
-asdf plugin-add neovim
-asdf install neovim 0.8.2
-asdf global neovim 0.8.2
+# Since we have not sourced our configs yet, asdf is not in path.
+# So, before using it, we have to manually execute this shell script.
+eval "$(rtx activate zsh)"
 
-asdf plugin-add rust
-asdf install rust 1.66.0
-asdf global rust 1.66.0
+rtx install neovim 0.8.3
+rtx install lua 5.4.3
+rtx install golang 1.18
+rtx install rust 1.66.0
 
-asdf plugin-add lua
-asdf install lua 5.4.3
-asdf global lua 5.4.3
+rtx global neovim 0.8.3
+rtx global lua 5.4.3
+rtx global golang 1.18
+rtx global rust 1.66.0
 
-asdf plugin-add golang
-asdf install golang 1.18
-asdf global golang 1.18
-
-mkdir -p ~/.local/bin
 sudo apt install -y libreadline-dev
 luarocks install luaprompt
-ln -s ~/.asdf/installs/lua/5.4.3/luarocks/bin/luap ~/.local/bin/luap
+
+go install github.com/charmbracelet/glow@latest
 
 mkdir -p ~/sources
 git clone https://github.com/alacritty/alacritty.git ~/sources/alacritty
