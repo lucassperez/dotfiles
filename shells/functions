@@ -4,6 +4,24 @@ simplexev() {
   xev | awk -F '[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
 }
 
+path() {
+  if [ $1 ] && [ $1 = '-h' -o $1 = '--help' -o $1 = 'help' ]; then
+    echo "To show rtx dirs, call path with -r flag"
+    return
+  fi
+
+  local show_rtx_path
+  if [ $1 ] && [ $1 = -r ]; then
+    show_rtx_path=sim
+  fi
+  result=`echo $PATH | tr ":" "\n"`
+  if [ -z $show_rtx_path ]; then
+    local rtx_data_dir="${RTX_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/rtx}/installs/"
+    result=`echo $result | sed "s|^$rtx_data_dir.*$|$rtx_data_dir...|" | uniq`
+  fi
+  echo $result
+}
+
 redme() {
   if [ -f "$1" ]; then
     glow -p "$1"
@@ -15,19 +33,6 @@ redme() {
   else
     exit 1
   fi
-}
-
-testmix() {
-  if [ "$1" = '-f' ]; then
-    res=$(mix test --failed)
-    echo $res | mix test --failed | grep "test.*_test\.exs:.*(test)" | sort -n
-    return
-  fi
-
-  mix test $@
-
-  res=$(mix test --failed)
-  echo $res | mix test --failed | grep "test.*_test\.exs:.*(test)" | sort -n
 }
 
 testnvim() {
@@ -42,6 +47,19 @@ testnvim() {
   fi
   printf "\n\t\e[1mhyperfine 'nvim +q' --warmup 5\e[0m\n\n"
   hyperfine 'nvim +q' --warmup 5
+}
+
+testmix() {
+  if [ "$1" = '-f' ]; then
+    res=$(mix test --failed)
+    echo $res | mix test --failed | grep "test.*_test\.exs:.*(test)" | sort -n
+    return
+  fi
+
+  mix test $@
+
+  res=$(mix test --failed)
+  echo $res | mix test --failed | grep "test.*_test\.exs:.*(test)" | sort -n
 }
 
 [ -f "$HOME/.local/.functions.local" ] && source "$HOME/.local/.functions.local"
