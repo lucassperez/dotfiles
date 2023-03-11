@@ -658,18 +658,18 @@ local globalkeys = gears.table.join(
             { group = 'client', description = 'swap right client global', }),
 
   -- Size
-  awful.key({ modkey }, 'i',
+  awful.key({ modkey }, 'u',
             function () awful.tag.incmwfact(-0.05) end,
             { group = 'layout', description = 'decrease master width factor', }),
-  awful.key({ modkey }, 'o',
+  awful.key({ modkey }, 'i',
             function () awful.client.incwfact(-0.05) end,
             { group = 'layout', description = 'decrease client height', }),
-  awful.key({ modkey }, 'p',
+  awful.key({ modkey }, 'o',
             function () awful.client.incwfact(0.05) end,
             { group = 'layout', description = 'increase client height', }),
-  awful.key({ modkey }, '#34', -- acento agudo ´
+  awful.key({ modkey }, 'p',
             function () awful.tag.incmwfact(0.05) end,
-            { group = 'layout', description = '(acute) increase master width factor', }),
+            { group = 'layout', description = 'increase master width factor', }),
   awful.key({ modkey, }, 'r',
             function()
               local screen = awful.screen.focused()
