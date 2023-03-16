@@ -71,6 +71,7 @@ prepend_to_PATH() {
 }
 
 prepend_to_PATH $HOME/.local/bin
+prepend_to_PATH $HOME/.asdf/installs/golang/1.18/packages/bin
 
 if [ "$0" = "/etc/gdm3/Xsession" -a "$DESKTOP_SESSION" = "i3" ]; then
     export $(gnome-keyring-daemon -s)

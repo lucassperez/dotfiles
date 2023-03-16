@@ -68,14 +68,20 @@ mkdir -p ~/.config
 mkdir -p ~/.config/awesome
 git clone git@github.com:frioux/charitable.git ~/.config/awesome/charitable
 
-# Rtx instead of asdf
-curl https://rtx.pub/rtx-latest-linux-x64 > ~/rtx_bin_downloaded_for_now
-chmod +x ~/rtx_bin_downloaded_for_now
-sudo mv ~/rtx_bin_downloaded_for_now /usr/local/bin/rtx
+# ASDF stuff
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.1
+
+# If want to use rtx instead of asdf
+# curl https://rtx.pub/rtx-latest-linux-x64 > ~/rtx_bin_downloaded_for_now
+# chmod +x ~/rtx_bin_downloaded_for_now
+# sudo mv ~/rtx_bin_downloaded_for_now /usr/local/bin/rtx
 
 # Since we have not sourced our configs yet, asdf is not in path.
 # So, before using it, we have to manually execute this shell script.
-eval "$(rtx activate zsh)"
+. $HOME/.asdf/asdf.sh
+
+# Same goes for rtx
+# eval "$(rtx activate zsh)"
 
 rtx install neovim 0.8.3
 rtx install lua 5.4.3
@@ -89,6 +95,8 @@ rtx global rust 1.66.0
 
 sudo apt install -y libreadline-dev
 luarocks install luaprompt
+# Comment just to remind that with rtx, don't need to symlink
+ln -s ~/.asdf/installs/lua/5.4.3/luarocks/bin/luap ~/.local/bin/luap
 
 go install github.com/charmbracelet/glow@latest
 
