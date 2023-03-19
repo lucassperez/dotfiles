@@ -21,7 +21,6 @@ local text = wibox.widget({
 
 local widget = wibox.widget.background()
 widget:set_widget(text)
-widget:set_fg('#d986c0')
 
 local function calculate_widget_output(out)
   local volume = out:match('^Volume: front%-left: *%d+ */ *(%d+)%%')
@@ -38,10 +37,13 @@ local function calculate_widget_output(out)
 
   local val = ''
 
+  widget:set_fg('#d986c0')
+
   if mute == nil then
     val = ' ? ' .. volume .. '%'
   elseif mute == 'yes' then
     val = 'X ' .. volume .. '%'
+    widget:set_fg('#c6c6c6')
   else
     volume = tonumber(volume)
     if volume >= 50 then
