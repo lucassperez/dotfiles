@@ -14,18 +14,18 @@ local widget = wibox.widget.background()
 widget:set_widget(text)
 widget:set_fg('#999999')
 
+local function calculate_widget_output(out)
+  local temperature = out:match('^Screen [0-9]+: temperature ~ ([0-9]+)')
+  local string_temperature = string.format(' %.1f', temperature / 1000)
+  text:set_text(string_temperature)
+end
+
 local function draw_widget()
-  awful.spawn.easy_async(
-    'xsct',
-    function(out)
-      local temperature = out:match('^Screen [0-9]+: temperature ~ ([0-9]+)')
-      local string_temperature = string.format(' %.1f', temperature / 1000)
-      text:set_text(string_temperature)
-    end
-  )
+  awful.spawn.easy_async('xsct', calculate_widget_output)
 end
 
 draw_widget()
+awful.widget.watch('xsct', 1, function(_, stdout) calculate_widget_output(stdout) end, widget)
 
 function widget:update_widget(cmd)
   cmd = cmd or 'xsct'

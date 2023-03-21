@@ -54,21 +54,21 @@ local function round(string)
   return math.floor(number)
 end
 
-local function set_widget()
-  awful.spawn.easy_async(
-    'light',
-    function(out)
-      local num_val = round(out)
-      text:set_text(' ' .. num_val .. '%')
-    end
-  )
+local function calculate_widget_output(out)
+  local num_val = round(out)
+  text:set_text(' ' .. num_val .. '%')
 end
 
-set_widget()
+local function draw_widget()
+  awful.spawn.easy_async( 'light', calculate_widget_output)
+end
+
+awful.widget.watch('light', 1, function(_, stdout) calculate_widget_output(stdout) end, widget)
+draw_widget()
 
 function widget:update_widget(cmd)
   cmd = cmd or 'light'
-  awful.spawn.easy_async(cmd, set_widget)
+  awful.spawn.easy_async(cmd, draw_widget)
 end
 
 function widget:inc(delta)
