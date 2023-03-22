@@ -519,6 +519,11 @@ local globalkeys = gears.table.join(
   awful.key({ modkey }, 's',      hotkeys_popup.show_help,   { description = 'show help', group = 'awesome' }),
   -- awful.key({ modkey }, 'Left',   awful.tag.viewprev,        { description = 'view previous', group = 'tag' }),
   -- awful.key({ modkey }, 'Right',  awful.tag.viewnext,        { description = 'view next', group = 'tag' }),
+  -- I used to set awful.tag.history.restore to function() end because of this:
+  -- https://github.com/awesomeWM/awesome/issues/2780
+  -- But then, after trying to make the keymap to go to urgent or restore, it would
+  -- not work with it, so I deleted it and the original awful.tag.history.restore
+  -- seems to be doing just fine for now, since I don't really use volatile tags.
   awful.key({ modkey }, 'Escape', awful.tag.history.restore, { description = 'go back', group = 'tag' }),
 
   -- Client
@@ -606,8 +611,15 @@ local globalkeys = gears.table.join(
             { group = 'monitor', description = 'focus relative +1', }),
 
   awful.key({ modkey }, "'",
-            awful.client.urgent.jumpto,
-            { group = 'client', description = 'jump to urgent client', }),
+            function()
+              local urgent_client = awful.client.urgent.get()
+              if urgent_client then
+                urgent_client:jump_to()
+              else
+                awful.tag.history.restore()
+              end
+            end,
+            { group = 'client', description = 'jump to urgent client or restore last tag if no urgent client exists', }),
   awful.key({ modkey, shift }, 'Tab',
             function ()
               awful.client.focus.history.previous()
@@ -1025,8 +1037,6 @@ tag.connect_signal(
     end
   end
 )
--- see https://github.com/awesomeWM/awesome/issues/2780
-awful.tag.history.restore = function() end
 
 local clientbuttons = gears.table.join(
   awful.button({}, 1,
