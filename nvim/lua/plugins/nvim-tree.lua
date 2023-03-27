@@ -14,9 +14,9 @@ local function keys(module)
 end
 
 local function setup()
-  local nvim_tree = require('nvim-tree')
+    local nvim_tree_api = require('nvim-tree.api').tree
 
-  for _, mapping in pairs(keys(nvim_tree)) do
+  for _, mapping in pairs(keys(nvim_tree_api)) do
     vim.keymap.set(unpack(mapping))
   end
 
