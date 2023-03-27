@@ -45,15 +45,14 @@ gsettings set org.gnome.gedit.preferences.editor tabs-size 2
 gsettings set org.gnome.gedit.preferences.editor display-right-margin true
 
 sudo apt update
-sudo apt install -y zsh tmux jq xclip vlc gimp peek figlet acpi flameshot unclutter-xfixes zoxide pavucontrol
+sudo apt install -y zsh tmux jq xclip vlc gimp peek figlet acpi flameshot \
+  unclutter-xfixes pavucontrol ripgrep zoxide
 
 mkdir -p ~/.cache/zsh/
-git clone git@github.com:zdharma-continuum/fast-syntax-highlighting.git /home/lucas/.config/zsh/plugins/fast-syntax-highlighting/
-
-# Of course ripgrep is not in the repos for debian and friends (uwuntu)
-curl -LO https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
-sudo dpkg -i ripgrep_13.0.0_amd64.deb
-mv ripgrep_13.0.0_amd64.deb ~/Downloads/
+mkdir -p ~/.config/zsh/plugins
+cd ~/.config/zsh/plugins
+git clone git@github.com:zdharma-continuum/fast-syntax-highlighting.git
+cd ~
 
 sudo apt install -y awesome xcompmgr fonts-font-awesome light lxappearance suckless-tools numlockx xwallpaper
 
@@ -80,22 +79,41 @@ git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.1
 # So, before using it, we have to manually execute this shell script.
 . $HOME/.asdf/asdf.sh
 
+# Lua dependencies
+sudo apt-get install linux-headers-$(uname -r) build-essential
+
+asdf plugin-add neovim
+asdf plugin-add lua
+asdf plugin-add golang
+asdf plugin-add rust
+
+asdf install neovim 0.8.3
+asdf install lua 5.4.3
+asdf install golang 1.18
+asdf install rust 1.66.0
+
+asdf global neovim 0.8.3
+asdf global lua 5.4.3
+asdf global golang 1.18
+asdf global rust 1.66.0
+
 # Same goes for rtx
 # eval "$(rtx activate zsh)"
 
-rtx install neovim 0.8.3
-rtx install lua 5.4.3
-rtx install golang 1.18
-rtx install rust 1.66.0
+# rtx install neovim 0.8.3
+# rtx install lua 5.4.3
+# rtx install golang 1.18
+# rtx install rust 1.66.0
 
-rtx global neovim 0.8.3
-rtx global lua 5.4.3
-rtx global golang 1.18
-rtx global rust 1.66.0
+# rtx global neovim 0.8.3
+# rtx global lua 5.4.3
+# rtx global golang 1.18
+# rtx global rust 1.66.0
 
 sudo apt install -y libreadline-dev
 luarocks install luaprompt
 # Comment just to remind that with rtx, don't need to symlink
+mkdir -p ~/.local/bin
 ln -s ~/.asdf/installs/lua/5.4.3/luarocks/bin/luap ~/.local/bin/luap
 
 go install github.com/charmbracelet/glow@latest
@@ -108,13 +126,19 @@ rustup update stable
 sudo apt-get install -y cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
 cargo build --release
 sudo infocmp alacritty || sudo tic -xe alacritty,alacritty-direct extra/alacritty.info
-ln -s ~/sources/alacritty/target/release/alacritty ~/.local/bin/alacritty
+sudo cp target/release/alacritty /usr/local/bin # or anywhere else in $PATH
+sudo cp extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
+sudo desktop-file-install extra/linux/Alacritty.desktop
+sudo update-desktop-database
+# With a desktop entry, no symlink is necessary
+# ln -s ~/sources/alacritty/target/release/alacritty ~/.local/bin/alacritty
 sudo cp extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
 sudo desktop-file-install extra/linux/Alacritty.desktop
 sudo update-desktop-database
 sudo mkdir -p /usr/local/share/man/man1
 gzip -c extra/alacritty.man | sudo tee /usr/local/share/man/man1/alacritty.1.gz > /dev/null
 gzip -c extra/alacritty-msg.man | sudo tee /usr/local/share/man/man1/alacritty-msg.1.gz > /dev/null
+cd ~
 
 cd ~
 wget -P ~/Downloads/ -- https://zoom.us/client/5.13.3.651/zoom_amd64.deb
@@ -129,10 +153,9 @@ echo \
 sudo apt update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 newgrp docker
-newgrp docker
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
-getent group | grep docker >/dev/null 2>&1 || sudo groupadd docker
+getent group | grep '^docker:' >/dev/null 2>&1 || sudo groupadd docker
 sudo usermod -aG docker "$USER"
 # Has to restart to use it or run newgrp docker, but this creates another shell,
 # so I really don't think it should be used in a script. Maybe at the end of
@@ -147,6 +170,8 @@ sudo usermod -aG docker "$USER"
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.14.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
+# TODO find out dmenu dependencies and make this work
+sudo apt install libx11-dev libxinerama-dev libxft-dev
 git clone git@github.com:lucassperez/dmenu-simple-build.git ~/sources/dmenu
 cd ~/sources/dmenu
 make
@@ -154,8 +179,6 @@ sudo make install
 cd ~
 
 wget -P ~/.local/bin/ https://raw.githubusercontent.com/GeorgeFilipkin/pulsemixer/master/pulsemixer && chmod +x ~/.local/bin/pulsemixer
-
-go install github.com/charmbracelet/glow@latest
 
 # Install flatpak and add flathub and then
 # install kolourpaint from there
@@ -166,6 +189,7 @@ flatpak install -y flathub org.kde.kolourpaint
 # clipnotify requires libx11-dev and libxfixes-dev, while clipmenu requires xsel
 git clone git@github.com:cdown/clipnotify.git ~/sources/clipnotify
 sudo apt install -y libx11-dev libxfixes-dev xsel
+cd ~/sources/clipnotify
 make
 sudo make install
 git clone git@github.com:cdown/clipmenu.git ~/sources/clipmenu
@@ -188,20 +212,20 @@ git clone https://github.com/faf0/sct ~/sources/sct
 cd ~/sources/sct
 make
 sudo make install
-
 cd ~
 
 sudo apt install -y tig vim
 
 sudo apt install -y neofetch
+mkdir -p ~/.config/neofetch
 ln -s ~/dotfiles/pinguim-ascii-art1 ~/.config/neofetch/ascii-art
 rm ~/.config/neofetch/config.conf
 ln -s ~/dotfiles/EXAMPLE-FILES/neofetch ~/.config/neofetch/config.conf
 
 ###
 
-Change shell to zsh at the end with
-chsh -s `which zsh` (/usr/bin/zsh, very likely)
+Change shell to zsh at the end with (/usr/bin/zsh, very likely)
+chsh -s `which zsh`
 
 If going to install ruby, will need libssl-dev
 
