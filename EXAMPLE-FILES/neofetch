@@ -3,7 +3,7 @@
 print_info() {
     echo
     # info title
-    prin "$(color 1)$USER$(color 7)@$(color 1)renofi"
+    prin "$(color 1)$USER$(color 7)@$(color 1)$HOSTNAME"
     info underline
 
     # info "OS" distro
