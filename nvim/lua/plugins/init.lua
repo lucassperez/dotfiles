@@ -197,7 +197,12 @@ lazy.setup({
   -- is apparently make it buggy
   { 'cohama/lexima.vim',     event = 'InsertEnter', config = function() require('plugins.lexima') end, },
   { 'windwp/nvim-autopairs', event = 'InsertEnter', config = function() require('plugins.nvim-autopairs') end, },
-  { 'alvan/vim-closetag',    event = 'InsertEnter', config = function() require('plugins.vim-closetag') end, },
+  -- Suddenly close tag does not work with lazy loading anymore... ):
+  {
+    'alvan/vim-closetag',
+    -- event = 'InsertEnter',
+    init = function() require('plugins.vim-closetag') end,
+  },
 },
 {
   lockfile = vim.fn.stdpath('config') .. '/plugins-lock.json',
