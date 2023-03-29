@@ -70,6 +70,15 @@ noremap('n', '<leader>d', ':bdelete<CR>')
 noremap('n', '<A-q>', ':bprevious<CR>')
 noremap('n', '<A-w>', ':bnext<CR>')
 
+noremap('n', '<leader>tn', ':tabnew<CR>')
+noremap('n', '<leader>tq', ':tabprevious<CR>')
+noremap('n', '<leader>tw', ':tabnext<CR>')
+noremap('n', '<A-t>', ':tabnew<CR>')
+noremap('n', '<A-a>', ':tabprevious<CR>')
+noremap('n', '<A-s>', ':tabnext<CR>')
+noremap('n', '<leader>td', ':tabclose<CR>')
+noremap('n', '<leader>tc', ':tabclose<CR>')
+
 -- Mudar de painéis segurando Control
 -- O plugin tmux.nvim está fazendo isso
 -- noremap('n', '<C-h>', '<C-w>h')
