@@ -54,7 +54,7 @@ elif [ -e "$HOME/.local/bin/discord" ]; then
   mv "$HOME/.local/bin/discord" $new_old_discord_path
 fi
 
-printf -- "=== Creating symlink to $HOME/.local/discord ===\n"
+printf -- "=== Creating symlink to $HOME/.local/bin/discord ===\n"
 ln -s "$discord_dir/Discord/Discord" "$HOME/.local/bin/discord"
 
 tar_path="$HOME/sources/discord-tar-balls/discord-$discord_ver.tar.gz"
