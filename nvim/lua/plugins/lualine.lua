@@ -68,7 +68,6 @@ local function setup()
       lualine_a = { customModes },
       lualine_b = { getfile },
       lualine_c = { '' },
-      -- lualine_c = { 'lsp_progress' },
       lualine_x = { 'diff' },
       lualine_y = { 'filetype' },
       lualine_z = { getlines }
