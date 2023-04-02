@@ -37,7 +37,11 @@ local function calculate_widget_output(out)
 
   local val = ''
 
-  widget:set_fg('#d6ce6f')
+  if volume == '0' or mute == 'yes' then
+    widget:set_fg('#c6c6c6')
+  else
+    widget:set_fg('#d6ce6f')
+  end
 
   if mute == nil then
     val = ' ? ' .. volume .. '%'
@@ -45,7 +49,6 @@ local function calculate_widget_output(out)
     val = ' ' .. volume .. '%'
   else
     val = ' ' .. volume .. '%'
-    widget:set_fg('#c6c6c6')
   end
 
   -- local file = io.open(config_home..'/awesome/widgets/simple/anota-lua', 'a')

@@ -37,13 +37,16 @@ local function calculate_widget_output(out)
 
   local val = ''
 
-  widget:set_fg('#d986c0')
+  if volume == '0' or mute == 'yes' then
+    widget:set_fg('#c6c6c6')
+  else
+    widget:set_fg('#d986c0')
+  end
 
   if mute == nil then
     val = ' ? ' .. volume .. '%'
   elseif mute == 'yes' then
     val = 'X ' .. volume .. '%'
-    widget:set_fg('#c6c6c6')
   else
     volume = tonumber(volume)
     if volume >= 50 then

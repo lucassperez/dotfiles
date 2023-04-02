@@ -329,6 +329,7 @@ awful.screen.connect_for_each_screen(
       gears.table.join(
         awful.button({}, 1, function() awful.layout.inc( 1) end),
         awful.button({}, 2, function() toggleLayout('max') end),
+        awful.button({ control }, 2, function() toggleLayout('limited_tile') end),
         awful.button({}, 3, function() awful.layout.inc(-1) end),
         awful.button({}, 4, function() awful.layout.inc( 1) end),
         awful.button({}, 5, function() awful.layout.inc(-1) end)
