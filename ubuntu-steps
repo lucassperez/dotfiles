@@ -46,7 +46,7 @@ gsettings set org.gnome.gedit.preferences.editor display-right-margin true
 
 sudo apt update
 sudo apt install -y zsh tmux jq xclip vlc gimp peek figlet acpi flameshot \
-  unclutter-xfixes pavucontrol ripgrep zoxide
+  unclutter-xfixes pavucontrol ripgrep zoxide tree
 
 mkdir -p ~/.cache/zsh/
 mkdir -p ~/.config/zsh/plugins
@@ -221,6 +221,9 @@ mkdir -p ~/.config/neofetch
 ln -s ~/dotfiles/pinguim-ascii-art1 ~/.config/neofetch/ascii-art
 rm ~/.config/neofetch/config.conf
 ln -s ~/dotfiles/EXAMPLE-FILES/neofetch ~/.config/neofetch/config.conf
+
+sudo apt install wtype xdotool
+pip install --user rofimoji
 
 ###
 
