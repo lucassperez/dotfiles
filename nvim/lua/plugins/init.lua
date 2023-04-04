@@ -49,6 +49,7 @@ lazy.setup({
   { 'hoob3rt/lualine.nvim', config = function() require('plugins.lualine').setup() end, },
   {
     'romgrk/barbar.nvim',
+    version = '^1.0.0',
     init = function() vim.cmd([[let bufferline = get(g:, 'bufferline', {'icons': v:false,'no_name_title': '[No Name]'})]]) end,
     config = function() require('plugins.barbar').setup() end,
   },
