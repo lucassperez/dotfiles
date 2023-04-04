@@ -1,0 +1,26 @@
+#!/usr/bin/sh
+
+# An example hook script to check the commit log message.
+# Called by "git commit" with one argument, the name of the file
+# that has the commit message. The hook should exit with non-zero
+# status after issuing an appropriate message if it wants to stop the
+# commit. The hook is allowed to edit the commit message file.
+
+# https://stackoverflow.com/questions/3417896/how-do-i-prompt-the-user-from-within-a-commit-msg-hook
+# https://victoria.dev/blog/an-automatic-interactive-pre-commit-checklist-in-the-style-of-infomercials/
+# Read user input, assign stdin to keyboard
+exec < /dev/tty
+# A mensagem deve começar com uma tag, tipo assim: [uma tag]
+# A mensagem pode ser apenas uma tag e mais nada ou uma tag e um título.
+# Caso haja título, deve haver espaço entre o fim da tag e o começo do título.
+if head -n 1 -- $1 | grep -vq "^\[.\+\]\($\| .\+\)"; then
+  printf 'A mensagem de commit está sem uma tag no começo ou mal formatada (sem espaço após a tag). Ex: [tag] Mensagem\n'
+  printf 'Seguir assim mesmo? [Y/n] '
+  read resposta
+  [ -z $resposta ] || [ $resposta = 'y' -o $resposta = 'Y' -o $resposta = 's' -o $resposta = 'S' ];
+  # Outro jeito usando case.
+  # case $resposta in
+  #   ''|[yYsS]) ;;
+  #   *) exit 1 ;;
+  # esac
+fi
