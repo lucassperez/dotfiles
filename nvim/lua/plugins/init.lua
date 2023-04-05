@@ -176,7 +176,18 @@ lazy.setup({
 
   -- Completion and things that write in general
   ----------------------------------------------
-  { 'tpope/vim-ragtag', keys = '<C-x>', },
+  {
+    'tpope/vim-ragtag',
+    filetype = { 'eruby', },
+    init = function()
+      -- https://github.com/tpope/vim-ragtag/blob/master/doc/ragtag.txt
+      vim.cmd([[
+        inoremap <M-o>       <Esc>o
+        inoremap <C-j>       <Down>
+        let g:ragtag_global_maps = 1
+      ]])
+    end,
+  },
   { 'mattn/emmet-vim', keys = '<C-y>', },
   {
     'hrsh7th/nvim-cmp',
