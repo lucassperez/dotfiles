@@ -4,6 +4,10 @@ fpath=(${ASDF_DIR}/completions $ZDOTDIR/completions $fpath)
 # fpath=($ZDOTDIR/completions $fpath)
 # eval "$(rtx activate zsh)"
 
+# zsh rename thing omg this exists!
+# https://unix.stackexchange.com/questions/1136/batch-renaming-files
+autoload zmv
+
 autoload -Uz compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
