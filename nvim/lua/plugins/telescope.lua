@@ -24,6 +24,8 @@ local function setup()
   function TelescopeGitOrFindFiles(opts)
     local code = os.execute('git rev-parse --git-dir 2>/dev/null 1>&2')
     if code == 0 then
+      opts = opts or {}
+      opts.show_untracked = true
       menufacture.git_files(opts)
     else
       menufacture.find_files(opts)
