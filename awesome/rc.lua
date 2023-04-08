@@ -525,7 +525,7 @@ local globalkeys = gears.table.join(
   -- But then, after trying to make the keymap to go to urgent or restore, it would
   -- not work with it, so I deleted it and the original awful.tag.history.restore
   -- seems to be doing just fine for now, since I don't really use volatile tags.
-  awful.key({ modkey }, 'Escape', awful.tag.history.restore, { description = 'go back', group = 'tag' }),
+  awful.key({ modkey }, "'", awful.tag.history.restore, { description = 'go back', group = 'tag' }),
 
   -- Client
   -- When layout is "max", the "j" and "k" keys cycle through clients, but the
@@ -611,7 +611,7 @@ local globalkeys = gears.table.join(
             function () awful.screen.focus_relative(1) end,
             { group = 'monitor', description = 'focus relative +1', }),
 
-  awful.key({ modkey }, "'",
+  awful.key({ modkey }, 'Escape',
             function()
               local urgent_client = awful.client.urgent.get()
               if urgent_client then
