@@ -28,6 +28,18 @@ mason_lspconfig.setup_handlers({
     options.capabilities = options.capabilities or default_capabilities
     options.on_attach = options.on_attach or default_on_attach
 
+    -- I wish
+    -- https://www.reddit.com/r/neovim/comments/12fburw/feedback_when_lsp_dont_find_definition/
+    -- This doesn't really work with my setup because I use telescope's definition,
+    -- and not the default's vim.lsp handlers.
+    -- local current_definition_handler = vim.lsp.handlers['textDocument/definition']
+    -- vim.lsp.handlers['textDocument/definition'] = function(err, result, ctx, config)
+    --   if not result then
+    --     vim.notify('Could not find definition')
+    --   end
+    --   current_definition_handler(err, result, ctx, config)
+    -- end
+
     lspconfig[server_name].setup(options)
   end
 })
