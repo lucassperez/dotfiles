@@ -141,7 +141,7 @@ lazy.setup({
   ------
   {
     'williamboman/mason.nvim',
-    event = 'BufRead',
+    event = { 'BufRead', 'BufNewFile', },
     cmd = 'Mason',
     config = function() require('plugins.lsp') end,
     dependencies = {
@@ -165,7 +165,7 @@ lazy.setup({
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    event = 'BufReadPost',
+    event = { 'BufReadPost', 'BufNewFile', },
     config = function() require('plugins.tree-sitter') end,
     dependencies = {
      'JoosepAlviste/nvim-ts-context-commentstring',
