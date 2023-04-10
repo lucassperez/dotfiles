@@ -11,7 +11,7 @@ require('nvim-treesitter.configs').setup({
     'lua',
     'comment',
     'vim',
-    'help',
+    'vimdoc',
     'bash',
   },
   -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
