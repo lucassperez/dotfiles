@@ -40,6 +40,7 @@ widget:connect_signal(
     if button == 2 then calendar_widget.toggle()
     elseif button == 1 or button == 3 then
       awful.spawn('zenity --calendar --text= >/dev/null')
+      -- awful.widget.calendar_popup.month():toggle()
     end
   end
 )
