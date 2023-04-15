@@ -85,7 +85,15 @@ function widget:send_turbo_notification()
 end
 
 widget:connect_signal('button::press', function(_, _, _, button)
-  if button == 1 then widget:send_turbo_notification() end
+  if button == 1 then widget:send_turbo_notification()
+  -- Add user_name ALL=NOPASSWD:/usr/sbin/alsactl to sudoers?
+  -- Really want to fix this weird shit.
+  elseif button == 3 then
+    os.execute('sudo alsactl restore')
+    local volume = require('widgets.simple.volume')
+    volume:toggle()
+    volume:dec(2)
+  end
 end)
 
 return widget
