@@ -176,6 +176,9 @@ lazy.setup({
 
   -- Completion and things that write in general
   ----------------------------------------------
+
+  -- Both ragtag and emmet, I can't seem to lazy load them correctly
+  -- Emmet can be replaced with emmet_ls (LSP), but ragtag...? ):
   {
     'tpope/vim-ragtag',
     filetype = { 'eruby', },
@@ -187,8 +190,13 @@ lazy.setup({
         let g:ragtag_global_maps = 1
       ]])
     end,
+    enabled = false,
   },
-  { 'mattn/emmet-vim', keys = '<C-y>', },
+  {
+    'mattn/emmet-vim',
+    filetype = { 'html', 'css', 'eruby', },
+    enabled = false,
+  },
   {
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
