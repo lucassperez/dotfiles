@@ -17,16 +17,17 @@ end
 local function default_key_maps(bufnr)
   local map = vim.keymap.set
   local map_opts = { noremap = true, buffer = bufnr }
-  map('n', '\\f', function() vim.lsp.buf.format({ async = true }) end, map_opts)
-  map('n', 'K',   function() telescopeOrNvimLsp(vim.lsp.buf.definition, 'lsp_definitions') end, map_opts)
-  map('n', '\\k', function() vim.lsp.buf.hover() end, map_opts)
-  map('n', '\\n', function() vim.lsp.buf.rename() end, map_opts)
-  map('n', '\\r', function() telescopeOrNvimLsp(vim.lsp.buf.references, 'lsp_references') end, map_opts)
-  map('n', '\\d', function() vim.diagnostic.open_float() end, map_opts)
-  map('n', '\\D', function() telescopeOrNvimLsp(vim.diagnostic.open_float, 'diagnostics') end, map_opts)
-  map('n', '[d',  function() goToDiagnosticAndCenter('prev') end, map_opts)
-  map('n', ']d',  function() goToDiagnosticAndCenter('next') end, map_opts)
-  map('n', '\\i', function() vim.lsp.buf.implementation() end, map_opts)
+  map('n', '\\f',  function() vim.lsp.buf.format({ async = true }) end, map_opts)
+  map('n', 'K',    function() telescopeOrNvimLsp(vim.lsp.buf.definition, 'lsp_definitions') end, map_opts)
+  map('n', '\\k',  function() vim.lsp.buf.hover() end, map_opts)
+  map('n', '\\n',  function() vim.lsp.buf.rename() end, map_opts)
+  map('n', '\\r',  function() telescopeOrNvimLsp(vim.lsp.buf.references, 'lsp_references') end, map_opts)
+  map('n', '\\ca', function() vim.lsp.buf.code_action() end, map_opts)
+  map('n', '\\d',  function() vim.diagnostic.open_float() end, map_opts)
+  map('n', '\\D',  function() telescopeOrNvimLsp(vim.diagnostic.open_float, 'diagnostics') end, map_opts)
+  map('n', '[d',   function() goToDiagnosticAndCenter('prev') end, map_opts)
+  map('n', ']d',   function() goToDiagnosticAndCenter('next') end, map_opts)
+  map('n', '\\i',  function() vim.lsp.buf.implementation() end, map_opts)
 end
 
 local function default_on_attach(client, bufnr)
