@@ -1,2 +1,20 @@
+! https://wiki.archlinux.org/title/xmodmap
+
+! keycode <keycode> = <group of keysyms>
+! Each keysym column in the table corresponds to a particular combination of modifier keys:
+!  1. Key
+!  2. Shift+Key
+!  3. Mode_switch+Key
+!  4. Mode_switch+Shift+Key
+!  5. ISO_Level3_Shift+Key
+!  6. ISO_Level3_Shift+Shift+Key
+
 keycode 135 = Super_R
 keycode 104 = Return
+
+clear lock
+keycode 66 = Escape Caps_Lock
+! The capslock key is now escape, but shift+capslock is in fact capslock
+! Caps lock now is also a control key when used with other keys
+clear control
+add control = Caps_Lock Control_L Control_R
