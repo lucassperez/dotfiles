@@ -1,16 +1,16 @@
 local function keys(module)
-  local t = {
+  local mappings = {
     { 'n', '<C-n>', function() module.toggle() end, { noremap = true, silent = false }, },
     { 'n', '<leader>n', function() module.toggle({ find_file = true }) end, { noremap = true, silent = false }, },
   }
 
   if module == nil then
     local lazy_load_triggers = {}
-    for _, v in pairs(t) do table.insert(lazy_load_triggers, { mode = v[1], v[2] }) end
+    for _, v in pairs(mappings) do table.insert(lazy_load_triggers, { mode = v[1], v[2] }) end
     return lazy_load_triggers
   end
 
-  return t
+  return mappings
 end
 
 local function setup()

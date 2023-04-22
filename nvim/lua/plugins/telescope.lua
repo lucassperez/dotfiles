@@ -1,5 +1,5 @@
 local function keys(module, telescope_git_or_find_files, menufacture)
-  local t = {
+  local mappings = {
     { 'n', '<C-p>', function() telescope_git_or_find_files() end, { noremap = true }, },
     { 'n', '<C-f>', function() menufacture.live_grep() end, { noremap = true }, },
     { 'n', '<leader>P', function() module.buffers() end, { noremap = true }, },
@@ -9,11 +9,11 @@ local function keys(module, telescope_git_or_find_files, menufacture)
 
   if module == nil then
     local lazy_load_triggers = {}
-    for _, v in pairs(t) do table.insert(lazy_load_triggers, { mode = v[1], v[2] }) end
+    for _, v in pairs(mappings) do table.insert(lazy_load_triggers, { mode = v[1], v[2] }) end
     return lazy_load_triggers
   end
 
-  return t
+  return mappings
 end
 
 local function setup()
@@ -22,9 +22,9 @@ local function setup()
   local menufacture = require('telescope').extensions.menufacture
 
   function TelescopeGitOrFindFiles(opts)
-    local code = os.execute('git rev-parse --git-dir 2>/dev/null 1>&2')
-    if code == 0 then
-      opts = opts or {}
+    opts = opts or {}
+    local exit_code = os.execute('git rev-parse --git-dir 2>/dev/null 1>&2')
+    if exit_code == 0 then
       opts.show_untracked = true
       menufacture.git_files(opts)
     else
