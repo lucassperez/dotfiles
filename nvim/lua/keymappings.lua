@@ -14,6 +14,22 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- Go to command mode without using shift
 noremap({ 'n', 'v' }, ';', ':')
 
+-- Map so somecommands do not copy empty line to register.
+-- Also does not copy line made of only whitespaces.
+-- Do I really want this? :thinking:
+local function executeCommandButDontCopyWhistespaceToRegister(command)
+  if vim.api.nvim_get_current_line():match('^%s*$') then
+    vim.api.nvim_feedkeys('"_' .. command, 'n', false)
+  else
+    vim.api.nvim_feedkeys(command, 'n', false)
+  end
+end
+vim.keymap.set('n', 'dd', function() executeCommandButDontCopyWhistespaceToRegister('dd') end)
+vim.keymap.set('n', 'cc', function() executeCommandButDontCopyWhistespaceToRegister('cc') end)
+vim.keymap.set('n', 'S', function() executeCommandButDontCopyWhistespaceToRegister('S') end)
+-- Would be nice to make this work for things like d + motion,
+-- but looks too complicated. Simple 'o' mode is not quite right.
+
 -- Cansei de fazer isso aqui sem querer
 -- Mas isso fica deixando os macros esquisitos de começar e principalmente
 -- acabar, porque quando aperto q o vim fica esperando pra saber se era só
@@ -24,7 +40,6 @@ noremap('n', 'q:', ':q')
 -- containing completions would sometimes not properly disappear when I C-c out
 -- of insert mode, which did not happen with Esc.
 map('i', '<C-c>', '<Esc>')
-map('i', '<C-j>', '<Esc>') -- why did I add this?
 
 -- Novos paineis (horizontal e vertical) e fechar o atual
 noremap('n', '<leader>s', ':sp<CR>')
@@ -34,11 +49,11 @@ noremap('n', '<leader>c', '<C-w>c')
 -- Salvar e fechar tudo, eita
 noremap('n', '<C-q>', ':wqa!<CR>')
 
--- Se tem ç, tem que usar
--- Vou tirar isso por enquanto
--- pra tentar acostumar a usar H e L
--- map('n', 'ç', '$')
--- map('v', 'ç', '$h')
+-- I used to use ç to go to the end of line, but removed it
+-- to get used to using H and L to go forth and back on non ABNT2 keyboards.
+-- Basically L goes to the end and H goes to the start of lines.
+-- In visual mode, L does not get the "new line" at the end, and H does
+-- not go to the first column, but instead to the first character in the line.
 map({ 'n', 'o', }, 'L', '$')
 map('v', 'L', '$h')
 map({ 'n', 'v', 'o', }, 'H', '^')
@@ -50,7 +65,8 @@ noremap('n', '<leader><Space>', ':e#<CR>')
 noremap('n', '<leader>f', ':let @+ = expand("%")<CR>')
 
 -- Acho que faz sentido Y copiar do cursor até o final da linha (ver :help Y)
-noremap('n', 'Y', 'y$')
+-- In neovim, this is mapped automatically. It made sense in vim though.
+-- noremap('n', 'Y', 'y$')
 
 -- Não entrar no insert mode após usar leader + o/O
 noremap('n', '<leader>o', 'o<C-c>')
@@ -70,6 +86,7 @@ noremap('n', '<leader>d', ':bdelete<CR>')
 noremap('n', '<A-q>', ':bprevious<CR>')
 noremap('n', '<A-w>', ':bnext<CR>')
 
+-- Tab management maps using similar logic to buffer mappings above
 noremap('n', '<leader>tn', ':tabnew %<CR>')
 noremap('n', '<leader>tq', ':tabprevious<CR>')
 noremap('n', '<leader>tw', ':tabnext<CR>')
@@ -96,6 +113,7 @@ noremap('n', '<leader>D', '"+dg_')
 
 -- Mudar a indentação continuamente
 -- https://github.com/changemewtf/dotfiles/blob/master/vim/.vimrc
+---- I don't know about this, but oh well
 -- Modo visual
 noremap('v', '<', '<gv')
 noremap('v', '>', '>gv')
@@ -106,8 +124,6 @@ noremap('n', '<', '<<')
 -- Mover blocos de texto
 noremap('v', '<M-j>', ":m '>+1<CR>gv=gv")
 noremap('v', '<M-k>', ":m '<-2<CR>gv=gv")
-noremap('v', 'J', ":m '>+1<CR>gv=gv")
-noremap('v', 'K', ":m '<-2<CR>gv=gv")
 noremap('n', '<M-j>', ':m .+1<CR>==')
 noremap('n', '<M-k>', ':m .-2<CR>==')
 
