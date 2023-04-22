@@ -690,8 +690,20 @@ local globalkeys = gears.table.join(
               local selected_tag = screen.selected_tag
               if not selected_tag then return end
               selected_tag.master_width_factor = 0.5
+
+              local count = #(screen.tiled_clients)
+              local factor
+              if count <= 2 then
+                factor = 1
+              else
+                factor = 1 / (count - 1)
+              end
+
+              for _, c in pairs(screen.tiled_clients) do
+                awful.client.setwfact(factor, c)
+              end
             end,
-            { group = 'layout', description = 'reset master width factor', }),
+            { group = 'layout', description = 'reset clients height and width sizes (as best as we can)', }),
   awful.key({ modkey, control }, 'h',
             function () awful.tag.incncol( 1, nil, true) end,
             { group = 'layout', description = 'increase the number of columns', }),
