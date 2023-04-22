@@ -153,9 +153,10 @@ lazy.setup({
     },
   },
 
-  -- Testar esse aqui também, aproveitar que eu já uso o lualine.
-  -- Alternativa para o fidget.
+  -- Testar esses aqui também, aproveitar que eu já uso o lualine.
+  -- Alternativas para o fidget.
   -- 'arkav/lualine-lsp-progress',
+  -- 'linrongbin16/lsp-progress.nvim',
   -- 'jose-elias-alvarez/null-ls.nvim',
   -- https://github.com/jay-babu/mason-nvim-dap.nvim
   -- https://github.com/jay-babu/mason-null-ls.nvim

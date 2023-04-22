@@ -1,3 +1,4 @@
 require('luasnip').config.set_config({
-  history = true
+  history = true,
+  enable_autosnippets = true,
 })
