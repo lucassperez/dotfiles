@@ -1,8 +1,21 @@
 -- Useful to print tables
 function P(...)
-  for _, value in pairs({...}) do
-    print(vim.inspect(value))
+  if ... == nil then
+    print(...)
+    return ...
   end
+
+  for _, value in pairs({...}) do
+    if value == nil then
+      print(value)
+    else
+      -- inspect do nothing when value is nil,
+      -- so I'm doing these checks, because print
+      -- will print the word nil.
+      print(vim.inspect(value))
+    end
+  end
+
   return ...
 end
 
