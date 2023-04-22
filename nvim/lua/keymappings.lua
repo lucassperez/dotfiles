@@ -30,6 +30,21 @@ vim.keymap.set('n', 'S', function() executeCommandButDontCopyWhistespaceToRegist
 -- Would be nice to make this work for things like d + motion,
 -- but looks too complicated. Simple 'o' mode is not quite right.
 
+-- Am I'm going too far?
+local function executeSingleCharacterCommandButDontCopyWhistespaceToRegister(command)
+  local line = vim.api.nvim_get_current_line()
+  local column = 1 + vim.api.nvim_win_get_cursor(0)[2]
+  local char_under_cursor = line:sub(column, column)
+
+  if char_under_cursor:match('%s') then
+    vim.api.nvim_feedkeys('"_' .. command, 'n', false)
+  else
+    vim.api.nvim_feedkeys(command, 'n', false)
+  end
+end
+vim.keymap.set('n', 's', function() executeSingleCharacterCommandButDontCopyWhistespaceToRegister('s') end)
+vim.keymap.set('n', 'x', function() executeSingleCharacterCommandButDontCopyWhistespaceToRegister('x') end)
+
 -- Cansei de fazer isso aqui sem querer
 -- Mas isso fica deixando os macros esquisitos de começar e principalmente
 -- acabar, porque quando aperto q o vim fica esperando pra saber se era só
