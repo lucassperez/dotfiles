@@ -281,7 +281,7 @@ local taglist_buttons = gears.table.join(
     awful.button({ control }, 3, function(t) charitable.toggle_tag(t, awful.screen.focused()) end)
 )
 local tags = charitable.create_tags(
-   { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' },
+   { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', },
    {
       awful.layout.layouts[1],
       awful.layout.layouts[1],
@@ -967,27 +967,51 @@ local integer_to_numpad = {
   [0] = 90, [1] = 87, [2] = 88, [3] = 89, [4] = 83,
   [5] = 84, [6] = 85, [7] = 79, [8] = 80, [9] = 81,
 }
-for i = 1, 10 do
+for i = 1, #tags do
+  -- I only have tags whose names are numbers,
+  -- from 0 to 9, so that's why this is fine.
+  local tag_number = i % 10
+
   globalkeys = gears.table.join(
     globalkeys,
     -- View tag only.
     awful.key({ modkey }, '#' .. i + 9,
               function ()
-                charitable.select_tag(tags[i], awful.screen.focused())
+                -- Might work weird when many tags are simultaneously selected.
+                local screen = awful.screen.focused()
+                for _, tag in pairs(screen.tags) do
+                  if tag.selected and tag.index == i then
+                    awful.tag.history.restore()
+                    return
+                  end
+                end
+                charitable.select_tag(tags[i], screen)
               end,
-              { group = 'tag', description = 'view tag #' .. i, }),
-    awful.key({ modkey }, '#' .. integer_to_numpad[i % 10],
+              { group = 'tag',
+                description = 'view tag #' .. tag_number .. ' (restore last tag if ' .. tag_number .. ' is current tag)', }),
+    awful.key({ modkey }, '#' .. integer_to_numpad[tag_number],
               function ()
-                charitable.select_tag(tags[i], awful.screen.focused())
+                -- Might work weird when many tags are simultaneously selected.
+                -- Different implementation of the above function, I THINK they
+                -- yield the same result... I thought they would act differently
+                -- when there are multiple tags activated, but apparently it
+                -- does not. It LOOKS like they do the same...?
+                local screen = awful.screen.focused()
+                if screen.selected_tag.index == i then
+                  awful.tag.history.restore()
+                else
+                  charitable.select_tag(tags[i], screen)
+                end
               end,
-              { group = 'tag', description = 'view tag #' .. i, }),
+              { group = 'tag',
+               description = 'view tag #' .. tag_number .. ' (restore last tag if ' .. tag_number .. ' is current tag)', }),
     -- Toggle tag display.
     awful.key({ modkey, control }, '#' .. i + 9,
               function ()
                 charitable.toggle_tag(tags[i], awful.screen.focused())
               end,
               { group = 'tag', description = 'toggle tag #' .. i, }),
-    awful.key({ modkey, control }, '#' .. integer_to_numpad[i % 10],
+    awful.key({ modkey, control }, '#' .. integer_to_numpad[tag_number],
               function ()
                 charitable.toggle_tag(tags[i], awful.screen.focused())
               end,
@@ -1003,7 +1027,7 @@ for i = 1, 10 do
                 end
               end,
               { group = 'tag', description = 'move focused client to tag #' .. i, }),
-    awful.key({ modkey, shift }, '#' .. integer_to_numpad[i % 10],
+    awful.key({ modkey, shift }, '#' .. integer_to_numpad[tag_number],
               function ()
                 if client.focus then
                   local tag = tags[i]
@@ -1024,7 +1048,7 @@ for i = 1, 10 do
                 end
               end,
               { group = 'tag', description = 'toggle focused client on tag #' .. i, }),
-    awful.key({ modkey, control, shift }, '#' .. integer_to_numpad[i % 10],
+    awful.key({ modkey, control, shift }, '#' .. integer_to_numpad[tag_number],
               function ()
                 if client.focus then
                   local tag = tags[i]
