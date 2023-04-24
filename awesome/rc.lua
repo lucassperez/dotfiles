@@ -977,34 +977,14 @@ for i = 1, #tags do
     -- View tag only.
     awful.key({ modkey }, '#' .. i + 9,
               function ()
-                -- Might work weird when many tags are simultaneously selected.
-                local screen = awful.screen.focused()
-                for _, tag in pairs(screen.tags) do
-                  if tag.selected and tag.index == i then
-                    awful.tag.history.restore()
-                    return
-                  end
-                end
-                charitable.select_tag(tags[i], screen)
+                charitable.select_tag(tags[i], awful.screen.focused())
               end,
-              { group = 'tag',
-                description = 'view tag #' .. tag_number .. ' (restore last tag if ' .. tag_number .. ' is current tag)', }),
+              { group = 'tag', description = 'view tag #' .. tag_number, }),
     awful.key({ modkey }, '#' .. integer_to_numpad[tag_number],
               function ()
-                -- Might work weird when many tags are simultaneously selected.
-                -- Different implementation of the above function, I THINK they
-                -- yield the same result... I thought they would act differently
-                -- when there are multiple tags activated, but apparently it
-                -- does not. It LOOKS like they do the same...?
-                local screen = awful.screen.focused()
-                if screen.selected_tag.index == i then
-                  awful.tag.history.restore()
-                else
-                  charitable.select_tag(tags[i], screen)
-                end
+                charitable.select_tag(tags[i], awful.screen.focused())
               end,
-              { group = 'tag',
-               description = 'view tag #' .. tag_number .. ' (restore last tag if ' .. tag_number .. ' is current tag)', }),
+              { group = 'tag', description = 'view tag #' .. tag_number, }),
     -- Toggle tag display.
     awful.key({ modkey, control }, '#' .. i + 9,
               function ()
