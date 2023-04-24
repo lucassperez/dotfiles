@@ -62,7 +62,20 @@ noremap('n', '<leader>v', ':vs<CR>')
 noremap('n', '<leader>c', '<C-w>c')
 
 -- Salvar e fechar tudo, eita
-noremap('n', '<C-q>', ':wqa!<CR>')
+-- Writes and quits from everything, omg!
+-- Unless every file opened does not have a name
+-- (supposedly does not exist).
+noremap('n', '<C-q>', (function()
+  for _, buf in pairs(vim.fn.getbufinfo()) do
+    -- vim.fn.getbufinfo() is returning some weird buffers that
+    -- I have not opened? That's why I'm also checking if it is listed...
+    -- I hope it is safe to only check this.
+    if buf.name ~= '' and buf.listed ~= 0 then
+      return ':wqa!<CR>'
+    end
+  end
+  return ':qa!<CR>'
+end)())
 
 -- I used to use ç to go to the end of line, but removed it
 -- to get used to using H and L to go forth and back on non ABNT2 keyboards.
@@ -77,7 +90,7 @@ map({ 'n', 'v', 'o', }, 'H', '^')
 noremap('n', '<leader><Space>', ':e#<CR>')
 
 -- Copiar para o clipboard do sistema o caminho do arquivo
-noremap('n', '<leader>f', ':let @+ = expand("%")<CR>')
+noremap('n', '<leader>f', ':let @+ = expand("%:p")<CR>')
 
 -- Acho que faz sentido Y copiar do cursor até o final da linha (ver :help Y)
 -- In neovim, this is mapped automatically. It made sense in vim though.
