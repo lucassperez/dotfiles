@@ -115,10 +115,15 @@ noremap('n', '<A-q>', ':bprevious<CR>')
 noremap('n', '<A-w>', ':bnext<CR>')
 
 -- Tab management maps using similar logic to buffer mappings above
-noremap('n', '<leader>tn', ':tabnew %<CR>')
+-- Vim actually has some built-ins!
+-- gt go to next tab (like tabnext)
+-- gT go to previous tab (like tabprevious)
+-- {count}gt go to tab number {count} (nice!)
+-- g<Tab> go to last accessed tab (nice!)
+noremap('n', '<leader>tn', ':$tabnew %<CR>')
 noremap('n', '<leader>tq', ':tabprevious<CR>')
 noremap('n', '<leader>tw', ':tabnext<CR>')
-noremap('n', '<A-t>', ':tabnew %<CR>')
+noremap('n', '<A-t>', ':$tabnew %<CR>')
 noremap('n', '<A-a>', ':tabprevious<CR>')
 noremap('n', '<A-s>', ':tabnext<CR>')
 noremap('n', '<leader>td', ':tabclose<CR>')
