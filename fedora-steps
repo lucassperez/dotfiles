@@ -82,6 +82,7 @@ gsettings set org.gnome.gedit.preferences.editor display-right-margin true
 
 # More gnome settings because f*** bells
 gsettings set org.gnome.desktop.wm.preferences audible-bell false
+gsettings set org.gnome.desktop.sound event-sounds false
 
 # Fuck, and I can't say it enough, bells
 # Change /etc/inputrc and uncomment the line with 'set bell-style none' or create this line,
