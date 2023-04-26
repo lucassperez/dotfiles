@@ -12,8 +12,6 @@ local awful = require('awful')
 local watch = require('awful.widget.watch')
 local wibox = require('wibox')
 
-local config_home = os.getenv('XDG_CONFIG_DIR') or os.getenv('HOME') .. '/.config'
-
 local text = wibox.widget({
   font = 'FontAwesome 11',
   widget = wibox.widget.textbox,
@@ -35,13 +33,13 @@ local function calculate_widget_output(out)
   if mute then mute = mute:match('^Mute: (%w+)$') end
   f:close()
 
-  local val = ''
-
   if volume == '0' or mute == 'yes' then
     widget:set_fg('#c6c6c6')
   else
     widget:set_fg('#d986c0')
   end
+
+  local val = ''
 
   if mute == nil then
     val = ' ? ' .. volume .. '%'
@@ -58,6 +56,7 @@ local function calculate_widget_output(out)
     end
   end
 
+  -- local config_home = os.getenv('XDG_CONFIG_DIR') or (os.getenv('HOME') .. '/.config')
   -- local file = io.open(config_home..'/awesome/widgets/simple/anota-lua', 'a')
   -- file:write(out..'\n')
   -- file:write(volume..'\n')
@@ -104,16 +103,11 @@ end
 widget:connect_signal('button::press', function(_, _, _, button)
   if (button == 1) then widget:toggle()
   elseif (button == 3) then
-    -- awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
-    -- Nothing I do updates the widget, because the update/set line is ran
-    -- before the spawned program closes. I want to run it only after the
-    -- spawned program terminates. Please help! ):
-    -- Weird
-    awful.spawn(config_home .. '/awesome/widgets/simple/pulsemixer+volume-update.sh')
+    awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
   elseif (button == 4) then widget:inc(2)
   elseif (button == 5) then widget:dec(2)
   elseif (button == 2) then
-    awful.spawn(config_home .. '/awesome/widgets/simple/pavucontrol+volume-update.sh -t 3')
+    awful.spawn('pavucontrol -t 3')
   end
 end)
 
