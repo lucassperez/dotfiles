@@ -234,3 +234,5 @@ if [ $_is_there_a_tmux_session_running ] && [ -z "$TMUX" ]; then
 fi
 
 unset _is_there_a_tmux_session_running
+
+[ -f "$ZDOTDIR/.zshrc.local" ] && . "$ZDOTDIR/.zshrc.local"
