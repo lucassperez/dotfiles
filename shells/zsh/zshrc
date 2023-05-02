@@ -199,6 +199,7 @@ eval "$(zoxide init zsh)"
 
 source "$HOME/.aliases"
 source "$HOME/.functions"
+source "$HOME/.rcfunctionsandaliases"
 
 # https://superuser.com/questions/1585256/inserting-ssh-agent-into-i3wms-startup-so-its-available-to-all-processes-in-th
 # eval $(keychain --eval --agents ssh --quick --quiet)

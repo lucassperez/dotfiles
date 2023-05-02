@@ -1,9 +1,7 @@
 # vim: ft=sh
 
-CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}"
-
-alias als='nvim ~/.aliases'
-alias fus='nvim ~/.functions'
+alias als='nvim ~/.aliases ~/.rcfunctionsandaliases `[ -f "$HOME/.local/.aliases.local" ] && echo "$HOME/.local/.aliases.local"`'
+alias fus='nvim ~/.functions ~/.rcfunctionsandaliases `[ -f "$HOME/.local/.functions.local" ] && echo "$HOME/.local/.functions.local"`'
 
 alias ls='ls --color=auto -F --group-directories-first'
 alias dir='dir --color=auto'
@@ -43,21 +41,8 @@ alias gsh='git stash'
 alias gshp='git stash pop'
 alias ts='tig status'
 alias pwdcp="pwd | tr -d '\n' | xclip -selection clipboard && pwd"
-alias normalizechmod='~/scripts/chmod-back-to-normal.sh'
 alias browsersync='browser-sync start --server --directory --files **/*'
 alias vimtime='nvim --startuptime nvim_startuptime.log'
-alias vimrc="nvim $CONFIG_PATH/nvim/lua/plugins/init.lua $CONFIG_PATH/nvim/lua/settings.lua $CONFIG_PATH/nvim/lua/keymappings.lua $CONFIG_PATH/nvim/init.lua"
-alias bashrc='nvim ~/.bashrc ~/.bash_profile'
-alias tmuxrc="nvim $CONFIG_PATH/tmux/tmux.conf"
-alias awerc="nvim $CONFIG_PATH/awesome/rc.lua"
-alias alrc="nvim $CONFIG_PATH/alacritty/alacritty.yml"
-alias ktrc="nvim $CONFIG_PATH/kitty/kitty.conf"
-alias i3rc="nvim $CONFIG_PATH/i3/config $CONFIG_PATH/i3/i3blocks.conf"
-alias polrc="nvim $CONFIG_PATH/polybar/config"
-alias zshrc="nvim $ZDOTDIR/.zshrc ~/.profile ~/.zshenv"
-alias xmorc="nvim $CONFIG_PATH/xmonad/xmonad.hs ~/.xmobarrc"
-alias qtlrc="nvim $CONFIG_PATH/qtile/config.py"
-alias lwrc="nvim $CONFIG_PATH/leftwm/config.toml"
 alias vimgit='git diff --name-only | sort -u | xargs nvim'
 alias tmuxls='~/scripts/parse-tmux-ls.sh'
 alias glmain="$HOME/scripts/git-stuff/get-files/generic-linter.sh"
@@ -71,7 +56,5 @@ alias xall='~/scripts/conf-keyboard.sh && ~/scripts/enable-touchpad-tap.sh'
 alias vim='nvim'
 alias nv='nvim'
 alias vn='nvim'
-
-unset CONFIG_PATH
 
 [ -f "$HOME/.local/.aliases.local" ] && source "$HOME/.local/.aliases.local"

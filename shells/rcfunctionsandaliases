@@ -1,0 +1,42 @@
+#!/bin/sh
+
+local CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}"
+
+alias bashrc='nvim ~/.bashrc ~/.bash_profile'
+alias awerc="nvim $CONFIG_PATH/awesome/rc.lua"
+alias alrc="nvim $CONFIG_PATH/alacritty/alacritty.yml"
+alias ktrc="nvim $CONFIG_PATH/kitty/kitty.conf"
+alias i3rc="nvim $CONFIG_PATH/i3/config $CONFIG_PATH/i3/i3blocks.conf"
+alias polrc="nvim $CONFIG_PATH/polybar/config"
+alias xmorc="nvim $CONFIG_PATH/xmonad/xmonad.hs ~/.xmobarrc"
+alias qtlrc="nvim $CONFIG_PATH/qtile/config.py"
+alias lwrc="nvim $CONFIG_PATH/leftwm/config.toml"
+
+zshrc() {
+  nvim \
+    $ZDOTDIR/.zshrc \
+    `[ -f "$ZDOTDIR/.zshrc.local" ] && echo "$ZDOTDIR/.zshrc.local"` \
+    ~/.profile \
+    ~/.zshenv \
+    `[ -f "$ZDOTDIR/.zshenv.local" ] && echo "$ZDOTDIR/.zshenv.local"`
+}
+
+vimrc() {
+  local CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}"
+
+  nvim \
+    $CONFIG_PATH/nvim/lua/plugins/init.lua \
+    $CONFIG_PATH/nvim/lua/settings.lua \
+    $CONFIG_PATH/nvim/lua/keymappings.lua \
+    $CONFIG_PATH/nvim/init.lua
+}
+
+tmuxrc() {
+  local CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}"
+
+  nvim \
+    $CONFIG_PATH/tmux/tmux.conf \
+    `[ -f "$CONFIG_PATH/tmux/tmux.conf.local" ] && echo "$CONFIG_PATH/tmux/tmux.conf.local"`
+}
+
+unset CONFIG_PATH
