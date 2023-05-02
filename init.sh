@@ -2,9 +2,30 @@
 
 # If running this script first time after cloning, there is a chance
 # XDG_CONFIG_HOME is still not set, and if it is not the usual $HOME/.config,
-# things might get symlinked to werid spots!
+# things might get symlinked to weird spots!
 # Thus, the first argument passed to this script is used as the CONFIG_DIR
 CONFIG_DIR="${1:-${XDG_CONFIG_HOME:-$HOME/.config}}"
+
+if ! [ -d $1 ] && [ -z "${CONFIG_DIR##/.config}" ]; then
+  printf 'To use this script, it is needed to have a "config dir"\n'
+  printf 'By default, this script tries to use $XDG_CONFIG_HOME,\n'
+  printf 'but if it is not set, it tries to use $HOME/.config.\n'
+  printf 'If this directory does not exist, then you have to pass a\n'
+  printf 'directory manually when calling this script by passing its\n'
+  printf 'path as the FIRST argument:\n'
+  printf './init.sh /path/to/my/config/dir\n'
+  printf "But if the passed path is not a directory, then it also won't work.\n"
+  printf -- '---\n'
+  printf 'If this is your first time running this script after\n'
+  printf 'cloning the repo, there is a chance that XDG variables\n'
+  printf 'are not yet set and/or that $HOME/.config is not yet created.\n'
+  printf 'In this case, please provide the directory intended to be\n'
+  printf 'your config dir in the future.\n'
+  printf -- '---\n'
+  printf 'Beware to not symlink things to weird spots!\n'
+  exit 1
+fi
+
 mkdir -pv $CONFIG_DIR
 
 dir_not_in_list() {
