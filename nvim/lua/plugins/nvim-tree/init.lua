@@ -14,16 +14,16 @@ local function keys(module)
 end
 
 local function setup()
-    local nvim_tree_api = require('nvim-tree.api').tree
+  local nvim_tree_api = require('nvim-tree.api').tree
 
   for _, mapping in pairs(keys(nvim_tree_api)) do
     vim.keymap.set(unpack(mapping))
   end
 
   require('nvim-tree').setup({
+    on_attach = require('plugins.nvim-tree.nvim-tree-on-attach'),
     disable_netrw       = false,
     hijack_netrw        = true,
-    open_on_setup       = false,
     open_on_tab         = true,
     update_cwd          = true,
     hijack_cursor       = false,
@@ -90,14 +90,6 @@ local function setup()
       special_files = { 'README.MD', 'README.md', 'Makefile', 'MAKEFILE', },
     },
     git = { ignore = true },
-    view = {
-      mappings = {
-        list = {
-          { key = 'l', action = 'edit' },
-          { key = 'h', action = 'close_node' },
-        }
-      }
-    }
   })
 
   -- The list of groups can be found at `:help nvim_tree_highlight`
