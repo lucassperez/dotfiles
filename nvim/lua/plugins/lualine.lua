@@ -1,3 +1,5 @@
+-- :h statusline for options
+
 local function getlines()
   return [[%l/%L:%v]]
 end
