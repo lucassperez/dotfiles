@@ -42,6 +42,10 @@ future `$XDG_CONFIG_HOME` as the first argument.
 ./init.sh /path/to/my/config/dir
 ```
 
+**Alacritty**'s config file apparently does not support the use of variables, so
+it tries to load some hard coded path, in this case, `~/.config/alacritty`. \
+Sorry, I really don't know how to solve this! ):
+
 **Attention**
 
 Some programs and scripts inside the ARCHIVE directory might assume that your

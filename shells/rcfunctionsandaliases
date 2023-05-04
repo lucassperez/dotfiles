@@ -4,7 +4,6 @@ local CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}"
 
 alias bashrc='nvim ~/.bashrc ~/.bash_profile'
 alias awerc="nvim $CONFIG_PATH/awesome/rc.lua"
-alias alrc="nvim $CONFIG_PATH/alacritty/alacritty.yml"
 alias ktrc="nvim $CONFIG_PATH/kitty/kitty.conf"
 alias i3rc="nvim $CONFIG_PATH/i3/config $CONFIG_PATH/i3/i3blocks.conf"
 alias polrc="nvim $CONFIG_PATH/polybar/config"
@@ -37,6 +36,15 @@ tmuxrc() {
   nvim \
     $CONFIG_PATH/tmux/tmux.conf \
     `[ -f "$CONFIG_PATH/tmux/tmux.conf.local" ] && echo "$CONFIG_PATH/tmux/tmux.conf.local"`
+}
+
+alrc() {
+  local CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}"
+
+  nvim \
+    $CONFIG_PATH/alacritty/base.yml \
+    `[ -f "$CONFIG_PATH/alacritty/local.yml" ] && echo "$CONFIG_PATH/alacritty/local.yml"` \
+    $CONFIG_PATH/alacritty/alacritty.yml
 }
 
 unset CONFIG_PATH
