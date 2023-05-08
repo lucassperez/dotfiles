@@ -55,7 +55,7 @@ end
 local function setup()
   require('lualine').setup({
     options = {
-      -- globalstatus = true,
+      globalstatus = true,
       icons_enabled = false,
       -- theme = 'everforest',
       theme = require('plugins.modified-everforest-theme'),
@@ -63,16 +63,23 @@ local function setup()
       -- theme = 'catppuccin',
       component_separators = { '', '' },
       section_separators = { '', '' },
-      disabled_filetypes = {}
+      disabled_filetypes = {},
     },
     sections = { -- sections of current buffer
       -- lualine_a = { 'mode' },
       lualine_a = { customModes },
       lualine_b = { getfile },
       lualine_c = { '' },
-      lualine_x = { 'diff' },
+      lualine_x = {
+        'diff',
+        function()
+          local p = require('lsp-progress').progress()
+          if p == '' then p = 'LSP Off' end
+          return p
+        end,
+      },
       lualine_y = { 'filetype' },
-      lualine_z = { getlines }
+      lualine_z = { getlines },
     },
     inactive_sections = { -- sections of other buffers
       lualine_a = {},
@@ -80,10 +87,10 @@ local function setup()
       lualine_c = { getfile },
       lualine_x = { getlines },
       lualine_y = {},
-      lualine_z = {}
+      lualine_z = {},
     },
     tabline = {}, -- tabline is the line at the top
-    extensions = {}
+    extensions = {},
   })
 end
 

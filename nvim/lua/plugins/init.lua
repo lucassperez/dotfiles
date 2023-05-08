@@ -46,7 +46,14 @@ lazy.setup({
     config = function() require('plugins.gitsigns').setup() end,
     event = 'BufRead',
   },
-  { 'hoob3rt/lualine.nvim', config = function() require('plugins.lualine').setup() end, },
+  {
+    'hoob3rt/lualine.nvim',
+    config = function()
+      require('plugins.lsp-progress')
+      require('plugins.lualine').setup()
+    end,
+    dependencies = { 'linrongbin16/lsp-progress.nvim' },
+  },
   {
     'romgrk/barbar.nvim',
     version = '1.5.x',
