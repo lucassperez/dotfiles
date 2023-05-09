@@ -27,6 +27,14 @@ lazy.setup({
   { 'kylechui/nvim-surround', config = function() require('plugins.nvim-surround') end, },
   { 'chrisgrieser/nvim-various-textobjs', config = function() require('plugins.nvim-various-textobjs') end, },
 
+  -- Using mini.ai to fix specifically this
+  -- https://www.reddit.com/r/neovim/comments/13c9ycn/comment/jjfjs1h/?context=3
+  {
+    'echasnovski/mini.ai',
+    version = '*',
+    config = function() require('plugins.mini.ai') end,
+  },
+
   -- Colors and visuals
   ---------------------
   {
@@ -69,14 +77,16 @@ lazy.setup({
   -- Useful or somewhat useful commands
   -------------------------------------
   {
-    'numToStr/Comment.nvim',
+    'echasnovski/mini.comment',
+    version = '*',
     keys = {
       { mode = 'n', 'gc', },
-      { mode = 'n', 'gb', },
       { mode = 'v', 'gc', },
-      { mode = 'v', 'gb', },
+      -- mini.comment does not have comment blocks
+      -- { mode = 'n', 'gb', },
+      -- { mode = 'v', 'gb', },
     },
-    config = function() require('plugins.Comment') end,
+    config = function() require('plugins.mini.comment') end,
   },
   {
     'kyazdani42/nvim-tree.lua',
