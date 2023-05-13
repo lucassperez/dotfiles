@@ -93,6 +93,29 @@ function widget:set(value)
   widget:update_widget('pactl set-source-volume @DEFAULT_SOURCE@  ' .. value .. '%')
 end
 
+function widget:roundUpToNearestEvenNumberOrMultipleOf5()
+  local f = io.popen('pactl get-source-volume @DEFAULT_SOURCE@')
+  if f == nil then return end
+
+  local output = f:read()
+  f:close()
+  local volume = output:match('^Volume: front%-left: *%d+ */ *(%d+)%%')
+  if volume == nil then volume = output:match('^Volume: mono: *%d+ */ *(%d+)%%') end
+  if volume == nil then return end
+
+  volume = tonumber(volume)
+
+  if volume % 5 == 0 then return end
+
+  if (volume - 1) % 5 == 0 then
+    volume = volume - 1
+  elseif (volume + 1) % 5 == 0 or volume % 2 == 1 then
+    volume = volume + 1
+  end
+
+  widget:set(volume)
+end
+
 widget:connect_signal('button::press', function(_, _, _, button)
   if (button == 1) then widget:toggle()
   elseif (button == 3) then
