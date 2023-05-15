@@ -38,7 +38,7 @@ local function clojureFunction()
   return result
 end
 
-function rubyFunction()
+local function rubyFunction()
   local filename = vim.fn.expand('%')
   local result
   if filename:match('spec.*_spec.rb$') then
@@ -101,7 +101,7 @@ local function toggleBetweenTestAndFile()
   end
 end
 
-testAndFile = {
+TestAndFile = {
   toggle = toggleBetweenTestAndFile,
   filenamesFunctions = filenameFunctions,
 }

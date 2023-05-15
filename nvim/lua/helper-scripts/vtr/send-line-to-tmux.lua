@@ -7,7 +7,7 @@
 -- My version does not strips leading white spaces. This usuallly looks ugly,
 -- but at least blocks are kept indented. I could use the g:VtrStripLeadingWhitespace
 -- option and the regular VtrSendLinesToRunner, but it is too late now
-function sendLinesToTmux(mode)
+function SendLinesToTmux(mode)
   mode = mode or vim.fn.mode()
   local text = ''
   if mode == 'normal' or mode == 'n' then

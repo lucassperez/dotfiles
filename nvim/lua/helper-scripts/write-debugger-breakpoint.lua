@@ -1,5 +1,10 @@
-function writeDebuggerBreakpoint(above)
+function WriteDebuggerBreakpoint(above)
   local filetype = vim.bo.filetype
+
+  if filetype == '' then
+    print('File without filetype not supported')
+    return
+  end
 
   local debugger_commands = {
     elixir = 'require IEx; IEx.pry()',

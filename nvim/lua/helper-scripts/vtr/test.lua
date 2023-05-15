@@ -1,9 +1,11 @@
 local function kaochaFilename(opts)
+  opts = opts or {}
+
   if not opts.cur_file then return '' end
 
   local filename = vim.fn.expand('%h')
   if not filename:match('^.*test/.*_test.clj$') then
-    filename = testAndFile.filenamesFunctions.clojure()
+    filename = TestAndFile.filenamesFunctions.clojure()
   end
 
   return ' --focus '..
@@ -14,7 +16,9 @@ end
 
 -- opts is a table like this: { cur_file = true, cur_line = false }
 -- Possible options: { cur_file, cur_line, cur_dir }
-function runAutomatedTest(opts)
+function RunAutomatedTest(opts)
+  opts = opts or {}
+
   local filetype = vim.bo.filetype
   local filename = ''
   local line_number = ''
@@ -56,7 +60,7 @@ function runAutomatedTest(opts)
 end
 
 -- TODO make this good
-function runLastTest()
+function RunLastTest()
   local filetype = vim.bo.filetype
 
   local grep_string = ''

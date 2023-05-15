@@ -174,10 +174,10 @@ noremap('i', '<C-Del>', '<C-o>de')
 -- ideia é como os comandos `o` e `O`, só que pra um debugger (binding.pry no
 -- ruby, IEx.pry no elixir). Se segurar shift em algum momento, manda pra linha
 -- de cima (recebe true como argumento), do contrário, manda pra linha de baixo.
-noremap('n', ',bp', ':lua writeDebuggerBreakpoint()<CR>')
-noremap('n', ',BP', ':lua writeDebuggerBreakpoint(true)<CR>')
-noremap('n', ',Bp', ':lua writeDebuggerBreakpoint(true)<CR>')
-noremap('n', ',bP', ':lua writeDebuggerBreakpoint(true)<CR>')
+noremap('n', ',bp', function() WriteDebuggerBreakpoint() end, true)
+noremap('n', ',BP', function() WriteDebuggerBreakpoint(true) end, true)
+noremap('n', ',Bp', function() WriteDebuggerBreakpoint(true) end, true)
+noremap('n', ',bP', function() WriteDebuggerBreakpoint(true) end, true)
 
 local elixir_pipe_pry = [[|> fn x -><CR>require IEx; IEx.pry()<CR>x<CR>end.()]]
 noremap('n', ',,bp', 'o'..elixir_pipe_pry..'<C-c>')
@@ -251,22 +251,24 @@ noremap('n', '<A-d>', vim.cmd.VtrSendCtrlD)
 noremap('n', '<A-c>', vim.cmd.VtrSendCtrlC)
 
 -- linter all & linter this file
-noremap('n', '<leader>rua', ':silent!wa<CR>:lua runLinter {}<CR>')
-noremap('n', '<leader>ruf', ':silent!wa<CR>:lua runLinter { cur_file = true }<CR>')
+noremap('n', '<leader>rua', ':silent!wa<CR>:lua RunLinter {}<CR>')
+noremap('n', '<leader>ruf', ':silent!wa<CR>:lua RunLinter { cur_file = true }<CR>')
 -- The "n" stands for "near", makes sense to me to be equal to "ruf", "f" for "file"
-noremap('n', '<leader>run', ':silent!wa<CR>:lua runLinter { cur_file = true }<CR>')
+noremap('n', '<leader>run', ':silent!wa<CR>:lua RunLinter { cur_file = true }<CR>')
 
 -- test all, test this file, test this file this line & test this directory
-noremap('n', '<leader>ra', ':silent!wa<CR>:lua runAutomatedTest {}<CR>')
-noremap('n', '<leader>rs', ':silent!wa<CR>:lua runAutomatedTest { cur_file = true }<CR>')
-noremap('n', '<leader>rn', ":silent!wa<CR>:lua runAutomatedTest { cur_file = true, cur_line = true }<CR>")
-noremap('n', '<leader>rd', ':silent!wa<CR>:lua runAutomatedTest { cur_dir = true }<CR>')
-noremap('n', '<leader>rp', ':silent!wa<CR>:lua runLastTest()<CR>')
+noremap('n', '<leader>ra', ':silent!wa<CR>:lua RunAutomatedTest {}<CR>')
+noremap('n', '<leader>rs', ':silent!wa<CR>:lua RunAutomatedTest { cur_file = true }<CR>')
+noremap('n', '<leader>rn', ':silent!wa<CR>:lua RunAutomatedTest { cur_file = true, cur_line = true }<CR>')
+noremap('n', '<leader>rd', ':silent!wa<CR>:lua RunAutomatedTest { cur_dir = true }<CR>')
+-- TODO make this actually work/be good. Meanwhile,
+-- it is probably best to just send !! via Vtr.
+noremap('n', '<leader>rp', ':silent!wa<CR>:lua RunLastTest()<CR>')
 
 -- Pegando os arquivos no diff com a main/master e executando testes/linters
 -- Mmenônicos: rspec-main (rm) e rubocop-main (rum)
-noremap('n', '<leader>rm', ':silent!wa<CR>:lua fromGit.genericTest()<CR>')
-noremap('n', '<leader>rum', ':silent!wa<CR>:lua fromGit.genericLinter()<CR>')
+noremap('n', '<leader>rm', ':silent!wa<CR>:lua FromGit.genericTest()<CR>')
+noremap('n', '<leader>rum', ':silent!wa<CR>:lua FromGit.genericLinter()<CR>')
 
 -- Run last command executado no painel "anexado"
 -- Na verdade simplesmente executa !!, que só vai funcionar num shell, mesmo
@@ -274,11 +276,11 @@ noremap('n', '<leader>rl', ":silent!wa<CR>:call VtrSendCommand('!!')<CR>")
 
 -- Executa o arquivo como um script a depender do seu "filetype"
 -- Ver o script para detalhes
-noremap('n', '<leader>rr', ':silent!wa<CR>:lua executeFileAsScript()<CR>', true)
-noremap('n', '<leader>R', ':lua autoExecuteOnSave()<CR>', true)
+noremap('n', '<leader>rr', ':silent!wa<CR>:lua ExecuteFileAsScript()<CR>', true)
+noremap('n', '<leader>R', ':lua AutoExecuteOnSave()<CR>', true)
 
 -- Tenta compilar o arquivo a depender do seu "filetype"
-noremap('n', '<leader>rc', ':silent!wa<CR>:lua compileFile()<CR>')
+noremap('n', '<leader>rc', ':silent!wa<CR>:lua CompileFile()<CR>')
 
 --- "Snippets" ---
 local snips_path = (vim.fn.stdpath('config'))..'/snippets'
@@ -304,7 +306,7 @@ noremap('n', '<leader>=', ':wincmd =<CR>')
 
 -- Tries to find the test file of current file or vice versa.
 -- Works well with elixir and its organized and predictable paths.
-noremap('n', '<leader>e', ':lua testAndFile.toggle()<CR>')
+noremap('n', '<leader>e', function() TestAndFile.toggle() end, true)
 
 function RELOAD()
   local config_path = vim.fn.stdpath('config')

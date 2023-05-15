@@ -1,5 +1,7 @@
 -- opts is a table like this: { cur_file = true }
-function runLinter(opts)
+function RunLinter(opts)
+  opts = opts or {}
+
   local filetype = vim.bo.filetype
   local filename = ''
 

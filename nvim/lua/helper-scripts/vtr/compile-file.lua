@@ -1,4 +1,4 @@
-function compileFile()
+function CompileFile()
   local filetype = vim.bo.filetype
   local filename = vim.fn.expand('%')
 

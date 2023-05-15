@@ -57,13 +57,13 @@ local function getRunCommand()
          command..filename
 end
 
-function executeFileAsScript()
+function ExecuteFileAsScript()
   local command, printMessage = getRunCommand()
 
   if command then
     local ok, err = pcall(vim.fn.VtrSendCommand, command)
     if not ok then
-      print('[helper-scripts/vtr/execute-script](executeFileAsScript) '..err)
+      print('[helper-scripts/vtr/execute-script](ExecuteFileAsScript) '..err)
       return
     end
   end
@@ -73,7 +73,7 @@ end
 
 local _auto_execute_on_save_running = nil
 
-function autoExecuteOnSave()
+function AutoExecuteOnSave()
   local filename = vim.fn.expand('%')
 
   if _auto_execute_on_save_running and
@@ -107,7 +107,7 @@ function autoExecuteOnSave()
     callback = function()
       local ok, err = pcall(vim.fn.VtrSendCommand, command)
       if not ok then
-        print('[helper-scripts/vtr/execute-script](autoExecuteOnSave) '..err)
+        print('[helper-scripts/vtr/execute-script](AutoExecuteOnSave) '..err)
         return
       end
     end,

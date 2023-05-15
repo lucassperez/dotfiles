@@ -1,4 +1,4 @@
-function genericLinter()
+local function genericLinter()
   -- local filetype = vim.bo.filetype
 
   -- if filetype == 'startify' then
@@ -26,7 +26,7 @@ function genericLinter()
   end
 end
 
-function genericTest()
+local function genericTest()
   -- local filetype = vim.bo.filetype
 
   -- if filetype == 'startify' then
@@ -52,7 +52,7 @@ function genericTest()
   end
 end
 
-fromGit = {
+FromGit = {
   genericLinter = genericLinter,
   genericTest = genericTest,
 }
