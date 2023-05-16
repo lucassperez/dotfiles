@@ -146,7 +146,6 @@ ln -sfni "$DIR/rofi/config.rasi" "$CONFIG_DIR/rofi/config.rasi"
 ln -sfni "$DIR/rofi/meu-tema.rasi" "$CONFIG_DIR/rofi/meu-tema.rasi"
 
 if ! [ -e "$DIR/.git/hooks/commit-msg" ]; then
-  printf "Copying commit-msg git hook\n"
-  cp "$DIR/git-hooks/commit-msg" "$DIR/.git/hooks/commit-msg"
-  chmod +x "$DIR/.git/hooks/commit-msg"
+  printf "Symlinking commit-msg git hook\n"
+  ln -s "$DIR/git-hooks/commit-msg" "$DIR/.git/hooks/commit-msg"
 fi
