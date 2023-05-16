@@ -6,6 +6,13 @@
 # status after issuing an appropriate message if it wants to stop the
 # commit. The hook is allowed to edit the commit message file.
 
+if [ -z "`head -n 1 -- $1`" ]; then
+  # Se a mensagem de commit estiver vazia,
+  # simplesmente retorna e deixa o git
+  # fazer o que normalmente faria.
+  exit 0
+fi
+
 # https://stackoverflow.com/questions/3417896/how-do-i-prompt-the-user-from-within-a-commit-msg-hook
 # https://victoria.dev/blog/an-automatic-interactive-pre-commit-checklist-in-the-style-of-infomercials/
 # Read user input, assign stdin to keyboard
