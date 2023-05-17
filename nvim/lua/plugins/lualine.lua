@@ -52,6 +52,33 @@ local function customModes()
   return t[current_mode] or current_mode
 end
 
+local function formatLspProgress()
+  local buf_clients = {}
+
+  local lspconfig_ok, lspconfig_util = pcall(require, 'lspconfig.util')
+  if lspconfig_ok then
+    -- Hopefully returns a table (list) with all the configured
+    -- servers for this buffer.
+    -- The standard get_active_clients returns empty list even
+    -- when that filetype had a language server configured but
+    -- it has stopped.
+    -- The reason for this is that I want to write LSP Off only
+    -- when there is at least one configured server for that
+    -- filetype, but none active, and an empty string when
+    -- there are no configured language servers for that filetype.
+    -- I hope this works!
+    buf_clients = lspconfig_util.get_config_by_ft(vim.bo.filetype)
+  else
+    buf_clients = vim.lsp.get_active_clients({ bufnr = 0 })
+  end
+
+  if #buf_clients == 0 then return '' end
+
+  local p = require('lsp-progress').progress()
+  if p == '' then p = 'LSP Off' end
+  return p
+end
+
 local function setup()
   require('lualine').setup({
     options = {
@@ -70,14 +97,7 @@ local function setup()
       lualine_a = { customModes },
       lualine_b = { getfile },
       lualine_c = { '' },
-      lualine_x = {
-        'diff',
-        function()
-          local p = require('lsp-progress').progress()
-          if p == '' then p = 'LSP Off' end
-          return p
-        end,
-      },
+      lualine_x = { 'diff', formatLspProgress, },
       lualine_y = { 'filetype' },
       lualine_z = { getlines },
     },
