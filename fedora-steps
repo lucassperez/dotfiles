@@ -247,3 +247,10 @@ sudo dnf in -y vim
 # Weird stuff
 sudo mv /usr/bin/vi /usr/bin/vi-that-came-installed
 sudo ln -s /usr/bin/vim /usr/bin/vi
+
+# Nice program. In fedora, the "rename"
+# does not work like sed, but rnm does.
+# Yay!
+mkdir -p ~/.local/bin/
+wget -P ~/.local/bin/ -- https://raw.githubusercontent.com/circulosmeos/rnm/master/rnm
+chmod +x ~/.local/bin/rnm

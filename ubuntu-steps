@@ -227,6 +227,17 @@ ln -s ~/dotfiles/EXAMPLE-FILES/neofetch ~/.config/neofetch/config.conf
 sudo apt install wtype xdotool
 pip install --user rofimoji
 
+# Bulk rename?
+# On fedora, I use rnm, so I install here to
+# just for consistency, although rename is
+# pretty good, too
+# rename
+sudo apt install -y rename
+# rnm
+mkdir -p ~/.local/bin/
+wget -P ~/.local/bin/ -- https://raw.githubusercontent.com/circulosmeos/rnm/master/rnm
+chmod +x ~/.local/bin/rnm
+
 ###
 
 Change shell to zsh at the end with (/usr/bin/zsh, very likely)
