@@ -14,36 +14,43 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- Go to command mode without using shift
 noremap({ 'n', 'v' }, ';', ':')
 
--- Map so somecommands do not copy empty line to register.
+-- Map some commands do not copy empty line to register.
 -- Also does not copy line made of only whitespaces.
 -- Do I really want this? :thinking:
-local function executeCommandButDontCopyWhistespaceToRegister(command)
-  if vim.api.nvim_get_current_line():match('^%s*$') then
-    vim.api.nvim_feedkeys('"_' .. command, 'n', false)
-  else
-    vim.api.nvim_feedkeys(command, 'n', false)
-  end
+
+local function mapWhitespaceLine(command)
+  -- TODO find a way to make this work in visual mode.
+  -- How to get selection area?
+  vim.keymap.set('n', command, function()
+    if vim.api.nvim_get_current_line():match('^%s*$') then
+      return '"_' .. command
+    end
+    return command
+  end, { expr = true })
 end
-vim.keymap.set('n', 'dd', function() executeCommandButDontCopyWhistespaceToRegister('dd') end)
-vim.keymap.set('n', 'cc', function() executeCommandButDontCopyWhistespaceToRegister('cc') end)
-vim.keymap.set('n', 'S', function() executeCommandButDontCopyWhistespaceToRegister('S') end)
--- Would be nice to make this work for things like d + motion,
--- but looks too complicated. Simple 'o' mode is not quite right.
+
+mapWhitespaceLine('dd')
+mapWhitespaceLine('cc')
+mapWhitespaceLine('S')
 
 -- Am I'm going too far?
-local function executeSingleCharacterCommandButDontCopyWhistespaceToRegister(command)
-  local line = vim.api.nvim_get_current_line()
-  local column = 1 + vim.api.nvim_win_get_cursor(0)[2]
-  local char_under_cursor = line:sub(column, column)
+local function mapWhitespaceCharacter(command)
+  -- Would be nice to make this work for things like d + motion,
+  -- but looks too complicated. Simple 'o' mode is not quite right.
+  vim.keymap.set('n', command, function()
+    local line = vim.api.nvim_get_current_line()
+    local column = 1 + vim.api.nvim_win_get_cursor(0)[2]
+    local char_under_cursor = line:sub(column, column)
 
-  if char_under_cursor:match('%s') then
-    vim.api.nvim_feedkeys('"_' .. command, 'n', false)
-  else
-    vim.api.nvim_feedkeys(command, 'n', false)
-  end
+    if char_under_cursor:match('%s') then
+      return '"_'..command
+    end
+    return command
+  end, { expr = true })
 end
-vim.keymap.set('n', 's', function() executeSingleCharacterCommandButDontCopyWhistespaceToRegister('s') end)
-vim.keymap.set('n', 'x', function() executeSingleCharacterCommandButDontCopyWhistespaceToRegister('x') end)
+
+mapWhitespaceCharacter('s')
+mapWhitespaceCharacter('x')
 
 -- Cansei de fazer isso aqui sem querer
 -- Mas isso fica deixando os macros esquisitos de começar e principalmente
