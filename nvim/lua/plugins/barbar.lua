@@ -1,7 +1,23 @@
 local function setup()
+  local function close_buffer_and_return_to_last_buffer()
+    -- local buffers = vim.tbl_filter(function(buf) return vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_get_option(buf, 'buflisted') end, vim.api.nvim_list_bufs())
+    -- if #buffers == 1 then
+    --   vim.cmd.BufferClose()
+    --   return
+    -- end
+
+    local last_buffer_id = vim.fn.bufnr('#')
+    vim.cmd.BufferClose()
+    if vim.fn.bufexists(last_buffer_id) == 1 and vim.api.nvim_buf_get_option(last_buffer_id, 'buflisted') then
+      vim.cmd('buffer ' .. last_buffer_id)
+    end
+  end
+
+  vim.api.nvim_create_user_command('BufferCloseAndReturn', close_buffer_and_return_to_last_buffer, {})
+
   vim.keymap.set('n', '<leader>q', ':BufferPrevious<CR>', { noremap = true, silent = false })
   vim.keymap.set('n', '<leader>w', ':BufferNext<CR>', { noremap = true, silent = false })
-  vim.keymap.set('n', '<leader>d', ':BufferClose<CR>', { noremap = true, silent = false })
+  vim.keymap.set('n', '<leader>d', ':BufferCloseAndReturn<CR>', { noremap = true, silent = false })
 
   -- vim.keymap.set('n', '<C-s>', ':BufferPick<CR>', { noremap = true, silent = false })
   vim.keymap.set('n', '<leader>p', ':BufferPick<CR>', { noremap = true, silent = false })
@@ -10,7 +26,7 @@ local function setup()
   vim.keymap.set('n', '<A-w>', ':BufferNext<CR>', { noremap = true, silent = false })
   vim.keymap.set('n', '<A-Q>', ':BufferMovePrevious<CR>', { noremap = true, silent = false })
   vim.keymap.set('n', '<A-W>', ':BufferMoveNext<CR>', { noremap = true, silent = false })
-  vim.keymap.set('n', '<A-D>', ':BufferClose<CR>', { noremap = true, silent = false })
+  vim.keymap.set('n', '<A-D>', ':BufferCloseAndReturn<CR>', { noremap = true, silent = false })
 
   require('bufferline').setup({
     -- Enable/disable animations

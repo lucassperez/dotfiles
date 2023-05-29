@@ -148,7 +148,8 @@ noremap('n', '<leader>tc', ':tabclose<CR>')
 noremap({ 'n', 'v' }, '<leader>y', '"+y')
 noremap('n', '<leader>Y', '"+yg_')
 -- Delete
-noremap({ 'n', 'v' }, '<leader>d', '"+d')
+-- This is already for buffer delete!
+-- noremap({ 'n', 'v' }, '<leader>d', '"+d')
 noremap('n', '<leader>D', '"+dg_')
 
 -- Mudar a indentação continuamente
