@@ -161,6 +161,7 @@ lazy.setup({
     event = { 'BufRead', 'BufNewFile', },
     cmd = 'Mason',
     config = function() require('plugins.lsp') end,
+    build = ':MasonUpdate',
     dependencies = {
       { 'folke/neodev.nvim', },
       { 'j-hui/fidget.nvim', },
