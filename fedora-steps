@@ -37,9 +37,9 @@ This is so it would appear in parenthesis these names when searching with rofi
 # === COMMANDS START HERE ===
 
 # DNF configs
-echo "fastestmirror=True" >> /etc/dnf/dnf.conf
-echo "max_parallel_downloads=10" >> /etc/dnf/dnf.conf
-echo "defaultyes=True" >> /etc/dnf/dnf.conf
+echo 'fastestmirror=False' >> /etc/dnf/dnf.conf
+echo 'max_parallel_downloads=20' >> /etc/dnf/dnf.conf
+echo 'defaultyes=True' >> /etc/dnf/dnf.conf
 
 # Update. Usually takes forever
 sudo dnf update -y
