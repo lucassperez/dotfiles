@@ -25,10 +25,10 @@ local function setup()
     disable_netrw       = false,
     hijack_netrw        = true,
     open_on_tab         = true,
-    update_cwd          = true,
+    sync_root_with_cwd  = true,
     hijack_cursor       = false,
     respect_buf_cwd     = true,
-    update_focused_file = { enable = false },
+    update_focused_file = { enable = false, },
     filters = {
       dotfiles = false,
       custom = { '.git', 'node_modules', '.cache' },
@@ -37,14 +37,42 @@ local function setup()
     actions = {
       open_file = {
         resize_window = false,
+        quit_on_open = false,
         window_picker = {
           enable = true,
           exclude = {
-            filetype = { 'packer', 'qf' },
-            buftype = { 'terminal' },
+            filetype = { 'qf', 'lazy', 'mason', },
+            buftype = { 'terminal', },
           }
         },
-        quit_on_open = false,
+      },
+    },
+    view = {
+      float = {
+        enable = true,
+        quit_on_focus_loss = true,
+        open_win_config = function()
+          local height_ratio = 0.8
+          local width_ratio = 0.8
+
+          local tabline_h = vim.opt.tabline:get() == '' and 0 or 1
+
+          local screen_w = vim.opt.columns:get()
+          local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get() - tabline_h
+          local window_w = screen_w * width_ratio
+          local window_h = screen_h * height_ratio
+          local center_x = (screen_w - window_w) / 2
+          local center_y = ((vim.opt.lines:get() - window_h) / 2) - vim.opt.cmdheight:get() - tabline_h
+
+          return {
+            relative = 'editor',
+            border = 'solid',
+            width = math.floor(window_w),
+            height = math.floor(window_h),
+            row = center_y,
+            col = center_x,
+          }
+        end,
       },
     },
     renderer = {
@@ -72,7 +100,7 @@ local function setup()
             renamed = '➜',
             untracked = '★',
             deleted = 'D',
-            ignored = 'i'
+            ignored = 'i',
           },
           folder = {
             arrow_open = 'å',
@@ -86,7 +114,7 @@ local function setup()
           },
         },
       },
-      indent_markers = { enable = false },
+      indent_markers = { enable = false, },
       special_files = { 'README.MD', 'README.md', 'Makefile', 'MAKEFILE', },
     },
     git = { ignore = true },
