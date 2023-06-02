@@ -36,7 +36,7 @@ local function protected_require(path)
 
     local file = io.open(protected_require_log_file_path, 'a')
     if file then
-      file:write('['..os.date('%Y-%m-%d-%H:%M:%S')..']: '..path..'\n')
+      file:write('['..os.date('%Y-%m-%d_%H:%M:%S')..']: '..path..'\n')
       file:write(result)
       file:write('\n---\n')
       file:close()
