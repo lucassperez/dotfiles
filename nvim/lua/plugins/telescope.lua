@@ -1,6 +1,20 @@
-local function keys(module, telescope_git_or_find_files, menufacture)
+local function telescopeGitOrFindFiles(opts)
+  opts = opts or {}
+
+  local menufacture = require('telescope').extensions.menufacture
+
+  local exit_code = os.execute('git rev-parse --git-dir 2>/dev/null 1>&2')
+  if exit_code == 0 then
+    opts.show_untracked = true
+    menufacture.git_files(opts)
+  else
+    menufacture.find_files(opts)
+  end
+end
+
+local function keys(module, menufacture)
   local mappings = {
-    { 'n', '<C-p>', function() telescope_git_or_find_files() end, { noremap = true }, },
+    { 'n', '<C-p>', function() telescopeGitOrFindFiles() end, { noremap = true }, },
     { 'n', '<C-f>', function() menufacture.live_grep() end, { noremap = true }, },
     { 'n', '<leader>P', function() module.buffers() end, { noremap = true }, },
     { 'n', '<leader>h', function() module.oldfiles() end, { noremap = true },},
@@ -21,18 +35,7 @@ local function setup()
   local telescope_builtin = require('telescope.builtin')
   local menufacture = require('telescope').extensions.menufacture
 
-  function TelescopeGitOrFindFiles(opts)
-    opts = opts or {}
-    local exit_code = os.execute('git rev-parse --git-dir 2>/dev/null 1>&2')
-    if exit_code == 0 then
-      opts.show_untracked = true
-      menufacture.git_files(opts)
-    else
-      menufacture.find_files(opts)
-    end
-  end
-
-  for _, mapping in pairs(keys(telescope_builtin, TelescopeGitOrFindFiles, menufacture)) do
+  for _, mapping in pairs(keys(telescope_builtin, menufacture)) do
     vim.keymap.set(unpack(mapping))
   end
 
