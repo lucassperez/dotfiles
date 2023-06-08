@@ -3,9 +3,11 @@ local function telescopeGitOrFindFiles(opts)
 
   local menufacture = require('telescope').extensions.menufacture
 
-  local exit_code = os.execute('git rev-parse --git-dir 2>/dev/null 1>&2')
-  if exit_code == 0 then
+  -- https://www.reddit.com/r/neovim/comments/141k38i/telescope_how_to_search_project_directory/
+  local root = vim.fn.system('git rev-parse --show-toplevel')
+  if vim.v.shell_error == 0 then
     opts.show_untracked = true
+    opts.cwd = opts.cwd or string.gsub(root, '\n', '')
     menufacture.git_files(opts)
   else
     menufacture.find_files(opts)
@@ -15,10 +17,18 @@ end
 local function keys(module, menufacture)
   local mappings = {
     { 'n', '<C-p>', function() telescopeGitOrFindFiles() end, { noremap = true }, },
-    { 'n', '<C-f>', function() menufacture.live_grep() end, { noremap = true }, },
+    { 'n', '<C-f>', function()
+      -- https://www.reddit.com/r/neovim/comments/141k38i/telescope_how_to_search_project_directory/
+      local root = vim.fn.system('git rev-parse --show-toplevel')
+      if vim.v.shell_error == 0 then
+        menufacture.live_grep({ cwd = string.gsub(root, '\n', '') })
+      else
+        menufacture.live_grep()
+      end
+    end, { noremap = true }, },
     { 'n', '<leader>P', function() module.buffers() end, { noremap = true }, },
     { 'n', '<leader>h', function() module.oldfiles() end, { noremap = true },},
-    { 'n', '<leader>zv', function() menufacture.find_files({ cwd = vim.fn.stdpath('config') }) end, { noremap = true }, },
+    { 'n', '<leader>zv', function() menufacture.find_files({ cwd = vim.fn.stdpath('config'), show_untracked = true, }) end, { noremap = true }, },
   }
 
   if module == nil then
