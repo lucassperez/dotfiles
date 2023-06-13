@@ -75,16 +75,13 @@ lazy.setup({
   -- Useful or somewhat useful commands
   -------------------------------------
   {
-    'echasnovski/mini.comment',
-    version = '*',
+    'numToStr/Comment.nvim',
     keys = {
-      { mode = 'n', 'gc', },
-      { mode = 'v', 'gc', },
-      -- mini.comment does not have comment blocks
-      -- { mode = 'n', 'gb', },
-      -- { mode = 'v', 'gb', },
+      { mode = { 'n', 'v', 'o', }, 'gc', },
+      { mode = { 'n', 'v', 'o', }, 'gb', },
+      { mode = 'o',                 'u', },
     },
-    config = function() require('plugins.mini.comment') end,
+    config = function() require('plugins.Comment') end,
   },
   {
     'kyazdani42/nvim-tree.lua',
