@@ -91,10 +91,8 @@ lazy.setup({
   {
     'monaqa/dial.nvim',
     keys = {
-      { mode = 'n', '<C-a>' },
-      { mode = 'n', '<C-x>' },
-      { mode = 'v', '<C-a>' },
-      { mode = 'v', '<C-x>' },
+      { mode = { 'n', 'v', }, '<C-a>' },
+      { mode = { 'n', 'v', }, '<C-x>' },
       { mode = 'v', 'g<C-a>' },
       { mode = 'v', 'g<C-x>' },
     },
