@@ -1,54 +1,40 @@
+local function telescope_builtin() return require('telescope.builtin') end
+local function menufacture() return require('telescope').extensions.menufacture end
+
 local function telescopeGitOrFindFiles(opts)
   opts = opts or {}
-
-  local menufacture = require('telescope').extensions.menufacture
 
   -- https://www.reddit.com/r/neovim/comments/141k38i/telescope_how_to_search_project_directory/
   local root = vim.fn.system('git rev-parse --show-toplevel')
   if vim.v.shell_error == 0 then
     opts.show_untracked = true
     opts.cwd = opts.cwd or string.gsub(root, '\n', '')
-    menufacture.git_files(opts)
+    menufacture().git_files(opts)
   else
-    menufacture.find_files(opts)
+    menufacture().find_files(opts)
   end
 end
 
-local function keys(module, menufacture)
-  local mappings = {
-    { 'n', '<C-p>', function() telescopeGitOrFindFiles() end, { noremap = true }, },
-    { 'n', '<C-f>', function()
+local function keys()
+  return {
+    { mode = 'n', '<C-p>', function() telescopeGitOrFindFiles() end, { noremap = true }, },
+    { mode = 'n', '<C-f>', function()
       -- https://www.reddit.com/r/neovim/comments/141k38i/telescope_how_to_search_project_directory/
       local root = vim.fn.system('git rev-parse --show-toplevel')
       if vim.v.shell_error == 0 then
-        menufacture.live_grep({ cwd = string.gsub(root, '\n', '') })
+        menufacture().live_grep({ cwd = string.gsub(root, '\n', '') })
       else
-        menufacture.live_grep()
+        menufacture().live_grep()
       end
     end, { noremap = true }, },
-    { 'n', '<leader>P', function() module.buffers() end, { noremap = true }, },
-    { 'n', '<leader>h', function() module.oldfiles() end, { noremap = true },},
-    { 'n', '<leader>zv', function() menufacture.find_files({ cwd = vim.fn.stdpath('config'), show_untracked = true, }) end, { noremap = true }, },
+    { mode = 'n', '<leader>P', function() telescope_builtin().buffers() end, { noremap = true }, },
+    { mode = 'n', '<leader>h', function() telescope_builtin().oldfiles() end, { noremap = true }, },
+    { mode = 'n', '<leader>zv', function() menufacture().find_files({ cwd = vim.fn.stdpath('config'), show_untracked = true, }) end, { noremap = true }, },
   }
-
-  if module == nil then
-    local lazy_load_triggers = {}
-    for _, v in pairs(mappings) do table.insert(lazy_load_triggers, { mode = v[1], v[2] }) end
-    return lazy_load_triggers
-  end
-
-  return mappings
 end
 
 local function setup()
   local telescope = require('telescope')
-  local telescope_builtin = require('telescope.builtin')
-  local menufacture = require('telescope').extensions.menufacture
-
-  for _, mapping in pairs(keys(telescope_builtin, menufacture)) do
-    vim.keymap.set(unpack(mapping))
-  end
-
   -- local actions = require('telescope.actions')
 
   telescope.setup({

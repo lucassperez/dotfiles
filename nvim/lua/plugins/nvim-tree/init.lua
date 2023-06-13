@@ -1,25 +1,31 @@
-local function keys(module)
-  local mappings = {
-    { 'n', '<C-n>', function() module.toggle() end, { noremap = true, silent = false }, },
-    { 'n', '<leader>n', function() module.toggle({ find_file = true }) end, { noremap = true, silent = false }, },
+-- This has to return a LazyKeys to use with lazy.nvim.
+-- The returned value is a table (list) where each item
+-- is what I'm gonna call a "mapping".
+-- A mapping is as follows:
+-- {
+--   [1] = left hand side,
+--   [2] = right hand side,
+--   mode = mode
+-- }
+-- So we can define what the mapping actually do from lazy instead of
+-- calling vim.keymap.set from inside the setup function.
+-- But now if I require for example nvim-tree.api and store it in a variable,
+-- local nvim_tree_api = require('nvim-tree.api'),
+-- This doesn't really work. I think it is because the plugin is not yet loaded
+-- when the function `keys` is executed. With a separate function that will
+-- just be executed later, though, it is possible.
+local function keys()
+  -- This is the separate function. Now that's silly, uh?
+  -- All to avoid typing require('nvim-tree.api') on each keymap...!
+  local function nvim_tree_api() return require('nvim-tree.api') end
+
+  return {
+    { mode = 'n', '<C-n>', function() nvim_tree_api().tree.toggle() end, { noremap = true, silent = false }, },
+    { mode = 'n', '<leader>n', function() nvim_tree_api().tree.toggle({ find_file = true }) end, { noremap = true, silent = false }, },
   }
-
-  if module == nil then
-    local lazy_load_triggers = {}
-    for _, v in pairs(mappings) do table.insert(lazy_load_triggers, { mode = v[1], v[2] }) end
-    return lazy_load_triggers
-  end
-
-  return mappings
 end
 
 local function setup()
-  local nvim_tree_api = require('nvim-tree.api').tree
-
-  for _, mapping in pairs(keys(nvim_tree_api)) do
-    vim.keymap.set(unpack(mapping))
-  end
-
   require('nvim-tree').setup({
     on_attach = require('plugins.nvim-tree.nvim-tree-on-attach'),
     disable_netrw       = false,
