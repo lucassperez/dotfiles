@@ -8,18 +8,17 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- local function on_attach(client, bufnr)
---   local map = vim.keymap.set
 --   local map_opts = { noremap = true, buffer = bufnr }
---   map('n', '\\f', function() vim.lsp.buf.format({ async = true }) end, map_opts)
---   -- map('n', 'K',   function() vim.lsp.buf.definition() end, map_opts) -- I wish
---   map('n', '\\k', function() vim.lsp.buf.hover() end, map_opts)
---   map('n', '\\d', function() vim.diagnostic.open_float() end, map_opts)
---   map('n', '[d',  function()
+--   vim.keymap.set('n', '\\f', function() vim.lsp.buf.format({ async = true }) end, map_opts)
+--   -- vim.keymap.set('n', 'K',   function() vim.lsp.buf.definition() end, map_opts) -- I wish
+--   vim.keymap.set('n', '\\k', function() vim.lsp.buf.hover() end, map_opts)
+--   vim.keymap.set('n', '\\d', function() vim.diagnostic.open_float() end, map_opts)
+--   vim.keymap.set('n', '[d',  function()
 --     local should_center = vim.diagnostic.get_prev({ wrap = false })
 --     vim.diagnostic.goto_prev({ wrap = false })
 --     if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end
 --   end, map_opts)
---   map('n', ']d',  function()
+--   vim.keymap.set('n', ']d',  function()
 --     local should_center = vim.diagnostic.get_next({ wrap = false })
 --     vim.diagnostic.goto_next({ wrap = false })
 --     if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end

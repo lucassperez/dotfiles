@@ -14,21 +14,18 @@ local defaults = require('plugins.lsp.defaults')
 
 local on_attach = function(client, bufnr)
   defaults.keymaps(bufnr)
-  local map = vim.keymap.set
   local map_opts = { noremap = true, buffer = bufnr }
 
-  map('n', '\\f', function()
+  vim.keymap.set('n', '\\f', function()
     typescript.actions.addMissingImports()
     typescript.actions.organizeImports()
     vim.lsp.buf.format({ async = true })
   end, map_opts)
 
-  map('n', '\\I', function()
+  vim.keymap.set('n', '\\I', function()
     typescript.actions.addMissingImports()
     typescript.actions.organizeImports()
   end, map_opts)
-
-  map('n', '\\i', function() vim.lsp.buf.implementation() end, map_opts)
 
   -- vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.format()')
 

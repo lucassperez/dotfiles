@@ -42,15 +42,14 @@ local function on_attach(client, bufnr)
   end
 
   defaults.keymaps(bufnr)
-  local map = vim.keymap.set
   local map_opts = { noremap = true, buffer = bufnr }
 
-  map('n', '\\f', function()
+  vim.keymap.set('n', '\\f', function()
     golangImports(1000)
     vim.lsp.buf.format({ async = true })
   end, map_opts)
 
-  map('n', '\\I', function() golangImports(1000) end, map_opts)
+  vim.keymap.set('n', '\\I', function() golangImports(1000) end, map_opts)
 
   -- vim.api.nvim_create_autocmd('BufWritePre', {
   --   callback = function() golangImports(1000) end,
