@@ -5,9 +5,9 @@
 local defaults = require('plugins.lsp.defaults')
 
 local function on_attach(client, bufnr)
-  function GolangImports(timeout_ms)
-    local context = { only = { 'source.organizeImports' } }
-    vim.validate { context = { context, 't', true } }
+  local function golangImports(timeout_ms)
+    local context = { only = { 'source.organizeImports', }, }
+    vim.validate({ context = { context, 't', true, }, })
 
     local params = vim.lsp.util.make_range_params()
     params.context = context
@@ -44,13 +44,20 @@ local function on_attach(client, bufnr)
   defaults.keymaps(bufnr)
   local map = vim.keymap.set
   local map_opts = { noremap = true, buffer = bufnr }
-  map('n', '\\f', function() GolangImports(1000); vim.lsp.buf.format({ async = true }) end, map_opts)
-  map('n', '\\I', function() GolangImports(1000) end, map_opts)
 
-  -- vim.api.nvim_command('autocmd BufWritePre <buffer> lua GolangImports(1000)')
+  map('n', '\\f', function()
+    golangImports(1000)
+    vim.lsp.buf.format({ async = true })
+  end, map_opts)
+
+  map('n', '\\I', function() golangImports(1000) end, map_opts)
+
+  -- vim.api.nvim_create_autocmd('BufWritePre', {
+  --   callback = function() golangImports(1000) end,
+  -- })
 
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
-    GolangImports(1000)
+    golangImports(1000)
     vim.lsp.buf.format({ async = true })
   end, { desc = 'Format and organize imports of current buffer with LSP', })
 
