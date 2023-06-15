@@ -9,9 +9,9 @@ local augend = require('dial.augend')
 --       or filetype == 'typescript'
 --       or filetype == 'typescriptreact'
 --   then
---     return { 'true', 'false', 'undefined', 'null' }
+--     return { 'false', 'true', 'undefined', 'null' }
 --   else
---     return { 'true', 'false', 'nil' }
+--     return { 'false', 'true', 'nil' }
 --   end
 -- end
 
@@ -20,7 +20,7 @@ require('dial.config').augends:register_group({
     augend.integer.alias.decimal_int,
     augend.date.alias['%Y/%m/%d'],
     augend.constant.new({
-      elements = { 'true', 'false', 'nil' },
+      elements = { 'false', 'true', 'nil' },
       word = true,
       cyclic = true,
     }),
@@ -40,7 +40,7 @@ require('dial.config').augends:register_group({
       natural = true,
     }),
     augend.constant.new({ -- Why, python
-      elements = { 'True', 'False', 'None' },
+      elements = { 'False', 'True', 'None' },
       word = true,
       cyclic = true,
     }),
