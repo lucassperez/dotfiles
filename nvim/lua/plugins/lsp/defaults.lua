@@ -1,7 +1,12 @@
 local function telescopeOrNvimLsp(std_function, telescope_function_name)
   local ok, telescope = pcall(require, 'telescope.builtin')
   if ok then
-    telescope[telescope_function_name]()
+    if telescope[telescope_function_name] then
+      telescope[telescope_function_name]()
+    else
+      print('Telescope function `' .. telescope_function_name ..'` not found, using standard neovim functions')
+      std_function()
+    end
   else
     print('Telescope not found, using standard neovim functions')
     std_function()
@@ -26,7 +31,7 @@ local function default_key_maps(bufnr)
   vim.keymap.set('n', '\\D',  function() telescopeOrNvimLsp(vim.diagnostic.open_float, 'diagnostics') end, map_opts)
   vim.keymap.set('n', '[d',   function() goToDiagnosticAndCenter('prev') end, map_opts)
   vim.keymap.set('n', ']d',   function() goToDiagnosticAndCenter('next') end, map_opts)
-  vim.keymap.set('n', '\\i',  function() vim.lsp.buf.implementation() end, map_opts)
+  vim.keymap.set('n', '\\i',  function() telescopeOrNvimLsp(vim.lsp.buf.implementation, 'lsp_implementations') end, map_opts)
 end
 
 local function default_on_attach(client, bufnr)

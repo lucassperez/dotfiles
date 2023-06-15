@@ -40,6 +40,7 @@ local function setup()
   telescope.setup({
     pickers = {
       lsp_references = { show_line = false },
+      lsp_implementations = { show_line = false },
       -- diagnostics = { path_display = 'hidden' },
     },
     defaults = {
