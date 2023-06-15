@@ -27,7 +27,7 @@ end
 
 local function setup()
   require('nvim-tree').setup({
-    on_attach = require('plugins.nvim-tree.nvim-tree-on-attach'),
+    on_attach = require('plugins.nvim-tree.on-attach'),
     disable_netrw       = false,
     hijack_netrw        = true,
     open_on_tab         = true,
@@ -37,7 +37,7 @@ local function setup()
     update_focused_file = { enable = false, },
     filters = {
       dotfiles = false,
-      custom = { '.git', 'node_modules', '.cache' },
+      custom = { '.git', 'node_modules', '.cache', },
       exclude = { '.gitignore', },
     },
     actions = {
@@ -49,7 +49,7 @@ local function setup()
           exclude = {
             filetype = { 'qf', 'lazy', 'mason', },
             buftype = { 'terminal', },
-          }
+          },
         },
       },
     },
@@ -123,12 +123,13 @@ local function setup()
       indent_markers = { enable = false, },
       special_files = { 'README.MD', 'README.md', 'Makefile', 'MAKEFILE', },
     },
-    git = { ignore = true },
+    git = { ignore = false, },
   })
 
   -- The list of groups can be found at `:help nvim_tree_highlight`
   vim.cmd([[
   hi link NvimTreeGitIgnored Comment
+
   hi NvimTreeGitNew     guifg=#a97ea7
   hi NvimTreeGitStaged  guifg=#00af00
   hi NvimTreeGitMerge   guifg=#ffff87
