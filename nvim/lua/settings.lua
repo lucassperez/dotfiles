@@ -15,6 +15,7 @@ o.scrolloff = 1 -- sempre mostra pelo menos uma linha abaixo e acima do cursor
 o.sidescrolloff = 3 -- sempre mostra pelo menos três colunas à direita e à esquerda do cursor
 o.lazyredraw = true -- espera o macro acabar pra redesenhar a tela ao invés de ir redesenhando enquanto executa o macro
 o.mouse = 'a' -- habilita o mouse (a significa all). Sacrilégio!
+o.showmode = false -- don't show mode in command line. I can put the mode in statusline if I want it
 
 o.wildignore = '**/node_modules/**' -- porque né, ninguém merece esse treco gigante
 o.wildignorecase = true -- auto complete case insensitive
