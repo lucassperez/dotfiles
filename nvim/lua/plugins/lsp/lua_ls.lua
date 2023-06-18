@@ -1,6 +1,17 @@
 -- Lua Language Server
 
 return {
+  -- How can I disable language server's snippets?
+  -- This is not working.
+  -- capabilities = {
+  --   textDocument = {
+  --     completion = {
+  --       completionItem = {
+  --         snippetSupport = false,
+  --       },
+  --     },
+  --   },
+  -- },
   settings = {
     Lua = {
       runtime = {

@@ -4,6 +4,16 @@ local cmp = require('cmp')
 local luasnip = require('luasnip')
 local lspkind = require('lspkind')
 
+-- I can't seem to disable them in LSP itself
+-- This doesn't work:
+-- https://neovim.discourse.group/t/how-to-disable-lsp-snippets/922/5
+local function filter_lsp_snippets(entry)
+  if vim.bo.filetype == 'lua' then
+    return cmp.lsp.CompletionItemKind.Snippet ~= entry:get_kind()
+  end
+  return true
+end
+
 cmp.setup({
   snippet = {
     expand = function(args) luasnip.lsp_expand(args.body) end
@@ -24,8 +34,8 @@ cmp.setup({
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
+      elseif luasnip.jumpable(1) then
+        luasnip.jump(1)
       else
         fallback()
       end
@@ -43,11 +53,11 @@ cmp.setup({
   sources = {
     -- Order matters here,
     -- top sources have higher priorities
-    { name = 'nvim_lua' },
-    { name = 'nvim_lsp' },
-    { name = 'path', trailing_slash = true },
-    { name = 'buffer', keyword_length = 2 },
-    -- Maybe start using luasnip and add it here?
+    { name = 'path', trailing_slash = true, },
+    { name = 'luasnip', },
+    { name = 'nvim_lua', },
+    { name = 'nvim_lsp', entry_filter = filter_lsp_snippets, },
+    { name = 'buffer', keyword_length = 2, },
   },
   formatting = {
     format = lspkind.cmp_format({
@@ -58,6 +68,7 @@ cmp.setup({
         nvim_lsp = '[LSP]',
         nvim_lua = '[Lua]',
         path = '[Path]',
+        luasnip = '[LuaSnip]'
       },
       -- symbol_map = {
       --   Text = 'Txt',

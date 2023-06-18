@@ -218,9 +218,16 @@ lazy.setup({
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-nvim-lua',
+      {
+        'L3MON4D3/LuaSnip',
+        config = function() require('plugins.luasnip') end,
+        dependencies = {
+          'https://github.com/saadparwaiz1/cmp_luasnip',
+          -- 'https://github.com/rafamadriz/friendly-snippets',
+        }
+      },
     },
   },
-  { 'L3MON4D3/LuaSnip',     lazy = true, config = function() require('plugins.luasnip') end, },
   { 'onsails/lspkind-nvim', lazy = true, },
   { 'hrsh7th/cmp-nvim-lsp', lazy = true, },
 
