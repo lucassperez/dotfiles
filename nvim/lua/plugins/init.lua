@@ -1,4 +1,5 @@
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
     'git',
@@ -157,7 +158,7 @@ lazy.setup({
     build = ':MasonUpdate',
     dependencies = {
       { 'folke/neodev.nvim', },
-      { 'j-hui/fidget.nvim', },
+      { 'j-hui/fidget.nvim', tag = 'legacy', },
       { 'williamboman/mason-lspconfig.nvim', },
       { 'jose-elias-alvarez/typescript.nvim', },
       { 'neovim/nvim-lspconfig', },
