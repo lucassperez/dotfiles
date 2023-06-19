@@ -3,9 +3,12 @@
 -- npm i -g vscode-langservers-extracted
 -- npm i -g cssmodules-language-server
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+local capabilities = require('plugins.lsp.defaults').capabilities
 capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+return {
+  capabilities = capabilities,
+}
 
 -- local function on_attach(client, bufnr)
 --   local map_opts = { noremap = true, buffer = bufnr }
@@ -27,12 +30,6 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 --   local root_dir = client.config.root_dir
 --   if root_dir then vim.api.nvim_set_current_dir(root_dir) end
 -- end
-
-return {
-  capabilities = capabilities,
-  -- on_attach = on_attach,
-  -- cmd = { 'asdf', 'shell', 'nodejs', '16.14.2', '&&', 'vscode-css-language-server', '--stdio', }
-}
 
 -- require('lspconfig').cssmodules_ls.setup({
 --   on_attach = function(client, bufnr)

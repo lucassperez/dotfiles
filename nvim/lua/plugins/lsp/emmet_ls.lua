@@ -1,4 +1,4 @@
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = require('plugins.lsp.defaults').capabilities
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 return {
@@ -7,6 +7,7 @@ return {
   filetypes = {
     'eruby',
     'html',
+    'template',
     'css',
     'javascript',
     'javascriptreact',
@@ -16,7 +17,7 @@ return {
     'scss',
     'svelte',
     'pug',
-    'vue'
+    'vue',
   },
   init_options = {
     html = {
