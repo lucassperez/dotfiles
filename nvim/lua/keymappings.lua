@@ -95,7 +95,9 @@ map('v', 'L', '$h')
 map({ 'n', 'v', 'o', }, 'H', '^')
 
 -- Abrir o último arquivo editado
-noremap('n', '<leader><Space>', ':e#<CR>')
+-- C-6 already does this, see :h CTRL-6 and :h alternate-file
+-- noremap('n', '<leader><Space>', ':e#<CR>')
+noremap('n', '<leader><Space>', '<C-6>')
 
 -- Copiar para o clipboard do sistema o caminho do arquivo
 noremap('n', '<leader>f', ':let @+ = expand("%:p")<CR>')
