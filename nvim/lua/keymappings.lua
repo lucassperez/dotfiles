@@ -69,21 +69,19 @@ noremap('n', '<leader>s', ':sp<CR>')
 noremap('n', '<leader>v', ':vs<CR>')
 noremap('n', '<leader>c', '<C-w>c')
 
--- Salvar e fechar tudo, eita
+-- Salvar e fechar tudo, eita.
 -- Writes and quits from everything, omg!
--- Unless every file opened does not have a name
--- (supposedly does not exist).
-noremap('n', '<C-q>', (function()
+-- Files without a name are not saved.
+noremap('n', '<C-q>', function()
   for _, buf in pairs(vim.fn.getbufinfo()) do
-    -- vim.fn.getbufinfo() is returning some weird buffers that
-    -- I have not opened? That's why I'm also checking if it is listed...
-    -- I hope it is safe to only check this.
-    if buf.name ~= '' and buf.listed ~= 0 then
-      return ':wqa!<CR>'
+    -- If it has a name, is listed and has changes
+    if buf.name ~= '' and buf.listed ~= 0 and buf.changed ~= 0 then
+      vim.cmd('b '..buf.bufnr)
+      vim.cmd('w')
     end
   end
-  return ':qa!<CR>'
-end)())
+  vim.cmd('qa!')
+end)
 
 -- I used to use ç to go to the end of line, but removed it
 -- to get used to using H and L to go forth and back on non ABNT2 keyboards.
