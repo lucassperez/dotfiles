@@ -59,6 +59,10 @@ protected_require('plugins')
 -- loaded when calling the plugins, so the protected_require was no longer
 -- needed for loading plugins configurations.
 
+-- https://www.reddit.com/r/neovim/comments/14ecf5o/semantic_highlights_messing_with_todo_comments/
+-- https://github.com/stsewd/tree-sitter-comment/issues/22
+vim.api.nvim_set_hl(0, '@lsp.type.comment', {})
+
 -- Meus próprios scritpts
 protected_require('helper-scripts.vtr.test')
 protected_require('helper-scripts.vtr.linter')

@@ -88,6 +88,13 @@ hi link CustomTrailingWhiteSpaces NonText
 hi @parameter gui=NONE cterm=NONE
 hi @namespace gui=NONE cterm=NONE
 
+hi clear @text.uri
+hi link @text.uri @comment
+hi @text.uri gui=ITALIC cterm=ITALIC
+" hi @text.uri guifg=#CCCCCC gui=NONE cterm=NONE
+" hi clear @nospell
+" hi link @nospell @text.uri
+
 " One day I woke up and go files looked like shit.
 " Function call likes "fmt.Println" and builtins like "make"
 " all had the same color as numbers, orange, and types are yellow.
