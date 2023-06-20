@@ -21,9 +21,5 @@ return function ()
     s = s .. '%#lualine_x_diff_removed_command#-' .. t.removed .. ' '
   end
 
-  if s == '' then return '' end
-
-  s = s:gsub(' $', '')
-
-  return s
+  return s:gsub(' $', '')
 end

@@ -1,6 +1,11 @@
 vim.keymap.set('n', '<leader>m', ':TSHighlightCapturesUnderCursor<CR>')
 
 local function requireSpecificFiles()
+  -- These files have to be required after the configs.setup call,
+  -- but I also don't want to have these requires at the bottom of
+  -- this file, because I prefer that the setup is "the last thing"
+  -- in the file, since it is so big, and anything after it might
+  -- be easily missed when reading configs again.
   require('plugins.tree-sitter.typescript')
   -- require('plugins.tree-sitter.elixir')
 end
