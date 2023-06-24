@@ -10,7 +10,7 @@ end
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true, })
 
 -- Go to command mode without using shift
 noremap({ 'n', 'v' }, ';', ':')
@@ -183,10 +183,10 @@ noremap('i', '<C-Del>', '<C-o>de')
 -- ideia é como os comandos `o` e `O`, só que pra um debugger (binding.pry no
 -- ruby, IEx.pry no elixir). Se segurar shift em algum momento, manda pra linha
 -- de cima (recebe true como argumento), do contrário, manda pra linha de baixo.
-noremap('n', ',bp', function() WriteDebuggerBreakpoint() end, { silent = true })
-noremap('n', ',BP', function() WriteDebuggerBreakpoint(true) end, { silent = true })
-noremap('n', ',Bp', function() WriteDebuggerBreakpoint(true) end, { silent = true })
-noremap('n', ',bP', function() WriteDebuggerBreakpoint(true) end, { silent = true })
+noremap('n', ',bp', function() WriteDebuggerBreakpoint() end, { silent = true, })
+noremap('n', ',BP', function() WriteDebuggerBreakpoint(true) end, { silent = true, })
+noremap('n', ',Bp', function() WriteDebuggerBreakpoint(true) end, { silent = true, })
+noremap('n', ',bP', function() WriteDebuggerBreakpoint(true) end, { silent = true, })
 
 local elixir_pipe_pry = [[|> fn x -><CR>require IEx; IEx.pry()<CR>x<CR>end.()]]
 noremap('n', ',,bp', 'o'..elixir_pipe_pry..'<C-c>')
@@ -285,18 +285,17 @@ noremap('n', '<leader>rl', ":silent!wa<CR>:call VtrSendCommand('!!')<CR>")
 
 -- Executa o arquivo como um script a depender do seu "filetype"
 -- Ver o script para detalhes
-noremap('n', '<leader>rr', ':silent!wa<CR>:lua ExecuteFileAsScript()<CR>', { silent = true })
-noremap('n', '<leader>R', ':lua AutoExecuteOnSave()<CR>', { silent = true })
+noremap('n', '<leader>rr', ':silent!wa<CR>:lua ExecuteFileAsScript()<CR>', { silent = true, })
+noremap('n', '<leader>R', ':lua AutoExecuteOnSave()<CR>', { silent = true, })
 
 -- Tenta compilar o arquivo a depender do seu "filetype"
 noremap('n', '<leader>rc', ':silent!wa<CR>:lua CompileFile()<CR>')
 
 --- "Snippets" ---
-local snips_path = (vim.fn.stdpath('config'))..'/snippets'
+local snips_path = vim.fn.stdpath('config') .. '/snippets'
 noremap('n', ',html', ':read '..snips_path..'/html5<CR>i<Backspace><C-c>6jf>l')
-noremap('n', ',rfce', ":read "..snips_path.."/reactfunctcomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>5k")
--- noremap('n', ',vcomp', ":read "..snips_path.."/vuecomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>0")
--- noremap('n', ',exm', ":read "..snips_path.."/elixirmodule<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>jS")
+noremap('n', ',rfce', ':read '..snips_path.."/reactfunctcomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>5k")
+-- noremap('n', ',vue', ':read '..snips_path.."/vuecomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>0")
 noremap('n', ',go', ':read '..snips_path..'/gomain<CR>i<Backspace><C-c>5jS')
 
 -- Buscar por uma sequência de <<<<<<<, ======= ou >>>>>>>
@@ -304,10 +303,10 @@ noremap('n', ',go', ':read '..snips_path..'/gomain<CR>i<Backspace><C-c>5jS')
 noremap('n', '<leader>/', '/\\(<\\|=\\|>\\)\\{7\\}<CR>')
 
 -- Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo (o silent = true não ta funcionando?)
-noremap('n', ',sh', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', { silent = true })
-noremap('n', ',SH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', { silent = true })
-noremap('n', ',Sh', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', { silent = true })
-noremap('n', ',sH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', { silent = true })
+noremap('n', ',sh', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', { silent = true, })
+noremap('n', ',SH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', { silent = true, })
+noremap('n', ',Sh', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', { silent = true, })
+noremap('n', ',sH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', { silent = true, })
 
 -- "Zoom" na split atual e deixar as splits o mais parecidas possível
 noremap('n', '<leader>-', ':wincmd _<CR>:wincmd |<CR>')
@@ -315,7 +314,7 @@ noremap('n', '<leader>=', ':wincmd =<CR>')
 
 -- Tries to find the test file of current file or vice versa.
 -- Works well with elixir and its organized and predictable paths.
-noremap('n', '<leader>e', function() TestAndFile.toggle() end, { silent = true })
+noremap('n', '<leader>e', function() TestAndFile.toggle() end, { silent = true, })
 
 function RELOAD()
   local config_path = vim.fn.stdpath('config')
