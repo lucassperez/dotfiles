@@ -83,6 +83,7 @@ lazy.setup({
       { mode = 'o',                 'u', },
     },
     config = function() require('plugins.Comment') end,
+    dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring', },
   },
   {
     'kyazdani42/nvim-tree.lua',
