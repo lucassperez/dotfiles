@@ -91,6 +91,12 @@ lazy.setup({
     config = function() require('plugins.nvim-tree').setup() end,
   },
   {
+    'stevearc/oil.nvim',
+    cmd = 'Oil',
+    keys = require('plugins.oil').keys(),
+    config = function() require('plugins.oil').setup() end,
+  },
+  {
     'monaqa/dial.nvim',
     keys = {
       { mode = { 'n', 'v', }, '<C-a>', desc = 'plugin dial C-a', },
@@ -248,7 +254,7 @@ lazy.setup({
 {
   lockfile = vim.fn.stdpath('config') .. '/plugins-lock.json',
   install = {
-    colorscheme = { 'catppuccin', 'habamax' },
+    colorscheme = { 'catppuccin', 'habamax', },
   },
   ui = {
     icons = {
