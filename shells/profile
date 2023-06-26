@@ -79,7 +79,7 @@ fi
 
 if [ "$DESKTOP_SESSION" = "awesome" ]; then
     export $(gnome-keyring-daemon -s)
-    /bin/env sh -c "sleep 1 && /bin/env awesome-client 'require(\"widgets.simple.update_brightness_microphone_and_volume_icons\").call()'" &
+    /bin/env sh -c "sleep 2 && /bin/env awesome-client 'require(\"widgets.simple.update_brightness_microphone_and_volume_icons\").call()'" &
 fi
 
 # if running bash
