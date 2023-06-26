@@ -20,18 +20,23 @@ local function goToDiagnosticAndCenter(direction)
 end
 
 local function default_key_maps(bufnr)
-  local map_opts = { noremap = true, buffer = bufnr }
-  vim.keymap.set('n', '\\f',  function() vim.lsp.buf.format({ async = true }) end, map_opts)
-  vim.keymap.set('n', 'K',    function() telescopeOrNvimLsp(vim.lsp.buf.definition, 'lsp_definitions') end, map_opts)
-  vim.keymap.set('n', '\\k',  function() vim.lsp.buf.hover() end, map_opts)
-  vim.keymap.set('n', '\\n',  function() vim.lsp.buf.rename() end, map_opts)
-  vim.keymap.set('n', '\\r',  function() telescopeOrNvimLsp(vim.lsp.buf.references, 'lsp_references') end, map_opts)
-  vim.keymap.set('n', '\\ca', function() vim.lsp.buf.code_action() end, map_opts)
-  vim.keymap.set('n', '\\d',  function() vim.diagnostic.open_float() end, map_opts)
-  vim.keymap.set('n', '\\D',  function() telescopeOrNvimLsp(vim.diagnostic.open_float, 'diagnostics') end, map_opts)
-  vim.keymap.set('n', '[d',   function() goToDiagnosticAndCenter('prev') end, map_opts)
-  vim.keymap.set('n', ']d',   function() goToDiagnosticAndCenter('next') end, map_opts)
-  vim.keymap.set('n', '\\i',  function() telescopeOrNvimLsp(vim.lsp.buf.implementation, 'lsp_implementations') end, map_opts)
+  local function map(lhs, rhs, command, description)
+    local map_opts = { noremap = true, buffer = bufnr, }
+    if description then map_opts.desc = 'LSP: ' .. description end
+    vim.keymap.set(lhs, rhs, command, map_opts)
+  end
+
+  map('n', '\\f',  function() vim.lsp.buf.format({ async = true }) end, 'Formata o buffer atual')
+  map('n', 'K',    function() telescopeOrNvimLsp(vim.lsp.buf.definition, 'lsp_definitions') end, 'Vai para a definição (telescope se possível)')
+  map('n', '\\k',  function() vim.lsp.buf.hover() end, 'Hover (documentação flutuante)')
+  map('n', '\\n',  function() vim.lsp.buf.rename() end, 'Renomeia')
+  map('n', '\\r',  function() telescopeOrNvimLsp(vim.lsp.buf.references, 'lsp_references') end, 'Mostra as referências (onde é usado) (telescope se possível)')
+  map('n', '\\ca', function() vim.lsp.buf.code_action() end, 'Code action')
+  map('n', '\\d',  function() vim.diagnostic.open_float() end, 'Mostra diagnóstico da linha em janela flutuante')
+  map('n', '\\D',  function() telescopeOrNvimLsp(vim.diagnostic.open_float, 'diagnostics') end, 'Mostra diagnósticos com telescope se possível')
+  map('n', '[d',   function() goToDiagnosticAndCenter('prev') end, 'Mostra o próximo diagnóstico do buffer')
+  map('n', ']d',   function() goToDiagnosticAndCenter('next') end, 'Mostra o diagnóstico anterior do buffer')
+  map('n', '\\i',  function() telescopeOrNvimLsp(vim.lsp.buf.implementation, 'lsp_implementations') end, 'Mostra quem implementa (telescope se possível)')
 end
 
 local function default_on_attach(client, bufnr)
@@ -39,7 +44,7 @@ local function default_on_attach(client, bufnr)
 
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
     vim.lsp.buf.format({ async = true })
-  end, { desc = 'Format current buffer with LSP', })
+  end, { desc = 'LSP: Formata o buffer atual e organiza os imports', })
 
   local root_dir = client.config.root_dir
   if root_dir then vim.api.nvim_set_current_dir(root_dir) end

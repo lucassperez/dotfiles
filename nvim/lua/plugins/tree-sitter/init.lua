@@ -1,4 +1,4 @@
-vim.keymap.set('n', '<leader>m', ':TSHighlightCapturesUnderCursor<CR>')
+vim.keymap.set('n', '<leader>m', ':TSHighlightCapturesUnderCursor<CR>', { desc = 'Mostra o grupo de destaque (highlight) da coisa/palavra embaixo do cursor', })
 
 local function requireSpecificFiles()
   -- These files have to be required after the configs.setup call,

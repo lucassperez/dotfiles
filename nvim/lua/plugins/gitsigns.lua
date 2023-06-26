@@ -47,21 +47,21 @@ local function setup()
       enable = false
     },
     on_attach = function(bufnr)
-      local map_hunk_navigation = function(keymap, hunk_function, show_preview)
+      local function map_hunk_navigation(keymap, hunk_function, show_preview, description)
         vim.keymap.set('n', keymap, function()
           hunk_function({ wrap = false, preview = show_preview})
           vim.schedule(function() vim.api.nvim_feedkeys('zz', 'n', false) end)
-        end)
+        end, { desc = description, })
       end
 
-      map_hunk_navigation('[c', gitsigns.prev_hunk, false)
-      map_hunk_navigation(']c', gitsigns.next_hunk, false)
-      map_hunk_navigation('[C', gitsigns.prev_hunk, true)
-      map_hunk_navigation(']C', gitsigns.next_hunk, true)
+      map_hunk_navigation('[c', gitsigns.prev_hunk, false, 'Vai para o hunk anterior do git')
+      map_hunk_navigation(']c', gitsigns.next_hunk, false, 'Vai para o próximo hunk do git')
+      map_hunk_navigation('[C', gitsigns.prev_hunk, true, 'Vai para o hunk anterior do git e mostra o diff')
+      map_hunk_navigation(']C', gitsigns.next_hunk, true, 'Vai para o próximo hunk do git e mostra o diff')
 
-      vim.keymap.set('n', ',ch', function() gitsigns.preview_hunk() end)
-      vim.keymap.set('n', ',cr', function() gitsigns.reset_hunk() end)
-      vim.keymap.set('n', ',cw', function() print('Gitsigns word diff toggled: '..tostring(gitsigns.toggle_word_diff())) end)
+      vim.keymap.set('n', ',ch', function() gitsigns.preview_hunk() end, { desc = 'Mostra o diff do hunk do git', })
+      vim.keymap.set('n', ',cr', function() gitsigns.reset_hunk() end, { desc = 'Resta o hunk do git (git reset)', })
+      vim.keymap.set('n', ',cw', function() print('Gitsigns word diff toggled: '..tostring(gitsigns.toggle_word_diff())) end, { desc = 'Liga/desliga o Gtisigns word diff', })
 
       -- Text objects
       vim.keymap.set({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { silent = true })

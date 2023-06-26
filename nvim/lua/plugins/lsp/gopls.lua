@@ -42,14 +42,13 @@ local function on_attach(client, bufnr)
   end
 
   defaults.keymaps(bufnr)
-  local map_opts = { noremap = true, buffer = bufnr, }
 
   vim.keymap.set('n', '\\f', function()
     golangImports(1000)
     vim.lsp.buf.format({ async = true, })
-  end, map_opts)
+  end, { noremap = true, buffer = bufnr, desc = 'LSP: Formata o buffer atual', })
 
-  vim.keymap.set('n', '\\I', function() golangImports(1000) end, map_opts)
+  vim.keymap.set('n', '\\I', function() golangImports(1000) end, { noremap = true, buffer = bufnr, desc = 'LSP: Organiza os imports', })
 
   vim.api.nvim_create_autocmd('BufWritePre', {
     buffer = bufnr,
@@ -62,7 +61,7 @@ local function on_attach(client, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
     golangImports(1000)
     vim.lsp.buf.format({ async = true, })
-  end, { desc = 'Format and organize imports of current buffer with LSP', })
+  end, { desc = 'LSP: Formata o buffer atual e organiza os imports', })
 
   local root_dir = client.config.root_dir
   if root_dir then vim.api.nvim_set_current_dir(root_dir) end

@@ -93,10 +93,10 @@ lazy.setup({
   {
     'monaqa/dial.nvim',
     keys = {
-      { mode = { 'n', 'v', }, '<C-a>' },
-      { mode = { 'n', 'v', }, '<C-x>' },
-      { mode = 'v', 'g<C-a>' },
-      { mode = 'v', 'g<C-x>' },
+      { mode = { 'n', 'v', }, '<C-a>', desc = 'plugin dial C-a', },
+      { mode = { 'n', 'v', }, '<C-x>', desc = 'plugin dial C-x', },
+      { mode = 'v', 'g<C-a>', desc = 'plugin dial g-C-a', },
+      { mode = 'v', 'g<C-x>', desc = 'plugin dial g-C-x', },
     },
     config = function() require('plugins.dial') end,
   },

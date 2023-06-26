@@ -15,18 +15,18 @@ local function setup()
 
   vim.api.nvim_create_user_command('BufferCloseAndReturn', close_buffer_and_return_to_last_buffer, {})
 
-  vim.keymap.set('n', '<leader>q', ':BufferPrevious<CR>', { noremap = true, silent = false })
-  vim.keymap.set('n', '<leader>w', ':BufferNext<CR>', { noremap = true, silent = false })
-  vim.keymap.set('n', '<leader>d', ':BufferCloseAndReturn<CR>', { noremap = true, silent = false })
+  vim.keymap.set('n', '<leader>q', ':BufferPrevious<CR>', { noremap = true, silent = false, desc = 'Mostra o buffer anterior', })
+  vim.keymap.set('n', '<leader>w', ':BufferNext<CR>', { noremap = true, silent = false, desc = 'Mostra o próximo buffer', })
+  vim.keymap.set('n', '<leader>d', ':BufferCloseAndReturn<CR>', { noremap = true, silent = false, desc = 'Fecha o buffer atual', })
 
-  -- vim.keymap.set('n', '<C-s>', ':BufferPick<CR>', { noremap = true, silent = false })
-  vim.keymap.set('n', '<leader>p', ':BufferPick<CR>', { noremap = true, silent = false })
-  vim.keymap.set('n', '<A-e>', ':BufferPick<CR>', { noremap = true, silent = false })
-  vim.keymap.set('n', '<A-q>', ':BufferPrevious<CR>', { noremap = true, silent = false })
-  vim.keymap.set('n', '<A-w>', ':BufferNext<CR>', { noremap = true, silent = false })
-  vim.keymap.set('n', '<A-Q>', ':BufferMovePrevious<CR>', { noremap = true, silent = false })
-  vim.keymap.set('n', '<A-W>', ':BufferMoveNext<CR>', { noremap = true, silent = false })
-  vim.keymap.set('n', '<A-D>', ':BufferCloseAndReturn<CR>', { noremap = true, silent = false })
+  -- vim.keymap.set('n', '<C-s>', ':BufferPick<CR>', { noremap = true, silent = false, desc = 'Seleciona algum buffer pela tabline (barbar.nvim)', })
+  vim.keymap.set('n', '<leader>p', ':BufferPick<CR>', { noremap = true, silent = false, desc = 'Seleciona algum buffer pela tabline (barbar.nvim)', })
+  vim.keymap.set('n', '<A-e>', ':BufferPick<CR>', { noremap = true, silent = false, desc = 'Seleciona algum buffer pela tabline (barbar.nvim)', })
+  vim.keymap.set('n', '<A-q>', ':BufferPrevious<CR>', { noremap = true, silent = false, desc = 'Mostra o buffer anterior', })
+  vim.keymap.set('n', '<A-w>', ':BufferNext<CR>', { noremap = true, silent = false, desc = 'Mostra o próximo buffer', })
+  vim.keymap.set('n', '<A-Q>', ':BufferMovePrevious<CR>', { noremap = true, silent = false, desc = 'Move o buffer atual para trás na tabline (barbar.nvim)', })
+  vim.keymap.set('n', '<A-W>', ':BufferMoveNext<CR>', { noremap = true, silent = false, desc = 'Move o buffer atual para frente na tablin (barbar.nvim)', })
+  vim.keymap.set('n', '<A-D>', ':BufferCloseAndReturn<CR>', { noremap = true, silent = false, desc = 'Fecha o buffer atual', })
 
   require('bufferline').setup({
     -- Enable/disable animations

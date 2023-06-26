@@ -6,5 +6,5 @@ vim.keymap.set(
     vim.cmd.UndotreeFocus()
     print('Toggling Undo Tree')
   end,
-  { noremap = true, silent = false }
+  { noremap = true, silent = false, desc = 'Abre a árvore de desfazer (undotree)', }
 )

@@ -63,4 +63,4 @@ vim.keymap.set('n', 'gx', function()
 
     vim.cmd('!xdg-open "'..url..'"')
   end
-end, { desc = 'Smart URL Opener' })
+end, { desc = 'Abridor esperto de URL', })

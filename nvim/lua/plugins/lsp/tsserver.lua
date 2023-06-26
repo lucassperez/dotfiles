@@ -14,18 +14,23 @@ local defaults = require('plugins.lsp.defaults')
 
 local on_attach = function(client, bufnr)
   defaults.keymaps(bufnr)
-  local map_opts = { noremap = true, buffer = bufnr }
+
+  local function map(lhs, rhs, command, description)
+    local map_opts = { noremap = true, buffer = bufnr, }
+    if description then map_opts.desc = 'LSP: ' .. description end
+    vim.keymap.set(lhs, rhs, command, map_opts)
+  end
 
   vim.keymap.set('n', '\\f', function()
     typescript.actions.addMissingImports()
     typescript.actions.organizeImports()
     vim.lsp.buf.format({ async = true })
-  end, map_opts)
+  end, { noremap = true, buffer = bufnr, desc = 'LSP: Formata o buffer atual', })
 
   vim.keymap.set('n', '\\I', function()
     typescript.actions.addMissingImports()
     typescript.actions.organizeImports()
-  end, map_opts)
+  end, { noremap = true, buffer = bufnr, desc = 'LSP: Organiza os imports', })
 
   -- vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.format()')
 
@@ -33,7 +38,7 @@ local on_attach = function(client, bufnr)
     typescript.actions.addMissingImports()
     typescript.actions.organizeImports()
     vim.lsp.buf.format({ async = true })
-  end, { desc = 'Format and organize imports of current buffer with LSP', })
+  end, { desc = 'LSP: Formata o buffer atual e organiza os imports', })
 
   local root_dir = client.config.root_dir
   if root_dir then vim.api.nvim_set_current_dir(root_dir) end

@@ -17,8 +17,8 @@ end
 
 local function keys()
   return {
-    { mode = 'n', '<C-p>', function() telescopeGitOrFindFiles() end, { noremap = true }, },
-    { mode = 'n', '<C-f>', function()
+    { mode = 'n', desc = 'Abre telescope git ou find files', '<C-p>', function() telescopeGitOrFindFiles() end, { noremap = true, }, },
+    { mode = 'n', desc = 'Abre telescope live grep', '<C-f>', function()
       -- https://www.reddit.com/r/neovim/comments/141k38i/telescope_how_to_search_project_directory/
       local root = vim.fn.system('git rev-parse --show-toplevel')
       if vim.v.shell_error == 0 then
@@ -27,9 +27,9 @@ local function keys()
         menufacture().live_grep()
       end
     end, { noremap = true }, },
-    { mode = 'n', '<leader>P', function() telescope_builtin().buffers() end, { noremap = true }, },
-    { mode = 'n', '<leader>h', function() telescope_builtin().oldfiles() end, { noremap = true }, },
-    { mode = 'n', '<leader>zv', function() menufacture().find_files({ cwd = vim.fn.stdpath('config'), show_untracked = true, }) end, { noremap = true }, },
+    { mode = 'n', desc = 'Abre telescope buffers', '<leader>P', function() telescope_builtin().buffers() end, { noremap = true }, },
+    { mode = 'n', desc = 'Abre telescope old files', '<leader>h', function() telescope_builtin().oldfiles() end, { noremap = true }, },
+    { mode = 'n', desc = 'Abre telescope find files no caminho de config do nvim', '<leader>zv', function() menufacture().find_files({ cwd = vim.fn.stdpath('config'), show_untracked = true, }) end, { noremap = true }, },
   }
 end
 
