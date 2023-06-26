@@ -184,22 +184,6 @@ noremap('n', ',BP', function() WriteDebuggerBreakpoint(true) end, { silent = tru
 noremap('n', ',Bp', function() WriteDebuggerBreakpoint(true) end, { silent = true, desc = 'Tenta escrever a entrada para o debugger na linha de cima', })
 noremap('n', ',bP', function() WriteDebuggerBreakpoint(true) end, { silent = true, desc = 'Tenta escrever a entrada para o debugger na linha de cima', })
 
-local elixir_pipe_pry = [[|> fn x -><CR>require IEx; IEx.pry()<CR>x<CR>end.()]]
-noremap('n', ',,bp', 'o'..elixir_pipe_pry..'<C-c>', { desc = 'Escreve aquele pipe esperto com pry no elixir na linha de baixo', })
-noremap('n', ',,BP', 'O'..elixir_pipe_pry..'<C-c>', { desc = 'Escreve aquele pipe esperto com pry no elixir na linha de cima', })
-noremap('n', ',,Bp', 'O'..elixir_pipe_pry..'<C-c>', { desc = 'Escreve aquele pipe esperto com pry no elixir na linha de cima', })
-noremap('n', ',,bP', 'O'..elixir_pipe_pry..'<C-c>', { desc = 'Escreve aquele pipe esperto com pry no elixir na linha de cima', })
-
-noremap('n', ',io', 'oIO.inspect(, label: "@@")<C-c>F,', { desc = 'Escreve inspect com label na linha de baixo', })
-noremap('n', ',IO', 'OIO.inspect(, label: "@@")<C-c>F,', { desc = 'Escreve inspect com label na linha de cima', })
-noremap('n', ',Io', 'OIO.inspect(, label: "@@")<C-c>F,', { desc = 'Escreve inspect com label na linha de cima', })
-noremap('n', ',iO', 'OIO.inspect(, label: "@@")<C-c>F,', { desc = 'Escreve inspect com label na linha de cima', })
-
-noremap('n', ',,io', 'o|> IO.inspect(label: "@@")<C-c>', { desc = 'Escreve aquele pipe esperto inspect com label na linha de baixo', })
-noremap('n', ',,IO', 'O|> IO.inspect(label: "@@")<C-c>', { desc = 'Escreve aquele pipe esperto inspect com label na linha de cima', })
-noremap('n', ',,Io', 'O|> IO.inspect(label: "@@")<C-c>', { desc = 'Escreve aquele pipe esperto inspect com label na linha de cima', })
-noremap('n', ',,iO', 'O|> IO.inspect(label: "@@")<C-c>', { desc = 'Escreve aquele pipe esperto inspect com label na linha de cima', })
-
 -- É brincadeira que :noh<CR> não vem por padrão em algum lugar, viu...
 noremap('n', '<Esc>', ':noh<CR>', { desc = 'Remove os destaques feitos por busca', })
 
