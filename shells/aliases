@@ -56,5 +56,6 @@ alias xall='~/scripts/conf-keyboard.sh && ~/scripts/enable-touchpad-tap.sh'
 alias vim='nvim'
 alias nv='nvim'
 alias vn='nvim'
+alias oil='nvim -c :Oil'
 
 [ -f "$HOME/.local/.aliases.local" ] && source "$HOME/.local/.aliases.local"
