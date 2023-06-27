@@ -8,12 +8,13 @@ luasnip.config.set_config({
   enable_autosnippets = true,
 
   update_events = { 'TextChanged', 'TextChangedI', },
+  region_check_events = { 'InsertLeave', },
+  delete_check_events = { 'InsertLeave', },
 
   ext_opts = {
     [types.choiceNode] = {
       active = {
         -- Virtual text persists if I exit when it is visible
-        -- Very bad ):
         virt_text = { { '«« Choice Node', 'Comment', }, },
       },
     },
