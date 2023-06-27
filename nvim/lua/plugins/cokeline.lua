@@ -99,7 +99,9 @@ require('cokeline').setup({
         if is_picking_focus() or is_picking_close() then
           return buffer.pick_letter
         end
-        return (buffer.unique_prefix .. buffer.filename):sub(1, 1)
+        -- If the very first character is a mulibyte character (like ç),
+        -- using regular lua (str:sub(1, 1)) will give a weird character.
+        return vim.fn.strcharpart(buffer.unique_prefix .. buffer.filename, 0, 1)
       end,
       fg = function()
         if is_picking_focus() or is_picking_close() then
