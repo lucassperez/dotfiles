@@ -62,10 +62,13 @@ lazy.setup({
     end,
   },
   {
-    'romgrk/barbar.nvim',
-    version = '1.5.x',
-    init = function() vim.cmd([[let bufferline = get(g:, 'bufferline', {'icons': v:false,'no_name_title': '[No Name]'})]]) end,
-    config = function() require('plugins.barbar').setup() end,
+    -- Will need sometime like one of these to use with it:
+    -- https://github.com/ojroques/nvim-bufdel
+    -- https://github.com/famiu/bufdelete.nvim
+    -- https://github.com/moll/vim-bbye
+    'willothy/nvim-cokeline',
+    enabled = true,
+    config = function () require('plugins.cokeline') end,
   },
   {
     'NvChad/nvim-colorizer.lua',
@@ -84,6 +87,10 @@ lazy.setup({
     },
     config = function() require('plugins.Comment') end,
     dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring', },
+  },
+  {
+    'famiu/bufdelete.nvim',
+    keys = require('plugins.bufdelete'),
   },
   {
     'kyazdani42/nvim-tree.lua',
