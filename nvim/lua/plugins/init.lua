@@ -43,23 +43,16 @@ lazy.setup({
     name = 'catppuccin',
     lazy = false,
     priority = 1000,
-    config = function()
-      require('plugins.catppuccin')
-      require('plugins.gitsigns').setColors()
-      require('plugins.lualine').setColors()
-      require('plugins.barbar').setColors()
-    end,
+    config = function() require('plugins.catppuccin') end,
   },
   {
     'lewis6991/gitsigns.nvim',
-    config = function() require('plugins.gitsigns').setup() end,
+    config = function() require('plugins.gitsigns') end,
     event = 'BufRead',
   },
   {
     'hoob3rt/lualine.nvim',
-    config = function()
-      require('plugins.lualine').setup()
-    end,
+    config = function() require('plugins.lualine') end,
   },
   {
     -- Will need sometime like one of these to use with it:
