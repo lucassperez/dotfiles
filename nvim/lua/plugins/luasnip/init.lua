@@ -23,19 +23,21 @@ luasnip.config.set_config({
 -- Keymaps
 
 vim.keymap.set({ 'i', 's', }, '<C-j>', function()
-  if luasnip.expand_or_jumpable() then
-    luasnip.expand_or_jump()
+  if luasnip.expandable() then
+    luasnip.expand()
+  elseif luasnip.locally_jumpable(1) then
+    luasnip.jump(1)
   end
-end, { silent = true })
+end, { silent = true, })
 
 vim.keymap.set({ 'i', 's', }, '<C-k>', function()
-  if luasnip.jumpable() then
+  if luasnip.locally_jumpable(-1) then
     luasnip.jump(-1)
   end
-end, { silent = true })
+end, { silent = true, })
 
 vim.keymap.set({ 'i', 's', }, '<C-l>', function()
   if luasnip.choice_active() then
     luasnip.change_choice(1)
   end
-end, { silent = true })
+end, { silent = true, })
