@@ -1,5 +1,13 @@
 # vim: ft=sh
 
+fv() {
+  # fzf and nvim
+  local results=`fzf`
+  [ -z $results ] && return
+
+  nvim "$results"
+}
+
 simplexev() {
   xev | awk -F '[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
 }
