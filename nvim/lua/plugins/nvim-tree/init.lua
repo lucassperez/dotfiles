@@ -20,7 +20,7 @@ local function keys()
   local function nvim_tree_api() return require('nvim-tree.api') end
 
   return {
-    { mode = 'n', desc = 'Abre nvim-tree', '<C-n>', function() nvim_tree_api().tree.toggle() end, { noremap = true, silent = false }, },
+    { mode = 'n', desc = 'Abre nvim-tree', '<leader>b', function() nvim_tree_api().tree.toggle() end, { noremap = true, silent = false }, },
     { mode = 'n', desc = 'Abre nvim-tree com o cursor no arquivo atual', '<leader>n', function() nvim_tree_api().tree.toggle({ find_file = true }) end, { noremap = true, silent = false }, },
   }
 end

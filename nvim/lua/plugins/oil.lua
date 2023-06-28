@@ -3,8 +3,8 @@ local function keys()
     {
       mode = 'n',
       desc = 'Abre o oil numa janela flutuante',
-      '<leader>b',
-      function() require('oil').open_float() end,
+      '<C-n>',
+      function() require('oil').toggle_float() end,
     },
   }
 end
@@ -25,11 +25,32 @@ local function setup()
       ['<C-h>'] = 'actions.parent',
       ['<C-s>'] = 'actions.select_split',
       ['R'] = 'actions.refresh',
-      ['<C-q>'] = 'actions.close',
-      ['<leader>-'] = 'actions.close',
+      ['<C-q>'] = function()
+        -- Saves without asking
+        require('oil').save({ confirm = false, })
+        require('oil').close()
+      end,
+      ['<C-n>'] = function()
+        require('oil').save({ confirm = true, })
+        require('oil').close()
+      end,
     },
     -- Set to false to disable all of the above keymaps
     use_default_keymaps = true,
+    -- Configuration for the floating window in oil.open_float
+    float = {
+      -- Padding around the floating window
+      padding = 2,
+      max_width = 150,
+      max_height = 0,
+      border = 'rounded',
+      win_options = {
+        winblend = 10,
+      },
+      -- This is the config that will be passed to nvim_open_win.
+      -- Change values here to customize the layout
+      -- override = function(conf) return conf end,
+    },
   })
 
   vim.api.nvim_create_autocmd('BufEnter', {
