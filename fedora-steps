@@ -34,6 +34,10 @@ and
 GenericName=Gnome Terminal
 This is so it would appear in parenthesis these names when searching with rofi
 
+After installing blueman, can change the /etc/bluetooth/main.conf to set this:
+Experimental=true
+This allows it to show the battery of devices
+
 # === COMMANDS START HERE ===
 
 # DNF configs
@@ -109,7 +113,7 @@ sudo dnf install -y zsh util-linux-user xset xclip vlc gimp peek figlet acpi fla
 # xbacklight has been a pain on the new pc, dunno why ): gonna use light I guess
 sudo dnf install -y awesome network-manager-applet xcompmgr autoconf automake pixman-devel \
   xcb-util-image-devel xcb-util-devel libjpeg-turbo-devel libXpm-devel fontawesome-fonts \
-  lxappearance light xrandr slock numlockx
+  lxappearance light xrandr slock numlockx blueman
 
 # Rofi things
 sudo dnf install -y rofi rofimoji

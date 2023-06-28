@@ -56,7 +56,8 @@ cd ~/.config/zsh/plugins
 git clone git@github.com:zdharma-continuum/fast-syntax-highlighting.git
 cd ~
 
-sudo apt install -y awesome xcompmgr fonts-font-awesome light lxappearance suckless-tools numlockx xwallpaper
+sudo apt install -y awesome xcompmgr fonts-font-awesome light lxappearance \
+  suckless-tools numlockx xwallpaper blueman
 
 # Otherwise, light won't work
 sudo usermod -a -G video $USER
@@ -261,3 +262,7 @@ I also ran flatpak --user override --filesystem=/usr/share/icons/:ro, so hopeful
 flatpaks will be able to see this directory with the icons. And lastly,
 I added a ~/.xprofile with "xrdb ~/.Xresources" and a ~/.Xresources with "Xcursor.theme: DMZ-Black".
 Keep in mind that /etc/gdm3/Xsession sources ~/.xprofile.
+
+After installing blueman, can change the /etc/bluetooth/main.conf to set this:
+Experimental=true
+This allows it to show the battery of devices
