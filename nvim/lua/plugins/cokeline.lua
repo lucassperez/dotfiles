@@ -13,20 +13,20 @@ vim.keymap.set('n', '<A-W>', '<Plug>(cokeline-switch-next)',
 -- https://github.com/willothy/nvim-cokeline/issues/59
 -- [count]<A-q> e [count]<A-w> vai para o buffer de índice [count]
 vim.keymap.set('n', '<A-q>', function()
-  if vim.v.count > 0 then
-    return '<Plug>(cokeline-focus-' .. vim.v.count .. ')'
-  else
-    return ':bprevious<CR>'
-  end
-end, { expr = true, })
+  return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'prev')
+end, { expr = true, desc = 'Mostra o buffer anterior', })
 
 vim.keymap.set('n', '<A-w>', function()
-  if vim.v.count > 0 then
-    return '<Plug>(cokeline-focus-' .. vim.v.count .. ')'
-  else
-    return ':bnext<CR>'
-  end
-end, { expr = true, })
+  return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'next')
+end, { expr = true, desc = 'Mostra o próximo buffer', })
+
+vim.keymap.set('n', '<leader>q', function()
+  return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'prev')
+end, { expr = true, desc = 'Mostra o buffer anterior', })
+
+vim.keymap.set('n', '<leader>w', function()
+  return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'next')
+end, { expr = true, desc = 'Mostra o próximo buffer', })
 
 local colors = {
   fg = {
