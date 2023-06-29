@@ -1,32 +1,27 @@
 local is_picking_focus = require('cokeline/mappings').is_picking_focus
 local is_picking_close = require('cokeline/mappings').is_picking_close
 
-vim.keymap.set('n', '<leader>p', '<Plug>(cokeline-pick-focus)',
-               { desc = 'Seleciona um buffer para ter o foco', })
-
-vim.keymap.set('n', '<A-Q>', '<Plug>(cokeline-switch-prev)',
-               { desc = 'Move o buffer atual para trás na tabline', })
-
-vim.keymap.set('n', '<A-W>', '<Plug>(cokeline-switch-next)',
-               { desc = 'Move o buffer atual para frente na tabline', })
+vim.keymap.set('n', '<leader>p', '<Plug>(cokeline-pick-focus)', { desc = 'Seleciona um buffer para ter o foco', })
+vim.keymap.set('n', '<A-Q>', '<Plug>(cokeline-switch-prev)', { desc = 'Move o buffer atual para trás na tabline', })
+vim.keymap.set('n', '<A-W>', '<Plug>(cokeline-switch-next)', { desc = 'Move o buffer atual para frente na tabline', })
 
 -- https://github.com/willothy/nvim-cokeline/issues/59
 -- [count]<A-q> e [count]<A-w> vai para o buffer de índice [count]
-vim.keymap.set('n', '<A-q>', function()
-  return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'prev')
-end, { expr = true, desc = 'Mostra o buffer anterior', })
+vim.keymap.set('n', '<A-q>',
+  function() return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'prev') end,
+  { expr = true, desc = 'Mostra o buffer anterior', })
 
-vim.keymap.set('n', '<A-w>', function()
-  return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'next')
-end, { expr = true, desc = 'Mostra o próximo buffer', })
+vim.keymap.set('n', '<A-w>',
+  function() return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'next') end,
+  { expr = true, desc = 'Mostra o próximo buffer', })
 
-vim.keymap.set('n', '<leader>q', function()
-  return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'prev')
-end, { expr = true, desc = 'Mostra o buffer anterior', })
+vim.keymap.set('n', '<leader>q',
+  function() return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'prev') end,
+  { expr = true, desc = 'Mostra o buffer anterior', })
 
-vim.keymap.set('n', '<leader>w', function()
-  return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'next')
-end, { expr = true, desc = 'Mostra o próximo buffer', })
+vim.keymap.set('n', '<leader>w',
+  function() return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'next') end,
+  { expr = true, desc = 'Mostra o próximo buffer', })
 
 local colors = {
   fg = {
@@ -40,8 +35,6 @@ local colors = {
     visible = '#6c6c6c',
   },
 }
-
-vim.cmd('hi TabLine guibg=#bbc2cf')
 
 require('cokeline').setup({
   show_if_buffers_are_at_least = 0,

@@ -43,6 +43,7 @@ require('catppuccin').setup({
     local custom_highlights_table = {
       CursorLine  = { bg = '#3a3b3c' },
       ColorColumn = { bg = '#4e4e4e' },
+      TabLineFill = { bg = '#bbc2cf' },
       Pmenu       = { bg = '#090d24' },
       NormalFloat = { bg = '#090d24' },
       Visual      = { bg = '#61677d',  style = { 'bold' } },
