@@ -191,6 +191,7 @@ lazy.setup({
      'JoosepAlviste/nvim-ts-context-commentstring',
      'nvim-treesitter/nvim-treesitter-textobjects',
      'nvim-treesitter/playground',
+     'HiPhish/nvim-ts-rainbow2',
     },
   },
 

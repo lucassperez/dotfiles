@@ -11,6 +11,11 @@ local function requireSpecificFiles()
 end
 
 require('nvim-treesitter.configs').setup({
+  rainbow = {
+    enable = true,
+    query = 'rainbow-parens',
+    strategy = require('ts-rainbow').strategy.global,
+  },
   -- ensure_installed can be 'all' or a list of languages { 'python', 'javascript' }
   ensure_installed = {
     'lua',
@@ -23,7 +28,7 @@ require('nvim-treesitter.configs').setup({
   auto_install = false,
   highlight = {
     enable = true,
-    disable = { 'vue' },
+    disable = { 'vue', },
   },
   incremental_selection = {
     enable = true,
