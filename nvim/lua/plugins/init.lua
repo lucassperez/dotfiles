@@ -74,8 +74,8 @@ lazy.setup({
   {
     'numToStr/Comment.nvim',
     keys = {
-      { mode = { 'n', 'v', 'o', }, 'gc', },
-      { mode = { 'n', 'v', 'o', }, 'gb', },
+      { mode = { 'n', 'v', 'o', }, 'gc', desc = 'Toggle line comments', },
+      { mode = { 'n', 'v', 'o', }, 'gb', desc = 'Toggle block comments', },
       { mode = 'o',                 'u', },
     },
     config = function() require('plugins.Comment') end,
