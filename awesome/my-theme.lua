@@ -86,11 +86,12 @@ theme.notification_font = 'Hack Mono 10'
 -- theme.notification_bg = '#222222'
 theme.notification_bg = '#008080'
 theme.notification_fg = '#ffffff'
-theme.notification_border_width = '4' -- this doesnt work
+theme.notification_border_width = '4' -- this doesnt work. Actually, sometimes it does.
 -- theme.notification_border_color = '#008080'
 theme.notification_border_color = '#00ff00'
 theme.notification_margin = 50
 theme.notification_icon_size = 32
+theme.notification_max_width = 1000
 
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
