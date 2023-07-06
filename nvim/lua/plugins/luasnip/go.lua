@@ -26,7 +26,7 @@ local function go_error_snippet()
   return fmt(
     'if {} {{{}\n\t{}\n}}',
     { i(3, 'err != nil'), i(2), c(1, {
-      fmt('{}return fmt.Errorf("{}: %w", err)', { i(2), i(1), }),
+      fmt('return {}fmt.Errorf("{}: %w", err)', { i(2), i(1), }),
       t('panic(err)'),
       i(1),
     }), })
