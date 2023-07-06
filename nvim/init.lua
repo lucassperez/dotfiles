@@ -35,6 +35,8 @@ local function protected_require(path)
       file:close()
     end
   end
+
+  return result
 end
 
 -- https://vonheikemen.github.io/devlog/tools/configuring-neovim-using-lua/
@@ -57,14 +59,7 @@ protected_require('plugins')
 vim.api.nvim_set_hl(0, '@lsp.type.comment', {})
 
 -- Meus próprios scritpts
-protected_require('helper-scripts.vtr.test')
-protected_require('helper-scripts.vtr.linter')
-protected_require('helper-scripts.vtr.from-git-generic')
-protected_require('helper-scripts.vtr.execute-script')
-protected_require('helper-scripts.vtr.send-line-to-tmux')
-protected_require('helper-scripts.vtr.compile-file')
-protected_require('helper-scripts.togglebetweentestandfile')
-protected_require('helper-scripts.write-debugger-breakpoint')
+protected_require('helper-scripts').require_scripts(protected_require)
 
 if any_require_failed then
   print('---')
