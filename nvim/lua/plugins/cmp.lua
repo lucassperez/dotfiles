@@ -23,7 +23,11 @@ cmp.setup({
 
     -- Accept currently selected item. Set `select` to `false`
     -- to only confirm explicitly selected items.
-    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    -- Getting tired of not being able to press enter to go to the
+    -- next line when there are auto completion options avaiable,
+    -- which is pretty much always. I know I can just ALT_o in
+    -- insert mode, but I prefer to just Enter away. F this.
+    ['<CR>'] = cmp.mapping.confirm({ select = false, }),
 
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-p>'] = cmp.mapping.select_prev_item(),

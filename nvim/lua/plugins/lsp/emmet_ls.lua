@@ -2,7 +2,6 @@ local capabilities = require('plugins.lsp.defaults').capabilities
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 return {
-  -- on_attach = on_attach,
   capabilities = capabilities,
   filetypes = {
     'eruby',
@@ -26,5 +25,5 @@ return {
         ['bem.enabled'] = true,
       },
     },
-  }
+  },
 }

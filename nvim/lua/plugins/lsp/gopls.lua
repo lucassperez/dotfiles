@@ -2,8 +2,6 @@
 
 -- The golang language server gopls looks for .git or go.mod file to start
 
-local defaults = require('plugins.lsp.defaults')
-
 local function on_attach(client, bufnr)
   local function golangImports(timeout_ms)
     local context = { only = { 'source.organizeImports', }, }
@@ -41,7 +39,7 @@ local function on_attach(client, bufnr)
     end
   end
 
-  defaults.keymaps(bufnr)
+  require('plugins.lsp.defaults').keymaps(bufnr)
 
   vim.keymap.set('n', '\\f', function()
     golangImports(1000)
