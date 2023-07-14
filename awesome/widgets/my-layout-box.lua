@@ -3,10 +3,11 @@
   THIS IS LITERALLY O COPY OF THE CODE IN
   /usr/share/awesome/lib/awful/widget/layoutbox.lua
   WITH THE ONLY CHANGE BEING THE TIME DELAY SET HERE:
-  w._layoutbox_tooltip = tooltip {objects = {w}, delay_show = 5}
+  w._layoutbox_tooltip = tooltip({ objects = { w }, delay_show = ... })
   I HATE LOW DELAY SHOW, WHICH WAS HARD CODED TO 1 IN ORIGINAL.
-  JUST CHANGED TO SOMETHING BIGGER, LIKE 5.
-
+  I MADE IT CONFIGURABLE, SO WHEN YOU CREATE THE LAYOUTBOX, IT
+  CAN RECEIVE A SECOND ARGUMENT, A TABLE, WITH THIS OPTION, delay_show.
+  IF NOT PROVIDED, IT WILL BE DEFAULTED TO 5, WHICH IS BIGGER.
 ]]
 
 ---------------------------------------------------------------------------
@@ -54,8 +55,12 @@ end
 --- Create a layoutbox widget. It draws a picture with the current layout
 -- symbol of the current tag.
 -- @param screen The screen number that the layout will be represented for.
+-- @param opts table
 -- @return An imagebox widget configured as a layoutbox.
-function layoutbox.new(screen)
+function layoutbox.new(screen, opts)
+  opts = opts or {}
+  opts.delay_show = opts.delay_show or 5
+
   screen = get_screen(screen or 1)
 
   -- Do we already have the update callbacks registered?
@@ -88,7 +93,7 @@ function layoutbox.new(screen)
       layout = wibox.layout.fixed.horizontal
     }
 
-    w._layoutbox_tooltip = tooltip {objects = {w}, delay_show = 5}
+    w._layoutbox_tooltip = tooltip {objects = {w}, delay_show = opts.delay_show}
 
     update(w, screen)
     boxes[screen] = w
