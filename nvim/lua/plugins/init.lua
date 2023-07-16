@@ -69,6 +69,13 @@ lazy.setup({
     config = function() require('plugins.colorizer') end,
   },
 
+  -- This is both "color and visuals" and "useful or somewhat useful commands"
+  {
+    'andymass/vim-matchup',
+    event = { 'BufRead', 'BufNew', },
+    init = function() require('plugins.vim-matchup') end
+  },
+
   -- Useful or somewhat useful commands
   -------------------------------------
   {
