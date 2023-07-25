@@ -8,6 +8,14 @@ fv() {
   nvim "$results"
 }
 
+vimgit() {
+  # files=`git status --porcelain | awk '{print $2}' | sort -u | tr "\n" ' '`
+  files=`git status --porcelain | awk '{print $2}' | tr "\n" ' '`
+  [ -z $files ] && return
+
+  nvim `echo $files`
+}
+
 simplexev() {
   xev | awk -F '[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
 }

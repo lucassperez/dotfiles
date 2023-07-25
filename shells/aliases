@@ -43,7 +43,6 @@ alias ts='tig status'
 alias pwdcp="pwd | tr -d '\n' | xclip -selection clipboard && pwd"
 alias browsersync='browser-sync start --server --directory --files **/*'
 alias vimtime='nvim --startuptime nvim_startuptime.log'
-alias vimgit='nvim `git diff --name-only | sort -u`'
 alias tmuxls='~/scripts/parse-tmux-ls.sh'
 alias glmain="$HOME/scripts/git-stuff/get-files/generic-linter.sh"
 alias gtmain="$HOME/scripts/git-stuff/get-files/generic-test.sh"
