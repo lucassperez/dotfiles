@@ -42,9 +42,6 @@ require('cokeline').setup({
     focus_on_delete = 'prev',
     delete_on_right_click = false,
   },
-  rendering = {
-    max_buffer_width = 30,
-  },
   pick = {
     use_filename = false,
     letters = 'asdfhjklgçnmxcvbziowerutyqpASDFHJKLGÇNMXCVBZIOWERUTYQP',
@@ -108,12 +105,34 @@ require('cokeline').setup({
         -- Should theoretically be #r - 1, but for
         -- some reason I just feel better with #r.
         r = vim.fn.strcharpart(r, 1, #r)
+
+        -- Manual truncation
+        -- I'm doing manual truncation because the truncation is not playing
+        -- very well with the last component that I'm using just as a right
+        -- padding to decide if it should truncate or not. The last component
+        -- is simply not showing up ):
+
+        -- local max_buffer_name_size = _G.cokeline.config.rendering.max_buffer_width
+        local max_buffer_name_size = 30
+        -- Plus 1 because r is everything but the first letter,
+        -- so we have to count that in
+        if #r + 1 > max_buffer_name_size then
+          -- Get only as many last letters as necessary so the full thing
+          -- is "max_buffer_name_size" long, that is,
+          -- if max_buffer_name_size is 30, then the last 28 letters, because
+          -- when adding the ellipsis and the first letter, it gets to 30.
+          -- Also remember that the first letter is in the other component.
+          r = '…' .. vim.fn.strcharpart(r, #r - (max_buffer_name_size - 2), #r)
+        end
+
+        -- If I don't wan't to count the modified icon in the
+        -- truncation calculation, I add it after the truncation.
         if buffer.is_modified then
           r = r .. '[+]'
         end
+
         return r
       end,
-      truncation = { direction = 'left', },
     },
     { text = ' ', },
   },
@@ -124,7 +143,7 @@ require('cokeline').setup({
       style = 'bold',
       text = function()
         local total_tabs = vim.fn.tabpagenr('$')
-        if total_tabs == 1 then return '' end
+        -- if total_tabs == 1 then return '' end
         -- I just think it looks a little better without a right padding :shrug:
         return ' ' .. vim.fn.tabpagenr() .. '/' .. total_tabs
       end,
