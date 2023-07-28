@@ -42,7 +42,7 @@ for arg in $@; do
       fi
       xrandr --auto --output eDP-1 --mode 1920x1080
       xrandr --auto --output HDMI-1 --mode 1920x1080 --primary
-      xrandr --output HDMI1 --same-as eDP-1
+      xrandr --output HDMI-1 --same-as eDP-1
       echo 'Had to set eDP-1 resolution to 1920x1080, because otherwise it would look weird.'
       . "$HOME/scripts/setwallpaper.sh"
       exit
