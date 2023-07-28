@@ -61,6 +61,9 @@ local function setup()
           -- ['<C-p>'] = actions.move_selection_previous + actions.move_selection_previous + actions.move_selection_previous,
           -- ['<C-n>'] = actions.move_selection_next + actions.move_selection_next + actions.move_selection_next,
         },
+        n = {
+          ['m'] = 'toggle_selection',
+        }
       },
     },
     extensions = {
