@@ -57,8 +57,8 @@ sudo dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-non
 # https://docs.fedoraproject.org/en-US/quick-docs/assembly_installing-plugins-for-playing-movies-and-music/
 sudo dnf install -y gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel
 sudo dnf install -y lame\* --exclude=lame-devel
-# sudo dnf group upgrade --with-optional Multimedia
 sudo dnf group upgrade -y --with-optional Multimedia
+# sudo dnf group upgrade -y --with-optional Multimedia --allowerasing
 
 # Change languages
 echo "LANG=en_GB.UTF-8
@@ -123,6 +123,8 @@ git clone git@github.com:frioux/charitable.git /home/lucas/.config/awesome/chari
 mkdir -p ~/sources
 git clone git@github.com:stoeckmann/xwallpaper.git ~/sources/xwallpaper
 cd ~/sources/xwallpaper
+# Ok
+sudo dnf install -y make gcc
 ./autogen.sh
 ./configure
 make
@@ -136,7 +138,7 @@ mkdir -p ~/.cache/zsh/
 git clone git@github.com:zdharma-continuum/fast-syntax-highlighting.git /home/lucas/.config/zsh/plugins/fast-syntax-highlighting/
 
 # ASDF stuff
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.1
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.12.0
 
 # If want rtx instead of asdf
 # curl https://rtx.pub/rtx-latest-linux-x64 > ~/rtx_bin_downloaded_for_now
@@ -150,13 +152,25 @@ git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.1
 # Same goes for rtx
 # eval "$(rtx activate zsh)"
 
-rtx install neovim 0.8.3
-rtx install lua 5.4.3
-rtx install golang 1.18
+# rtx install neovim 0.8.3
+# rtx install lua 5.4.3
+# rtx install golang 1.18
 
-rtx global neovim 0.8.3
-rtx global lua 5.4.3
-rtx global golang 1.18
+# rtx global neovim 0.8.3
+# rtx global lua 5.4.3
+# rtx global golang 1.18
+
+asdf plugin-add neovim
+asdf plugin-add lua
+asdf plugin-add golang
+
+asdf install neovim 0.9.1
+asdf install lua 5.4.3
+asdf install golang 1.20.5
+
+asdf global neovim 0.9.1
+asdf global lua 5.4.3
+asdf global golang 1.20.5
 
 # Nvim?
 # As coisas podem dar umas bugadas na hora de
@@ -180,13 +194,14 @@ sudo dnf in -y ~/Downloads/zoom_x86_64.rpm
 # https://docs.docker.com/engine/install/fedora/
 sudo dnf install -y dnf-plugins-core
 sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-sudo dnf install -y docker-ce docker-ce-cli containerd.io
+sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
 getent group | grep docker >/dev/null 2>&1 || sudo groupadd docker
 sudo usermod -aG docker "$USER"
-sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+# Now docker compose is a docker plugin already installed above
+#sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# sudo chmod +x /usr/local/bin/docker-compose
 # might have to log out and in, or run newgrp docker, to use docker without sudo
 
 # My very simple dmenu
@@ -258,3 +273,7 @@ sudo ln -s /usr/bin/vim /usr/bin/vi
 mkdir -p ~/.local/bin/
 wget -P ~/.local/bin/ -- https://raw.githubusercontent.com/circulosmeos/rnm/master/rnm
 chmod +x ~/.local/bin/rnm
+
+# Customize gdm login screen? I can only run it correctly when in gnome, though.
+# So gotta do it before login in to awesome or other wm.
+flatpak install io.github.realmazharhussain.GdmSettings
