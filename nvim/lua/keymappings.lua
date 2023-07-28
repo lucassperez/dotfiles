@@ -54,10 +54,9 @@ mapWhitespaceCharacter('s')
 mapWhitespaceCharacter('x')
 
 -- Cansei de fazer isso aqui sem querer
--- Mas isso fica deixando os macros esquisitos de começar e principalmente
--- acabar, porque quando aperto q o vim fica esperando pra saber se era só
--- q mesmo ou se vai ser q:
-noremap('n', 'q:', ':q')
+-- Ainda é possível acessar o histórico
+-- usando <C-f> durante o modo de comando (aperta : e depois <C-f>)
+noremap('n', 'q:', '<Nop>')
 
 -- Normally C-c already does this, but after installing LSP, the text box
 -- containing completions would sometimes not properly disappear when I C-c out
