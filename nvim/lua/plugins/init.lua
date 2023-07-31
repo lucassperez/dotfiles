@@ -62,6 +62,7 @@ lazy.setup({
     'willothy/nvim-cokeline',
     enabled = true,
     config = function () require('plugins.cokeline') end,
+    dependencies = 'nvim-lua/plenary.nvim',
   },
   {
     'NvChad/nvim-colorizer.lua',
@@ -86,7 +87,7 @@ lazy.setup({
       { mode = 'o',                 'u', },
     },
     config = function() require('plugins.Comment') end,
-    dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring', },
+    dependencies = 'JoosepAlviste/nvim-ts-context-commentstring',
   },
   {
     'famiu/bufdelete.nvim',
@@ -132,7 +133,7 @@ lazy.setup({
     keys = require('plugins.telescope').keys(),
     config = function() require('plugins.telescope').setup() end,
     dependencies = {
-      { 'nvim-lua/plenary.nvim', },
+      'nvim-lua/plenary.nvim',
       {
         'nvim-telescope/telescope-fzf-native.nvim',
         build = 'make',
@@ -171,11 +172,12 @@ lazy.setup({
     config = function() require('plugins.lsp') end,
     build = ':MasonUpdate',
     dependencies = {
-      { 'folke/neodev.nvim', },
+      'folke/neodev.nvim',
+      'williamboman/mason-lspconfig.nvim',
+      'jose-elias-alvarez/typescript.nvim',
+      'neovim/nvim-lspconfig',
+      'hrsh7th/cmp-nvim-lsp',
       { 'j-hui/fidget.nvim', tag = 'legacy', },
-      { 'williamboman/mason-lspconfig.nvim', },
-      { 'jose-elias-alvarez/typescript.nvim', },
-      { 'neovim/nvim-lspconfig', },
     },
   },
 
@@ -233,18 +235,15 @@ lazy.setup({
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-nvim-lua',
+      'onsails/lspkind-nvim',
       {
         'L3MON4D3/LuaSnip',
         config = function() require('plugins.luasnip') end,
-        dependencies = {
-          'https://github.com/saadparwaiz1/cmp_luasnip',
-          -- 'https://github.com/rafamadriz/friendly-snippets',
-        }
+        -- 'https://github.com/rafamadriz/friendly-snippets',
+        dependencies = 'saadparwaiz1/cmp_luasnip',
       },
     },
   },
-  { 'onsails/lspkind-nvim', lazy = true, },
-  { 'hrsh7th/cmp-nvim-lsp', lazy = true, },
 
   -- Weird, but using lexima for endwise complete and putting new line + indent
   -- when, eg, pressing enter inside parens.
