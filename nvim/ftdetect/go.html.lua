@@ -6,4 +6,5 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile', }, {
     vim.bo.ft = 'template'
   end,
   pattern = '*.go.html',
+  desc = 'Set template filetype for files matching *.go.html',
 })

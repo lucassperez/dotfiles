@@ -61,7 +61,8 @@ local function setup()
         oil.save()
         oil.close()
       end, { buffer = true, desc = 'Salva e sai de um buffer do oil', })
-    end
+    end,
+    desc = 'Create Q keymap to save and exit oil',
   })
 end
 

@@ -83,11 +83,13 @@ function AutoExecuteOnSave()
     return
   end
 
+  -- Maybe try to find a way to reliably remove an automatic command?
   if _auto_execute_on_save_running then
     print('Auto run stopped')
     vim.api.nvim_create_autocmd('BufWritePost', {
       group = vim.api.nvim_create_augroup('AutoExecuteOnSave', { clear = true }),
       callback = function() end,
+      desc = 'Auto execute on save: OFF',
     })
     _auto_execute_on_save_running = nil
     return
@@ -111,6 +113,7 @@ function AutoExecuteOnSave()
         return
       end
     end,
+    desc = 'Auto execute on save: ON',
   })
 
   print('Auto run started for '..filename)

@@ -77,6 +77,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function() vim.highlight.on_yank({ timeout = 80, higroup = 'HighlightOnYank', }) end,
   group = highlight_group,
   pattern = '*',
+  desc = 'Highlight on yank',
 })
 
 -- Folding commands

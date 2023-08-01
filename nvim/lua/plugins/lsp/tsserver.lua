@@ -32,13 +32,23 @@ local on_attach = function(client, bufnr)
     typescript.actions.organizeImports()
   end, { noremap = true, buffer = bufnr, desc = 'LSP: Organiza os imports', })
 
-  -- vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.format()')
+  -- vim.api.nvim_create_autocmd('BufWritePre', {
+  --   buffer = bufnr,
+  --   callback = vim.lsp.format,
+  --   desc = 'LSP: Formats the buffer before write with tsserver',
+  -- })
 
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
     typescript.actions.addMissingImports()
     typescript.actions.organizeImports()
     vim.lsp.buf.format({ async = true })
   end, { desc = 'LSP: Formata o buffer atual e organiza os imports', })
+
+  -- vim.api.nvim_create_autocmd('BufWritePre', {
+  --   buffer = bufnr,
+  --   command = 'Format',
+  --   desc = 'LSP: Formats the buffer before write with tsserver (Format user command)',
+  -- })
 
   local root_dir = client.config.root_dir
   if root_dir then vim.api.nvim_set_current_dir(root_dir) end
