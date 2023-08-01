@@ -71,31 +71,30 @@ function ExecuteFileAsScript()
   print(printMessage)
 end
 
-local _auto_execute_on_save_running = nil
+local _auto_execute_on_save = {
+  active = false,
+  autocmd_id = nil,
+  filename = nil,
+}
 
 function AutoExecuteOnSave()
   local filename = vim.fn.expand('%')
 
-  if _auto_execute_on_save_running and
-     _auto_execute_on_save_running ~= filename
+  if _auto_execute_on_save.active and
+     _auto_execute_on_save.filename ~= filename
   then
-    print('Auto run is already on for '.._auto_execute_on_save_running)
+    print('Auto run is already on for '.._auto_execute_on_save.filename)
     return
   end
 
-  -- Maybe try to find a way to reliably remove an automatic command?
-  if _auto_execute_on_save_running then
+  if _auto_execute_on_save.active then
     print('Auto run stopped')
-    vim.api.nvim_create_autocmd('BufWritePost', {
-      group = vim.api.nvim_create_augroup('AutoExecuteOnSave', { clear = true }),
-      callback = function() end,
-      desc = 'Auto execute on save: OFF',
-    })
-    _auto_execute_on_save_running = nil
+    vim.api.nvim_del_autocmd(_auto_execute_on_save.autocmd_id)
+    _auto_execute_on_save.active = false
+    _auto_execute_on_save.autocmd_id = nil
+    _auto_execute_on_save.filename = nil
     return
   end
-
-  _auto_execute_on_save_running = filename
 
   local command, printMessage = getRunCommand()
 
@@ -104,7 +103,10 @@ function AutoExecuteOnSave()
     return
   end
 
-  vim.api.nvim_create_autocmd('BufWritePost', {
+  _auto_execute_on_save.active = true
+  _auto_execute_on_save.filename = filename
+
+  _auto_execute_on_save.autocmd_id = vim.api.nvim_create_autocmd('BufWritePost', {
     group = vim.api.nvim_create_augroup('AutoExecuteOnSave', { clear = true }),
     callback = function()
       local ok, err = pcall(vim.fn.VtrSendCommand, command)
@@ -113,7 +115,7 @@ function AutoExecuteOnSave()
         return
       end
     end,
-    desc = 'Auto execute on save: ON',
+    desc = 'Auto execute on save for file ' .. filename,
   })
 
   print('Auto run started for '..filename)
