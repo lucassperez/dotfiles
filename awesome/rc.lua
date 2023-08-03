@@ -436,6 +436,9 @@ local globalkeys = gears.table.join(
   awful.key({ modkey }, 'y',
             function() awful.spawn('clipmenu -i -h 21 -p "Clipboard" -sb "#008080" -nb "#000000"') end,
             { group = 'System controls', description = 'Clipmenu', }),
+  awful.key({ modkey, shift, }, 't',
+            function() awful.spawn(scripts_dir..'/toggle-touchpad.sh') end,
+            { group = 'System controls', description = 'Touchpad', }),
 
   -- Volume control
   awful.key({ modkey }, ',',
