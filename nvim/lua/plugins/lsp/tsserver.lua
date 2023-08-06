@@ -16,7 +16,7 @@ local on_attach = function(client, bufnr)
   defaults.keymaps(bufnr)
 
   local function map(lhs, rhs, command, description)
-    local map_opts = { noremap = true, buffer = bufnr, }
+    local map_opts = { noremap = true, buffer = bufnr }
     if description then map_opts.desc = 'LSP: ' .. description end
     vim.keymap.set(lhs, rhs, command, map_opts)
   end
@@ -25,12 +25,12 @@ local on_attach = function(client, bufnr)
     typescript.actions.addMissingImports()
     typescript.actions.organizeImports()
     vim.lsp.buf.format({ async = true })
-  end, { noremap = true, buffer = bufnr, desc = 'LSP: Formata o buffer atual', })
+  end, { noremap = true, buffer = bufnr, desc = 'LSP: Formata o buffer atual' })
 
   vim.keymap.set('n', '\\I', function()
     typescript.actions.addMissingImports()
     typescript.actions.organizeImports()
-  end, { noremap = true, buffer = bufnr, desc = 'LSP: Organiza os imports', })
+  end, { noremap = true, buffer = bufnr, desc = 'LSP: Organiza os imports' })
 
   -- vim.api.nvim_create_autocmd('BufWritePre', {
   --   buffer = bufnr,
@@ -42,7 +42,7 @@ local on_attach = function(client, bufnr)
     typescript.actions.addMissingImports()
     typescript.actions.organizeImports()
     vim.lsp.buf.format({ async = true })
-  end, { desc = 'LSP: Formata o buffer atual e organiza os imports', })
+  end, { desc = 'LSP: Formata o buffer atual e organiza os imports' })
 
   -- vim.api.nvim_create_autocmd('BufWritePre', {
   --   buffer = bufnr,
@@ -66,5 +66,5 @@ end
 -- })
 
 return {
-  on_attach = on_attach
+  on_attach = on_attach,
 }

@@ -1,4 +1,9 @@
-vim.keymap.set('n', '<leader>m', ':TSHighlightCapturesUnderCursor<CR>', { desc = 'Mostra o grupo de destaque (highlight) da coisa/palavra embaixo do cursor', })
+vim.keymap.set(
+  'n',
+  '<leader>m',
+  ':TSHighlightCapturesUnderCursor<CR>',
+  { desc = 'Mostra o grupo de destaque (highlight) da coisa/palavra embaixo do cursor' }
+)
 
 local function requireSpecificFiles()
   -- These files have to be required after the configs.setup call,
@@ -28,15 +33,15 @@ require('nvim-treesitter.configs').setup({
   auto_install = false,
   highlight = {
     enable = true,
-    disable = { 'vue', },
+    disable = { 'vue' },
   },
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection    = '<C-Space>',
-      node_incremental  = '<C-Space>',
+      init_selection = '<C-Space>',
+      node_incremental = '<C-Space>',
       scope_incremental = '<C-s>',
-      node_decremental  = '<Backspace>',
+      node_decremental = '<Backspace>',
     },
   },
   indent = {
@@ -95,16 +100,16 @@ require('nvim-treesitter.configs').setup({
     },
     swap = {
       enable = true,
-      swap_next = { [']a'] = '@parameter.inner', },
-      swap_previous = { ['[a'] = '@parameter.inner', },
+      swap_next = { [']a'] = '@parameter.inner' },
+      swap_previous = { ['[a'] = '@parameter.inner' },
     },
     move = {
       enable = true,
       set_jumps = true,
-      goto_next_start = { [']f'] = '@function.outer', },
-      goto_next_end = { [']F'] = '@function.outer', },
-      goto_previous_start = { ['[f'] = '@function.outer', },
-      goto_previous_end = { ['[F'] = '@function.outer', },
+      goto_next_start = { [']f'] = '@function.outer' },
+      goto_next_end = { [']F'] = '@function.outer' },
+      goto_previous_start = { ['[f'] = '@function.outer' },
+      goto_previous_end = { ['[F'] = '@function.outer' },
     },
     lsp_interop = {
       enable = true,

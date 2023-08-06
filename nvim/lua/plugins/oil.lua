@@ -4,7 +4,9 @@ local function keys()
       mode = 'n',
       desc = 'Abre o oil numa janela flutuante',
       '<C-n>',
-      function() require('oil').toggle_float() end,
+      function()
+        require('oil').toggle_float()
+      end,
     },
   }
 end
@@ -27,11 +29,11 @@ local function setup()
       ['R'] = 'actions.refresh',
       ['<C-q>'] = function()
         -- Saves without asking
-        require('oil').save({ confirm = false, })
+        require('oil').save({ confirm = false })
         require('oil').close()
       end,
       ['<C-n>'] = function()
-        require('oil').save({ confirm = true, })
+        require('oil').save({ confirm = true })
         require('oil').close()
       end,
     },
@@ -55,12 +57,12 @@ local function setup()
 
   vim.api.nvim_create_autocmd('BufEnter', {
     pattern = 'oil://*',
-    callback = function ()
+    callback = function()
       vim.keymap.set('n', 'Q', function()
         local oil = require('oil')
         oil.save()
         oil.close()
-      end, { buffer = true, desc = 'Salva e sai de um buffer do oil', })
+      end, { buffer = true, desc = 'Salva e sai de um buffer do oil' })
     end,
     desc = 'Create Q keymap to save and exit oil',
   })

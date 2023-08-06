@@ -17,28 +17,46 @@
 local function keys()
   -- This is the separate function. Now that's silly, uh?
   -- All to avoid typing require('nvim-tree.api') on each keymap...!
-  local function nvim_tree_api() return require('nvim-tree.api') end
+  local function nvim_tree_api()
+    return require('nvim-tree.api')
+  end
 
   return {
-    { mode = 'n', desc = 'Abre nvim-tree', '<leader>b', function() nvim_tree_api().tree.toggle() end, { noremap = true, silent = false }, },
-    { mode = 'n', desc = 'Abre nvim-tree com o cursor no arquivo atual', '<leader>n', function() nvim_tree_api().tree.toggle({ find_file = true }) end, { noremap = true, silent = false }, },
+    {
+      mode = 'n',
+      desc = 'Abre nvim-tree',
+      '<leader>b',
+      function()
+        nvim_tree_api().tree.toggle()
+      end,
+      { noremap = true, silent = false },
+    },
+    {
+      mode = 'n',
+      desc = 'Abre nvim-tree com o cursor no arquivo atual',
+      '<leader>n',
+      function()
+        nvim_tree_api().tree.toggle({ find_file = true })
+      end,
+      { noremap = true, silent = false },
+    },
   }
 end
 
 local function setup()
   require('nvim-tree').setup({
     on_attach = require('plugins.nvim-tree.on-attach'),
-    disable_netrw       = false,
-    hijack_netrw        = true,
-    open_on_tab         = true,
-    sync_root_with_cwd  = true,
-    hijack_cursor       = false,
-    respect_buf_cwd     = true,
-    update_focused_file = { enable = false, },
+    disable_netrw = false,
+    hijack_netrw = true,
+    open_on_tab = true,
+    sync_root_with_cwd = true,
+    hijack_cursor = false,
+    respect_buf_cwd = true,
+    update_focused_file = { enable = false },
     filters = {
       dotfiles = false,
-      custom = { '.git', 'node_modules', '.cache', },
-      exclude = { '.gitignore', },
+      custom = { '.git', 'node_modules', '.cache' },
+      exclude = { '.gitignore' },
     },
     actions = {
       open_file = {
@@ -47,8 +65,8 @@ local function setup()
         window_picker = {
           enable = true,
           exclude = {
-            filetype = { 'qf', 'lazy', 'mason', },
-            buftype = { 'terminal', },
+            filetype = { 'qf', 'lazy', 'mason' },
+            buftype = { 'terminal' },
           },
         },
       },
@@ -120,10 +138,10 @@ local function setup()
           },
         },
       },
-      indent_markers = { enable = false, },
-      special_files = { 'README.MD', 'README.md', 'Makefile', 'MAKEFILE', },
+      indent_markers = { enable = false },
+      special_files = { 'README.MD', 'README.md', 'Makefile', 'MAKEFILE' },
     },
-    git = { ignore = false, },
+    git = { ignore = false },
   })
 
   -- The list of groups can be found at `:help nvim_tree_highlight`

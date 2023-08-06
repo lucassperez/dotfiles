@@ -25,15 +25,27 @@ lazy.setup({
   -- Lualine, barbar and catppuccin
   -- are also not being lazy loaded.
   'elixir-editors/vim-elixir',
-  { 'kylechui/nvim-surround', config = function() require('plugins.nvim-surround') end, },
-  { 'chrisgrieser/nvim-various-textobjs', config = function() require('plugins.nvim-various-textobjs') end, },
+  {
+    'kylechui/nvim-surround',
+    config = function()
+      require('plugins.nvim-surround')
+    end,
+  },
+  {
+    'chrisgrieser/nvim-various-textobjs',
+    config = function()
+      require('plugins.nvim-various-textobjs')
+    end,
+  },
 
   -- Using mini.ai to fix specifically this
   -- https://www.reddit.com/r/neovim/comments/13c9ycn/comment/jjfjs1h/?context=3
   {
     'echasnovski/mini.ai',
     version = '*',
-    config = function() require('plugins.mini.ai') end,
+    config = function()
+      require('plugins.mini.ai')
+    end,
   },
 
   -- Colors and visuals
@@ -43,16 +55,22 @@ lazy.setup({
     name = 'catppuccin',
     lazy = false,
     priority = 1000,
-    config = function() require('plugins.catppuccin') end,
+    config = function()
+      require('plugins.catppuccin')
+    end,
   },
   {
     'lewis6991/gitsigns.nvim',
-    config = function() require('plugins.gitsigns') end,
+    config = function()
+      require('plugins.gitsigns')
+    end,
     event = 'BufRead',
   },
   {
     'hoob3rt/lualine.nvim',
-    config = function() require('plugins.lualine') end,
+    config = function()
+      require('plugins.lualine')
+    end,
   },
   {
     -- Will need sometime like one of these to use with it:
@@ -61,20 +79,31 @@ lazy.setup({
     -- https://github.com/moll/vim-bbye
     'willothy/nvim-cokeline',
     enabled = true,
-    config = function () require('plugins.cokeline') end,
+    config = function()
+      require('plugins.cokeline')
+    end,
     dependencies = 'nvim-lua/plenary.nvim',
   },
   {
     'NvChad/nvim-colorizer.lua',
-    cmd = { 'ColorizerToggle', 'ColorizerAttachToBuffer', 'ColorizerDetachFromBuffer', 'ColorizerReloadAllBuffers', },
-    config = function() require('plugins.colorizer') end,
+    cmd = {
+      'ColorizerToggle',
+      'ColorizerAttachToBuffer',
+      'ColorizerDetachFromBuffer',
+      'ColorizerReloadAllBuffers',
+    },
+    config = function()
+      require('plugins.colorizer')
+    end,
   },
 
   -- This is both "color and visuals" and "useful or somewhat useful commands"
   {
     'andymass/vim-matchup',
-    event = { 'BufRead', 'BufNew', },
-    init = function() require('plugins.vim-matchup') end
+    event = { 'BufRead', 'BufNew' },
+    init = function()
+      require('plugins.vim-matchup')
+    end,
   },
 
   -- Useful or somewhat useful commands
@@ -82,11 +111,13 @@ lazy.setup({
   {
     'numToStr/Comment.nvim',
     keys = {
-      { mode = { 'n', 'v', 'o', }, 'gc', desc = 'Toggle line comments', },
-      { mode = { 'n', 'v', 'o', }, 'gb', desc = 'Toggle block comments', },
-      { mode = 'o',                 'u', },
+      { mode = { 'n', 'v', 'o' }, 'gc', desc = 'Toggle line comments' },
+      { mode = { 'n', 'v', 'o' }, 'gb', desc = 'Toggle block comments' },
+      { mode = 'o', 'u' },
     },
-    config = function() require('plugins.Comment') end,
+    config = function()
+      require('plugins.Comment')
+    end,
     dependencies = 'JoosepAlviste/nvim-ts-context-commentstring',
   },
   {
@@ -96,28 +127,36 @@ lazy.setup({
   {
     'kyazdani42/nvim-tree.lua',
     keys = require('plugins.nvim-tree').keys(),
-    config = function() require('plugins.nvim-tree').setup() end,
+    config = function()
+      require('plugins.nvim-tree').setup()
+    end,
   },
   {
     'stevearc/oil.nvim',
     cmd = 'Oil',
     keys = require('plugins.oil').keys(),
-    config = function() require('plugins.oil').setup() end,
+    config = function()
+      require('plugins.oil').setup()
+    end,
   },
   {
     'monaqa/dial.nvim',
     keys = {
-      { mode = { 'n', 'v', }, '<C-a>', desc = 'plugin dial C-a', },
-      { mode = { 'n', 'v', }, '<C-x>', desc = 'plugin dial C-x', },
-      { mode = 'v', 'g<C-a>', desc = 'plugin dial g-C-a', },
-      { mode = 'v', 'g<C-x>', desc = 'plugin dial g-C-x', },
+      { mode = { 'n', 'v' }, '<C-a>', desc = 'plugin dial C-a' },
+      { mode = { 'n', 'v' }, '<C-x>', desc = 'plugin dial C-x' },
+      { mode = 'v', 'g<C-a>', desc = 'plugin dial g-C-a' },
+      { mode = 'v', 'g<C-x>', desc = 'plugin dial g-C-x' },
     },
-    config = function() require('plugins.dial') end,
+    config = function()
+      require('plugins.dial')
+    end,
   },
   {
     'mbbill/undotree',
     cmd = 'UndotreeToggle',
-    init = function() require('plugins.undotree') end
+    init = function()
+      require('plugins.undotree')
+    end,
   },
 
   -- Clojure things
@@ -131,21 +170,29 @@ lazy.setup({
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
     keys = require('plugins.telescope').keys(),
-    config = function() require('plugins.telescope').setup() end,
+    config = function()
+      require('plugins.telescope').setup()
+    end,
     dependencies = {
       'nvim-lua/plenary.nvim',
       {
         'nvim-telescope/telescope-fzf-native.nvim',
         build = 'make',
-        config = function() require('telescope').load_extension('fzf') end,
+        config = function()
+          require('telescope').load_extension('fzf')
+        end,
       },
       {
         'debugloop/telescope-undo.nvim',
-        config = function() require('telescope').load_extension('undo') end,
+        config = function()
+          require('telescope').load_extension('undo')
+        end,
       },
       {
         'molecule-man/telescope-menufacture',
-        config = function() require('telescope').load_extension('menufacture') end,
+        config = function()
+          require('telescope').load_extension('menufacture')
+        end,
       },
     },
   },
@@ -154,22 +201,28 @@ lazy.setup({
   -----------------------
   {
     'aserowy/tmux.nvim',
-    keys = { '<C-h>', '<C-j>', '<C-k>', '<C-l>', },
-    config = function() require('plugins.tmux') end,
+    keys = { '<C-h>', '<C-j>', '<C-k>', '<C-l>' },
+    config = function()
+      require('plugins.tmux')
+    end,
   },
   {
     'christoomey/vim-tmux-runner',
-    enabled = function() return os.getenv('TMUX') ~= nil end,
-    cmd = { 'VtrAttachToPane', 'VtrSendCommand', 'VtrSendCtrlD', 'VtrSendCtrlC', }
+    enabled = function()
+      return os.getenv('TMUX') ~= nil
+    end,
+    cmd = { 'VtrAttachToPane', 'VtrSendCommand', 'VtrSendCtrlD', 'VtrSendCtrlC' },
   },
 
   -- LSP
   ------
   {
     'williamboman/mason.nvim',
-    event = { 'BufRead', 'BufNewFile', },
+    event = { 'BufRead', 'BufNewFile' },
     cmd = 'Mason',
-    config = function() require('plugins.lsp') end,
+    config = function()
+      require('plugins.lsp')
+    end,
     build = ':MasonUpdate',
     dependencies = {
       {
@@ -186,7 +239,7 @@ lazy.setup({
       'jose-elias-alvarez/typescript.nvim',
       'neovim/nvim-lspconfig',
       'hrsh7th/cmp-nvim-lsp',
-      { 'j-hui/fidget.nvim', tag = 'legacy', },
+      { 'j-hui/fidget.nvim', tag = 'legacy' },
     },
   },
 
@@ -203,13 +256,15 @@ lazy.setup({
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    event = { 'BufReadPost', 'BufNewFile', },
-    config = function() require('plugins.tree-sitter') end,
+    event = { 'BufReadPost', 'BufNewFile' },
+    config = function()
+      require('plugins.tree-sitter')
+    end,
     dependencies = {
-     'JoosepAlviste/nvim-ts-context-commentstring',
-     'nvim-treesitter/nvim-treesitter-textobjects',
-     'nvim-treesitter/playground',
-     'HiPhish/nvim-ts-rainbow2',
+      'JoosepAlviste/nvim-ts-context-commentstring',
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      'nvim-treesitter/playground',
+      'HiPhish/nvim-ts-rainbow2',
     },
   },
 
@@ -220,7 +275,7 @@ lazy.setup({
   -- Emmet can be replaced with emmet_ls (LSP), but ragtag...? ):
   {
     'tpope/vim-ragtag',
-    filetype = { 'eruby', },
+    filetype = { 'eruby' },
     init = function()
       -- https://github.com/tpope/vim-ragtag/blob/master/doc/ragtag.txt
       vim.cmd([[
@@ -233,13 +288,15 @@ lazy.setup({
   },
   {
     'mattn/emmet-vim',
-    filetype = { 'html', 'css', 'eruby', },
+    filetype = { 'html', 'css', 'eruby' },
     enabled = false,
   },
   {
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
-    config = function() require('plugins.cmp') end,
+    config = function()
+      require('plugins.cmp')
+    end,
     dependencies = {
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
@@ -247,7 +304,9 @@ lazy.setup({
       'onsails/lspkind-nvim',
       {
         'L3MON4D3/LuaSnip',
-        config = function() require('plugins.luasnip') end,
+        config = function()
+          require('plugins.luasnip')
+        end,
         -- 'https://github.com/rafamadriz/friendly-snippets',
         dependencies = 'saadparwaiz1/cmp_luasnip',
       },
@@ -258,19 +317,32 @@ lazy.setup({
   -- when, eg, pressing enter inside parens.
   -- I think nvim-autopairs should be able to do it, but having lexima as well
   -- is apparently make it buggy
-  { 'cohama/lexima.vim',     event = 'InsertEnter', config = function() require('plugins.lexima') end, },
-  { 'windwp/nvim-autopairs', event = 'InsertEnter', config = function() require('plugins.nvim-autopairs') end, },
+  {
+    'cohama/lexima.vim',
+    event = 'InsertEnter',
+    config = function()
+      require('plugins.lexima')
+    end,
+  },
+  {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    config = function()
+      require('plugins.nvim-autopairs')
+    end,
+  },
   -- Suddenly close tag does not work with lazy loading anymore... ):
   {
     'alvan/vim-closetag',
     -- event = 'InsertEnter',
-    init = function() require('plugins.vim-closetag') end,
+    init = function()
+      require('plugins.vim-closetag')
+    end,
   },
-},
-{
+}, {
   lockfile = vim.fn.stdpath('config') .. '/plugins-lock.json',
   install = {
-    colorscheme = { 'catppuccin', 'habamax', },
+    colorscheme = { 'catppuccin', 'habamax' },
   },
   ui = {
     icons = {

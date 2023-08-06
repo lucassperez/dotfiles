@@ -74,7 +74,9 @@ opt.complete:remove('i') -- https://medium.com/usevim/set-complete-e76b9f196f0f
 -- :help vim.highlight.on_yank()
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function() vim.highlight.on_yank({ timeout = 80, higroup = 'HighlightOnYank', }) end,
+  callback = function()
+    vim.highlight.on_yank({ timeout = 80, higroup = 'HighlightOnYank' })
+  end,
   group = highlight_group,
   pattern = '*',
   desc = 'Highlight on yank',
@@ -84,8 +86,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- :h zm, zM, zo, zR, ]z, zj
 -- "You can fold natively on nvim. Just zc to close and zo to open in normal mode."
 -- Folding options
-vim.opt.fillchars = { fold = " " }
-vim.opt.foldmethod = "indent"
+vim.opt.fillchars = { fold = ' ' }
+vim.opt.foldmethod = 'indent'
 vim.opt.foldenable = false
 vim.opt.foldlevel = 99
 vim.g.markdown_folding = 1 -- enable markdown folding

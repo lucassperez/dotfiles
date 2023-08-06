@@ -13,11 +13,17 @@ local outer = false
 
 -- exception: indentation textobj requires two parameters, first for exclusion of the
 -- starting border, second for the exclusion of ending border
-vim.keymap.set({ 'o', 'x' }, 'ii', function() textobjs.indentation(true, true) end)
-vim.keymap.set({ 'o', 'x' }, 'ai', function() textobjs.indentation(false, true) end)
+vim.keymap.set({ 'o', 'x' }, 'ii', function()
+  textobjs.indentation(true, true)
+end)
+vim.keymap.set({ 'o', 'x' }, 'ai', function()
+  textobjs.indentation(false, true)
+end)
 
 local function map(function_name, keys, opt)
-  vim.keymap.set({ 'o', 'x' }, keys, function() textobjs[function_name](opt) end)
+  vim.keymap.set({ 'o', 'x' }, keys, function()
+    textobjs[function_name](opt)
+  end)
 end
 
 map('entireBuffer', 'gG')
@@ -61,6 +67,6 @@ vim.keymap.set('n', 'gx', function()
     -- Substitue # for \#, since # alone does not work well in vim
     local url = vim.fn.getreg('z'):gsub('#', '\\#')
 
-    vim.cmd('!xdg-open "'..url..'"')
+    vim.cmd('!xdg-open "' .. url .. '"')
   end
-end, { desc = 'Abridor esperto de URL', })
+end, { desc = 'Abridor esperto de URL' })

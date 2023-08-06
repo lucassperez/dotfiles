@@ -16,9 +16,7 @@ local function commented_lines_textobject()
   local is_commented = utils.is_commented(ll, rr, padding)
 
   local line = vim.api.nvim_buf_get_lines(0, cl - 1, cl, false)
-  if next(line) == nil or not is_commented(line[1]) then
-    return
-  end
+  if next(line) == nil or not is_commented(line[1]) then return end
 
   local rs, re = cl, cl -- range start and end
   repeat
@@ -35,8 +33,18 @@ local function commented_lines_textobject()
   vim.fn.execute('normal! ' .. rs .. 'GV' .. re .. 'G')
 end
 
-vim.keymap.set('o', 'gc', commented_lines_textobject, { silent = true, desc = 'Textobject for adjacent commented lines', })
-vim.keymap.set('o', 'u', commented_lines_textobject, { silent = true, desc = 'Textobject for adjacent commented lines', })
+vim.keymap.set(
+  'o',
+  'gc',
+  commented_lines_textobject,
+  { silent = true, desc = 'Textobject for adjacent commented lines' }
+)
+vim.keymap.set(
+  'o',
+  'u',
+  commented_lines_textobject,
+  { silent = true, desc = 'Textobject for adjacent commented lines' }
+)
 
 local ft = require('Comment.ft')
 -- filetype and (commentstring or { commentrings })

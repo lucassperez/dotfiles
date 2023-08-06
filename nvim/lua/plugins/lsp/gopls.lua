@@ -4,8 +4,8 @@
 
 local function on_attach(client, bufnr)
   local function golangImports(timeout_ms)
-    local context = { only = { 'source.organizeImports', }, }
-    vim.validate({ context = { context, 't', true, }, })
+    local context = { only = { 'source.organizeImports' } }
+    vim.validate({ context = { context, 't', true } })
 
     local params = vim.lsp.util.make_range_params()
     params.context = context
@@ -28,12 +28,8 @@ local function on_attach(client, bufnr)
     -- is a CodeAction, it can have either an edit, a command or both. Edits
     -- should be executed first.
     if action.edit or type(action.command) == 'table' then
-      if action.edit then
-        vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
-      end
-      if type(action.command) == 'table' then
-        vim.lsp.buf.execute_command(action.command, client.offset_encoding)
-      end
+      if action.edit then vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding) end
+      if type(action.command) == 'table' then vim.lsp.buf.execute_command(action.command, client.offset_encoding) end
     else
       vim.lsp.buf.execute_command(action, client.offset_encoding)
     end
@@ -43,10 +39,12 @@ local function on_attach(client, bufnr)
 
   vim.keymap.set('n', '\\f', function()
     golangImports(1000)
-    vim.lsp.buf.format({ async = true, })
-  end, { noremap = true, buffer = bufnr, desc = 'LSP: Formata o buffer atual', })
+    vim.lsp.buf.format({ async = true })
+  end, { noremap = true, buffer = bufnr, desc = 'LSP: Formata o buffer atual' })
 
-  vim.keymap.set('n', '\\I', function() golangImports(1000) end, { noremap = true, buffer = bufnr, desc = 'LSP: Organiza os imports', })
+  vim.keymap.set('n', '\\I', function()
+    golangImports(1000)
+  end, { noremap = true, buffer = bufnr, desc = 'LSP: Organiza os imports' })
 
   -- vim.api.nvim_create_autocmd('BufWritePre', {
   --   buffer = bufnr,
@@ -59,8 +57,8 @@ local function on_attach(client, bufnr)
 
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
     golangImports(1000)
-    vim.lsp.buf.format({ async = true, })
-  end, { desc = 'LSP: Formata o buffer atual e organiza os imports', })
+    vim.lsp.buf.format({ async = true })
+  end, { desc = 'LSP: Formata o buffer atual e organiza os imports' })
 
   vim.api.nvim_create_autocmd('BufWritePre', {
     buffer = bufnr,
@@ -73,7 +71,7 @@ local function on_attach(client, bufnr)
 end
 
 return {
-  cmd = { 'gopls', 'serve', },
+  cmd = { 'gopls', 'serve' },
   on_attach = on_attach,
   settings = {
     gopls = {

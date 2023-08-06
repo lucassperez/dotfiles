@@ -1,5 +1,9 @@
-local function telescope_builtin() return require('telescope.builtin') end
-local function menufacture() return require('telescope').extensions.menufacture end
+local function telescope_builtin()
+  return require('telescope.builtin')
+end
+local function menufacture()
+  return require('telescope').extensions.menufacture
+end
 
 local function telescopeGitOrFindFiles(opts)
   opts = opts or {}
@@ -17,19 +21,57 @@ end
 
 local function keys()
   return {
-    { mode = 'n', desc = 'Abre telescope git ou find files', '<C-p>', function() telescopeGitOrFindFiles() end, { noremap = true, }, },
-    { mode = 'n', desc = 'Abre telescope live grep', '<C-f>', function()
-      -- https://www.reddit.com/r/neovim/comments/141k38i/telescope_how_to_search_project_directory/
-      local root = vim.fn.system('git rev-parse --show-toplevel')
-      if vim.v.shell_error == 0 then
-        menufacture().live_grep({ cwd = string.gsub(root, '\n', '') })
-      else
-        menufacture().live_grep()
-      end
-    end, { noremap = true }, },
-    { mode = 'n', desc = 'Abre telescope buffers', '<leader>P', function() telescope_builtin().buffers() end, { noremap = true }, },
-    { mode = 'n', desc = 'Abre telescope old files', '<leader>h', function() telescope_builtin().oldfiles() end, { noremap = true }, },
-    { mode = 'n', desc = 'Abre telescope find files no caminho de config do nvim', '<leader>zv', function() menufacture().find_files({ cwd = vim.fn.stdpath('config'), show_untracked = true, }) end, { noremap = true }, },
+    {
+      mode = 'n',
+      desc = 'Abre telescope git ou find files',
+      '<C-p>',
+      function()
+        telescopeGitOrFindFiles()
+      end,
+      { noremap = true },
+    },
+    {
+      mode = 'n',
+      desc = 'Abre telescope live grep',
+      '<C-f>',
+      function()
+        -- https://www.reddit.com/r/neovim/comments/141k38i/telescope_how_to_search_project_directory/
+        local root = vim.fn.system('git rev-parse --show-toplevel')
+        if vim.v.shell_error == 0 then
+          menufacture().live_grep({ cwd = string.gsub(root, '\n', '') })
+        else
+          menufacture().live_grep()
+        end
+      end,
+      { noremap = true },
+    },
+    {
+      mode = 'n',
+      desc = 'Abre telescope buffers',
+      '<leader>P',
+      function()
+        telescope_builtin().buffers()
+      end,
+      { noremap = true },
+    },
+    {
+      mode = 'n',
+      desc = 'Abre telescope old files',
+      '<leader>h',
+      function()
+        telescope_builtin().oldfiles()
+      end,
+      { noremap = true },
+    },
+    {
+      mode = 'n',
+      desc = 'Abre telescope find files no caminho de config do nvim',
+      '<leader>zv',
+      function()
+        menufacture().find_files({ cwd = vim.fn.stdpath('config'), show_untracked = true })
+      end,
+      { noremap = true },
+    },
   }
 end
 
@@ -63,7 +105,7 @@ local function setup()
         },
         n = {
           ['m'] = 'toggle_selection',
-        }
+        },
       },
     },
     extensions = {
@@ -74,7 +116,7 @@ local function setup()
         case_mode = 'smart_case', -- or "ignore_case" or "respect_case"
         -- the default case_mode is "smart_case"
       },
-      undo = { layout_config = { preview_width = 0.7, }, },
+      undo = { layout_config = { preview_width = 0.7 } },
     },
   })
 

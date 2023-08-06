@@ -1,5 +1,5 @@
 -- :h new-filetype
-vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile', }, {
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
   callback = function()
     -- I want to override the filetype, because
     -- by default it is going to be html.

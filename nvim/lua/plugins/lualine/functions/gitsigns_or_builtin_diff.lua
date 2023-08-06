@@ -17,9 +17,7 @@ local function verboseFunc()
 
   local diff_str = ''
   local t = vim.b['gitsigns_status_dict']
-  if t.added and t.added > 0 then
-    diff_str = diff_str .. '%#lualine_x_diff_added_command#+' .. t.added .. ' '
-  end
+  if t.added and t.added > 0 then diff_str = diff_str .. '%#lualine_x_diff_added_command#+' .. t.added .. ' ' end
   if t.changed and t.changed > 0 then
     diff_str = diff_str .. '%#lualine_x_diff_modified_command#~' .. t.changed .. ' '
   end
@@ -28,7 +26,7 @@ local function verboseFunc()
   end
   diff_str = diff_str:gsub(' $', '')
 
-  return 'hunks: ' .. #h ..  ' diff: ' .. diff_str
+  return 'hunks: ' .. #h .. ' diff: ' .. diff_str
 end
 
 local function simplerFunc()
@@ -37,9 +35,7 @@ local function simplerFunc()
 
   local diff_str = ''
   local t = vim.b['gitsigns_status_dict']
-  if t.added and t.added > 0 then
-    diff_str = diff_str .. '%#lualine_x_diff_added_command#+' .. t.added .. ' '
-  end
+  if t.added and t.added > 0 then diff_str = diff_str .. '%#lualine_x_diff_added_command#+' .. t.added .. ' ' end
   if t.changed and t.changed > 0 then
     diff_str = diff_str .. '%#lualine_x_diff_modified_command#~' .. t.changed .. ' '
   end

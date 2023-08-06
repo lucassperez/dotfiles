@@ -5,7 +5,7 @@ function P(...)
     return
   end
 
-  for _, value in pairs({...}) do
+  for _, value in pairs({ ... }) do
     print(vim.inspect(value))
   end
 
@@ -13,7 +13,7 @@ function P(...)
 end
 
 local any_require_failed = false
-local protected_require_log_file_path = vim.fn.stdpath('config')..'/nvim-require.log'
+local protected_require_log_file_path = vim.fn.stdpath('config') .. '/nvim-require.log'
 
 local function protected_require(path)
   local ok, result = pcall(require, path)
@@ -22,14 +22,14 @@ local function protected_require(path)
     if not any_require_failed then print('ERROR!') end
 
     any_require_failed = true
-    print('Could not require the path `'..path..'`')
+    print('Could not require the path `' .. path .. '`')
 
     -- Print only first line of the error
-    print('  '..string.sub(result, 1, string.find(result, '\n')))
+    print('  ' .. string.sub(result, 1, string.find(result, '\n')))
 
     local file = io.open(protected_require_log_file_path, 'a')
     if file then
-      file:write('['..os.date('%Y-%m-%d_%H:%M:%S')..']: '..path..'\n')
+      file:write('[' .. os.date('%Y-%m-%d_%H:%M:%S') .. ']: ' .. path .. '\n')
       file:write(result)
       file:write('\n---\n')
       file:close()
@@ -63,5 +63,5 @@ protected_require('helper-scripts').require_scripts(protected_require)
 
 if any_require_failed then
   print('---')
-  print('Check file '..protected_require_log_file_path..'/nvim-require.log for more information')
+  print('Check file ' .. protected_require_log_file_path .. '/nvim-require.log for more information')
 end

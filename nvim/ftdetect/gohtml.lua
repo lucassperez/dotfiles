@@ -1,5 +1,5 @@
 -- :h new-filetype
-vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile', }, {
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
   callback = function()
     -- if vim.bo.ft == '' then vim.bo.ft = 'template' end
     -- The setfiletype does not overwrite

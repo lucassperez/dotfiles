@@ -10,7 +10,7 @@ end
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true, })
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Go to command mode without using shift
 noremap({ 'n', 'v' }, ';', ':')
@@ -23,11 +23,12 @@ local function mapWhitespaceLine(command)
   -- TODO find a way to make this work in visual mode.
   -- How to get selection area?
   vim.keymap.set('n', command, function()
-    if vim.api.nvim_get_current_line():match('^%s*$') then
-      return '"_' .. command
-    end
+    if vim.api.nvim_get_current_line():match('^%s*$') then return '"_' .. command end
     return command
-  end, { expr = true, desc = 'Executes `' .. command .. '` without copying whitespaces only to register (hopefully)', })
+  end, {
+    expr = true,
+    desc = 'Executes `' .. command .. '` without copying whitespaces only to register (hopefully)',
+  })
 end
 
 mapWhitespaceLine('dd')
@@ -43,11 +44,12 @@ local function mapWhitespaceCharacter(command)
     local column = 1 + vim.api.nvim_win_get_cursor(0)[2]
     local char_under_cursor = line:sub(column, column)
 
-    if char_under_cursor:match('%s') then
-      return '"_'..command
-    end
+    if char_under_cursor:match('%s') then return '"_' .. command end
     return command
-  end, { expr = true, desc = 'Executes `' .. command .. '` without copying whitespaces only to register (hopefully)', })
+  end, {
+    expr = true,
+    desc = 'Executes `' .. command .. '` without copying whitespaces only to register (hopefully)',
+  })
 end
 
 mapWhitespaceCharacter('s')
@@ -66,9 +68,9 @@ noremap('n', 'q:', '<Nop>')
 map('i', '<C-c>', '<Esc>')
 
 -- Novos paineis (horizontal e vertical) e fechar o atual
-noremap('n', '<leader>s', ':sp<CR>', { desc = 'Abre uma janela horizontal', })
-noremap('n', '<leader>v', ':vs<CR>', { desc = 'Abre uma janela vertical', })
-noremap('n', '<leader>c', '<C-w>c', { desc = 'Fecha janela atual', })
+noremap('n', '<leader>s', ':sp<CR>', { desc = 'Abre uma janela horizontal' })
+noremap('n', '<leader>v', ':vs<CR>', { desc = 'Abre uma janela vertical' })
+noremap('n', '<leader>c', '<C-w>c', { desc = 'Fecha janela atual' })
 
 -- Salvar e fechar tudo, eita.
 -- Writes and quits from everything, omg!
@@ -77,33 +79,40 @@ noremap('n', '<C-q>', function()
   for _, buf in pairs(vim.fn.getbufinfo()) do
     -- If it has a name, is listed and has changes
     if buf.name ~= '' and buf.listed ~= 0 and buf.changed ~= 0 then
-      vim.cmd('b '..buf.bufnr)
+      vim.cmd('b ' .. buf.bufnr)
       vim.cmd('w')
     end
   end
   vim.cmd('qa!')
-end, { desc = 'Salva e fecha todos os buffers, saindo do vim. Caso algum buffer seja de um arquivo ainda não existente no disco, ele será perdido', })
+end, {
+  desc = 'Salva e fecha todos os buffers, saindo do vim. Caso algum buffer seja de um arquivo ainda não existente no disco, ele será perdido',
+})
 
 -- I used to use ç to go to the end of line, but removed it
 -- to get used to using H and L to go forth and back on non ABNT2 keyboards.
 -- Basically L goes to the end and H goes to the start of lines.
 -- In visual mode, L does not get the "new line" at the end, and H does
 -- not go to the first column, but instead to the first character in the line.
-map({ 'n', 'o', }, 'L', '$', { desc = 'Vai para o final da linha', })
-map('v', 'L', '$h', { desc = 'Vai para o final da linha', })
-map({ 'n', 'v', 'o', }, 'H', '^', { desc = 'Vai para o começo da linha', })
+map({ 'n', 'o' }, 'L', '$', { desc = 'Vai para o final da linha' })
+map('v', 'L', '$h', { desc = 'Vai para o final da linha' })
+map({ 'n', 'v', 'o' }, 'H', '^', { desc = 'Vai para o começo da linha' })
 
 -- Abrir o último arquivo editado
 -- C-6 already does this, see :h CTRL-6 and :h alternate-file
 -- noremap('n', '<leader><Space>', ':e#<CR>', { desc = 'Abre o último arquivo (:h alternate-file)', })
-noremap('n', '<leader><Space>', '<C-6>', { desc = 'Abre o último arquivo (:h alternate-file)', })
+noremap('n', '<leader><Space>', '<C-6>', { desc = 'Abre o último arquivo (:h alternate-file)' })
 
 -- Copiar para o clipboard do sistema o caminho do arquivo
-noremap('n', '<leader>f', ':let @+ = expand("%:p")<CR>', { desc = 'Copia o caminho do arquivo para o clipboard do sistema', })
+noremap(
+  'n',
+  '<leader>f',
+  ':let @+ = expand("%:p")<CR>',
+  { desc = 'Copia o caminho do arquivo para o clipboard do sistema' }
+)
 
 -- Não entrar no insert mode após usar leader + o/O
-noremap('n', '<leader>o', 'o<C-c>', { desc = 'Insere linha abaixo, como o, mas saindo do modo de inserção no final', })
-noremap('n', '<leader>O', 'O<C-c>', { desc = 'Insere linha acim, como O, mas saindo do modo de inserção no final', })
+noremap('n', '<leader>o', 'o<C-c>', { desc = 'Insere linha abaixo, como o, mas saindo do modo de inserção no final' })
+noremap('n', '<leader>O', 'O<C-c>', { desc = 'Insere linha acim, como O, mas saindo do modo de inserção no final' })
 
 -- Abrir links no firefox (quebra quando tem # :C)
 -- O plugin nvim-various-textobjects ta fazendo isso já e de forma
@@ -113,9 +122,9 @@ noremap('n', '<leader>O', 'O<C-c>', { desc = 'Insere linha acim, como O, mas sai
 
 -- Ir para o buffer anterior/próximo e fechar o atual
 -- O plugin barbar.vim estaria sobrescrevendo esses mappings de qualquer forma
-noremap('n', '<leader>q', ':bprevious<CR>', { desc = 'Mostra o buffer anterior', })
-noremap('n', '<leader>w', ':bnext<CR>', { desc = 'Mostra o próximo buffer', })
-noremap('n', '<leader>d', ':bdelete<CR>', { desc = 'Fecha o buffer atual', })
+noremap('n', '<leader>q', ':bprevious<CR>', { desc = 'Mostra o buffer anterior' })
+noremap('n', '<leader>w', ':bnext<CR>', { desc = 'Mostra o próximo buffer' })
+noremap('n', '<leader>d', ':bdelete<CR>', { desc = 'Fecha o buffer atual' })
 noremap('n', '<A-q>', ':bprevious<CR>', { desc = 'Mostra o buffer anterior' })
 noremap('n', '<A-w>', ':bnext<CR>', { desc = 'Mostra o próximo buffer' })
 
@@ -125,10 +134,14 @@ noremap('n', '<A-w>', ':bnext<CR>', { desc = 'Mostra o próximo buffer' })
 -- gT go to previous tab (like tabprevious)
 -- {count}gt go to tab number {count} (nice!)
 -- g<Tab> go to last accessed tab (nice!)
-noremap('n', '<leader>tn', function() return ('$:tabnew %s<CR>'):format(vim.fn.expand('%')) end, { expr = true, desc = 'Cria uma nova aba mostrando o arquivo atual, caso ele exista', })
-noremap('n', '<A-t>', function() return ('$:tabnew %s<CR>'):format(vim.fn.expand('%')) end, { expr = true, desc = 'Cria uma nova aba mostrando o arquivo atual, caso ele exista', })
-noremap('n', '<leader>td', ':tabclose<CR>', { desc = 'Fecha a aba atual', })
-noremap('n', '<leader>tc', ':tabclose<CR>', { desc = 'Fecha a aba atual', })
+noremap('n', '<leader>tn', function()
+  return ('$:tabnew %s<CR>'):format(vim.fn.expand('%'))
+end, { expr = true, desc = 'Cria uma nova aba mostrando o arquivo atual, caso ele exista' })
+noremap('n', '<A-t>', function()
+  return ('$:tabnew %s<CR>'):format(vim.fn.expand('%'))
+end, { expr = true, desc = 'Cria uma nova aba mostrando o arquivo atual, caso ele exista' })
+noremap('n', '<leader>td', ':tabclose<CR>', { desc = 'Fecha a aba atual' })
+noremap('n', '<leader>tc', ':tabclose<CR>', { desc = 'Fecha a aba atual' })
 
 -- Mudar de painéis segurando Control
 -- O plugin tmux.nvim está fazendo isso
@@ -139,48 +152,66 @@ noremap('n', '<leader>tc', ':tabclose<CR>', { desc = 'Fecha a aba atual', })
 
 -- Copiar para o clipboard do sistema
 -- Yank
-noremap({ 'n', 'v' }, '<leader>y', '"+y', { desc = 'Copia para o clipboard do sistema', })
-noremap('n', '<leader>Y', '"+yg_', { desc = 'Copia até o fim da linha para o clipboard do sistema', })
+noremap({ 'n', 'v' }, '<leader>y', '"+y', { desc = 'Copia para o clipboard do sistema' })
+noremap('n', '<leader>Y', '"+yg_', { desc = 'Copia até o fim da linha para o clipboard do sistema' })
 -- Delete
-noremap('n', '<leader>D', '"+dg_', { desc = 'Recorta até o fim da linha para o clipboard do sistema', })
+noremap('n', '<leader>D', '"+dg_', { desc = 'Recorta até o fim da linha para o clipboard do sistema' })
 
 -- Mudar a indentação continuamente
 -- https://github.com/changemewtf/dotfiles/blob/master/vim/.vimrc
 ---- I don't know about this, but oh well
 -- Modo visual
-noremap('v', '<', '<gv', { desc = 'Indenta e seleciona a mesma área anterior', })
-noremap('v', '>', '>gv', { desc = 'Indenta e seleciona a mesma área anterior', })
+noremap('v', '<', '<gv', { desc = 'Indenta e seleciona a mesma área anterior' })
+noremap('v', '>', '>gv', { desc = 'Indenta e seleciona a mesma área anterior' })
 -- Modo normal
-noremap('n', '>', '>>', { desc = 'Indenta direto, sem receber um objeto', })
-noremap('n', '<', '<<', { desc = 'Indenta direto, sem receber um objeto', })
+noremap('n', '>', '>>', { desc = 'Indenta direto, sem receber um objeto' })
+noremap('n', '<', '<<', { desc = 'Indenta direto, sem receber um objeto' })
 
 -- Mover blocos de texto
-noremap('v', '<M-j>', ":m '>+1<CR>gv=gv", { desc = 'Move blocos de texto para baixo', })
-noremap('v', '<M-k>', ":m '<-2<CR>gv=gv", { desc = 'Move blocos de texto para cima', })
-noremap('n', '<M-j>', ':m .+1<CR>==', { desc = 'Move blocos de texto para baixo', })
-noremap('n', '<M-k>', ':m .-2<CR>==', { desc = 'Move blocos de texto para cima', })
+noremap('v', '<M-j>', ":m '>+1<CR>gv=gv", { desc = 'Move blocos de texto para baixo' })
+noremap('v', '<M-k>', ":m '<-2<CR>gv=gv", { desc = 'Move blocos de texto para cima' })
+noremap('n', '<M-j>', ':m .+1<CR>==', { desc = 'Move blocos de texto para baixo' })
+noremap('n', '<M-k>', ':m .-2<CR>==', { desc = 'Move blocos de texto para cima' })
 
 -- Mudar o tamanho dos painéis
-noremap('n', '<C-Down>', ':resize -3<CR>', { desc = 'Diminui (é meio confuso) o tamanho de uma janela por 3', })
-noremap('n', '<C-Up>', ':resize +3<CR>', { desc = 'Aumenta (é meio confuso) o tamanho de uma janela por 3', })
-noremap('n', '<C-Left>', ':vertical resize -5<CR>', { desc = 'Diminui (é meio confuso) o tamanho de uma janela por 5', })
-noremap('n', '<C-Right>', ':vertical resize +5<CR>', { desc = 'Aumenta (é meio confuso) o tamanho de uma janela por 5', })
+noremap('n', '<C-Down>', ':resize -3<CR>', { desc = 'Diminui (é meio confuso) o tamanho de uma janela por 3' })
+noremap('n', '<C-Up>', ':resize +3<CR>', { desc = 'Aumenta (é meio confuso) o tamanho de uma janela por 3' })
+noremap(
+  'n',
+  '<C-Left>',
+  ':vertical resize -5<CR>',
+  { desc = 'Diminui (é meio confuso) o tamanho de uma janela por 5' }
+)
+noremap(
+  'n',
+  '<C-Right>',
+  ':vertical resize +5<CR>',
+  { desc = 'Aumenta (é meio confuso) o tamanho de uma janela por 5' }
+)
 
 -- Control + Del no insert mode
 -- Note que pra apagar pra trás, Control + w funciona
-noremap('i', '<C-Del>', '<C-o>de', { desc = 'Deleta a palavra seguinte', })
+noremap('i', '<C-Del>', '<C-o>de', { desc = 'Deleta a palavra seguinte' })
 
 -- Se receber true como argumento, essa função escreve na linha anterior. A
 -- ideia é como os comandos `o` e `O`, só que pra um debugger (binding.pry no
 -- ruby, IEx.pry no elixir). Se segurar shift em algum momento, manda pra linha
 -- de cima (recebe true como argumento), do contrário, manda pra linha de baixo.
-noremap('n', ',bp', function() WriteDebuggerBreakpoint() end, { silent = true, desc = 'Tenta escrever a entrada para o debugger na linha de baixo',  })
-noremap('n', ',BP', function() WriteDebuggerBreakpoint(true) end, { silent = true, desc = 'Tenta escrever a entrada para o debugger na linha de cima', })
-noremap('n', ',Bp', function() WriteDebuggerBreakpoint(true) end, { silent = true, desc = 'Tenta escrever a entrada para o debugger na linha de cima', })
-noremap('n', ',bP', function() WriteDebuggerBreakpoint(true) end, { silent = true, desc = 'Tenta escrever a entrada para o debugger na linha de cima', })
+noremap('n', ',bp', function()
+  WriteDebuggerBreakpoint()
+end, { silent = true, desc = 'Tenta escrever a entrada para o debugger na linha de baixo' })
+noremap('n', ',BP', function()
+  WriteDebuggerBreakpoint(true)
+end, { silent = true, desc = 'Tenta escrever a entrada para o debugger na linha de cima' })
+noremap('n', ',Bp', function()
+  WriteDebuggerBreakpoint(true)
+end, { silent = true, desc = 'Tenta escrever a entrada para o debugger na linha de cima' })
+noremap('n', ',bP', function()
+  WriteDebuggerBreakpoint(true)
+end, { silent = true, desc = 'Tenta escrever a entrada para o debugger na linha de cima' })
 
 -- É brincadeira que :noh<CR> não vem por padrão em algum lugar, viu...
-noremap('n', '<Esc>', ':noh<CR>', { desc = 'Remove os destaques feitos por busca', })
+noremap('n', '<Esc>', ':noh<CR>', { desc = 'Remove os destaques feitos por busca' })
 
 -- Rodar linter e testes automatizados de dentro do vim (tem que ter um "runner" setado antes)
 -- Dependendo do tipo de arquivo, será feito algo diferente.
@@ -229,8 +260,13 @@ local function tmuxShowPanesNumbersOnAttatchIfMultiplePanes()
   -- getting a giant error message.
   pcall(vim.cmd.VtrAttachToPane)
 end
-noremap('n', '<leader>A', vim.cmd.VtrAttachToPane, { desc = 'VtrAttachToPane', })
-noremap('n', '<leader>a', tmuxShowPanesNumbersOnAttatchIfMultiplePanes, { desc = 'VtrAttach ou mostra os números dos paineis caso haja mais que dois', })
+noremap('n', '<leader>A', vim.cmd.VtrAttachToPane, { desc = 'VtrAttachToPane' })
+noremap(
+  'n',
+  '<leader>a',
+  tmuxShowPanesNumbersOnAttatchIfMultiplePanes,
+  { desc = 'VtrAttach ou mostra os números dos paineis caso haja mais que dois' }
+)
 noremap('n', '<A-d>', vim.cmd.VtrSendCtrlD, { desc = 'VtrSendCtrlD' })
 noremap('n', '<A-c>', vim.cmd.VtrSendCtrlC, { desc = 'VtrSendCtrlC' })
 
@@ -260,43 +296,65 @@ noremap('n', '<leader>rl', ":silent!wa<CR>:call VtrSendCommand('!!')<CR>")
 
 -- Executa o arquivo como um script a depender do seu "filetype"
 -- Ver o script para detalhes
-noremap('n', '<leader>rr', ':silent!wa<CR>:lua ExecuteFileAsScript()<CR>', { silent = true, })
-noremap('n', '<leader>R', ':lua AutoExecuteOnSave()<CR>', { silent = true, })
+noremap('n', '<leader>rr', ':silent!wa<CR>:lua ExecuteFileAsScript()<CR>', { silent = true })
+noremap('n', '<leader>R', ':lua AutoExecuteOnSave()<CR>', { silent = true })
 
 -- Tenta compilar o arquivo a depender do seu "filetype"
 noremap('n', '<leader>rc', ':silent!wa<CR>:lua CompileFile()<CR>')
 
 --- "Snippets" ---
 local snips_path = vim.fn.stdpath('config') .. '/snippets'
-noremap('n', ',html', ':read '..snips_path..'/html5<CR>i<Backspace><C-c>6jf>l')
-noremap('n', ',rfce', ':read '..snips_path.."/reactfunctcomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>5k")
+noremap('n', ',html', ':read ' .. snips_path .. '/html5<CR>i<Backspace><C-c>6jf>l')
+noremap('n', ',rfce', ':read ' .. snips_path .. "/reactfunctcomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>5k")
 -- noremap('n', ',vue', ':read '..snips_path.."/vuecomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>0")
-noremap('n', ',go', ':read '..snips_path..'/gomain<CR>i<Backspace><C-c>5jS')
+noremap('n', ',go', ':read ' .. snips_path .. '/gomain<CR>i<Backspace><C-c>5jS')
 
 -- Buscar por uma sequência de <<<<<<<, ======= ou >>>>>>>
 -- Pra usar quando tem conflitos no git
-noremap('n', '<leader>/', '/\\(<\\|=\\|>\\)\\{7\\}<CR>', { desc = 'Busca por marcadores de conflitos do git', })
+noremap('n', '<leader>/', '/\\(<\\|=\\|>\\)\\{7\\}<CR>', { desc = 'Busca por marcadores de conflitos do git' })
 
 -- Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo (o silent = true não ta funcionando?)
-noremap('n', ',sh', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', { silent = true, desc = 'Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo', })
-noremap('n', ',SH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', { silent = true, desc = 'Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo', })
-noremap('n', ',Sh', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', { silent = true, desc = 'Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo', })
-noremap('n', ',sH', 'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>', { silent = true, desc = 'Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo', })
+noremap(
+  'n',
+  ',sh',
+  'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>',
+  { silent = true, desc = 'Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo' }
+)
+noremap(
+  'n',
+  ',SH',
+  'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>',
+  { silent = true, desc = 'Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo' }
+)
+noremap(
+  'n',
+  ',Sh',
+  'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>',
+  { silent = true, desc = 'Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo' }
+)
+noremap(
+  'n',
+  ',sH',
+  'ggI#!/bin/sh<CR><CR><C-c>:w<CR>:!chmod +x %<CR>',
+  { silent = true, desc = 'Colocar o shebang #!/bin/sh e dar permissão de execução ao arquivo' }
+)
 
 -- "Zoom" na split atual e deixar as splits o mais parecidas possível
-noremap('n', '<leader>-', ':wincmd _<CR>:wincmd |<CR>', { desc = 'Deixa uma janela com "Zoom"', })
-noremap('n', '<leader>=', ':wincmd =<CR>', { desc = 'Deixa todas as janelas com o mesmo tamanho', })
+noremap('n', '<leader>-', ':wincmd _<CR>:wincmd |<CR>', { desc = 'Deixa uma janela com "Zoom"' })
+noremap('n', '<leader>=', ':wincmd =<CR>', { desc = 'Deixa todas as janelas com o mesmo tamanho' })
 
 -- Tries to find the test file of current file or vice versa.
 -- Works well with elixir and its organized and predictable paths.
-noremap('n', '<leader>e', function() TestAndFile.toggle() end, { silent = true, desc = 'Tenta alternar entre um arquivo e o seu teste', })
+noremap('n', '<leader>e', function()
+  TestAndFile.toggle()
+end, { silent = true, desc = 'Tenta alternar entre um arquivo e o seu teste' })
 
 function RELOAD()
   local config_path = vim.fn.stdpath('config')
-  vim.cmd(':so '..config_path..'/init.lua')
-  vim.cmd(':luafile '..config_path..'/lua/keymappings.lua')
-  vim.cmd(':luafile '..config_path..'/lua/settings.lua')
+  vim.cmd(':so ' .. config_path .. '/init.lua')
+  vim.cmd(':luafile ' .. config_path .. '/lua/keymappings.lua')
+  vim.cmd(':luafile ' .. config_path .. '/lua/settings.lua')
   print('REALOAD(): Sourcing init.vim, lua/keymappings.lua and lua/settings.lua')
 end
 
-noremap('n', '<leader>zl', RELOAD, { desc = 'Recarrega as configs, keymappings e tudo mais do nvim', })
+noremap('n', '<leader>zl', RELOAD, { desc = 'Recarrega as configs, keymappings e tudo mais do nvim' })

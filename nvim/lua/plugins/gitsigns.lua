@@ -2,25 +2,25 @@ local gitsigns = require('gitsigns')
 
 gitsigns.setup({
   signs = {
-    add       = { hl = 'GitSignsAdd',    numhl = 'GitSignsAddNr',    linehl = '', },
-    change    = { hl = 'GitSignsChange', numhl = 'GitSignsChangeNr', linehl = '', },
-    delete    = { hl = 'GitSignsDelete', numhl = 'GitSignsDeleteNr', linehl = '', },
-    topdelete = { hl = 'GitSignsDelete', numhl = 'GitSignsDeleteNr', linehl = '', },
+    add = { hl = 'GitSignsAdd', numhl = 'GitSignsAddNr', linehl = '' },
+    change = { hl = 'GitSignsChange', numhl = 'GitSignsChangeNr', linehl = '' },
+    delete = { hl = 'GitSignsDelete', numhl = 'GitSignsDeleteNr', linehl = '' },
+    topdelete = { hl = 'GitSignsDelete', numhl = 'GitSignsDeleteNr', linehl = '' },
     changedelete = {
-      hl     = 'GitSignsChangeDelete',
-      numhl  = 'GitSignsChangeDeleteNr',
+      hl = 'GitSignsChangeDelete',
+      numhl = 'GitSignsChangeDeleteNr',
       linehl = '',
     },
     untracked = {
-      hl     = 'GitSignsAdd',
-      numhl  = 'GitSignsAddNr',
+      hl = 'GitSignsAdd',
+      numhl = 'GitSignsAddNr',
       linehl = '',
     },
   },
   signcolumn = false, -- Toggle with `:Gitsigns toggle_signs`
-  numhl      = true,  -- Toggle with `:Gitsigns toggle_numhl`
-  linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
-  word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
+  numhl = true, -- Toggle with `:Gitsigns toggle_numhl`
+  linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
+  word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
   watch_gitdir = {
     interval = 1000,
     follow_files = true,
@@ -58,11 +58,13 @@ gitsigns.setup({
 
     local function map_hunk_navigation(keymap, hunk_function, show_preview, description)
       buf_map('n', keymap, function()
-        hunk_function({ wrap = false, preview = show_preview, })
+        hunk_function({ wrap = false, preview = show_preview })
         if #gitsigns.get_hunks() > 0 then
-          vim.schedule(function() vim.api.nvim_feedkeys('zz', 'n', false) end)
+          vim.schedule(function()
+            vim.api.nvim_feedkeys('zz', 'n', false)
+          end)
         end
-      end, { desc = description, })
+      end, { desc = description })
     end
 
     map_hunk_navigation('[c', gitsigns.prev_hunk, false, 'Vai para o hunk anterior do git')
@@ -70,15 +72,21 @@ gitsigns.setup({
     map_hunk_navigation('[C', gitsigns.prev_hunk, true, 'Vai para o hunk anterior do git e mostra o diff')
     map_hunk_navigation(']C', gitsigns.next_hunk, true, 'Vai para o próximo hunk do git e mostra o diff')
 
-    buf_map('n', ',ch', function() gitsigns.preview_hunk() end, { desc = 'Mostra o diff do hunk do git', })
-    buf_map('n', ',cr', function() gitsigns.reset_hunk() end, { desc = 'Resta o hunk do git (git reset)', })
-    buf_map('n', ',cw', function() print('Gitsigns word diff toggled: '..tostring(gitsigns.toggle_word_diff())) end, { desc = 'Liga/desliga o Gtisigns word diff', })
+    buf_map('n', ',ch', function()
+      gitsigns.preview_hunk()
+    end, { desc = 'Mostra o diff do hunk do git' })
+    buf_map('n', ',cr', function()
+      gitsigns.reset_hunk()
+    end, { desc = 'Resta o hunk do git (git reset)' })
+    buf_map('n', ',cw', function()
+      print('Gitsigns word diff toggled: ' .. tostring(gitsigns.toggle_word_diff()))
+    end, { desc = 'Liga/desliga o Gtisigns word diff' })
 
     -- Text objects
-    buf_map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { silent = true, })
-    buf_map({'o', 'x'}, 'ah', ':<C-U>Gitsigns select_hunk<CR>', { silent = true, })
-    buf_map({'o', 'x'}, 'ic', ':<C-U>Gitsigns select_hunk<CR>', { silent = true, })
-    buf_map({'o', 'x'}, 'ac', ':<C-U>Gitsigns select_hunk<CR>', { silent = true, })
+    buf_map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { silent = true })
+    buf_map({ 'o', 'x' }, 'ah', ':<C-U>Gitsigns select_hunk<CR>', { silent = true })
+    buf_map({ 'o', 'x' }, 'ic', ':<C-U>Gitsigns select_hunk<CR>', { silent = true })
+    buf_map({ 'o', 'x' }, 'ac', ':<C-U>Gitsigns select_hunk<CR>', { silent = true })
   end,
 })
 

@@ -6,15 +6,13 @@ function RunLinter(opts)
   local filename = ''
 
   -- check for current file option
-  if opts.cur_file then
-    filename = vim.fn.expand('%')
-  end
+  if opts.cur_file then filename = vim.fn.expand('%') end
 
-  if (filetype == 'elixir') then
-    vim.fn.VtrSendCommand('mix format --check-formatted '..filename..' && mix credo --strict '..filename)
-  elseif (filetype == 'ruby') then
-    vim.fn.VtrSendCommand('bundle exec rubocop '..filename)
+  if filetype == 'elixir' then
+    vim.fn.VtrSendCommand('mix format --check-formatted ' .. filename .. ' && mix credo --strict ' .. filename)
+  elseif filetype == 'ruby' then
+    vim.fn.VtrSendCommand('bundle exec rubocop ' .. filename)
   else
-    print('Não sei rodar um linter para arquivos do tipo '..filetype)
+    print('Não sei rodar um linter para arquivos do tipo ' .. filetype)
   end
 end

@@ -12,15 +12,15 @@ function WriteDebuggerBreakpoint(above)
   }
 
   if not debugger_commands[filetype] then
-    print('Filetype '..filetype..' not supported')
+    print('Filetype ' .. filetype .. ' not supported')
     return
   end
 
   if above then
-    vim.cmd('normal O'..debugger_commands[filetype])
+    vim.cmd('normal O' .. debugger_commands[filetype])
   else
     -- nvim_buf_set_text()
-    vim.cmd('normal o'..debugger_commands[filetype])
+    vim.cmd('normal o' .. debugger_commands[filetype])
   end
   vim.cmd('normal _')
 end

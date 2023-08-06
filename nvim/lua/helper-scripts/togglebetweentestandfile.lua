@@ -17,14 +17,14 @@ local function tsReactFunction()
   local extension = vim.fn.expand('%:e')
 
   local path = ''
-  if string.match(file_name, '%w*%.test%.'..extension..'$') then
-    path = string.gsub(file_name, '%.test%.'..extension..'$', '.'..extension)
-  elseif string.match(file_name, '%w*%.'..extension..'$') then
-    path = string.gsub(file_name, '%.'..extension..'$', '.test.'..extension)
+  if string.match(file_name, '%w*%.test%.' .. extension .. '$') then
+    path = string.gsub(file_name, '%.test%.' .. extension .. '$', '.' .. extension)
+  elseif string.match(file_name, '%w*%.' .. extension .. '$') then
+    path = string.gsub(file_name, '%.' .. extension .. '$', '.test.' .. extension)
   end
 
   if path == '' then return nil end
-  return file_dir..'/'..path
+  return file_dir .. '/' .. path
 end
 
 local function clojureFunction()
@@ -77,27 +77,27 @@ end
 -- end
 
 local filenameFunctions = {
-    elixir = elixirFunction,
-    ruby = rubyFunction,
-    typescriptreact = tsReactFunction,
-    typescript = tsReactFunction,
-    clojure = clojureFunction,
+  elixir = elixirFunction,
+  ruby = rubyFunction,
+  typescriptreact = tsReactFunction,
+  typescript = tsReactFunction,
+  clojure = clojureFunction,
 }
 
 local function toggleBetweenTestAndFile()
   local filetype = vim.bo.filetype
 
   if not filenameFunctions[filetype] then
-    print('Filetype '..filetype..' not supported')
+    print('Filetype ' .. filetype .. ' not supported')
     return
   end
 
   local path = filenameFunctions[filetype]()
   if path == nil then
-    print('Path for the other file not found. Is your current working directory the project\'s root directory?')
+    print("Path for the other file not found. Is your current working directory the project's root directory?")
   else
-    print('Switching to '..path)
-    vim.api.nvim_command('edit '..path)
+    print('Switching to ' .. path)
+    vim.api.nvim_command('edit ' .. path)
   end
 end
 

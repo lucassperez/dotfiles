@@ -1,27 +1,27 @@
 local is_picking_focus = require('cokeline/mappings').is_picking_focus
 local is_picking_close = require('cokeline/mappings').is_picking_close
 
-vim.keymap.set('n', '<leader>p', '<Plug>(cokeline-pick-focus)', { desc = 'Seleciona um buffer para ter o foco', })
-vim.keymap.set('n', '<A-Q>', '<Plug>(cokeline-switch-prev)', { desc = 'Move o buffer atual para trás na tabline', })
-vim.keymap.set('n', '<A-W>', '<Plug>(cokeline-switch-next)', { desc = 'Move o buffer atual para frente na tabline', })
+vim.keymap.set('n', '<leader>p', '<Plug>(cokeline-pick-focus)', { desc = 'Seleciona um buffer para ter o foco' })
+vim.keymap.set('n', '<A-Q>', '<Plug>(cokeline-switch-prev)', { desc = 'Move o buffer atual para trás na tabline' })
+vim.keymap.set('n', '<A-W>', '<Plug>(cokeline-switch-next)', { desc = 'Move o buffer atual para frente na tabline' })
 
 -- https://github.com/willothy/nvim-cokeline/issues/59
 -- [count]<A-q> e [count]<A-w> vai para o buffer de índice [count]
-vim.keymap.set('n', '<A-q>',
-  function() return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'prev') end,
-  { expr = true, desc = 'Mostra o buffer anterior', })
+vim.keymap.set('n', '<A-q>', function()
+  return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'prev')
+end, { expr = true, desc = 'Mostra o buffer anterior' })
 
-vim.keymap.set('n', '<A-w>',
-  function() return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'next') end,
-  { expr = true, desc = 'Mostra o próximo buffer', })
+vim.keymap.set('n', '<A-w>', function()
+  return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'next')
+end, { expr = true, desc = 'Mostra o próximo buffer' })
 
-vim.keymap.set('n', '<leader>q',
-  function() return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'prev') end,
-  { expr = true, desc = 'Mostra o buffer anterior', })
+vim.keymap.set('n', '<leader>q', function()
+  return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'prev')
+end, { expr = true, desc = 'Mostra o buffer anterior' })
 
-vim.keymap.set('n', '<leader>w',
-  function() return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'next') end,
-  { expr = true, desc = 'Mostra o próximo buffer', })
+vim.keymap.set('n', '<leader>w', function()
+  return ('<Plug>(cokeline-focus-%s)'):format(vim.v.count > 0 and vim.v.count or 'next')
+end, { expr = true, desc = 'Mostra o próximo buffer' })
 
 local colors = {
   fg = {
@@ -48,55 +48,43 @@ require('cokeline').setup({
   },
   default_hl = {
     fg = function(buffer)
-      if buffer.is_focused then
-        return colors.fg.active
-      end
+      if buffer.is_focused then return colors.fg.active end
 
       local current_tab = vim.fn.tabpagenr()
       local all_windows = vim.fn.getwininfo()
 
       for _, w in pairs(all_windows) do
         if w.tabnr == current_tab then
-          if vim.fn.getbufinfo(w.bufnr)[1].name == buffer.path then
-            return colors.fg.visible
-          end
+          if vim.fn.getbufinfo(w.bufnr)[1].name == buffer.path then return colors.fg.visible end
         end
       end
       return colors.fg.inactive
     end,
     bg = function(buffer)
-      if buffer.is_focused then
-        return colors.bg.active
-      end
+      if buffer.is_focused then return colors.bg.active end
 
       local current_tab = vim.fn.tabpagenr()
       local all_windows = vim.fn.getwininfo()
 
       for _, w in pairs(all_windows) do
         if w.tabnr == current_tab then
-          if vim.fn.getbufinfo(w.bufnr)[1].name == buffer.path then
-            return colors.bg.visible
-          end
+          if vim.fn.getbufinfo(w.bufnr)[1].name == buffer.path then return colors.bg.visible end
         end
       end
       return colors.bg.inactive
     end,
   },
   components = {
-    { text = ' ', },
+    { text = ' ' },
     {
       text = function(buffer)
-        if is_picking_focus() or is_picking_close() then
-          return buffer.pick_letter
-        end
+        if is_picking_focus() or is_picking_close() then return buffer.pick_letter end
         -- If the very first character is a mulibyte character (like ç),
         -- using regular lua (str:sub(1, 1)) will give a weird character.
         return vim.fn.strcharpart(buffer.unique_prefix .. buffer.filename, 0, 1)
       end,
       fg = function()
-        if is_picking_focus() or is_picking_close() then
-          return 'red'
-        end
+        if is_picking_focus() or is_picking_close() then return 'red' end
       end,
     },
     {
@@ -127,14 +115,12 @@ require('cokeline').setup({
 
         -- If I don't wan't to count the modified icon in the
         -- truncation calculation, I add it after the truncation.
-        if buffer.is_modified then
-          r = r .. '[+]'
-        end
+        if buffer.is_modified then r = r .. '[+]' end
 
         return r
       end,
     },
-    { text = ' ', },
+    { text = ' ' },
   },
   rhs = {
     {

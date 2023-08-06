@@ -1,24 +1,24 @@
 local function ruby_function(filename, full_path_filename)
   local extension = filename:match('.*%.(.*)$')
   if extension == 'ru' then
-    return 'rackup '..full_path_filename, filename
+    return 'rackup ' .. full_path_filename, filename
   else
-    return 'ruby '..full_path_filename, filename
+    return 'ruby ' .. full_path_filename, filename
   end
 end
 
 local function rust_function(filename, full_path_filename)
   local filename_without_extension = filename:match('(.*)%.rs$')
   local bin_name = filename_without_extension .. '-nvim-rust-bin'
-  return 'rustc -o '..bin_name..' '..full_path_filename..' && ./'..filename_without_extension,
-         'Hopefully compiling and running '..filename
+  return 'rustc -o ' .. bin_name .. ' ' .. full_path_filename .. ' && ./' .. filename_without_extension,
+    'Hopefully compiling and running ' .. filename
 end
 
 local function c_function(filename, full_path_filename)
   local filename_without_extension = filename:match('(.*)%.c$')
-  local bin_name = filename_without_extension..'-nvim-c-bin'
-  return 'gcc -o '..bin_name..' '..full_path_filename..' && ./'..bin_name,
-         'Hopefully compiling and running '..filename
+  local bin_name = filename_without_extension .. '-nvim-c-bin'
+  return 'gcc -o ' .. bin_name .. ' ' .. full_path_filename .. ' && ./' .. bin_name,
+    'Hopefully compiling and running ' .. filename
 end
 
 local runCommands = {
@@ -39,22 +39,18 @@ local function getRunCommand()
   local full_path_filename = vim.fn.expand('%:p')
   local filename = vim.fn.expand('%')
 
-  if prog_shebang then
-    return prog_shebang..' '..full_path_filename,
-           prog_shebang..' '..filename
-  end
+  if prog_shebang then return prog_shebang .. ' ' .. full_path_filename, prog_shebang .. ' ' .. filename end
 
   local filetype = vim.bo.filetype
 
   local command = runCommands[filetype]
   if command == nil then
-    return nil, 'Não sei executar arquivos do tipo '..filetype
+    return nil, 'Não sei executar arquivos do tipo ' .. filetype
   elseif type(command) == 'function' then
     return command(filename, full_path_filename)
   end
 
-  return command..full_path_filename,
-         command..filename
+  return command .. full_path_filename, command .. filename
 end
 
 function ExecuteFileAsScript()
@@ -63,7 +59,7 @@ function ExecuteFileAsScript()
   if command then
     local ok, err = pcall(vim.fn.VtrSendCommand, command)
     if not ok then
-      print('[helper-scripts/vtr/execute-script](ExecuteFileAsScript) '..err)
+      print('[helper-scripts/vtr/execute-script](ExecuteFileAsScript) ' .. err)
       return
     end
   end
@@ -80,10 +76,8 @@ local _auto_execute_on_save = {
 function AutoExecuteOnSave()
   local filename = vim.fn.expand('%')
 
-  if _auto_execute_on_save.active and
-     _auto_execute_on_save.filename ~= filename
-  then
-    print('Auto run is already on for '.._auto_execute_on_save.filename)
+  if _auto_execute_on_save.active and _auto_execute_on_save.filename ~= filename then
+    print('Auto run is already on for ' .. _auto_execute_on_save.filename)
     return
   end
 
@@ -111,12 +105,12 @@ function AutoExecuteOnSave()
     callback = function()
       local ok, err = pcall(vim.fn.VtrSendCommand, command)
       if not ok then
-        print('[helper-scripts/vtr/execute-script](AutoExecuteOnSave) '..err)
+        print('[helper-scripts/vtr/execute-script](AutoExecuteOnSave) ' .. err)
         return
       end
     end,
     desc = 'Auto execute on save for file ' .. filename,
   })
 
-  print('Auto run started for '..filename)
+  print('Auto run started for ' .. filename)
 end

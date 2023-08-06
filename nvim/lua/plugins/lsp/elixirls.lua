@@ -10,7 +10,7 @@ return {
     },
   },
   handlers = {
-    ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { stylize_markdown = false, }),
+    ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { stylize_markdown = false }),
   },
 }
 

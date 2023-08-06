@@ -23,13 +23,15 @@ local fmt = require('luasnip.extras.fmt').fmt
 -- I made this a plain variable, but then I could
 -- only use it once for some misterious reason. D:!
 local function go_error_snippet()
-  return fmt(
-    'if {} {{{}\n\t{}\n}}',
-    { i(3, 'err != nil'), i(2), c(1, {
-      fmt('return {}fmt.Errorf("{}: %w", err)', { i(2), i(1), }),
+  return fmt('if {} {{{}\n\t{}\n}}', {
+    i(3, 'err != nil'),
+    i(2),
+    c(1, {
+      fmt('return {}fmt.Errorf("{}: %w", err)', { i(2), i(1) }),
       t('panic(err)'),
       i(1),
-    }), })
+    }),
+  })
 end
 
 luasnip.add_snippets('go', {
@@ -38,17 +40,21 @@ luasnip.add_snippets('go', {
   s('ife', go_error_snippet()),
 
   -- http handler args
-  s('wr', { t('w http.ResponseWriter, r *http.Request'), }),
+  s('wr', { t('w http.ResponseWriter, r *http.Request') }),
 
   -- function + http handler args
-  s('fh', fmt('func {}(w http.ResponseWriter, r *http.Request) {{\n\t{}\n}}', { i(1), i(2), })),
+  s('fh', fmt('func {}(w http.ResponseWriter, r *http.Request) {{\n\t{}\n}}', { i(1), i(2) })),
 
   -- function
-  s('func',
+  s(
+    'func',
     fmt('func {}({}){}{{\n\t{}\n}}', {
-      c(1, { i(1), fmt('({}) {}', { i(1), i(2), }) }), -- choice for functions or methods
-      i(2), i(3, ' '), i(4),
-    })),
+      c(1, { i(1), fmt('({}) {}', { i(1), i(2) }) }), -- choice for functions or methods
+      i(2),
+      i(3, ' '),
+      i(4),
+    })
+  ),
 
   -- TODO aprender a fazer isso
   -- s('for', fmt('for {} {{\n\t{}\n}}', {

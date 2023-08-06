@@ -16,5 +16,5 @@ return {
       print(':Bdelete')
     end,
     desc = 'Fecha o buffer atual',
-  }
+  },
 }
