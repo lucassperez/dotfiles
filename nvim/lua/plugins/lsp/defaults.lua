@@ -44,7 +44,7 @@ local function default_on_attach(client, bufnr)
 
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
     vim.lsp.buf.format({ async = true })
-  end, { desc = 'LSP: Formata o buffer atual e organiza os imports', })
+  end, { desc = 'LSP: Formata o buffer atual', })
 
   local root_dir = client.config.root_dir
   if root_dir then vim.api.nvim_set_current_dir(root_dir) end

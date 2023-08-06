@@ -172,6 +172,15 @@ lazy.setup({
     config = function() require('plugins.lsp') end,
     build = ':MasonUpdate',
     dependencies = {
+      {
+        'wesleimp/stylua.nvim',
+        build = 'cargo install stylua',
+        dependencies = 'nvim-lua/plenary.nvim',
+        -- Since os.execute may return nil, the LSP was annoyed that I could be
+        -- using a possibly not boolean value and enabled wants a boolean, I
+        -- used this "not not" to cast it to boolean.
+        -- enabled = function () return not not os.execute('cargo -v 2>/dev/null 1>&2') end
+      },
       'folke/neodev.nvim',
       'williamboman/mason-lspconfig.nvim',
       'jose-elias-alvarez/typescript.nvim',
