@@ -15,10 +15,10 @@ local function set_widget()
   local icon = ''
   if naughty.is_suspended() then
     color = '#be616e'
-    icon  = ''
+    icon = ''
   else
     color = '#a4b98e'
-    icon  = ''
+    icon = ''
   end
   widget:set_fg(color)
   text:set_text(icon)
@@ -42,7 +42,7 @@ function widget:resume()
 end
 
 widget:connect_signal('button::press', function(_, _, _, button)
-  if (button) then widget:toggle() end
+  if button then widget:toggle() end
 end)
 
 return widget

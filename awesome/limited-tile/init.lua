@@ -1,9 +1,8 @@
 -- Grab environment we need
-local client = require("awful.client")
+local client = require('awful.client')
 local ipairs = ipairs
 local math = math
-local capi =
-{
+local capi = {
   mouse = mouse,
   screen = screen,
   mousegrabber = mousegrabber,
@@ -17,7 +16,7 @@ local tile = {}
 tile.resize_jump_to_corner = false
 
 local function mouse_resize_handler(c, _, _, _, orientation)
-  orientation = orientation or "tile"
+  orientation = orientation or 'tile'
   local wa = c.screen.workarea
   local mwfact = c.screen.selected_tag.master_width_factor
   local cursor
@@ -26,10 +25,10 @@ local function mouse_resize_handler(c, _, _, _, orientation)
   local corner_coords
   local coordinates_delta = { x = 0, y = 0 }
 
-  cursor = "cross"
+  cursor = 'cross'
   if g.width + 15 >= wa.width then
-    offset = g.width * .5
-    cursor = "sb_v_double_arrow"
+    offset = g.width * 0.5
+    cursor = 'sb_v_double_arrow'
   elseif not (g.x + g.width + 15 > wa.x + wa.width) then
     offset = g.width
   end
@@ -77,14 +76,13 @@ local function mouse_resize_handler(c, _, _, _, orientation)
           wfact_x = (_mouse.x - geom.x) / wa.width
         end
 
-
-        if orientation == "tile" then
+        if orientation == 'tile' then
           new_mwfact = fact_x
           wfact = wfact_y
-        elseif orientation == "left" then
+        elseif orientation == 'left' then
           new_mwfact = 1 - fact_x
           wfact = wfact_y
-        elseif orientation == "bottom" then
+        elseif orientation == 'bottom' then
           new_mwfact = fact_y
           wfact = wfact_x
         else
@@ -119,9 +117,9 @@ local function do_tile(param)
   if master_count == 0 or master_count == #clients then
     for i = 1, #clients do
       param.geometries[clients[i]] = {
-        x      = workarea.x,
-        y      = workarea.y,
-        width  = workarea.width,
+        x = workarea.x,
+        y = workarea.y,
+        width = workarea.width,
         height = workarea.height,
       }
     end
@@ -130,12 +128,12 @@ local function do_tile(param)
 
   local master_height = workarea.height / master_count
   local master_width = (master_count == #clients and workarea.width or workarea.width / 2)
-  master_width = master_width * (master_width_factor + 1/2)
+  master_width = master_width * (master_width_factor + 1 / 2)
   for i = 1, master_count do
     param.geometries[clients[i]] = {
-      x      = workarea.x,
-      y      = workarea.y + master_height * (i - 1),
-      width  = master_width,
+      x = workarea.x,
+      y = workarea.y + master_height * (i - 1),
+      width = master_width,
       height = master_height,
     }
   end
@@ -143,9 +141,9 @@ local function do_tile(param)
   local client_width = workarea.width - master_width
   for i = master_count + 1, #clients do
     param.geometries[clients[i]] = {
-      x      = master_width,
-      y      = workarea.y,
-      width  = client_width,
+      x = master_width,
+      y = workarea.y,
+      width = client_width,
       height = workarea.height,
     }
   end

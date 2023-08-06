@@ -41,15 +41,13 @@ local function update(w, screen)
 
   local img = surface.load_silently(beautiful['layout_' .. name], false)
   w.imagebox.image = img
-  w.textbox.text   = img and '' or name
+  w.textbox.text = img and '' or name
 end
 
 local function update_from_tag(t)
   local screen = get_screen(t.screen)
   local w = boxes[screen]
-  if w then
-    update(w, screen)
-  end
+  if w then update(w, screen) end
 end
 
 --- Create a layoutbox widget. It draws a picture with the current layout
@@ -70,9 +68,7 @@ function layoutbox.new(screen, opts)
     capi.tag.connect_signal('property::layout', update_from_tag)
     capi.tag.connect_signal('property::screen', function()
       for s, w in pairs(boxes) do
-        if s.valid then
-          update(w, s)
-        end
+        if s.valid then update(w, s) end
       end
     end)
     layoutbox.boxes = boxes
@@ -81,19 +77,19 @@ function layoutbox.new(screen, opts)
   -- Do we already have a layoutbox for this screen?
   local w = boxes[screen]
   if not w then
-    w = wibox.widget {
+    w = wibox.widget({
       {
-        id     = 'imagebox',
-        widget = wibox.widget.imagebox
+        id = 'imagebox',
+        widget = wibox.widget.imagebox,
       },
       {
-        id     = 'textbox',
-        widget = wibox.widget.textbox
+        id = 'textbox',
+        widget = wibox.widget.textbox,
       },
-      layout = wibox.layout.fixed.horizontal
-    }
+      layout = wibox.layout.fixed.horizontal,
+    })
 
-    w._layoutbox_tooltip = tooltip {objects = {w}, delay_show = opts.delay_show}
+    w._layoutbox_tooltip = tooltip({ objects = { w }, delay_show = opts.delay_show })
 
     update(w, screen)
     boxes[screen] = w

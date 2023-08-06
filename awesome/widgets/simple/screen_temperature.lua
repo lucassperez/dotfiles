@@ -25,7 +25,9 @@ local function draw_widget()
 end
 
 draw_widget()
-awful.widget.watch('xsct', 1, function(_, stdout) calculate_widget_output(stdout) end, widget)
+awful.widget.watch('xsct', 1, function(_, stdout)
+  calculate_widget_output(stdout)
+end, widget)
 
 function widget:update_widget(cmd)
   cmd = cmd or 'xsct'
@@ -49,9 +51,13 @@ function widget:set(val)
 end
 
 widget:connect_signal('button::press', function(_, _, _, button)
-  if (button == 2) then widget:update_widget('xsct 5250')
-  elseif (button == 4) then widget:inc(500)
-  elseif (button == 5) then widget:dec(500) end
+  if button == 2 then
+    widget:update_widget('xsct 5250')
+  elseif button == 4 then
+    widget:inc(500)
+  elseif button == 5 then
+    widget:dec(500)
+  end
 end)
 
 return widget

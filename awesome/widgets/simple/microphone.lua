@@ -65,7 +65,9 @@ local function draw_widget()
 end
 
 draw_widget()
-watch('pactl get-source-volume @DEFAULT_SOURCE@', 1, function(_, stdout) calculate_widget_output(stdout) end, widget)
+watch('pactl get-source-volume @DEFAULT_SOURCE@', 1, function(_, stdout)
+  calculate_widget_output(stdout)
+end, widget)
 
 -- Widget public interface --
 
@@ -117,12 +119,15 @@ function widget:roundUpToNearestEvenNumberOrMultipleOf5()
 end
 
 widget:connect_signal('button::press', function(_, _, _, button)
-  if (button == 1) then widget:toggle()
-  elseif (button == 3) then
+  if button == 1 then
+    widget:toggle()
+  elseif button == 3 then
     awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
-  elseif (button == 4) then widget:inc(2)
-  elseif (button == 5) then widget:dec(2)
-  elseif (button == 2) then
+  elseif button == 4 then
+    widget:inc(2)
+  elseif button == 5 then
+    widget:dec(2)
+  elseif button == 2 then
     awful.spawn('pavucontrol -t 4')
   end
 end)

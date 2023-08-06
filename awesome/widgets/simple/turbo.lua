@@ -38,26 +38,69 @@ end
 
 local function random_build_phrase()
   local prefixes = {
-    'MAX', 'TURBO', 'ULTRA', 'NITRO', 'MEGA', 'BLASTER', 'HYPER', 'BIONIC',
-    'SPACE', 'EXTREME', 'ULTIMATE', 'COSMIC', 'SUPER', 'TRANSLUSCENT',
-    'FINAL', 'ROBOTIC', 'INTERGALATIC', 'NANO', 'POWER', 'SUBSPACE',
+    'MAX',
+    'TURBO',
+    'ULTRA',
+    'NITRO',
+    'MEGA',
+    'BLASTER',
+    'HYPER',
+    'BIONIC',
+    'SPACE',
+    'EXTREME',
+    'ULTIMATE',
+    'COSMIC',
+    'SUPER',
+    'TRANSLUSCENT',
+    'FINAL',
+    'ROBOTIC',
+    'INTERGALATIC',
+    'NANO',
+    'POWER',
+    'SUBSPACE',
     'INTERDIMENSIONAL',
-    'MAX', 'TURBO', 'ULTRA', 'NITRO', 'MEGA',
-    'MAX', 'TURBO', 'ULTRA', 'NITRO', 'MEGA',
+    'MAX',
+    'TURBO',
+    'ULTRA',
+    'NITRO',
+    'MEGA',
+    'MAX',
+    'TURBO',
+    'ULTRA',
+    'NITRO',
+    'MEGA',
   }
   local suffixes = {
-    'HYPERPROCESSOR', 'POWERLIGHT', 'POWER CONVERTER', 'MOLECULE GENERATOR',
-    'FIFINE', 'GENETIC TRANSPORTER', 'ACCELERATOR', 'QUADRATIC ENGINES'
+    'HYPERPROCESSOR',
+    'POWERLIGHT',
+    'POWER CONVERTER',
+    'MOLECULE GENERATOR',
+    'FIFINE',
+    'GENETIC TRANSPORTER',
+    'ACCELERATOR',
+    'QUADRATIC ENGINES',
   }
   return random_from_list(prefixes) .. ' ' .. random_from_list(suffixes)
 end
 
 local function random_verb()
   local verbs = {
-    'ACTIVATED', 'STARTED', 'NEUTRALIZED', 'DESTROYED', 'INTERRUPTED',
-    'ACCELERATED', 'HEATING UP', 'SHUTTING DOWN', 'DOWN', 'IGNITED',
-    'TURNED ON', 'BOOTED SUCCESFULLY', 'RECOVERED', 'SENT TO INTERDIMENSIONAL RIFT',
-    'TOOK OFF', 'LANDED'
+    'ACTIVATED',
+    'STARTED',
+    'NEUTRALIZED',
+    'DESTROYED',
+    'INTERRUPTED',
+    'ACCELERATED',
+    'HEATING UP',
+    'SHUTTING DOWN',
+    'DOWN',
+    'IGNITED',
+    'TURNED ON',
+    'BOOTED SUCCESFULLY',
+    'RECOVERED',
+    'SENT TO INTERDIMENSIONAL RIFT',
+    'TOOK OFF',
+    'LANDED',
   }
   return random_from_list(verbs)
 end

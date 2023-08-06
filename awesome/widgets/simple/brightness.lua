@@ -47,9 +47,7 @@ local function round(string)
 
   local deci = number % 1
 
-  if deci > 0.5 then
-    return math.floor(number) + 1
-  end
+  if deci > 0.5 then return math.floor(number) + 1 end
 
   return math.floor(number)
 end
@@ -60,10 +58,12 @@ local function calculate_widget_output(out)
 end
 
 local function draw_widget()
-  awful.spawn.easy_async( 'light', calculate_widget_output)
+  awful.spawn.easy_async('light', calculate_widget_output)
 end
 
-awful.widget.watch('light', 1, function(_, stdout) calculate_widget_output(stdout) end, widget)
+awful.widget.watch('light', 1, function(_, stdout)
+  calculate_widget_output(stdout)
+end, widget)
 draw_widget()
 
 function widget:update_widget(cmd)
@@ -100,11 +100,16 @@ function widget:roundNearest5()
 end
 
 widget:connect_signal('button::press', function(_, _, _, button)
-  if (button == 1 or button == 3) then widget:roundNearest5()
+  if button == 1 or button == 3 then
+    widget:roundNearest5()
     -- elseif (button == 2) then widget:update_widget('xbacklight -set 50')
-  elseif (button == 2) then widget:update_widget('light -S 50')
-  elseif (button == 4) then widget:inc(5)
-  elseif (button == 5) then widget:dec(5) end
+  elseif button == 2 then
+    widget:update_widget('light -S 50')
+  elseif button == 4 then
+    widget:inc(5)
+  elseif button == 5 then
+    widget:dec(5)
+  end
 end)
 
 return widget

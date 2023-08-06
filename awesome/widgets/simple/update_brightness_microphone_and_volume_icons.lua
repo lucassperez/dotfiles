@@ -6,5 +6,5 @@ return {
     require('widgets.simple.microphone'):roundUpToNearestEvenNumberOrMultipleOf5()
     require('widgets.simple.brightness'):roundNearest5()
     require('widgets.simple.screen_temperature'):update_widget()
-  end
+  end,
 }
