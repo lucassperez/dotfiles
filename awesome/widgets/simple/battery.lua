@@ -8,6 +8,7 @@
 -- acpi
 
 local wibox = require('wibox')
+local awful = require('awful')
 local watch = require('awful.widget.watch')
 local naughty = require('naughty')
 local beautiful = require('beautiful')
@@ -20,7 +21,7 @@ local text = wibox.widget({
 local widget = wibox.widget.background()
 widget:set_widget(text)
 
-watch('acpi -b', 5, function(widget, stdout, stderr, exitreason, exitcode)
+local function calculate_widget_output(stdout)
   local state, percentage, rest = stdout:match('Battery %d+: ([%w ]*), (%d*)%%')
   percentage = tonumber(percentage)
 
@@ -110,7 +111,16 @@ watch('acpi -b', 5, function(widget, stdout, stderr, exitreason, exitcode)
     })
     LastBatteryWarn = os.time()
   end
+end
+
+watch('acpi -b', 5, function(_, stdout, stderr, exitreason, exitcode)
+  calculate_widget_output(stdout)
 end, widget)
+
+function widget:update_widget(cmd)
+  cmd = cmd or 'acpi -b'
+  awful.spawn.easy_async(cmd, calculate_widget_output)
+end
 
 local function pluralize_number(string, word)
   local without_possible_leading_zero = string:gsub('^0', '')
