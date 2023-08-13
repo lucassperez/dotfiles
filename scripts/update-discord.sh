@@ -46,7 +46,7 @@ mkdir $discord_dir
 mv Discord $discord_dir
 
 if [ -L "$HOME/.local/bin/discord" ]; then
-  printf -- "\n=== Symlink in $HOME/.local/bin/discord already exists, DELETING it! ===\n\n"
+  printf -- "=== Symlink in $HOME/.local/bin/discord already exists, DELETING it! ===\n"
   rm "$HOME/.local/bin/discord"
 elif [ -e "$HOME/.local/bin/discord" ]; then
   new_old_discord_path=`add_old_sufix "$HOME/.local/bin/discord"`
