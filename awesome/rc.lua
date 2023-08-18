@@ -845,15 +845,32 @@ local globalkeys = gears.table.join(
     awful.spawn(floating_terminal_tmux)
   end, { group = 'Launcher', description = 'open floating ' .. terminal .. ' terminal with tmux running' }),
 
-  awful.key({}, 'Print', function()
-    awful.spawn('flameshot screen -c')
-  end, { group = 'Launcher', description = 'Print screen to clipboard' }),
+  -- Prints
+  ---------
+  -- Basically, Control + Print is the rectangular selection
+  -- Just print is the screen, hold shift to send it to clipboard
+  -- Modkey + Print is all screens, hold shift to send it to clipboard
+
+  -- Rectangular
   awful.key({ control }, 'Print', function()
     awful.spawn('flameshot gui')
-  end, { group = 'Launcher', description = 'Select area to print' }),
-  awful.key({ modkey }, 'Print', function()
+  end, { group = 'Launcher', description = 'Print select area' }),
+
+  -- Screen
+  awful.key({}, 'Print', function()
+    awful.spawn('flameshot screen')
+  end, { group = 'Launcher', description = 'Print screen and save it to default directory' }),
+  awful.key({ shift }, 'Print', function()
+    awful.spawn('flameshot screen -c')
+  end, { group = 'Launcher', description = 'Print screen to clipboard' }),
+
+  -- All screens
+  awful.key({ shift, modkey }, 'Print', function()
     awful.spawn('flameshot full -c')
   end, { group = 'Launcher', description = 'Print all screens to clipboard' }),
+  awful.key({ modkey }, 'Print', function()
+    awful.spawn('flameshot full')
+  end, { group = 'Launcher', description = 'Print all screens and save it to default directory' }),
 
   awful.key({ modkey, shift }, 'ç', function()
     awful.spawn(scripts_dir .. '/emoji/dmenu-search-emoji.sh')
