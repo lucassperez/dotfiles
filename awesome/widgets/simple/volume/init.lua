@@ -7,10 +7,25 @@
 
 -- Dependencies:
 -- pactl
+-- or
+-- wpctl
 
 local awful = require('awful')
 local watch = require('awful.widget.watch')
 local wibox = require('wibox')
+
+-- The implementation should be a table that has the required fields being used
+-- in this file:
+-- {
+--   get_volume_command      [string]
+--   toggle_mute_command     [string]
+--   increase_volume_command [function(number|string) string]
+--   decrease_volume_command [function(number|string) string]
+--   set_volume_command      [function(number|string) string]
+--   parse_output            [function(string) (number|nil, boolean|nil)]
+-- }
+-- local implementation = require('widgets.simple.volume.pulseaudio')
+local implementation = require('widgets.simple.volume.wireplumber')
 
 local text = wibox.widget({
   font = 'FontAwesome 11',
@@ -20,20 +35,10 @@ local text = wibox.widget({
 local widget = wibox.widget.background()
 widget:set_widget(text)
 
-local function calculate_widget_output(out)
-  local volume = out:match('^Volume: front%-left: *%d+ */ *(%d+)%%')
-  if volume == nil then volume = out:match('^Volume: mono: *%d+ */ *(%d+)%%') end
+local function calculate_widget_output(stdout)
+  local volume, is_muted = implementation.parse_output(stdout)
 
-  volume = tostring(volume)
-
-  local f = io.popen('pactl get-sink-mute @DEFAULT_SINK@')
-  if f == nil then return end
-
-  local mute = f:read()
-  if mute then mute = mute:match('^Mute: (%w+)$') end
-  f:close()
-
-  if volume == '0' or mute == 'yes' then
+  if volume == 0 or is_muted then
     widget:set_fg('#c6c6c6')
   else
     widget:set_fg('#d986c0')
@@ -41,26 +46,24 @@ local function calculate_widget_output(out)
 
   local val = ''
 
-  if mute == nil then
-    val = ' ? ' .. volume .. '%'
-  elseif mute == 'yes' then
-    val = 'X ' .. volume .. '%'
+  if is_muted == nil then
+    val = ' ? ' .. tostring(volume) .. '%'
+  elseif is_muted then
+    val = 'X ' .. tostring(volume) .. '%'
   else
-    volume = tonumber(volume)
     if volume >= 50 then
-      val = '  ' .. volume .. '%'
+      val = '  ' .. tostring(volume) .. '%'
     elseif volume > 0 then
-      val = '  ' .. volume .. '%'
+      val = '  ' .. tostring(volume) .. '%'
     else
-      val = '  ' .. volume .. '%'
+      val = '  ' .. tostring(volume) .. '%'
     end
   end
 
   -- local config_home = os.getenv('XDG_CONFIG_DIR') or (os.getenv('HOME') .. '/.config')
   -- local file = io.open(config_home..'/awesome/widgets/simple/anota-lua', 'a')
-  -- file:write(out..'\n')
-  -- file:write(volume..'\n')
-  -- file:write(on_or_off..'\n')
+  -- file:write('   out: '..out..'\n')
+  -- file:write('volume: '..volume..'\n')
   -- file:write('--\n')
   -- file:close()
 
@@ -68,58 +71,61 @@ local function calculate_widget_output(out)
 end
 
 local function draw_widget()
-  awful.spawn.easy_async('pactl get-sink-volume @DEFAULT_SINK@', calculate_widget_output)
+  awful.spawn.easy_async(implementation.get_volume_command, calculate_widget_output)
 end
 
 draw_widget()
-watch('pactl get-sink-volume @DEFAULT_SINK@', 1, function(_, stdout)
+
+watch(implementation.get_volume_command, 1, function(_, stdout)
   calculate_widget_output(stdout)
 end, widget)
 
 -- Widget public interface --
 
 function widget:update_widget(cmd)
-  cmd = cmd or 'pactl get-sink-volume @DEFAULT_SINK@'
+  cmd = cmd or implementation.get_volume_command
   awful.spawn.easy_async(cmd, draw_widget)
 end
 
 function widget:toggle()
-  widget:update_widget('pactl set-sink-mute @DEFAULT_SINK@ toggle')
+  widget:update_widget(implementation.toggle_mute_command)
 end
 
 function widget:inc(delta)
   delta = delta or 5
-  widget:update_widget('pactl set-sink-volume @DEFAULT_SINK@ +' .. delta .. '% +' .. delta .. '%')
+  widget:update_widget(implementation.increase_volume_command(delta))
 end
 
 function widget:dec(delta)
   delta = delta or 5
-  widget:update_widget('pactl set-sink-volume @DEFAULT_SINK@ -' .. delta .. '% -' .. delta .. '%')
+  widget:update_widget(implementation.decrease_volume_command(delta))
 end
 
 function widget:set(value)
   value = value or 50
-  widget:update_widget('pactl set-sink-volume @DEFAULT_SINK@ ' .. value .. '%')
+  widget:update_widget(implementation.set_volume_command(value))
 end
 
 function widget:roundUpToNearestEvenNumberOrMultipleOf5()
-  local f = io.popen('pactl get-sink-volume @DEFAULT_SINK@')
+  -- TODO don't use io.popen?
+  local f = io.popen(implementation.get_volume_command)
   if f == nil then return end
 
   local output = f:read()
   f:close()
-  local volume = output:match('^Volume: front%-left: *%d+ */ *(%d+)%%')
-  if volume == nil then volume = output:match('^Volume: mono: *%d+ */ *(%d+)%%') end
+  local volume = implementation.parse_output(output)
   if volume == nil then return end
-
-  volume = tonumber(volume)
 
   if volume % 5 == 0 then return end
 
-  if (volume - 1) % 5 == 0 then
-    volume = volume - 1
-  elseif (volume + 1) % 5 == 0 or volume % 2 == 1 then
-    volume = volume + 1
+  local rest = volume % 10
+  if rest >= 7.5 then
+    -- volume = (volume//10 * 10)
+    volume = math.floor(volume / 10) * 10 + 10
+  elseif rest >= 2.5 then
+    volume = math.floor(volume / 10) * 10 + 5
+  else
+    volume = math.floor(volume / 10) * 10
   end
 
   widget:set(volume)
