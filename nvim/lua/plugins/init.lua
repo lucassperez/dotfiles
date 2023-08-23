@@ -80,7 +80,7 @@ lazy.setup({
     'willothy/nvim-cokeline',
     enabled = true,
     config = function()
-      require('plugins.cokeline')
+      require('plugins.nvim-cokeline')
     end,
     dependencies = 'nvim-lua/plenary.nvim',
   },
@@ -93,7 +93,7 @@ lazy.setup({
       'ColorizerReloadAllBuffers',
     },
     config = function()
-      require('plugins.colorizer')
+      require('plugins.nvim-colorizer')
     end,
   },
 
