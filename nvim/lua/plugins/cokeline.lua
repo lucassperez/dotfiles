@@ -1,5 +1,5 @@
-local is_picking_focus = require('cokeline/mappings').is_picking_focus
-local is_picking_close = require('cokeline/mappings').is_picking_close
+local is_picking_focus = require('cokeline.mappings').is_picking_focus
+local is_picking_close = require('cokeline.mappings').is_picking_close
 
 vim.keymap.set('n', '<leader>p', '<Plug>(cokeline-pick-focus)', { desc = 'Seleciona um buffer para ter o foco' })
 vim.keymap.set('n', '<A-Q>', '<Plug>(cokeline-switch-prev)', { desc = 'Move o buffer atual para trás na tabline' })
