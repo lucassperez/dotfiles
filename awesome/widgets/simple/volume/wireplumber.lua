@@ -23,7 +23,15 @@ local function parse_output(out)
 
   local volume, is_muted = out:gsub('\n', ''):match('^Volume: ([%d.]+) ?(.*)')
 
-  volume = math.floor(volume * 100)
+  -- When volume is 0.58, this returns 57, why though?
+  -- Even though math.floor(58.0) returns 58 correctly.
+  -- What!
+  -- volume = math.floor(volume * 100)
+  -- Apparently also happens with other numbers, like 113/114 and 115/116.
+
+  volume = volume:gsub('%.', '')
+  volume = tonumber(volume)
+
   is_muted = is_muted == '[MUTED]'
 
   return volume, is_muted

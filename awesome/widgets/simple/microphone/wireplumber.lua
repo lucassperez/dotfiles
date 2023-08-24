@@ -23,7 +23,10 @@ local function parse_output(out)
 
   local volume, is_muted = out:gsub('\n', ''):match('^Volume: ([%d.]+) ?(.*)')
 
-  volume = math.floor(volume * 100)
+  -- volume = math.floor(volume * 100)
+  volume = volume:gsub('%.', '')
+  volume = tonumber(volume)
+
   is_muted = is_muted == '[MUTED]'
 
   return volume, is_muted
