@@ -1,4 +1,4 @@
-﻿# vi:ft=sh
+# vi:ft=sh
 
 # == TODO ==
 # kazam
@@ -237,6 +237,7 @@ sudo make install
 cd ~
 
 # Xplugd
+# Don't forget to create xplugrc AND make it executable!
 mkdir -p ~/sources
 git clone git@github.com:troglobit/xplugd.git ~/sources/xplugd
 sudo dnf in -y libX11-devel libXi-devel libXrandr-devel
