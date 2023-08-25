@@ -8,6 +8,10 @@
   I MADE IT CONFIGURABLE, SO WHEN YOU CREATE THE LAYOUTBOX, IT
   CAN RECEIVE A SECOND ARGUMENT, A TABLE, WITH THIS OPTION, delay_show.
   IF NOT PROVIDED, IT WILL BE DEFAULTED TO 5, WHICH IS BIGGER.
+
+  If delay_show is not greater than or equal to zero,
+  then the tooltipit is disabled.
+
 ]]
 
 ---------------------------------------------------------------------------
@@ -37,7 +41,9 @@ local boxes = nil
 local function update(w, screen)
   screen = get_screen(screen)
   local name = layout.getname(layout.get(screen))
-  w._layoutbox_tooltip:set_text(name or '[no name]')
+  if w._layoutbox_tooltip then
+    w._layoutbox_tooltip:set_text(name or '[No Name]')
+  end
 
   local img = surface.load_silently(beautiful['layout_' .. name], false)
   w.imagebox.image = img
@@ -89,7 +95,9 @@ function layoutbox.new(screen, opts)
       layout = wibox.layout.fixed.horizontal,
     })
 
-    w._layoutbox_tooltip = tooltip({ objects = { w }, delay_show = opts.delay_show })
+    if opts.delay_show >= 0 then
+      w._layoutbox_tooltip = tooltip({ objects = { w }, delay_show = opts.delay_show })
+    end
 
     update(w, screen)
     boxes[screen] = w
