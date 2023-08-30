@@ -134,6 +134,12 @@ local myawesomemenu = {
       awesome.quit()
     end,
   },
+  {
+    'Power off',
+    function()
+      awful.spawn.with_shell('shutdown now')
+    end,
+  },
 }
 
 local menu_awesome = { 'Awesome', myawesomemenu, beautiful.awesome_icon }
@@ -780,6 +786,9 @@ local globalkeys = gears.table.join(
   awful.key({ modkey }, 'BackSpace', function()
     awful.spawn('slock')
   end, { group = 'awesome', description = 'lock screen' }),
+  awful.key({ modkey, control, shift }, 'BackSpace', function()
+    awful.spawn.with_shell('shutdown now')
+  end, { group = 'awesome', description = 'Power off' }),
 
   -- Prompt
   -- awful.key({ modkey }, 'r', function () awful.screen.focused().mypromptbox:run() end,
