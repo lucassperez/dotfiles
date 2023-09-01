@@ -91,7 +91,6 @@ printf "\tNvim\n"
 printf "\tTmux\n"
 printf "\tAwesomeWM (rc, my-theme and widgets/)\n"
 printf "\tMime types, xinputrc and inputrc\n"
-printf "\tDocker\n"
 printf "\tTig\n"
 printf "\tRofi\n"
 
@@ -134,9 +133,6 @@ ln -sfni "$DIR/awesome/limited-tile/limitedtilew.png" "$CONFIG_DIR/awesome/limit
 ln -sfni "$DIR/mime.types" "$HOME/.mime.types"
 ln -sfni "$DIR/xinput/xinputrc" "$HOME/.xinputrc"
 ln -sfni "$DIR/inputrc" "$CONFIG_DIR/inputrc"
-
-mkdir -p "$CONFIG_DIR/docker/"
-ln -sfni "$DIR/docker/config.json" "$CONFIG_DIR/docker/config.json"
 
 mkdir -p "$CONFIG_DIR/tig"
 ln -sfni "$DIR/tig/config" "$CONFIG_DIR/tig/config"
