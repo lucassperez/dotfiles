@@ -29,33 +29,43 @@ local function default_key_maps(bufnr)
   map('n', '\\f', function()
     vim.lsp.buf.format({ async = true })
   end, 'Formata o buffer atual')
+
   map('n', 'K', function()
     telescopeOrNvimLsp(vim.lsp.buf.definition, 'lsp_definitions')
   end, 'Vai para a definição (telescope se possível)')
+
   map('n', '\\k', function()
     vim.lsp.buf.hover()
   end, 'Hover (documentação flutuante)')
+
   map('n', '\\n', function()
     vim.lsp.buf.rename()
   end, 'Renomeia')
+
   map('n', '\\r', function()
     telescopeOrNvimLsp(vim.lsp.buf.references, 'lsp_references')
   end, 'Mostra as referências (onde é usado) (telescope se possível)')
+
   map('n', '\\ca', function()
     vim.lsp.buf.code_action()
   end, 'Code action')
+
   map('n', '\\d', function()
     vim.diagnostic.open_float()
   end, 'Mostra diagnóstico da linha em janela flutuante')
+
   map('n', '\\D', function()
     telescopeOrNvimLsp(vim.diagnostic.open_float, 'diagnostics')
   end, 'Mostra diagnósticos com telescope se possível')
+
   map('n', '[d', function()
     goToDiagnosticAndCenter('prev')
   end, 'Mostra o próximo diagnóstico do buffer')
+
   map('n', ']d', function()
     goToDiagnosticAndCenter('next')
   end, 'Mostra o diagnóstico anterior do buffer')
+
   map('n', '\\i', function()
     telescopeOrNvimLsp(vim.lsp.buf.implementation, 'lsp_implementations')
   end, 'Mostra quem implementa (telescope se possível)')
