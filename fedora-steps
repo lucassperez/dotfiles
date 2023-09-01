@@ -38,6 +38,9 @@ After installing blueman, can change the /etc/bluetooth/main.conf to set this:
 Experimental=true
 This allows it to show the battery of devices
 
+To install ruby, we probably need this first: sudo dnf install openssl1.1 openssl1.1-devel libyaml libyaml-devel
+Libyaml and libyaml-devel is needed for 3.2, don\'t know about others
+
 # === COMMANDS START HERE ===
 
 # DNF configs
