@@ -14,7 +14,7 @@ alias lwrc="nvim $CONFIG_PATH/leftwm/config.toml"
 zshrc() {
   nvim \
     $ZDOTDIR/.zshrc \
-    `[ -f "$ZDOTDIR/.zshrc.local" ] && echo "$ZDOTDIR/.zshrc.local"` \
+    `[ -f "$ZDOTDIR/zshrc.local" ] && echo "$ZDOTDIR/zshrc.local"` \
     ~/.profile \
     ~/.zshenv \
     `[ -f "$ZDOTDIR/.zshenv.local" ] && echo "$ZDOTDIR/.zshenv.local"`
