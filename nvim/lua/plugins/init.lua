@@ -77,7 +77,10 @@ lazy.setup({
     -- https://github.com/ojroques/nvim-bufdel
     -- https://github.com/famiu/bufdelete.nvim
     -- https://github.com/moll/vim-bbye
-    'willothy/nvim-cokeline',
+    -- 'willothy/nvim-cokeline',
+    -- dir = '~/trb/FORKS/nvim-cokeline',
+    'lucassperez/nvim-cokeline',
+    branch = 'buffer-picker-indexes',
     enabled = true,
     config = function()
       require('plugins.nvim-cokeline')
