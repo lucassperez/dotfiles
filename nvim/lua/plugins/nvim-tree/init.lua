@@ -9,25 +9,14 @@
 -- }
 -- So we can define what the mapping actually do from lazy instead of
 -- calling vim.keymap.set from inside the setup function.
--- But now if I require for example nvim-tree.api and store it in a variable,
--- local nvim_tree_api = require('nvim-tree.api'),
--- This doesn't really work. I think it is because the plugin is not yet loaded
--- when the function `keys` is executed. With a separate function that will
--- just be executed later, though, it is possible.
 local function keys()
-  -- This is the separate function. Now that's silly, uh?
-  -- All to avoid typing require('nvim-tree.api') on each keymap...!
-  local function nvim_tree_api()
-    return require('nvim-tree.api')
-  end
-
   return {
     {
       mode = 'n',
       desc = 'Abre nvim-tree',
-      '<leader>b',
+      '<C-n>',
       function()
-        nvim_tree_api().tree.toggle()
+        require('nvim-tree.api').tree.toggle()
       end,
       { noremap = true, silent = false },
     },
@@ -36,7 +25,7 @@ local function keys()
       desc = 'Abre nvim-tree com o cursor no arquivo atual',
       '<leader>n',
       function()
-        nvim_tree_api().tree.toggle({ find_file = true })
+        require('nvim-tree.api').tree.toggle({ find_file = true })
       end,
       { noremap = true, silent = false },
     },

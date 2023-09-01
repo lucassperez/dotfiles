@@ -3,7 +3,7 @@ local function keys()
     {
       mode = 'n',
       desc = 'Abre o oil numa janela flutuante',
-      '<C-n>',
+      '<leader>b',
       function()
         require('oil').toggle_float()
       end,
