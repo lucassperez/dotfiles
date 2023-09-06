@@ -34,6 +34,7 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 # Run clipmenu --help to see all options
 # https://github.com/cdown/clipmenu
 export CM_HISTLENGTH=10
+export CM_LAUNCHER=rofi
 
 # Cor do jq
 # A única mudança foi mudar o null para vermelho, pois antes era
