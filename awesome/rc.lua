@@ -478,9 +478,14 @@ local globalkeys = gears.table.join(
   -- awful.key({ modkey }, 'y',
   --           function() awful.spawn(scripts_dir..'/dmenu/copyq.sh') end,
   --           { group = 'System controls', description = 'Copyq dmenu script', }),
+  -- only works with dmenu as launcher, but setting the CM_LAUNCHER inline is
+  -- not working, don't know why ):
+  -- awful.key({ modkey }, 'y', function()
+  --   awful.spawn('clipmenu -i -h 21 -p "Clipboard" -sb "#008080" -nb "#000000"')
+  -- end, { group = 'System controls', description = 'Clipmenu' }),
   awful.key({ modkey }, 'y', function()
-    awful.spawn('clipmenu -i -h 21 -p "Clipboard" -sb "#008080" -nb "#000000"')
-  end, { group = 'System controls', description = 'Clipmenu' }),
+    awful.spawn('clipmenu -i')
+  end, { group = 'System controls', description = 'Clipmenu clipboard manager' }),
   awful.key({ modkey, shift }, 't', function()
     awful.spawn(scripts_dir .. '/toggle-touchpad.sh')
   end, { group = 'System controls', description = 'Touchpad' }),
