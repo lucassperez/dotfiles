@@ -53,7 +53,8 @@ local function mapWhitespaceCharacter(command)
 end
 
 mapWhitespaceCharacter('s')
-mapWhitespaceCharacter('x')
+-- I actually don't want it for specifically x
+-- mapWhitespaceCharacter('x')
 
 -- Cansei de fazer isso aqui sem querer
 -- Ainda é possível acessar o histórico
