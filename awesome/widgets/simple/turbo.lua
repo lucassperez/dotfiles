@@ -128,7 +128,11 @@ function widget:send_turbo_notification()
 end
 
 widget:connect_signal('button::press', function(_, _, _, button)
-  if button == 1 then widget:send_turbo_notification() end
+  if button == 1 then
+    widget:send_turbo_notification()
+  elseif button == 3 then
+    require('awful').spawn('clipmenu -i')
+  end
 end)
 
 return widget
