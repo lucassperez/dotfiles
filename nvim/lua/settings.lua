@@ -49,9 +49,10 @@ opt.listchars = {
   -- tab = '⤷ ',
   tab = '│ ',
   trail = '·',
-  nbsp = '·',
+  nbsp = '%',
   extends = '»',
   precedes = '«',
+  leadmultispace = '┊ ',
 }
 opt.textwidth = 0
 -- Eu odeio demais formatoptions "t", "c", "r" e "o" ):<
