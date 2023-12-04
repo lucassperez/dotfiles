@@ -126,7 +126,7 @@ local myawesomemenu = {
     end,
   },
   { 'Manual', floating_terminal .. ' -e man awesome' },
-  { 'Edit config', editor_cmd .. ' ' .. awesome.conffile },
+  { 'Edit Config', editor_cmd .. ' ' .. awesome.conffile },
   { 'Restart', awesome.restart },
   {
     'Quit',
@@ -135,7 +135,7 @@ local myawesomemenu = {
     end,
   },
   {
-    'Power off',
+    'Power Off',
     function()
       awful.spawn.with_shell('shutdown now')
     end,
