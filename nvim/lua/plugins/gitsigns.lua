@@ -59,11 +59,11 @@ gitsigns.setup({
     local function map_hunk_navigation(keymap, hunk_function, show_preview, description)
       buf_map('n', keymap, function()
         hunk_function({ wrap = false, preview = show_preview })
-        if #gitsigns.get_hunks() > 0 then
-          vim.schedule(function()
-            vim.api.nvim_feedkeys('zz', 'n', false)
-          end)
-        end
+        -- if #gitsigns.get_hunks() > 0 then
+        --   vim.schedule(function()
+        --     vim.api.nvim_feedkeys('zz', 'n', false)
+        --   end)
+        -- end
       end, { desc = description })
     end
 

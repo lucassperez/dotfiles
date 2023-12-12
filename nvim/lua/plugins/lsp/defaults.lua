@@ -13,11 +13,11 @@ local function telescopeOrNvimLsp(std_function, telescope_function_name)
   end
 end
 
-local function goToDiagnosticAndCenter(direction)
-  local should_center = vim.diagnostic['get_' .. direction]({ wrap = false })
-  vim.diagnostic['goto_' .. direction]({ wrap = false })
-  if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end
-end
+-- local function goToDiagnosticAndCenter(direction)
+--   local should_center = vim.diagnostic['get_' .. direction]({ wrap = false })
+--   vim.diagnostic['goto_' .. direction]({ wrap = false })
+--   if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end
+-- end
 
 local function default_key_maps(bufnr)
   local function map(lhs, rhs, command, description)
@@ -58,12 +58,20 @@ local function default_key_maps(bufnr)
     telescopeOrNvimLsp(vim.diagnostic.open_float, 'diagnostics')
   end, 'Mostra diagnósticos com telescope se possível')
 
+  -- map('n', '[d', function()
+  --   goToDiagnosticAndCenter('prev')
+  -- end, 'Mostra o próximo diagnóstico do buffer')
+
+  -- map('n', ']d', function()
+  --   goToDiagnosticAndCenter('next')
+  -- end, 'Mostra o diagnóstico anterior do buffer')
+
   map('n', '[d', function()
-    goToDiagnosticAndCenter('prev')
+    vim.diagnostic.goto_prev({ wrap = false })
   end, 'Mostra o próximo diagnóstico do buffer')
 
   map('n', ']d', function()
-    goToDiagnosticAndCenter('next')
+    vim.diagnostic.goto_next({ wrap = false })
   end, 'Mostra o diagnóstico anterior do buffer')
 
   map('n', '\\i', function()
