@@ -10,10 +10,14 @@ fv() {
 
 vimgit() {
   # files=`git status --porcelain | awk '{print $2}' | sort -u | tr "\n" ' '`
-  files=`git status --porcelain | awk '{print $2}' | tr "\n" ' '`
+  local files=`git status --porcelain | awk '{print $2}' | tr '\n' ' '`
+  # local files=`git status --porcelain | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $2}' | tr '\n' ' '`
   [ -z $files ] && return
 
-  nvim `echo $files`
+  (
+    cd `git rev-parse --show-toplevel`
+    nvim `echo $files`
+  )
 }
 
 simplexev() {
