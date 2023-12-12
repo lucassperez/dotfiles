@@ -20,6 +20,9 @@ if not ok then
 end
 
 lazy.setup({
+  -- I also think bufferchad has a telescope extension
+  -- https://github.com/mrquantumcodes/bufferchad.nvim
+
   -- Without lazy loading
   -----------------------
   -- Lualine, barbar and catppuccin
@@ -87,6 +90,8 @@ lazy.setup({
     end,
     dependencies = 'nvim-lua/plenary.nvim',
   },
+  -- https://github.com/uga-rosa/ccc.nvim/blob/main/doc/ccc.txt
+  -- Maybe change colorizer for this?
   {
     'NvChad/nvim-colorizer.lua',
     cmd = {
@@ -259,7 +264,7 @@ lazy.setup({
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    event = { 'BufReadPost', 'BufNewFile' },
+    event = { 'FileType' },
     config = function()
       require('plugins.tree-sitter')
     end,
