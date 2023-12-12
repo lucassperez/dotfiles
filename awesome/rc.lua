@@ -585,9 +585,11 @@ local globalkeys = gears.table.join(
     screen_temperature:dec(500)
   end),
 
-  awful.key({ modkey }, 'n', function()
-    notification_widget:toggle()
-  end, { group = 'System controls', description = 'toggle notification' }),
+  -- I have never used this intentinally,
+  -- and have hit accidentally on occasion
+  -- awful.key({ modkey }, 'n', function()
+  --   notification_widget:toggle()
+  -- end, { group = 'System controls', description = 'toggle notification' }),
 
   awful.key({ modkey }, 's', hotkeys_popup.show_help, { description = 'show help', group = 'awesome' }),
   -- awful.key({ modkey }, 'Left',   awful.tag.viewprev,        { description = 'view previous', group = 'tag' }),

@@ -135,6 +135,7 @@ widget:connect_signal('button::press', function(_, _, _, button)
   if button == 1 then
     widget:toggle()
   elseif button == 3 then
+    -- TODO Git awesome has raise_or_spawn. One day maybe I can use it.
     awful.spawn('alacritty -t floating-alacritty -o window.opacity=1.0 -e pulsemixer')
   elseif button == 4 then
     widget:inc(2)
