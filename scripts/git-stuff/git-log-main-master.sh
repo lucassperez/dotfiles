@@ -33,10 +33,6 @@ if [ "$ACTUAL_BRANCH" = main -o "$ACTUAL_BRANCH" = master -o "$ACTUAL_BRANCH" = 
   # Just exit to keep the exit code of git log, be it zero or non zero
   exit
 
-elif [ "$(git rev-parse --verify -q 'pre-master')" ]; then
-  echo "\e[1;91mNão esquecer de remover o pre-master do script do gitlog depois!\e[0m"
-  BRANCH='pre-master'
-
 elif [ "$(git rev-parse --verify -q main)" ]; then
   BRANCH=main
 
