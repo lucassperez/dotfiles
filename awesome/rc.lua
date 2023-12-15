@@ -135,6 +135,12 @@ local myawesomemenu = {
     end,
   },
   {
+    'Reboot',
+    function ()
+      awful.spawn.with_shell('reboot')
+    end
+  },
+  {
     'Power Off',
     function()
       awful.spawn.with_shell('shutdown now')
