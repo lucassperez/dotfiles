@@ -3,7 +3,14 @@ local function map(mode, key, command, opts)
 end
 
 local function noremap(mode, key, command, opts)
-  if opts then opts.noremap = true end
+  if opts == nil then opts = {} end
+  -- Apparently, vim.keymap.set only works with "remap", and not "noremap".
+  -- "Noremap" only works with vim.api.nvim_set_keymap.
+  -- opts.noremap = true
+  -- Also, vim.keymap.set defaults "remap" to false anyways (noremap true).
+  -- But vim.api.nvim_set_keymap defaults noremap to false. Also, it does
+  -- not accept "remap" key in opts.
+  opts.remap = false
   vim.keymap.set(mode, key, command, opts)
 end
 
