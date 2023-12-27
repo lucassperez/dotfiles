@@ -8,4 +8,4 @@ export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 # echo "=== $(date) ===" >>$LOG
 # echo "Caller: $0" >>$LOG
 
-[ -f "$ZDOTDIR/.zshenv.local" ] && . "$ZDOTDIR/.zshenv.local"
+[ -f "$ZDOTDIR/zshenv.local" ] && . "$ZDOTDIR/zshenv.local"
