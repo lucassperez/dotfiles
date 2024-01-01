@@ -6,7 +6,7 @@ return {
       require('bufdelete').bufdelete(0)
       print(':Bdelete')
     end,
-    desc = 'Fecha o buffer atual',
+    desc = '[Bufdelete] Fecha o buffer atual',
   },
   {
     mode = 'n',
@@ -15,6 +15,6 @@ return {
       require('bufdelete').bufdelete(0)
       print(':Bdelete')
     end,
-    desc = 'Fecha o buffer atual',
+    desc = '[Bufdelete] Fecha o buffer atual',
   },
 }

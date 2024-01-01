@@ -37,13 +37,13 @@ vim.keymap.set(
   'o',
   'gc',
   commented_lines_textobject,
-  { silent = true, desc = 'Textobject for adjacent commented lines' }
+  { silent = true, desc = '[Comment] Textobject for adjacent commented lines' }
 )
 vim.keymap.set(
   'o',
   'u',
   commented_lines_textobject,
-  { silent = true, desc = 'Textobject for adjacent commented lines' }
+  { silent = true, desc = '[Comment] Textobject for adjacent commented lines' }
 )
 
 local ft = require('Comment.ft')

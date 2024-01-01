@@ -74,13 +74,13 @@ gitsigns.setup({
 
     buf_map('n', ',ch', function()
       gitsigns.preview_hunk()
-    end, { desc = 'Mostra o diff do hunk do git' })
+    end, { desc = '[Gitsigns] Mostra o diff do hunk do git' })
     buf_map('n', ',cr', function()
       gitsigns.reset_hunk()
-    end, { desc = 'Resta o hunk do git (git reset)' })
+    end, { desc = '[Gitsigns] Resta o hunk do git (git reset)' })
     buf_map('n', ',cw', function()
       print('Gitsigns word diff toggled: ' .. tostring(gitsigns.toggle_word_diff()))
-    end, { desc = 'Liga/desliga o Gtisigns word diff' })
+    end, { desc = '[Gitsigns] Liga/desliga o Gitsigns word diff' })
 
     -- Text objects
     buf_map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { silent = true })

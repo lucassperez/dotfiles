@@ -2,7 +2,7 @@ vim.keymap.set(
   'n',
   '<leader>m',
   ':TSHighlightCapturesUnderCursor<CR>',
-  { desc = 'Mostra o grupo de destaque (highlight) da coisa/palavra embaixo do cursor' }
+  { desc = '[Treesitter] Mostra o grupo de destaque (highlight) da coisa/palavra embaixo do cursor' }
 )
 
 local function requireSpecificFiles()

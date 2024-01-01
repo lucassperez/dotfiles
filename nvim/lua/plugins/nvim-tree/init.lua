@@ -13,7 +13,7 @@ local function keys()
   return {
     {
       mode = 'n',
-      desc = 'Abre nvim-tree',
+      desc = '[NvimTree] Abre nvim-tree',
       '<C-n>',
       function()
         require('nvim-tree.api').tree.toggle()
@@ -22,7 +22,7 @@ local function keys()
     },
     {
       mode = 'n',
-      desc = 'Abre nvim-tree com o cursor no arquivo atual',
+      desc = '[NvimTree] Abre nvim-tree com o cursor no arquivo atual',
       '<leader>n',
       function()
         require('nvim-tree.api').tree.toggle({ find_file = true })

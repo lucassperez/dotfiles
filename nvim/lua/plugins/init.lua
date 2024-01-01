@@ -119,8 +119,8 @@ lazy.setup({
   {
     'numToStr/Comment.nvim',
     keys = {
-      { mode = { 'n', 'v', 'o' }, 'gc', desc = 'Toggle line comments' },
-      { mode = { 'n', 'v', 'o' }, 'gb', desc = 'Toggle block comments' },
+      { mode = { 'n', 'v', 'o' }, 'gc', desc = '[Comment] Toggle line comments' },
+      { mode = { 'n', 'v', 'o' }, 'gb', desc = '[Comment] Toggle block comments' },
       { mode = 'o', 'u' },
     },
     config = function()
@@ -150,10 +150,10 @@ lazy.setup({
   {
     'monaqa/dial.nvim',
     keys = {
-      { mode = { 'n', 'v' }, '<C-a>', desc = 'plugin dial C-a' },
-      { mode = { 'n', 'v' }, '<C-x>', desc = 'plugin dial C-x' },
-      { mode = 'v', 'g<C-a>', desc = 'plugin dial g-C-a' },
-      { mode = 'v', 'g<C-x>', desc = 'plugin dial g-C-x' },
+      { mode = { 'n', 'v' }, '<C-a>', desc = '[Dial] plugin dial C-a' },
+      { mode = { 'n', 'v' }, '<C-x>', desc = '[Dial] plugin dial C-x' },
+      { mode = 'v', 'g<C-a>', desc = '[Dial] plugin dial g-C-a' },
+      { mode = 'v', 'g<C-x>', desc = '[Dial] plugin dial g-C-x' },
     },
     config = function()
       require('plugins.dial')

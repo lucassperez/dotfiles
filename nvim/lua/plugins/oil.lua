@@ -2,7 +2,7 @@ local function keys()
   return {
     {
       mode = 'n',
-      desc = 'Abre o oil numa janela flutuante',
+      desc = '[Oil] Abre o oil numa janela flutuante',
       '<leader>b',
       function()
         require('oil').toggle_float()
@@ -62,9 +62,9 @@ local function setup()
         local oil = require('oil')
         oil.save()
         oil.close()
-      end, { buffer = true, desc = 'Salva e sai de um buffer do oil' })
+      end, { buffer = true, desc = '[Oil] Salva e sai de um buffer do oil' })
     end,
-    desc = 'Create Q keymap to save and exit oil',
+    desc = '[Oil] Create Q keymap to save and exit oil',
   })
 end
 

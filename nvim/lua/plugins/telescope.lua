@@ -23,7 +23,7 @@ local function keys()
   return {
     {
       mode = 'n',
-      desc = 'Abre telescope git ou find files',
+      desc = '[Telescope] Abre telescope git ou find files',
       '<C-p>',
       function()
         telescopeGitOrFindFiles()
@@ -32,7 +32,7 @@ local function keys()
     },
     {
       mode = 'n',
-      desc = 'Abre telescope live grep',
+      desc = '[Telescope] Abre telescope live grep',
       '<C-f>',
       function()
         -- https://www.reddit.com/r/neovim/comments/141k38i/telescope_how_to_search_project_directory/
@@ -47,7 +47,7 @@ local function keys()
     },
     {
       mode = 'n',
-      desc = 'Abre telescope buffers',
+      desc = '[Telescope] Abre telescope buffers',
       '<leader>p',
       function()
         telescope_builtin().buffers()
@@ -56,7 +56,7 @@ local function keys()
     },
     {
       mode = 'n',
-      desc = 'Abre telescope old files',
+      desc = '[Telescope] Abre telescope old files',
       '<leader>h',
       function()
         telescope_builtin().oldfiles()
@@ -65,7 +65,7 @@ local function keys()
     },
     {
       mode = 'n',
-      desc = 'Abre telescope find files no caminho de config do nvim',
+      desc = '[Telescope] Abre telescope find files no caminho de config do nvim',
       '<leader>zv',
       function()
         menufacture().find_files({ cwd = vim.fn.stdpath('config'), show_untracked = true })

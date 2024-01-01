@@ -11,14 +11,14 @@ local function on_attach(client, bufnr)
         bufnr = bufnr,
         config_path = vim.fn.stdpath('config') .. '/default-stylua.toml',
       })
-    end, { noremap = true, buffer = bufnr, desc = 'Formata o buffer atual usando stylua' })
+    end, { noremap = true, buffer = bufnr, desc = 'LSP: Formata o buffer atual usando stylua' })
 
     vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
       require('stylua').format({
         bufnr = bufnr,
         config_path = vim.fn.stdpath('config') .. '/default-stylua.toml',
       })
-    end, { desc = 'Formata o buffer atual usando stylua' })
+    end, { desc = 'LSP: Formata o buffer atual usando stylua' })
   end
 
   local root_dir = client.config.root_dir
