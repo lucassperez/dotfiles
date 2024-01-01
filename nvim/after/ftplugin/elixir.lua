@@ -1,4 +1,6 @@
 local elixir_pipe_pry = [[|> fn x -><CR>require IEx; IEx.pry()<CR>x<CR>end.()]]
+
+-- Debugger (mnemonic is ruby's binding pry)
 vim.keymap.set(
   'n',
   ',,bp',
@@ -24,6 +26,7 @@ vim.keymap.set(
   { noremap = true, desc = 'Elixir: Escreve aquele pipe esperto com pry na linha de cima' }
 )
 
+-- Print/inspec (mnemonic is elixir's IO module)
 vim.keymap.set(
   'n',
   ',io',

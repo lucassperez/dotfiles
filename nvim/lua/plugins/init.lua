@@ -20,9 +20,6 @@ if not ok then
 end
 
 lazy.setup({
-  -- I also think bufferchad has a telescope extension
-  -- https://github.com/mrquantumcodes/bufferchad.nvim
-
   -- Without lazy loading
   -----------------------
   -- Lualine, barbar and catppuccin
