@@ -6,9 +6,12 @@ local opt = vim.opt
 
 -- global
 o.confirm = true -- pede confirmação ao tentar fechar um buffer com alterações
-o.tabstop = 2 -- tamanho do tab
-o.shiftwidth = 2 -- empurrar as coisas por 2 espaços, somente
+
+local my_shiftwidth = 2
+o.tabstop = my_shiftwidth -- tamanho do tab
+o.shiftwidth = my_shiftwidth -- números de espaços pra usar para cada indentação
 o.expandtab = true -- tab com espaços
+
 o.ignorecase = true -- busca case insensitive
 o.smartcase = true -- busca case sensitive SSE tiver pelo menos uma letra maiúscula
 o.scrolloff = 1 -- sempre mostra pelo menos uma linha abaixo e acima do cursor
@@ -52,7 +55,7 @@ opt.listchars = {
   nbsp = '%',
   extends = '»',
   precedes = '«',
-  leadmultispace = '┊ ',
+  leadmultispace = '┊' .. string.format('%-' .. (my_shiftwidth - 1) .. 's', ''),
 }
 opt.textwidth = 0
 -- Eu odeio demais formatoptions "t", "c", "r" e "o" ):<
@@ -64,7 +67,14 @@ opt.textwidth = 0
 -- l = não auto formata quando acaba a linha no insert mode (exatamente o que eu quero)
 -- j = junta comentários de maneira inteligente apertando J
 -- :h fo-table para mais informações
-vim.cmd('autocmd Filetype * setlocal formatoptions=jql')
+vim.api.nvim_create_autocmd('Filetype', {
+  pattern = '*',
+  callback = function()
+    bo.formatoptions = 'jql'
+  end,
+  once = true,
+})
+-- vim.cmd('autocmd Filetype * setlocal formatoptions=jql')
 -- bo.formatoptions = 'jql' -- isso não funciona???
 
 -- https://www.reddit.com/r/neovim/comments/ppv7vr/comment/hd7v2ol/?utm_source=share&utm_medium=web2x&context=3
