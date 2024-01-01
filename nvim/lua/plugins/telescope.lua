@@ -50,7 +50,7 @@ local function keys()
       desc = '[Telescope] Abre telescope buffers',
       '<leader>p',
       function()
-        telescope_builtin().buffers()
+        telescope_builtin().buffers({ sort_mru = true })
       end,
       { noremap = true },
     },
