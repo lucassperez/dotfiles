@@ -18,7 +18,7 @@ require('lualine').setup({
     lualine_a = { custom_functions.mode },
     lualine_b = { custom_functions.getfile },
     lualine_c = { '' },
-    lualine_x = { custom_functions.diff, custom_functions.lsp },
+    lualine_x = { custom_functions.diagnostics, custom_functions.diff, custom_functions.lsp },
     lualine_y = { 'filetype' },
     lualine_z = { custom_functions.getlines },
   },
