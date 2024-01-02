@@ -247,7 +247,7 @@ chsh -s `which zsh`
 If going to install ruby, will need libssl-dev
 
 Ubuntu's 22.04 tmux version does not have #{user}, so I will probably be desired
-to add a ~/.local/.tmux.conf.local with this:
+to add a ~/.local/tmux.conf.local with this:
 set -g status-right '#{?client_prefix,#[bold]!, }[#(echo $USER)@#{host}] '
 
 I tried to set the cursor on so many ways, only using lxappearance was not consistent,

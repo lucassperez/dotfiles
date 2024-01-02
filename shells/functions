@@ -82,4 +82,4 @@ testmix() {
   echo $res | mix test --failed | grep "test.*_test\.exs:.*(test)" | sort -n
 }
 
-[ -f "$HOME/.local/.functions.local" ] && source "$HOME/.local/.functions.local"
+[ -f "$HOME/.local/functions.local" ] && source "$HOME/.local/functions.local"

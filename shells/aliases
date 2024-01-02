@@ -1,7 +1,7 @@
 # vim: ft=sh
 
-alias als='nvim ~/.aliases ~/.rcfunctionsandaliases `[ -f "$HOME/.local/.aliases.local" ] && echo "$HOME/.local/.aliases.local"`'
-alias fus='nvim ~/.functions ~/.rcfunctionsandaliases `[ -f "$HOME/.local/.functions.local" ] && echo "$HOME/.local/.functions.local"`'
+alias als='nvim ~/.aliases ~/.rcfunctionsandaliases `[ -f "$HOME/.local/aliases.local" ] && echo "$HOME/.local/aliases.local"`'
+alias fus='nvim ~/.functions ~/.rcfunctionsandaliases `[ -f "$HOME/.local/functions.local" ] && echo "$HOME/.local/functions.local"`'
 
 alias which='(alias; declare -f) | /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot'
 
@@ -59,4 +59,4 @@ alias nv='nvim'
 alias vn='nvim'
 alias oil='nvim -c :Oil'
 
-[ -f "$HOME/.local/.aliases.local" ] && source "$HOME/.local/.aliases.local"
+[ -f "$HOME/.local/aliases.local" ] && source "$HOME/.local/aliases.local"
