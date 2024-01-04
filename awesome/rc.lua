@@ -136,9 +136,9 @@ local myawesomemenu = {
   },
   {
     'Reboot',
-    function ()
+    function()
       awful.spawn.with_shell('reboot')
-    end
+    end,
   },
   {
     'Power Off',
@@ -1127,6 +1127,8 @@ root.keys(globalkeys)
 -- Floating alacritty is used in some scripts, alacritty has to be manually
 -- spawned with the name "floating-alacritty" in order to show titlebars
 local function should_show_titlebars(c)
+  if type(c.class) ~= 'string' or type(c.name) ~= 'string' then return false end
+
   if c.fullscreen then return false end
   if c.maximized then return false end
   if c.maximized_horizontal then return false end
@@ -1135,14 +1137,13 @@ local function should_show_titlebars(c)
   if c.class == 'Alacritty' then return false end
   if c.class == 'Steam' then return false end
   if c.class == 'Evince' then return false end
+  if c.class == 'Cameractrlsgtk.py' then return false end
 
   if c.name == 'Zoom - Free Account' then return true end
   if c.class == 'Zoom - Free Account' then return true end
   if c.name == 'zoom' then return true end
   if c.class == 'zoom' then return true end
   if c.name == 'floating-alacritty' and c.floating then return true end
-
-  if type(c.class) ~= 'string' or type(c.name) ~= 'string' then return false end
 
   local is_some_gnome_thing = (
     string.match(c.class, '^[Gg]nome-%w*')
@@ -1253,8 +1254,7 @@ awful.rules.rules = {
         'veromix',
         'xtightvncviewer',
         'Zoom Meeting',
-        'Zoom',
-        'zoom',
+        '[Zz]oom',
         'Zoom - Free Account',
         'Polls',
         'FeatherPad',
@@ -1265,7 +1265,6 @@ awful.rules.rules = {
         'Navigator',
         'Notes',
         'Steam',
-        'Navigator',
       },
 
       -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -1274,8 +1273,7 @@ awful.rules.rules = {
         'Event Tester', -- xev.
         'floating-alacritty',
         'Zoom Meeting',
-        'Zoom',
-        'zoom',
+        '[Zz]oom',
         'Zoom - Free Account',
         'Polls', -- all of this is more zoom shitty non sense
         'Breakout Rooms - In Progress',
@@ -1299,28 +1297,68 @@ awful.rules.rules = {
   --   properties = { screen = 1, tag = '2' } },
 
   -- xprop | grep WM_CLASS pra descobrir (xprop em geral é muito legal)
-  { rule = { class = 'Java' }, properties = { tag = '4' } },
-  { rule = { name = 'Java' }, properties = { tag = '4' } },
-  { rule = { class = 'DBeaver' }, properties = { tag = '3' } },
-  { rule = { class = 'Postman' }, properties = { tag = '4' } },
+  {
+    properties = { tag = '4' },
+    rule_any = {
+      class = {
+        'Java',
+        'Postman',
+        'DBeaver',
+      },
+      name = {
+        'Java',
+      },
+    },
+  },
 
-  -- { rule = { class = 'steam_app_' }, properties = { tag = '7', }, },
+  -- { rule = { class = 'steam_app_' }, properties = { tag = '7', } },
   -- { rule = { class = '[Ss]potify' }, properties = { tag = '6' } },
 
   -- I hate Zoom, on every update it changes this stuff, ffs
-  { rule = { class = 'Zoom Meeting' }, properties = { tag = '9' } },
-  { rule = { class = '[Zz]oom' }, properties = { tag = '9' } },
-  { rule = { class = 'Zoom - Free Account' }, properties = { tag = '9' } },
-  { rule = { name = 'Zoom Meeting' }, properties = { tag = '9' } },
-  { rule = { name = '[Zz]oom' }, properties = { tag = '9' } },
-  { rule = { name = 'Zoom - Free Account' }, properties = { tag = '9' } },
-  { rule = { class = '[Dd]iscord' }, properties = { tag = '0' } },
-  { rule = { name = '[Dd]iscord' }, properties = { tag = '0' } },
+  {
+    properties = { tag = '9' },
+    rule_any = {
+      class = {
+        'Zoom Meeting',
+        '[Zz]oom',
+        'Zoom - Free Account',
+      },
+      name = {
+        'Zoom Meeting',
+        '[Zz]oom',
+        'Zoom - Free Account',
+      },
+    },
+  },
 
-  { rule = { class = 'Gedit', 'kate', 'notes' }, properties = { ontop = true } },
-  { rule = { class = 'FeatherPad' }, properties = { ontop = true } },
-  { rule = { class = 'Pavucontrol' }, properties = { ontop = true } },
-  { rule = { name = 'floating-alacritty' }, properties = { ontop = true } },
+  {
+    properties = { tag = '0' },
+    rule_any = {
+      class = {
+        '[Dd]iscord',
+      },
+      name = {
+        '[Dd]iscord',
+      },
+    },
+  },
+
+  {
+    properties = { ontop = true },
+    rule_any = {
+      class = {
+        '[Gg]edit',
+        'kate',
+        'notes',
+        'FeatherPad',
+        'Pavucontrol',
+        'floating-alacritty',
+      },
+      name = {
+        'Extension: %(Bitwarden %- Free Password Manager%) %- Bitwarden',
+      },
+    },
+  },
 }
 -- }}}
 
