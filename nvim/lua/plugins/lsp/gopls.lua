@@ -55,15 +55,26 @@ local function on_attach(client, bufnr)
   --   desc = 'LSP: Formats the buffer before write with gopls',
   -- })
 
-  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
+  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(opts)
+    -- Call 'Format no_async' to not format asynchronously
+    local format_opts = { async = opts.args ~= 'no_async' }
     golangImports(1000)
-    vim.lsp.buf.format({ async = true })
-  end, { desc = 'LSP: Formata o buffer atual e organiza os imports' })
+    vim.lsp.buf.format(format_opts)
+  end, {
+    desc = 'LSP: Formata o buffer atual e organiza os imports. Format no_async pra formatar sincronamente',
+    nargs = '?',
+  })
 
   vim.api.nvim_create_autocmd('BufWritePre', {
     buffer = bufnr,
-    command = 'Format',
-    desc = 'LSP: Formats the buffer and organize imports before write with gopls (Format user command)',
+    -- Setting async to false (no_async) because when it was set to true,
+    -- I would save the buffer, it would start formatting asynchronously and
+    -- then the file would be written before the formatting finishes, leaving
+    -- the buffer in modified state and the written file to the disc
+    -- without the changes.
+    command = 'Format no_async',
+    desc = 'LSP: Formats the buffer and organize imports before write with gopls '
+      .. '(It uses Format no_async user command)',
   })
 
   local root_dir = client.config.root_dir

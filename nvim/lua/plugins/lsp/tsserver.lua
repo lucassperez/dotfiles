@@ -38,16 +38,21 @@ local on_attach = function(client, bufnr)
   --   desc = 'LSP: Formats the buffer before write with tsserver',
   -- })
 
-  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
+  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(opts)
+    -- Call 'Format no_async' to not format asynchronously
+    local format_opts = { async = opts.args ~= 'no_async' }
     typescript.actions.addMissingImports()
     typescript.actions.organizeImports()
-    vim.lsp.buf.format({ async = true })
-  end, { desc = 'LSP: Formata o buffer atual e organiza os imports' })
+    vim.lsp.buf.format(format_opts)
+  end, {
+    desc = 'LSP: Formata o buffer atual e organiza os imports. Format no_async pra formatar sincronamente',
+    nargs = '?',
+  })
 
   -- vim.api.nvim_create_autocmd('BufWritePre', {
   --   buffer = bufnr,
-  --   command = 'Format',
-  --   desc = 'LSP: Formats the buffer before write with tsserver (Format user command)',
+  --   command = 'Format no_async',
+  --   desc = 'LSP: Formats the buffer before write with tsserver (It uses Format no_async user command)',
   -- })
 
   local root_dir = client.config.root_dir
