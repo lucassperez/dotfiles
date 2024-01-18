@@ -71,8 +71,9 @@ vim.api.nvim_create_autocmd('Filetype', {
   pattern = '*',
   callback = function()
     bo.formatoptions = 'jql'
+    vim.opt.formatoptions:remove({ 'c', 'r', 'o' })
   end,
-  once = true,
+  once = false,
 })
 -- vim.cmd('autocmd Filetype * setlocal formatoptions=jql')
 -- bo.formatoptions = 'jql' -- isso não funciona???
