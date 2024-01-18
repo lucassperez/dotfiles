@@ -70,10 +70,6 @@ require('nvim-treesitter.configs').setup({
   --   enable = true,
   --   filetypes = { 'html', 'eelixir' }
   -- },
-  context_commentstring = {
-    enable = true,
-    enable_autocmd = false,
-  },
   textobjects = {
     select = {
       enable = true,

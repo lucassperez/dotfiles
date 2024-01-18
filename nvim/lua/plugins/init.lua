@@ -61,10 +61,10 @@ lazy.setup({
   },
   {
     'lewis6991/gitsigns.nvim',
+    event = 'BufRead',
     config = function()
       require('plugins.gitsigns')
     end,
-    event = 'BufRead',
   },
   {
     'hoob3rt/lualine.nvim',
@@ -123,7 +123,17 @@ lazy.setup({
     config = function()
       require('plugins.Comment')
     end,
-    dependencies = 'JoosepAlviste/nvim-ts-context-commentstring',
+    dependencies = {
+      'JoosepAlviste/nvim-ts-context-commentstring',
+      config = function()
+        -- https://github.com/JoosepAlviste/nvim-ts-context-commentstring/issues/82
+        require('ts_context_commentstring').setup({
+          skip_ts_context_commentstring_module = true,
+          enable_autocmd = false,
+        })
+        -- vim.g.skip_ts_context_commentstring_module = true
+      end,
+    },
   },
   {
     'famiu/bufdelete.nvim',
@@ -261,7 +271,7 @@ lazy.setup({
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    event = { 'FileType' },
+    event = 'FileType',
     config = function()
       require('plugins.tree-sitter')
     end,
