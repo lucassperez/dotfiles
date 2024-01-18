@@ -3,6 +3,8 @@ vim.g.catppuccin_flavour = my_flavour -- latte, frappe, macchiato, mocha
 
 -- local my_colors_palette = require('catppuccin.palettes').get_palette(my_flavour)
 require('catppuccin').setup({
+  -- See big comment in integrations.virtual_text below
+  no_italic = true,
   transparent_background = true,
   styles = {
     comments = {},
@@ -22,9 +24,23 @@ require('catppuccin').setup({
     treesitter = true,
     native_lsp = {
       enabled = true,
-      virtual_text = {
-        errors = { 'italic' },
-        hints = { 'italic' },
+      -- At some update, things like "alias" and "echo" in shell scripts
+      -- became italic. TSHighlightCapturesUnderCursor told me those things
+      -- were styled with @function.call and @function.builtin, but changing
+      -- these styles did nothing. So I added no_italic = true to force
+      -- no italic. But I can still get italic with it by manually changing
+      -- some things to italic. So I decided to manually set some styles to
+      -- have italic. Setting italic here in does not work with no_italic option
+      -- set to true. To do it, I call a big vim.cmd where I call good old
+      -- vimscript's hi <NameOfTheGroup> gui=italic. The groups are:
+      -- DiagnosticVirtualTextError
+      -- DiagnosticVirtualTextHint
+      -- DiagnosticVirtualTextInfo
+      -- DiagnosticVirtualTextOk
+      -- DiagnosticVirtualTextWarn
+      virtual_text = { -- TLDR, these are doing nothing becaus of no_italic.
+        errors = { 'italic' },  -- I am setting italic on DiagnosticVirtual
+        hints = { 'italic' },   -- manually at the end of the file
         warnings = { 'italic' },
         information = { 'italic' },
       },
@@ -120,6 +136,12 @@ hi link @method.call @function
 " hi DiffText   guibg=NONE
 
 hi Folded guibg=#101010
+
+hi DiagnosticVirtualTextError    gui=ITALIC cterm=ITALIC
+hi DiagnosticVirtualTextHint     gui=ITALIC cterm=ITALIC
+hi DiagnosticVirtualTextInfo     gui=ITALIC cterm=ITALIC
+hi DiagnosticVirtualTextOk       gui=ITALIC cterm=ITALIC
+hi DiagnosticVirtualTextTextWarn gui=ITALIC cterm=ITALIC
 ]])
 
 --[[
