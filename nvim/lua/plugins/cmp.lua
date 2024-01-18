@@ -2,7 +2,6 @@ vim.o.completeopt = 'menu,menuone,noselect'
 
 local cmp = require('cmp')
 local luasnip = require('luasnip')
-local lspkind = require('lspkind')
 
 -- I can't seem to disable them in LSP itself
 -- This doesn't work:
@@ -60,44 +59,43 @@ cmp.setup({
     { name = 'buffer', keyword_length = 2 },
   },
   formatting = {
-    format = lspkind.cmp_format({
-      -- modes: text, text_symbol, symbol_text e symbol
-      mode = 'text',
-      menu = {
+    -- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#basic-customisations
+    format = function(entry, vim_item)
+      vim_item.menu = ({
         buffer = '[Buf]',
         nvim_lsp = '[LSP]',
         nvim_lua = '[Lua]',
         path = '[Path]',
         luasnip = '[LuaSnip]',
-      },
-      -- symbol_map = {
-      --   Text = 'Txt',
-      --   Method = 'Met',
-      --   Function = 'Fun',
-      --   Constructor = 'Con',
-      --   Field = 'Field',
-      --   Variable = 'Var',
-      --   Class = 'Class',
-      --   Interface = 'Intrfc',
-      --   Module = 'Mod',
-      --   Property = 'Prop',
-      --   Unit = 'Unit',
-      --   Value = 'Val',
-      --   Enum = 'Enum',
-      --   Keyword = 'Keywrd',
-      --   Snippet = 'Snip',
-      --   Color = 'Colour',
-      --   File = 'File',
-      --   Reference = 'Ref',
-      --   Folder = 'Dir',
-      --   EnumMember = 'EnumMember',
-      --   Constant = 'Const',
-      --   Struct = 'Struct',
-      --   Event = 'Event',
-      --   Operator = 'Oprtr',
-      --   TypeParameter = 'TypeParam'
-      -- },
-    }),
+      })[entry.source.name]
+      return vim_item
+    end,
+    -- local symbol_map = {
+    --   Text = 'Txt',
+    --   Method = 'Met',
+    --   Function = 'Fun',
+    --   Constructor = 'Con',
+    --   Field = 'Field',
+    --   Variable = 'Var',
+    --   Class = 'Class',
+    --   Interface = 'Intrfc',
+    --   Module = 'Mod',
+    --   Property = 'Prop',
+    --   Unit = 'Unit',
+    --   Value = 'Val',
+    --   Enum = 'Enum',
+    --   Keyword = 'Keywrd',
+    --   Snippet = 'Snip',
+    --   Color = 'Colour',
+    --   File = 'File',
+    --   Reference = 'Ref',
+    --   Folder = 'Dir',
+    --   EnumMember = 'EnumMember',
+    --   Constant = 'Const',
+    --   Struct = 'Struct',
+    --   Event = 'Event',
+    --   Operator = 'Oprtr',
+    --   TypeParameter = 'TypeParam'
   },
   view = {
     -- custom, wildmenu or native

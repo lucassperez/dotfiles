@@ -316,7 +316,6 @@ lazy.setup({
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-nvim-lua',
-      'onsails/lspkind-nvim',
       {
         'L3MON4D3/LuaSnip',
         config = function()
@@ -365,7 +364,7 @@ lazy.setup({
       config = '🛠',
       event = '📅',
       ft = '📂',
-      init = '⚙',
+      init = '',
       keys = '🔑',
       plugin = '🔌',
       runtime = '🏃',
@@ -373,6 +372,8 @@ lazy.setup({
       start = '🚀',
       task = '📌',
       lazy = '💤 ',
+      import = '📦',
+      require = '🚚',
     },
   },
 })
