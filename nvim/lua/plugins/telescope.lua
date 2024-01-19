@@ -93,6 +93,9 @@ local function setup()
       },
       mappings = {
         i = {
+          ['<C-p>'] = 'cycle_history_prev',
+          ['<C-n>'] = 'cycle_history_next',
+
           ['<C-h>'] = 'which_key',
 
           ['<C-k>'] = 'move_selection_previous',
