@@ -41,6 +41,7 @@ alias gk='git checkout'
 alias gb='git branch'
 alias gsh='git stash'
 alias gshp='git stash pop'
+alias gr='git add . && git rebase --continue'
 alias ts='tig status'
 alias pwdcp="pwd | tr -d '\n' | xclip -selection clipboard && pwd"
 alias browsersync='browser-sync start --server --directory --files **/*'

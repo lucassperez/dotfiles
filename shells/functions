@@ -1,8 +1,14 @@
 # vim: ft=sh
 
-fv() {
+lsg() {
+  ls | grep -i $@
+}
+
+fzv() {
   # fzf and nvim
-  local results=`fzf`
+  # When doing results=`fzf`, some keybindings don't seem to work,
+  # but they do when using $(fzf) instead.
+  local results=$(fzf)
   [ -z $results ] && return
 
   nvim "$results"
