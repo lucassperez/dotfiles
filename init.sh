@@ -98,8 +98,9 @@ printf "\tRofi\n"
 # don't think it is possible to use variables inside alacritty's yml
 # config file ):
 mkdir -p "$CONFIG_DIR/alacritty/"
-ln -sfni "$DIR/alacritty/alacritty.yml" "$CONFIG_DIR/alacritty/alacritty.yml"
-ln -sfni "$DIR/alacritty/base.yml" "$CONFIG_DIR/alacritty/base.yml"
+ln -sfni "$DIR/alacritty/alacritty.toml" "$CONFIG_DIR/alacritty/alacritty.toml"
+ln -sfni "$DIR/alacritty/base.toml" "$CONFIG_DIR/alacritty/base.toml"
+ln -sfni "$DIR/alacritty/modified-catppuccin-frappe.toml" "$CONFIG_DIR/alacritty/modified-catppuccin-frappe.toml"
 
 ln -sfni "$DIR/shells/profile" "$HOME/.profile"
 ln -sfni "$DIR/shells/aliases" "$HOME/.aliases"

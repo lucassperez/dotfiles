@@ -41,10 +41,30 @@ tmuxrc() {
 alrc() {
   local CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}"
 
+  local AL_PATH="$CONFIG_PATH/alacritty"
+
+  if [ -f "$AL_PATH/alacritty.toml" ]; then
+    local alacritty_config="$AL_PATH/alacritty.toml"
+  else
+    local alacritty_config="$AL_PATH/alacritty.yml"
+  fi
+
+  if [ -f "$AL_PATH/base.toml" ]; then
+    local base_config="$AL_PATH/base.toml"
+  else
+    local base_config="$AL_PATH/base.yml"
+  fi
+
+  if [ -f "$AL_PATH/local.toml" ]; then
+    local local_config="$AL_PATH/local.toml"
+  else
+    local local_config="$AL_PATH/local.yml"
+  fi
+
   nvim \
-    $CONFIG_PATH/alacritty/base.yml \
-    `[ -f "$CONFIG_PATH/alacritty/local.yml" ] && echo "$CONFIG_PATH/alacritty/local.yml"` \
-    $CONFIG_PATH/alacritty/alacritty.yml
+    $base_config \
+    `[ -f "$local_config" ] && echo "$local_config"` \
+    $alacritty_config \
 }
 
 unset CONFIG_PATH
