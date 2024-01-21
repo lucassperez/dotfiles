@@ -109,6 +109,9 @@ hi @namespace gui=NONE cterm=NONE
 hi clear @text.uri
 hi link @text.uri @comment
 hi @text.uri gui=ITALIC cterm=ITALIC
+hi clear @string.special.url
+hi link @string.special.url @text.uri
+
 " hi @text.uri guifg=#CCCCCC gui=NONE cterm=NONE
 " hi clear @nospell
 " hi link @nospell @text.uri
