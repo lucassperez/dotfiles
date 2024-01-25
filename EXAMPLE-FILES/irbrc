@@ -1,0 +1,12 @@
+# https://nts.strzibny.name/improving-irb-with-custom-irbrc/
+
+# O padrão é true
+# IRB.conf[:USE_AUTOCOMPLETE] = false
+
+require 'reline'
+Reline::Face.config(:completion_dialog) do |conf|
+  # https://github.com/ruby/reline/blob/master/doc/reline/face.md#available-parameters
+  conf.define(:default, foreground: :white, background: :black)
+  conf.define(:enhanced, foreground: :white, background: :black, style: [:negative, :bold])
+  # conf.define(:scrollbar, foreground: :white, background: :blue)
+end
