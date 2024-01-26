@@ -1,68 +1,67 @@
 [colors.primary]
-foreground = "#c0caf5"
-background = "#282c34"
-bright_foreground = "#C6D0F5"
-dim_foreground = "#C6D0F5"
+foreground = '#C0CAF5'
+background = '#282C34'
+bright_foreground = '#C6D0F5'
+dim_foreground = '#C6D0F5'
 
 [colors.vi_mode_cursor]
-cursor = "#BABBF1"
-text = "#303446"
+cursor = '#BABBF1'
+text = '#303446'
 
 [colors.search.matches]
-background = "#A5ADCE"
-foreground = "#303446"
+background = '#A5ADCE'
+foreground = '#303446'
 
 [colors.search.focused_match]
-background = "#A6D189"
-foreground = "#303446"
+background = '#A6D189'
+foreground = '#303446'
 
 [colors.hints.start]
-background = "#E5C890"
-foreground = "#303446"
+background = '#E5C890'
+foreground = '#303446'
 
 [colors.footer_bar]
-foreground = "#303446"
-background = "#A5ADCE"
+foreground = '#303446'
+background = '#A5ADCE'
 
 [colors.selection]
-background = "#F2D5CF"
-text = "#303446"
+background = '#F2D5CF'
+text = '#303446'
 
 [colors.normal]
-black = "#51576D"
-red = "#d26d6f"
-green = "#91b674"
-yellow = "#d0b37b"
-blue = "#7795f9"
-magenta = "#c4a0d2"
-cyan = "#76b1d0"
-white = "#A5ADCE"
+black = '#51576D'
+red = '#D26D6F'
+green = '#91B674'
+yellow = '#D0B37B'
+blue = '#7795F9'
+magenta = '#C4A0D2'
+cyan = '#76B1D0'
+white = '#A5ADCE'
 
 [colors.bright]
-black = "#626880"
-red = "#E78284"
-green = "#A6D189"
-yellow = "#E5C890"
-blue = "#8CAAEE"
-magenta = "#d3b5ed"
-cyan = "#8bc6e5"
-white = "#B5BFE2"
+black = '#626880'
+red = '#E78284'
+green = '#A6D189'
+yellow = '#E5C890'
+blue = '#8CAAEE'
+magenta = '#D3B5ED'
+cyan = '#8BC6E5'
+white = '#B5BFE2'
 
 [colors.dim]
-black = "#51576D"
-red = "#E78284"
-green = "#A6D189"
-yellow = "#E5C890"
-blue = "#8CAAEE"
-magenta = "#F4B8E4"
-cyan = "#81C8BE"
-white = "#B5BFE2"
+black = '#51576D'
+red = '#E78284'
+green = '#A6D189'
+yellow = '#E5C890'
+blue = '#8CAAEE'
+magenta = '#F4B8E4'
+cyan = '#81C8BE'
+white = '#B5BFE2'
 
 [[colors.indexed_colors]]
-color = "#EF9F76"
+color = '#EF9F76'
 index = 16
 
 [[colors.indexed_colors]]
-color = "#F2D5CF"
+color = '#F2D5CF'
 index = 17
-

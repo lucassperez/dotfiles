@@ -2,13 +2,13 @@
 # https://alacritty.org/config-alacritty.html
 
 # Color scheme
-import = ["~/.config/alacritty/modified-catppuccin-frappe.toml"]
+import = ['~/.config/alacritty/modified-catppuccin-frappe.toml']
 
 [env]
-TERM = "xterm-256color"
+TERM = 'xterm-256color'
 
 [window]
-decorations = "none"
+decorations = 'none'
 opacity = 0.9
 dynamic_title = true
 
@@ -27,33 +27,33 @@ unfocused_hollow = true
 blink_interval = 500
 
 [cursor.style]
-blinking = "On"
+blinking = 'On'
 
 [hints]
-alphabet = "asdfhjklgçqweryuiotpzxcvbnm1234567890;,."
+alphabet = 'asdfhjklgçqweryuiotpzxcvbnm,1234567890;.'
 
 [[hints.enabled]]
-action = "Paste"
+action = 'Paste'
 post_processing = true
 binding = { key = 'H', mods = 'Control|Shift' }
-regex = "([0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}|[a-f0-9]{40})|([a-f0-9]{12})|([a-f0-9]{7})"
+regex = '([0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}|[a-f0-9]{40})|([a-f0-9]{12})|([a-f0-9]{7})'
 
 # https://alacritty.org/config-alacritty.html
 [[hints.enabled]]
-command = "xdg-open"
+command = 'xdg-open'
 hyperlinks = true
 post_processing = true
 persist = false
 mouse.enabled = true
-binding = { key = "U", mods = "Control|Shift" }
+binding = { key = 'U', mods = 'Control|Shift' }
 regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
 
 [[keyboard.bindings]]
-action = "ScrollHalfPageDown"
-key = "J"
-mods = "Shift|Control"
+action = 'ScrollHalfPageDown'
+key = 'J'
+mods = 'Shift|Control'
 
 [[keyboard.bindings]]
-action = "ScrollHalfPageUp"
-key = "K"
-mods = "Shift|Control"
+action = 'ScrollHalfPageUp'
+key = 'K'
+mods = 'Shift|Control'
