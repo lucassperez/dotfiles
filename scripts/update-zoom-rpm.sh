@@ -1,5 +1,7 @@
 #!/bin/sh
 
+which wget >/dev/null || exit
+
 add_old_sufix() {
   if [ -e "$HOME/Downloads/zoom/$1.rpm" ]; then
     add_old_sufix "$1-OLD"
