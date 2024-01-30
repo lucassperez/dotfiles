@@ -86,6 +86,7 @@ fi
 if [ "$DESKTOP_SESSION" = "awesome" ]; then
     export $(gnome-keyring-daemon -s)
     /bin/env sh -c "sleep 2 && /bin/env awesome-client 'require(\"widgets.simple.update_brightness_microphone_and_volume_icons\").call()'" &
+    . "$HOME/scripts/try-hdmi-as-primary-monitor.sh"
 fi
 
 # if running bash
