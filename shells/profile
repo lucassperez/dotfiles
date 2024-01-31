@@ -49,9 +49,7 @@ export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;
 export ERL_AFLAGS='-kernel shell_history enabled -kernel shell_history_file_bytes 1024000'
 
 export FZF_DEFAULT_COMMAND="fd --type f"
-if which bat 1>/dev/null 2>&1; then
-  export FZF_DEFAULT_OPTS="--preview 'bat --color=always {}'"
-fi
+export FZF_DEFAULT_OPTS="--preview 'bat --color=always {}'"
 
 prepend_to_PATH() {
   # If no path is given, returns
