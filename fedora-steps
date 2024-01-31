@@ -99,7 +99,8 @@ gsettings set org.gnome.desktop.sound event-sounds false
 # Git e tmux já vêm instalados? Wtf. Jq também? Whaat. Acho que o curl também. :thinking:
 # Wtf, Fedora não vem com patch e ed instalados??
 sudo dnf install -y zsh util-linux-user xset xclip vlc gimp peek figlet acpi flameshot \
-  unclutter zoxide xinput pavucontrol alsa-plugins-pulseaudio ripgrep patch alacritty
+  unclutter zoxide xinput pavucontrol alsa-plugins-pulseaudio ripgrep patch alacritty \
+  fd-find bat
 
 # Discord
 # Melhorar isso aqui

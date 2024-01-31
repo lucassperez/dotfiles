@@ -48,7 +48,7 @@ gsettings set org.gnome.gedit.preferences.editor display-right-margin true
 
 sudo apt update
 sudo apt install -y zsh tmux jq xclip vlc gimp peek figlet acpi flameshot \
-  unclutter-xfixes pavucontrol ripgrep zoxide tree
+  unclutter-xfixes pavucontrol ripgrep zoxide tree fd-find bat
 
 mkdir -p ~/.cache/zsh/
 mkdir -p ~/.config/zsh/plugins
