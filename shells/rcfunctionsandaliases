@@ -1,4 +1,4 @@
-#!/bin/sh
+# vim: ft=sh
 
 local CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}"
 
