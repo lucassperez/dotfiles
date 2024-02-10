@@ -1,10 +1,3 @@
-vim.keymap.set(
-  'n',
-  '<leader>m',
-  ':TSHighlightCapturesUnderCursor<CR>',
-  { desc = '[Treesitter] Mostra o grupo de destaque (highlight) da coisa/palavra embaixo do cursor' }
-)
-
 local function requireSpecificFiles()
   -- These files have to be required after the configs.setup call,
   -- but I also don't want to have these requires at the bottom of
@@ -16,11 +9,6 @@ local function requireSpecificFiles()
 end
 
 require('nvim-treesitter.configs').setup({
-  rainbow = {
-    enable = true,
-    query = 'rainbow-parens',
-    strategy = require('ts-rainbow').strategy.global,
-  },
   -- ensure_installed can be 'all' or a list of languages { 'python', 'javascript' }
   ensure_installed = {
     'lua',
@@ -28,6 +16,7 @@ require('nvim-treesitter.configs').setup({
     'vim',
     'vimdoc',
     'bash',
+    'query',
   },
   -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
   auto_install = false,
@@ -47,24 +36,6 @@ require('nvim-treesitter.configs').setup({
   indent = {
     -- Funcionalidade experimental!
     enable = false,
-  },
-  playground = {
-    enable = true,
-    disable = {},
-    updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-    persist_queries = false, -- Whether the query persists across vim sessions
-    keybindings = {
-      toggle_query_editor = 'o',
-      toggle_hl_groups = 'i',
-      toggle_injected_languages = 't',
-      toggle_anonymous_nodes = 'a',
-      toggle_language_display = 'I',
-      focus_language = 'f',
-      unfocus_language = 'F',
-      update = 'R',
-      goto_node = '<CR>',
-      show_help = '?',
-    },
   },
   -- autotag = {
   --   enable = true,

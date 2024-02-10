@@ -278,8 +278,12 @@ lazy.setup({
     dependencies = {
       'JoosepAlviste/nvim-ts-context-commentstring',
       'nvim-treesitter/nvim-treesitter-textobjects',
-      'nvim-treesitter/playground',
-      'HiPhish/nvim-ts-rainbow2',
+      {
+        'hiphish/rainbow-delimiters.nvim',
+        init = function()
+          require('plugins.rainbow-delimiters')
+        end,
+      },
     },
   },
 

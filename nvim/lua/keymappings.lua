@@ -19,6 +19,13 @@ vim.g.maplocalleader = ','
 
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
+vim.keymap.set(
+  'n',
+  '<leader>m',
+  ':Inspect<CR>',
+  { desc = 'Mostra informações, como o grupo de destaque (highlight), da coisa/palavra embaixo do cursor usando a funcionalidade padrão Inspect' }
+)
+
 -- Go to command mode without using shift
 noremap({ 'n', 'v' }, ';', ':')
 
