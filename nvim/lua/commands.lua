@@ -75,11 +75,15 @@ end, {
 })
 
 vim.cmd([[
-function! SynGroup()
-    let l:s = synID(line('.'), col('.'), 1)
-    echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
-endfun
-nnoremap <F1> :call SynGroup()<CR>
+" Old way to get groups of word under cursor.
+" With Inspect and vim.inspect_pos this is not needed anymore,
+" but I wanted to leave it here because it is pretty nice. (:
+" And it works with plain vim, too!
+" function! SynGroup()
+"     let l:s = synID(line('.'), col('.'), 1)
+"     echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+" endfun
+" nnoremap <F1> :call SynGroup()<CR>
 
 " https://stackoverflow.com/questions/3878692/how-to-create-an-alias-for-a-command-in-vim
 fun! SetupCommandAlias(from, to)

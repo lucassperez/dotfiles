@@ -21,9 +21,16 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 vim.keymap.set(
   'n',
-  '<leader>m',
+  '<leader>M',
   ':Inspect<CR>',
   { desc = 'Mostra informações, como o grupo de destaque (highlight), da coisa/palavra embaixo do cursor usando a funcionalidade padrão Inspect' }
+)
+
+vim.keymap.set(
+  'n',
+  '<leader>m',
+  ':FloatingInspect<CR>',
+  { desc = 'Mostra o grupo de destaque (highlight) da coisa/palavra embaixo do cursor numa janela flutuante usando minha função customizada FloatingInspect' }
 )
 
 -- Go to command mode without using shift
