@@ -46,10 +46,11 @@ return {
       diagnostics = {
         globals = { 'vim', 'awesome' },
       },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file('', true),
-        checkThirdParty = false,
-      },
+      -- workspace = {
+      --   library = vim.api.nvim_get_runtime_file('', true),
+      --   -- library = vim.env.VIMRUNTIME,
+      --   checkThirdParty = false,
+      -- },
       telemetry = {
         enable = false,
       },
