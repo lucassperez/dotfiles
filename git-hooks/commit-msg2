@@ -23,12 +23,34 @@ if head -n 1 -- $1 | grep -vq "^\[.\+\]\($\| .\+\)"; then
   exec < /dev/tty
 
   printf 'A mensagem de commit está sem uma tag no começo ou mal formatada (sem espaço após a tag). Ex: [tag] Mensagem\n'
-  printf 'Seguir assim mesmo? [Y/n] '
+
+  # Also transform files inside ARCHIVE to their first names, ex ARCHIVE/i3 becomes i3.
+  staged_files=`git diff --name-only --staged | sed 's|ARCHIVE/\(.*\)|\1|' | cut -d '/' -f 1 | sort -u`
+
+  # Translate nvim to neovim and awesome to awesomewm because reasons?
+  # I've always done it this way, so I want to mantain it.
+  staged_files=`echo $staged_files | sed 's|nvim|neovim|'`
+  staged_files=`echo $staged_files | sed 's|awesome|awesomewm|'`
+
+  # Join the files with a / (will put a trailing slash).
+  staged_files=`echo $staged_files | tr '\n' '/'`
+
+  # Remove trailing slash and put the files inside brackets to
+  # form the tag.
+  tag="[${staged_files%%/}]"
+
+  printf "Adicionar automaticamente $tag?\n"
+  printf "[Y/n/(i)gnorar] "
   read resposta
-  [ -z $resposta ] || [ $resposta = 'y' -o $resposta = 'Y' -o $resposta = 's' -o $resposta = 'S' ];
-  # Outro jeito usando case.
-  # case $resposta in
-  #   ''|[yYsS]) ;;
-  #   *) exit 1 ;;
-  # esac
+
+  case $resposta in
+    ''|[yYsS])
+      echo "$tag `cat $1`" > $1
+      ;;
+    [iI])
+      exit 0
+      ;;
+    *) exit 1
+      ;;
+  esac
 fi
