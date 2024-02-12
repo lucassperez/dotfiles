@@ -18,6 +18,8 @@ require('nvim-treesitter.configs').setup({
     'bash',
     'query',
   },
+  sync_install = false,
+  ignore_install = {},
   -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
   auto_install = false,
   highlight = {
@@ -37,10 +39,6 @@ require('nvim-treesitter.configs').setup({
     -- Funcionalidade experimental!
     enable = false,
   },
-  -- autotag = {
-  --   enable = true,
-  --   filetypes = { 'html', 'eelixir' }
-  -- },
   textobjects = {
     select = {
       enable = true,
