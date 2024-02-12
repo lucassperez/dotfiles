@@ -127,6 +127,9 @@ hi link @method.call @function
 " hi link @function.builtin @function
 " Actually, I think builtin really were orange
 
+hi clear @module
+hi link @module Type
+
 " I don't want to use after/syntax/elixir.vim to change these
 " because I only want to do it when using catppuccin
 " hi link elixirAlias @type
