@@ -254,6 +254,7 @@ local screen_temperature = require('widgets.simple.screen_temperature')
 local memory_widget = require('widgets.simple.memory')
 local notification_widget = require('widgets.simple.notification')
 local docker_widget = require('widgets.simple.docker')
+local turtle_cpu_widget = require('widgets.cpu.turtle-widget')
 
 -- require('awesomewm-vim-tmux-navigator')({
 --   left  = {'h'},
@@ -425,6 +426,8 @@ awful.screen.connect_for_each_screen(function(s)
       notification_widget,
       separator_widget,
       memory_widget,
+      separator_widget,
+      turtle_cpu_widget(),
       separator_widget,
       screen_temperature,
       separator_widget,
