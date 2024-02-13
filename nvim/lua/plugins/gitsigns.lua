@@ -100,4 +100,6 @@ hi link GitSignsAddNr          GitSignsAdd
 hi link GitSignsChangeNr       GitSignsChange
 hi link GitSignsDeleteNr       GitSignsDelete
 hi link GitSignsChangeDeleteNr GitSignsChangeDelete
+
+hi GitSignsCurrentLineBlame guifg=#cccccc gui=ITALIC ctermfg=252 cterm=ITALIC
 ]])
