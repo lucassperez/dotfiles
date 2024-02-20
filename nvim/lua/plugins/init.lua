@@ -216,16 +216,19 @@ lazy.setup({
   {
     'aserowy/tmux.nvim',
     keys = { '<C-h>', '<C-j>', '<C-k>', '<C-l>' },
+    cond = function()
+      return os.getenv('TMUX') ~= nil
+    end,
     config = function()
       require('plugins.tmux')
     end,
   },
   {
     'christoomey/vim-tmux-runner',
-    enabled = function()
+    cmd = { 'VtrAttachToPane', 'VtrSendCommand', 'VtrSendCtrlD', 'VtrSendCtrlC' },
+    cond = function()
       return os.getenv('TMUX') ~= nil
     end,
-    cmd = { 'VtrAttachToPane', 'VtrSendCommand', 'VtrSendCtrlD', 'VtrSendCtrlC' },
   },
 
   -- LSP
