@@ -32,12 +32,8 @@ if head -n 1 -- $1 | grep -vq "^\[.\+\]\($\| .\+\)"; then
   staged_files=`echo $staged_files | sed 's|nvim|neovim|'`
   staged_files=`echo $staged_files | sed 's|awesome|awesomewm|'`
 
-  # Join the files with a / (will put a trailing slash).
-  staged_files=`echo $staged_files | tr '\n' '/'`
-
-  # Remove trailing slash and put the files inside brackets to
-  # form the tag.
-  tag="[${staged_files%%/}]"
+  # Join the files with a /
+  tag="[`echo $staged_files | tr ' ' '/'`]"
 
   printf "Adicionar automaticamente $tag?\n"
   printf "[Y/n/(i)gnorar] "
