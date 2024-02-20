@@ -36,7 +36,6 @@ end
 
 luasnip.add_snippets('go', {
   -- if error
-  s('ier', go_error_snippet()),
   s('ife', go_error_snippet()),
 
   -- http handler args
