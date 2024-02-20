@@ -141,17 +141,13 @@ lazy.setup({
   {
     'kyazdani42/nvim-tree.lua',
     keys = require('plugins.nvim-tree').keys(),
-    config = function()
-      require('plugins.nvim-tree').setup()
-    end,
+    config = require('plugins.nvim-tree').setup,
   },
   {
     'stevearc/oil.nvim',
     cmd = 'Oil',
     keys = require('plugins.oil').keys(),
-    config = function()
-      require('plugins.oil').setup()
-    end,
+    config = require('plugins.oil').setup,
   },
   {
     'monaqa/dial.nvim',
@@ -184,9 +180,7 @@ lazy.setup({
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
     keys = require('plugins.telescope').keys(),
-    config = function()
-      require('plugins.telescope').setup()
-    end,
+    config = require('plugins.telescope').setup,
     dependencies = {
       'nvim-lua/plenary.nvim',
       {
