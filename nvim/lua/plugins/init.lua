@@ -208,22 +208,17 @@ local plugins = {
   -- Tmux related plugins
   -----------------------
   {
-    'aserowy/tmux.nvim',
-    keys = { '<C-h>', '<C-j>', '<C-k>', '<C-l>' },
-    cond = function()
-      return os.getenv('TMUX') ~= nil
-    end,
-    config = function()
-      require('plugins.tmux')
-    end,
-  },
-  {
-    'christoomey/vim-tmux-runner',
-    cmd = { 'VtrAttachToPane', 'VtrSendCommand', 'VtrSendCtrlD', 'VtrSendCtrlC' },
-    cond = function()
-      return os.getenv('TMUX') ~= nil
+    'christoomey/vim-tmux-navigator',
+    cmd = { 'TmuxNavigateLeft', 'TmuxNavigateDown', 'TmuxNavigateUp', 'TmuxNavigateRight', 'TmuxNavigatePrevious' },
+    init = function()
+      vim.keymap.set('n', '<C-h>', '<cmd>TmuxNavigateLeft<CR>')
+      vim.keymap.set('n', '<C-j>', '<cmd>TmuxNavigateDown<CR>')
+      vim.keymap.set('n', '<C-k>', '<cmd>TmuxNavigateUp<CR>')
+      vim.keymap.set('n', '<C-l>', '<cmd>TmuxNavigateRight<CR>')
+      vim.keymap.set('n', '<C-\\>', '<cmd>TmuxNavigatePrevious<CR>')
     end,
   },
+  { 'christoomey/vim-tmux-runner', cmd = { 'VtrAttachToPane', 'VtrSendCommand', 'VtrSendCtrlD', 'VtrSendCtrlC' } },
 
   -- LSP
   ------
