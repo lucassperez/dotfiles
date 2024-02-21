@@ -15,9 +15,13 @@ fzv() {
 }
 
 vimgit() {
-  # files=`git status --porcelain | awk '{print $2}' | sort -u | tr "\n" ' '`
-  local files=`git status --porcelain | awk '{print $2}' | tr '\n' ' '`
-  # local files=`git status --porcelain | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $2}' | tr '\n' ' '`
+  local files
+  if echo $1 | grep -q '\(c\|conf\|conflict\|conflito\)$'; then
+    files=`git status --porcelain | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $2}' | xargs grep -l '[<=>]\{7\}' | tr '\n' ' '`
+  else
+    files=`git status --porcelain | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $2}' | tr '\n' ' '`
+  fi
+  # local files=`git diff --name-only`
   [ -z $files ] && return
 
   (
