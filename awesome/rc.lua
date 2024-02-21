@@ -254,7 +254,21 @@ local screen_temperature = require('widgets.simple.screen_temperature')
 local memory_widget = require('widgets.simple.memory')
 local notification_widget = require('widgets.simple.notification')
 local docker_widget = require('widgets.simple.docker')
-local turtle_cpu_widget = require('widgets.cpu.turtle-widget')
+
+local function conditional_turtle_cpu_widget()
+  if os.getenv('AWESOMEWM_USE_TURTLE_CPU_WIDGET') ~= nil then
+    -- I wanted to make this fuction return multiple values,
+    -- the turtle widget and the separator, but it did not seem to work
+    return require('widgets.cpu.turtle-widget')()
+  end
+end
+
+local function conditional_turtle_cpu_separator_widget()
+  if os.getenv('AWESOMEWM_USE_TURTLE_CPU_WIDGET') ~= nil then
+    -- so I created this silly one
+    return separator_widget
+  end
+end
 
 -- require('awesomewm-vim-tmux-navigator')({
 --   left  = {'h'},
@@ -427,8 +441,8 @@ awful.screen.connect_for_each_screen(function(s)
       separator_widget,
       memory_widget,
       separator_widget,
-      turtle_cpu_widget(),
-      separator_widget,
+      conditional_turtle_cpu_widget(),
+      conditional_turtle_cpu_separator_widget(),
       screen_temperature,
       separator_widget,
       bright_widget,
