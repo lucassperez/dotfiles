@@ -5,7 +5,7 @@ gitsigns.setup({
     add = { hl = 'GitSignsAdd', numhl = 'GitSignsAddNr', linehl = '' },
     change = { hl = 'GitSignsChange', numhl = 'GitSignsChangeNr', linehl = '' },
     delete = { hl = 'GitSignsDelete', numhl = 'GitSignsDeleteNr', linehl = '' },
-    topdelete = { hl = 'GitSignsDelete', numhl = 'GitSignsDeleteNr', linehl = '' },
+    topdelete = { hl = 'GitSignsTopDelete', numhl = 'GitSignsTopDeleteNr', linehl = '' },
     changedelete = {
       hl = 'GitSignsChangeDelete',
       numhl = 'GitSignsChangeDeleteNr',
@@ -95,11 +95,18 @@ hi GitSignsAdd            guifg=#00af00 gui=BOLD           ctermfg=34  cterm=BOL
 hi GitSignsChange         guifg=#c39f00 gui=ITALIC,BOLD    ctermfg=3   cterm=ITALIC,BOLD
 hi GitSignsDelete         guifg=#ec2929 gui=UNDERLINE,BOLD ctermfg=red cterm=UNDERLINE,BOLD
 hi GitSignsChangeDelete   guifg=#d75f00 gui=UNDERCURL,BOLD ctermfg=166 cterm=UNDERCURL,BOLD
+" I've been crazy searching on wtf is top delete, so
+" I set a werid color for it and started deleting lines.
+" Very shortly I learned that apparently, it is when
+" you delete the first line of the file.
+" And you know what? I think I'm gonna keep it (:
+hi GitSignsTopDelete      guifg=#ff5fff gui=UNDERLINE,BOLD ctermfg=207 cterm=UNDERLINE,BOLD
 
 hi link GitSignsAddNr          GitSignsAdd
 hi link GitSignsChangeNr       GitSignsChange
 hi link GitSignsDeleteNr       GitSignsDelete
 hi link GitSignsChangeDeleteNr GitSignsChangeDelete
+hi link GitSignsTopDeleteNr    GitSignsTopDelete
 
 hi GitSignsCurrentLineBlame guifg=#cccccc gui=ITALIC ctermfg=252 cterm=ITALIC
 ]])
