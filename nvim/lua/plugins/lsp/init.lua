@@ -20,10 +20,25 @@ mason_lspconfig.setup({
   ensure_installed = { 'lua_ls', 'marksman' },
 })
 
+local function config_file_exists(filename)
+  local path = string.format('%s/lua/plugins/lsp/%s.lua', vim.fn.stdpath('config'), filename)
+  return vim.fn.filereadable(path) == 1
+end
+
 mason_lspconfig.setup_handlers({
   function(server_name)
-    local ok, options = pcall(require, 'plugins.lsp.' .. server_name)
-    if not ok then options = {} end
+    local options = {}
+
+    if config_file_exists(server_name) then
+      local ok, result = pcall(require, 'plugins.lsp.' .. server_name)
+      if not ok then
+        vim.notify(result, vim.log.levels.WARN)
+      else
+        options = result
+      end
+    -- else
+    --   vim.notify('Config file for '..server_name..' does not exist', vim.log.levels.INFO)
+    end
 
     options.capabilities = options.capabilities or default_capabilities
     options.on_attach = options.on_attach or default_on_attach
