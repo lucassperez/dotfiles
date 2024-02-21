@@ -1,18 +1,3 @@
-local function telescopeOrNvimLsp(std_function, telescope_function_name)
-  local ok, telescope = pcall(require, 'telescope.builtin')
-  if ok then
-    if telescope[telescope_function_name] then
-      telescope[telescope_function_name]()
-    else
-      print('Telescope function `' .. telescope_function_name .. '` not found, using standard neovim functions')
-      std_function()
-    end
-  else
-    print('Telescope not found, using standard neovim functions')
-    std_function()
-  end
-end
-
 -- local function goToDiagnosticAndCenter(direction)
 --   local should_center = vim.diagnostic['get_' .. direction]({ wrap = false })
 --   vim.diagnostic['goto_' .. direction]({ wrap = false })
@@ -26,13 +11,24 @@ local function default_key_maps(bufnr)
     vim.keymap.set(lhs, rhs, command, map_opts)
   end
 
+  local fuzzy_finder = require('plugins.FUZZY_FINDER') or {}
+  local tag = string.format('%s%s', (fuzzy_finder.tag or ''), (fuzzy_finder.tag and ' ' or ''))
+
+  local function formatDesc(desc, fun)
+    return string.format('%s%s', (fun and tag or ''), desc)
+  end
+
   map('n', '\\f', function()
     vim.lsp.buf.format({ async = true })
   end, 'Formata o buffer atual')
 
   map('n', 'K', function()
-    telescopeOrNvimLsp(vim.lsp.buf.definition, 'lsp_definitions')
-  end, 'Vai para a definição (telescope se possível)')
+    if fuzzy_finder.lsp_definition then
+      fuzzy_finder.lsp_definition()
+    else
+      vim.lsp.buf.definition()
+    end
+  end, formatDesc('Vai para a definição', fuzzy_finder.lsp_definition))
 
   map('n', '\\k', function()
     vim.lsp.buf.hover()
@@ -43,20 +39,32 @@ local function default_key_maps(bufnr)
   end, 'Renomeia')
 
   map('n', '\\r', function()
-    telescopeOrNvimLsp(vim.lsp.buf.references, 'lsp_references')
-  end, 'Mostra as referências (onde é usado) (telescope se possível)')
+    if fuzzy_finder.lsp_references then
+      fuzzy_finder.lsp_references()
+    else
+      vim.lsp.buf.references()
+    end
+  end, formatDesc('Mostra as referências (onde é usado)', fuzzy_finder.lsp_references))
 
   map('n', '\\ca', function()
-    vim.lsp.buf.code_action()
-  end, 'Code action')
+    if fuzzy_finder.code_action then
+      fuzzy_finder.code_action()
+    else
+      vim.lsp.buf.code_action()
+    end
+  end, formatDesc('Code action', fuzzy_finder.code_action))
 
   map('n', '\\d', function()
     vim.diagnostic.open_float()
   end, 'Mostra diagnóstico da linha em janela flutuante')
 
   map('n', '\\D', function()
-    telescopeOrNvimLsp(vim.diagnostic.open_float, 'diagnostics')
-  end, 'Mostra diagnósticos com telescope se possível')
+    if fuzzy_finder.diagnostics then
+      fuzzy_finder.diagnostics()
+    else
+      vim.diagnostic.open_float()
+    end
+  end, formatDesc('Mostra diagnósticos', fuzzy_finder.diagnostics))
 
   -- map('n', '[d', function()
   --   goToDiagnosticAndCenter('prev')
@@ -75,8 +83,12 @@ local function default_key_maps(bufnr)
   end, 'Mostra o diagnóstico anterior do buffer')
 
   map('n', '\\i', function()
-    telescopeOrNvimLsp(vim.lsp.buf.implementation, 'lsp_implementations')
-  end, 'Mostra quem implementa (telescope se possível)')
+    if fuzzy_finder.lsp_implementation then
+      fuzzy_finder.lsp_implementation()
+    else
+      vim.lsp.buf.implementation()
+    end
+  end, formatDesc('Mostra quem implementa', fuzzy_finder.lsp_implementation))
 end
 
 local function default_on_attach(client, bufnr)

@@ -19,7 +19,32 @@ if not ok then
   return
 end
 
-lazy.setup({
+local opts = {
+  lockfile = vim.fn.stdpath('config') .. '/plugins-lock.json',
+  install = {
+    colorscheme = { 'catppuccin', 'habamax' },
+  },
+  ui = {
+    icons = {
+      cmd = '👊',
+      config = '🛠',
+      event = '📅',
+      ft = '📂',
+      init = '⚙️',
+      keys = '🔑',
+      plugin = '🔌',
+      runtime = '🏃',
+      source = '📄',
+      start = '🚀',
+      task = '📌',
+      lazy = '💤 ',
+      import = '📦',
+      require = '🚚',
+    },
+  },
+}
+
+local plugins = {
   -- Without lazy loading
   -----------------------
   -- Lualine, barbar and catppuccin
@@ -174,37 +199,6 @@ lazy.setup({
   -- { 'Olical/conjure', ft = { 'clojure' }, },
   -- { 'guns/vim-sexp', ft = { 'clojure' }, },
 
-  -- Telescope
-  ------------
-  {
-    'nvim-telescope/telescope.nvim',
-    cmd = 'Telescope',
-    keys = require('plugins.telescope').keys(),
-    config = require('plugins.telescope').setup,
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        build = 'make',
-        config = function()
-          require('telescope').load_extension('fzf')
-        end,
-      },
-      {
-        'debugloop/telescope-undo.nvim',
-        config = function()
-          require('telescope').load_extension('undo')
-        end,
-      },
-      {
-        'molecule-man/telescope-menufacture',
-        config = function()
-          require('telescope').load_extension('menufacture')
-        end,
-      },
-    },
-  },
-
   -- Tmux related plugins
   -----------------------
   {
@@ -353,27 +347,11 @@ lazy.setup({
       require('plugins.vim-closetag')
     end,
   },
-}, {
-  lockfile = vim.fn.stdpath('config') .. '/plugins-lock.json',
-  install = {
-    colorscheme = { 'catppuccin', 'habamax' },
-  },
-  ui = {
-    icons = {
-      cmd = '👊',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '',
-      keys = '🔑',
-      plugin = '🔌',
-      runtime = '🏃',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
-      import = '📦',
-      require = '🚚',
-    },
-  },
-})
+}
+
+-- Fuzzy Finder, FzfLua or Telescope
+-------------------------------------
+local ok_fuzz, fuzzy_finder = pcall(require, 'plugins.FUZZY_FINDER')
+if ok_fuzz and fuzzy_finder ~= nil then table.insert(plugins, fuzzy_finder.lazyPluginSpec) end
+
+lazy.setup(plugins, opts)
