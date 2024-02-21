@@ -51,6 +51,12 @@ local plugins = {
   -- are also not being lazy loaded.
   'elixir-editors/vim-elixir',
   {
+    'ahmedkhalf/project.nvim',
+    config = function()
+      require('plugins.project')
+    end,
+  },
+  {
     'kylechui/nvim-surround',
     config = function()
       require('plugins.nvim-surround')

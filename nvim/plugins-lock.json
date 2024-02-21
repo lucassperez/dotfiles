@@ -32,6 +32,7 @@
   "nvim-various-textobjs": { "branch": "main", "commit": "035243ea3c4bf005b24d8068666c7d571c708503" },
   "oil.nvim": { "branch": "master", "commit": "bf753c3e3f8736939ad5597f92329dfe7b1df4f5" },
   "plenary.nvim": { "branch": "master", "commit": "4f71c0c4a196ceb656c824a70792f3df3ce6bb6d" },
+  "project.nvim": { "branch": "main", "commit": "8c6bad7d22eef1b71144b401c9f74ed01526a4fb" },
   "rainbow-delimiters.nvim": { "branch": "master", "commit": "ca8d5ee2b4ee1eec491040a7601d366ddc8a2e02" },
   "stylua.nvim": { "branch": "main", "commit": "15336a99c599ff10b04d324310bc1295f5203acb" },
   "tmux.nvim": { "branch": "main", "commit": "ea67d59721eb7e12144ce2963452e869bfd60526" },
