@@ -106,13 +106,15 @@ local function setup()
   hi clear FzfLuaCursorLine
   hi link FzfLuaCursorLine Visual
   hi FzfLuaCursorLine guibg=#61677d gui=NONE
-  hi FzfLuaCursor guifg=NONE guibg=NONE
+  hi FzfLuaCursor guifg=NONE guibg=NONE gui=BOLD
   ]])
 end
 
 return {
-  'ibhagwan/fzf-lua',
-  cmd = 'FzfLua',
-  init = init,
-  config = setup,
+  lazyPluginSpec = {
+    'ibhagwan/fzf-lua',
+    cmd = 'FzfLua',
+    init = init,
+    config = setup,
+  },
 }

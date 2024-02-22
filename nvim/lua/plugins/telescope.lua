@@ -1,1 +1,1 @@
-/home/lucas/dotfiles/nvim/lua/plugins/FUZZY_FINDER/telescope/lazy-plugin-spec.lua
+/home/lucas/dotfiles/nvim/lua/plugins/FUZZY_FINDER/telescope/config.lua

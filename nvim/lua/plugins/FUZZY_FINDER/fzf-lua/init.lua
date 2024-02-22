@@ -1,7 +1,7 @@
 return {
   tag = '[FzfLua]',
   project_picker = require('plugins.FUZZY_FINDER.fzf-lua.project'),
-  lazyPluginSpec = require('plugins.FUZZY_FINDER.fzf-lua.lazy-plugin-spec'),
+  lazyPluginSpec = require('plugins.FUZZY_FINDER.fzf-lua.config').lazyPluginSpec,
 
   diagnostics = function()
     require('fzf-lua').diagnostics_workspace({ jump_to_single_result = false })

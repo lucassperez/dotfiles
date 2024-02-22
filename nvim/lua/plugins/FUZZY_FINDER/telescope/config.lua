@@ -133,36 +133,38 @@ local function keys()
 end
 
 return {
-  'nvim-telescope/telescope.nvim',
-  cmd = 'Telescope',
-  keys = keys(),
-  config = function()
-    setup()
-    -- Setting this here instead of the project_nvim plugin spec because
-    -- I don't want to load telescope when loading project_nvim, since
-    -- I want to lazy load telescope.
-    require('telescope').load_extension('projects')
-  end,
-  dependencies = {
-    'nvim-lua/plenary.nvim',
-    {
-      'nvim-telescope/telescope-fzf-native.nvim',
-      build = 'make',
-      config = function()
-        require('telescope').load_extension('fzf')
-      end,
-    },
-    {
-      'debugloop/telescope-undo.nvim',
-      config = function()
-        require('telescope').load_extension('undo')
-      end,
-    },
-    {
-      'molecule-man/telescope-menufacture',
-      config = function()
-        require('telescope').load_extension('menufacture')
-      end,
+  lazyPluginSpec = {
+    'nvim-telescope/telescope.nvim',
+    cmd = 'Telescope',
+    keys = keys(),
+    config = function()
+      setup()
+      -- Setting this here instead of the project_nvim plugin spec because
+      -- I don't want to load telescope when loading project_nvim, since
+      -- I want to lazy load telescope.
+      require('telescope').load_extension('projects')
+    end,
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'make',
+        config = function()
+          require('telescope').load_extension('fzf')
+        end,
+      },
+      {
+        'debugloop/telescope-undo.nvim',
+        config = function()
+          require('telescope').load_extension('undo')
+        end,
+      },
+      {
+        'molecule-man/telescope-menufacture',
+        config = function()
+          require('telescope').load_extension('menufacture')
+        end,
+      },
     },
   },
 }
