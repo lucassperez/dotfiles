@@ -8,4 +8,9 @@ export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 # echo "=== $(date) ===" >>$LOG
 # echo "Caller: $0" >>$LOG
 
+# The format of process time reports with the time keyword.
+# The default is ‘%J %U user %S system %P cpu %*E total’.
+# https://zsh.sourceforge.io/Doc/Release/Parameters.html
+export TIMEFMT=$'\nuser\t%*Us\nsystem\t%*Ss\ntotal\t%*Es'
+
 [ -f "$ZDOTDIR/zshenv.local" ] && . "$ZDOTDIR/zshenv.local"
