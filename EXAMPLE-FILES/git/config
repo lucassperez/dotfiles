@@ -4,7 +4,13 @@
 ; [includeIf "gitdir:/home/lucas/algumacoisa/**"]
 ;   path = /home/lucas/algumaoutracoisa/.gitconfig
 [core]
-  editor = "env vim +0 -c 'hi ColorColumn ctermbg=125 ctermfg=white' -c 'set colorcolumn=51' -c 'set textwidth=0' -c 'map <C-q> :wq<CR>'"
+  editor = "env vim +0 -c 'hi ColorColumn ctermbg=125 ctermfg=white' -c 'set colorcolumn=51' -c 'set textwidth=0' -c 'map <C-q> :wq<CR>' -c 'nmap H ^' -c 'nmap L $' -c 'nmap } }k' -c 'nmap <Space><Space> }ddggpcw'"
+  ; The default perl script diff-highlight does not report diffs so precisely,
+  ; but normal delta is too cluttered. So I prefer this. Clean, looks like
+  ; standard git diff and also shows highlights of added/removed
+  ; things inside a line
+  ; In fedora, to install it, it is git-delta package.
+  ; pager = delta --diff-highlight
 [init]
   defaultBranch = main
 [commit]
