@@ -29,7 +29,7 @@ if echo $first_line | grep -vq "^\[.\+\]\($\| .\+\)"; then
   printf 'A mensagem de commit está sem uma tag no começo ou mal formatada (sem espaço após a tag). Ex: [tag] Mensagem\n'
 
   # Also transform files inside ARCHIVE to their first names, ex ARCHIVE/i3 becomes i3.
-  staged_files=`git diff --name-only --staged | sed 's|ARCHIVE/\(.*\)|\1|' | cut -d '/' -f 1 | sort -u`
+  staged_files=`git diff --name-only --staged | sed 's/\(ARCHIVE\|EXAMPLE-FILES\)\/\(.*\)/\2/' | cut -d '/' -f 1 | sort -u`
 
   # Translate nvim to neovim and awesome to awesomewm because reasons?
   # I've always done it this way, so I want to mantain it.
