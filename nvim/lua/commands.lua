@@ -105,3 +105,20 @@ call SetupCommandAlias('qA',  'qa')
 -- the lua version only allows commands that start with uppercase letter, so I
 -- can't setup the 'qA' command, for example,
 -- which has questionable usefulness, but still...
+
+vim.cmd([[
+" https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/after/plugin/folds.vim
+function! SuperFoldToggle()
+    " Force the fold on the current line to immediately open or close.  Unlike za
+    " and zo it only takes one application to open any fold.  Unlike zO it does
+    " not open recursively, it only opens the current fold.
+    if foldclosed('.') == -1
+        silent! foldclose
+    else
+        while foldclosed('.') != -1
+            silent! foldopen
+        endwhile
+    endif
+endfunction
+nmap <silent> zf :call SuperFoldToggle()<CR>
+]])
