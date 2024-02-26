@@ -15,13 +15,54 @@ fzv() {
 }
 
 vimgit() {
+  local conflict
+  local staged
+  local help
+  local unknown_args
+
+  for arg in "$@"; do
+    case "$arg" in
+      -c|--conflict)
+        conflict=sim
+        ;;
+      -s|--staged)
+        staged=sim
+        ;;
+      -h|--help)
+        help=sim
+        ;;
+      *)
+        unknown_args="$arg, $unknown_args"
+        ;;
+    esac
+  done
+
+  if [ -n "$unknown_args" -o -n "$help" ]; then
+    [ -n "$unknown_args" ] && echo "Unknown option \`${unknown_args%%, }\`"
+    echo 'Possible options:'
+    echo '    -c  --conflict  Only lists files with git conflict markers (lines starting with <<<<<<<, ======= or >>>>>>>)'
+    echo '    -s  --staged    Only lists files that are staged'
+    echo 'If both conflict and staged options are passed, staged is ignored.'
+    # If unknown_args is not empty but help is, I'm going to both
+    # print this help message and open vim. Do I want this?
+    # Might be weird.
+    [ -n "$help" ] && return
+  fi
+
+  if [ -n "$conflict" -a -n "$staged" ]; then
+    echo 'Both conflict and staged options passed, using only conflict.'
+  fi
+
   local files
-  if echo $1 | grep -q '\(c\|conf\|conflict\|conflito\)$'; then
-    files=`git status --porcelain | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $2}' | xargs grep -l '[<=>]\{7\}' | tr '\n' ' '`
+  if [ -n "$conflict" ]; then
+    files=`git status --porcelain | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $2}' | xargs grep -l '^[<=>]\{7\}' | tr '\n' ' '`
+  elif [ -n "$staged" ]; then
+    # Easier to use git diff than awk [[:blank:]] or something fancy
+    files=`git diff --name-only --staged | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $1}' | tr '\n' ' '`
   else
     files=`git status --porcelain | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $2}' | tr '\n' ' '`
   fi
-  # local files=`git diff --name-only`
+
   [ -z $files ] && return
 
   (
