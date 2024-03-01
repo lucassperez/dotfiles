@@ -32,18 +32,18 @@ function RunAutomatedTest(opts)
   end
 
   if filetype == 'elixir' then
-    vim.fn.VtrSendCommand('mix test ' .. filename .. line_number)
+    vim.cmd.VtrSendCommand('mix test ' .. filename .. line_number)
   elseif filetype == 'ruby' then
-    vim.fn.VtrSendCommand('bundle exec rspec ' .. filename .. line_number)
+    vim.cmd.VtrSendCommand('bundle exec rspec ' .. filename .. line_number)
   elseif filetype == 'typescriptreact' or filetype == 'typescript' then
-    vim.fn.VtrSendCommand('yarn test ' .. filename)
+    vim.cmd.VtrSendCommand('yarn test ' .. filename)
   elseif filetype == 'clojure' then
     local file = io.open('bin/kaocha')
     if file then
       file:close()
-      vim.fn.VtrSendCommand('lein kaocha' .. kaochaFilename(opts))
+      vim.cmd.VtrSendCommand('lein kaocha' .. kaochaFilename(opts))
     else
-      vim.fn.VtrSendCommand('lein test ' .. filename)
+      vim.cmd.VtrSendCommand('lein test ' .. filename)
     end
   else
     print('Não sei executar testes automatizados para arquivos do tipo ' .. filetype)
@@ -77,7 +77,7 @@ function RunLastTest()
   -- local output = p:read()
   -- p:close()
   -- print(output)
-  -- vim.fn.VtrSendCommand('echo '..output..' && $('..output..')')
-  vim.fn.VtrSendCommand('vtr_last_test=' .. command_string)
-  vim.fn.VtrSendCommand('echo "$vtr_last_test" && echo "$vtr_last_test" | bash -')
+  -- vim.cmd.VtrSendCommand('echo '..output..' && $('..output..')')
+  vim.cmd.VtrSendCommand('vtr_last_test=' .. command_string)
+  vim.cmd.VtrSendCommand('echo "$vtr_last_test" && echo "$vtr_last_test" | bash -')
 end

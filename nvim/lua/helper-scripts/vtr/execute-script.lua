@@ -57,7 +57,7 @@ function ExecuteFileAsScript()
   local command, printMessage = getRunCommand()
 
   if command then
-    local ok, err = pcall(vim.fn.VtrSendCommand, command)
+    local ok, err = pcall(vim.cmd.VtrSendCommand, command)
     if not ok then
       print('[helper-scripts/vtr/execute-script](ExecuteFileAsScript) ' .. err)
       return
@@ -103,7 +103,7 @@ function AutoExecuteOnSave()
   _auto_execute_on_save.autocmd_id = vim.api.nvim_create_autocmd('BufWritePost', {
     group = vim.api.nvim_create_augroup('AutoExecuteOnSave', { clear = true }),
     callback = function()
-      local ok, err = pcall(vim.fn.VtrSendCommand, command)
+      local ok, err = pcall(vim.cmd.VtrSendCommand, command)
       if not ok then
         print('[helper-scripts/vtr/execute-script](AutoExecuteOnSave) ' .. err)
         return

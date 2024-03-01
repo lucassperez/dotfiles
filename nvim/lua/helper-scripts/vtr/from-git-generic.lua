@@ -20,7 +20,7 @@ local function genericLinter()
   p:close()
 
   if command ~= '' then
-    vim.fn.VtrSendCommand(command)
+    vim.cmd.VtrSendCommand(command)
   else
     print('genericLinter: Nenhum arquivo encontrado')
   end
@@ -46,7 +46,7 @@ local function genericTest()
   p:close()
 
   if command ~= '' then
-    vim.fn.VtrSendCommand(command)
+    vim.cmd.VtrSendCommand(command)
   else
     print('genericTest: Nenhum arquivo encontrado')
   end

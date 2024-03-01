@@ -25,6 +25,6 @@ function SendLinesToTmux(mode)
 
   local old_config = vim.g.VtrClearBeforeSend
   vim.g.VtrClearBeforeSend = 0
-  vim.fn.VtrSendCommand(text)
+  vim.cmd.VtrSendCommand(text)
   vim.g.VtrClearBeforeSend = old_config
 end
