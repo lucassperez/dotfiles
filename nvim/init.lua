@@ -1,12 +1,16 @@
 -- Useful to print tables
 function P(...)
   if ... == nil then
-    print('nil')
+    vim.notify('nil')
     return
   end
 
   for _, value in pairs({ ... }) do
-    print(vim.inspect(value))
+    if type(value) == 'string' then
+      vim.notify(value)
+    else
+      vim.notify(vim.inspect(value))
+    end
   end
 
   return ...
