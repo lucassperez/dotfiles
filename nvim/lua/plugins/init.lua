@@ -203,13 +203,13 @@ local plugins = {
   -----------------------
   {
     'christoomey/vim-tmux-navigator',
-    cmd = { 'TmuxNavigateLeft', 'TmuxNavigateDown', 'TmuxNavigateUp', 'TmuxNavigateRight', 'TmuxNavigatePrevious' },
+    cmd = { 'TmuxNavigateLeft', 'TmuxNavigateDown', 'TmuxNavigateUp', 'TmuxNavigateRight' },
     init = function()
+      vim.g.tmux_navigator_no_mappings = 1
       vim.keymap.set('n', '<C-h>', '<cmd>TmuxNavigateLeft<CR>')
       vim.keymap.set('n', '<C-j>', '<cmd>TmuxNavigateDown<CR>')
       vim.keymap.set('n', '<C-k>', '<cmd>TmuxNavigateUp<CR>')
       vim.keymap.set('n', '<C-l>', '<cmd>TmuxNavigateRight<CR>')
-      vim.keymap.set('n', '<C-\\>', '<cmd>TmuxNavigatePrevious<CR>')
     end,
   },
   { 'christoomey/vim-tmux-runner', cmd = { 'VtrAttachToPane', 'VtrSendCommand', 'VtrSendCtrlD', 'VtrSendCtrlC' } },
