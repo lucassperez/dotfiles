@@ -1,3 +1,5 @@
+local test_cache = ''
+
 local function kaochaFilename(opts)
   opts = opts or {}
 
@@ -31,53 +33,35 @@ function RunAutomatedTest(opts)
     line_number = ''
   end
 
+  local test_command = ''
   if filetype == 'elixir' then
-    vim.cmd.VtrSendCommand('mix test ' .. filename .. line_number)
+    test_command = 'mix test ' .. filename .. line_number
   elseif filetype == 'ruby' then
-    vim.cmd.VtrSendCommand('bundle exec rspec ' .. filename .. line_number)
+    test_command = 'bundle exec rspec ' .. filename .. line_number
   elseif filetype == 'typescriptreact' or filetype == 'typescript' then
-    vim.cmd.VtrSendCommand('yarn test ' .. filename)
+    test_command = 'yarn test ' .. filename
   elseif filetype == 'clojure' then
     local file = io.open('bin/kaocha')
     if file then
       file:close()
-      vim.cmd.VtrSendCommand('lein kaocha' .. kaochaFilename(opts))
+      test_command = 'lein kaocha' .. kaochaFilename(opts)
     else
-      vim.cmd.VtrSendCommand('lein test ' .. filename)
+      test_command = 'lein test ' .. filename
     end
   else
-    print('Não sei executar testes automatizados para arquivos do tipo ' .. filetype)
-  end
-end
-
--- TODO make this good
-function RunLastTest()
-  local filetype = vim.bo.filetype
-
-  local grep_string = ''
-  if filetype == 'elixir' then
-    grep_string = 'test'
-  elseif filetype == 'ruby' then
-    grep_string = 'rspec'
-  else
-    print('Não sei pelo o que procurar para arquivos do tipo ' .. filetype)
+    vim.notify('Não sei executar testes automatizados para arquivos do tipo ' .. filetype)
     return
   end
 
-  local command_string = '$('
-    .. 'history 0 | grep '
-    .. '"'
-    .. grep_string
-    .. '"'
-    .. ' | tail -1 | cut -d " " -f 4-'
-    .. ')'
+  test_cache = test_command
+  vim.cmd.VtrSendCommand(test_command)
+end
 
-  -- local p = io.popen(command_string)
-  -- if p == nil then return end
-  -- local output = p:read()
-  -- p:close()
-  -- print(output)
-  -- vim.cmd.VtrSendCommand('echo '..output..' && $('..output..')')
-  vim.cmd.VtrSendCommand('vtr_last_test=' .. command_string)
-  vim.cmd.VtrSendCommand('echo "$vtr_last_test" && echo "$vtr_last_test" | bash -')
+function RunLastTest()
+  if test_cache == '' then
+    P('Ainda não foi executado nenhum teste para por no cache')
+    return
+  end
+
+  vim.cmd.VtrSendCommand(test_cache)
 end
