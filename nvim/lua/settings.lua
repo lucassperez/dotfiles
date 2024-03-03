@@ -1,52 +1,46 @@
-local o = vim.o -- global options
-local bo = vim.bo -- buffer options
-local wo = vim.wo -- window options
-local opt = vim.opt
--- vim.opt if for things you would `set` in vimscript, vim.g is for things you'd `let`
-
 -- global
-o.confirm = true -- pede confirmação ao tentar fechar um buffer com alterações
+vim.o.confirm = true -- pede confirmação ao tentar fechar um buffer com alterações
 
 local my_shiftwidth = 2
-o.tabstop = my_shiftwidth -- tamanho do tab
-o.shiftwidth = my_shiftwidth -- números de espaços pra usar para cada indentação
-o.expandtab = true -- tab com espaços
+vim.o.tabstop = my_shiftwidth -- tamanho do tab
+vim.o.shiftwidth = my_shiftwidth -- números de espaços pra usar para cada indentação
+vim.o.expandtab = true -- tab com espaços
 
-o.ignorecase = true -- busca case insensitive
-o.smartcase = true -- busca case sensitive SSE tiver pelo menos uma letra maiúscula
-o.scrolloff = 1 -- sempre mostra pelo menos uma linha abaixo e acima do cursor
-o.sidescrolloff = 3 -- sempre mostra pelo menos três colunas à direita e à esquerda do cursor
-o.lazyredraw = true -- espera o macro acabar pra redesenhar a tela ao invés de ir redesenhando enquanto executa o macro
-o.mouse = 'a' -- habilita o mouse (a significa all). Sacrilégio!
-o.showmode = false -- don't show mode in command line. I can put the mode in statusline if I want it
+vim.o.ignorecase = true -- busca case insensitive
+vim.o.smartcase = true -- busca case sensitive SSE tiver pelo menos uma letra maiúscula
+vim.o.scrolloff = 1 -- sempre mostra pelo menos uma linha abaixo e acima do cursor
+vim.o.sidescrolloff = 3 -- sempre mostra pelo menos três colunas à direita e à esquerda do cursor
+vim.o.lazyredraw = true -- espera o macro acabar pra redesenhar a tela ao invés de ir redesenhando enquanto executa o macro
+vim.o.mouse = 'a' -- habilita o mouse (a significa all). Sacrilégio!
+vim.o.showmode = false -- não mostra o modo na linha de comando. Posso fazer isso com a statusline se eu quiser
 
-o.wildignore = '**/node_modules/**' -- porque né, ninguém merece esse treco gigante
-o.wildignorecase = true -- auto complete case insensitive
+vim.o.wildignore = '**/node_modules/**' -- porque né, ninguém merece esse treco gigante
+vim.o.wildignorecase = true -- auto complete case insensitive
 -- https://www.reddit.com/r/neovim/comments/10rsl92/how_to_complete_longest_common_text_in_command/?sort=new
-o.wildmode = 'longest:full,full' -- completa primeiro só até o texto comum mais longo
+vim.o.wildmode = 'longest:full,full' -- completa primeiro só até o texto comum mais longo
 
-o.virtualedit = 'block'
+vim.o.virtualedit = 'block'
 
 -- Novas splits não derretem meu cérebro quando criadas
-o.splitbelow = true
-o.splitright = true
+vim.o.splitbelow = true
+vim.o.splitright = true
 
 -- buffer
-bo.swapfile = false
+vim.bo.swapfile = false
 
 -- window
-wo.colorcolumn = '81,121'
-wo.cursorline = true
-wo.number = true -- número das linhas
-wo.relativenumber = true -- números relativos (tipo distâncias) ao cursor
-wo.numberwidth = 3 -- tamanho mínimo da coluna pros números à esquerda
-wo.wrap = false -- sem wrap quando o texto chega no final da tela
--- vim.o.breakindent is usefull if I ever want to use wrap
-wo.signcolumn = 'no'
+vim.wo.colorcolumn = '81,121'
+vim.wo.cursorline = true
+vim.wo.number = true -- número das linhas
+vim.wo.relativenumber = true -- números relativos (tipo distâncias) ao cursor
+vim.wo.numberwidth = 3 -- tamanho mínimo da coluna pros números à esquerda
+vim.wo.wrap = false -- sem wrap quando o texto chega no final da tela
+-- vim.o.breakindent -- isso é útil se um dia eu quiser usar wrap
+vim.wo.signcolumn = 'no'
 
 -- List mode tem que estar ligado para conseguir usar o listchars
-wo.list = true
-opt.listchars = {
+vim.wo.list = true
+vim.opt.listchars = {
   -- tab = '<->',
   -- tab = '⮡ ',
   -- tab = '⤷ ',
@@ -57,7 +51,7 @@ opt.listchars = {
   precedes = '«',
   leadmultispace = '┊' .. string.format('%-' .. (my_shiftwidth - 1) .. 's', ''),
 }
-opt.textwidth = 0
+vim.opt.textwidth = 0
 -- Eu odeio demais formatoptions "t", "c", "r" e "o" ):<
 -- t = auto wrap
 -- c = auto wrap comentários
@@ -66,22 +60,21 @@ opt.textwidth = 0
 -- q = pode formatar comentários com o comando "gq" (??) Nem sei o que é isso
 -- l = não auto formata quando acaba a linha no insert mode (exatamente o que eu quero)
 -- j = junta comentários de maneira inteligente apertando J
--- :h fo-table para mais informações
+-- :help fo-table para mais informações
 vim.api.nvim_create_autocmd('Filetype', {
   pattern = '*',
   callback = function()
-    bo.formatoptions = 'jql'
-    vim.opt.formatoptions:remove({ 'c', 'r', 'o' })
+    vim.bo.formatoptions = 'jql'
+    -- vim.opt.formatoptions:remove({ 'c', 'r', 'o' })
   end,
   once = false,
 })
 -- vim.cmd('autocmd Filetype * setlocal formatoptions=jql')
--- bo.formatoptions = 'jql' -- isso não funciona???
 
 -- https://www.reddit.com/r/neovim/comments/ppv7vr/comment/hd7v2ol/?utm_source=share&utm_medium=web2x&context=3
-opt.undodir = { vim.fn.stdpath('config') .. '/undodir' }
-o.undofile = true -- arquivo para poder dar undo no diretório acima
-opt.complete:remove('i') -- https://medium.com/usevim/set-complete-e76b9f196f0f
+vim.opt.undodir = { vim.fn.stdpath('config') .. '/undodir' }
+vim.o.undofile = true -- arquivo para poder dar undo no diretório acima
+vim.opt.complete:remove('i') -- https://medium.com/usevim/set-complete-e76b9f196f0f
 
 -- :help vim.highlight.on_yank()
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -95,7 +88,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- Folding commands
--- :h zm, zM, zo, zR, ]z, zj
+-- :help zm, zM, zo, zR, ]z, zj
 -- "You can fold natively on nvim. Just zc to close and zo to open in normal mode."
 -- Folding options
 vim.opt.fillchars = { fold = ' ' }
