@@ -1,13 +1,10 @@
 #!/bin/sh
 
-touchpad_device_name="`xinput --list --name-only | grep -i "touchpad" | head -n 1`"
-[ -n "$touchpad_device_name" ] || exit
+touchpad_id=`xinput --list | grep -i 'touchpad' | head -n 1 | sed 's|.*id=\([0-9]\+\).*|\1|'`
+[ -n "$touchpad_id" ] || exit
 
-enabled=`xinput list-props "$touchpad_device_name" | grep 'Device Enabled' | awk '{print $4}'`
+enabled=`xinput list-props "$touchpad_id" | awk '/Device Enabled \([0-9]+\):\s*[01]/ {print $4}'`
 [ -n "$enabled" ] || exit
-
-# touchpad_device_id=$(xinput --list | grep -i 'touchpad' | sed 's/.*id=\([0-9]\+\).*/\1/' | head -n 1) || exit
-# enabled=`xinput list-props $touchpad_device_id | grep 'Device Enabled' | awk '{print $4}'`
 
 if [ $enabled = 1 ]; then
   enabled=yes
@@ -16,11 +13,18 @@ else
 fi
 
 if [ $enabled = yes ]; then
-  xinput disable "$touchpad_device_name"
+  xinput disable "$touchpad_id"
   status="DISABLED"
 else
-  xinput enable "$touchpad_device_name"
+  xinput enable "$touchpad_id"
   status="ENABLED"
 fi
 
-notify-send "Touchpad $status" "Device $touchpad_device_name"
+touchpad_device_name=`
+  xinput --list \
+  | grep id=$touchpad_id \
+  | sed "s|^[^0-9a-zA-Z]*\(.*)*\)\s*id=$touchpad_id.*|\1|" \
+  | sed 's|\s*$||' \
+  `
+
+notify-send "Touchpad $status" "Device ${touchpad_device_name:-with id $touchpad_id}"
