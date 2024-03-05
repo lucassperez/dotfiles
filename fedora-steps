@@ -41,6 +41,8 @@ This allows it to show the battery of devices
 To install ruby, we probably need this first: sudo dnf install openssl1.1 openssl1.1-devel libyaml libyaml-devel
 Libyaml and libyaml-devel is needed for 3.2, don\'t know about others
 
+When compiling erlang, use KERL_BUILD_DOCS=yes
+
 # === COMMANDS START HERE ===
 
 # DNF configs
