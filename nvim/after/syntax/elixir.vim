@@ -40,19 +40,22 @@ hi elixirNumber ctermfg=157 guifg=#afffaf
 " Cores de coisas como def, defmodule, defp etc
 " Vale notar que existem os grupos elixirDefine e elixirPrivateDefine, se quiser
 " colocar cores diferentes para eles
-hi Define ctermfg=magenta
-hi elixirPrivateDefine ctermfg=red guifg=#EF2929
+" hi Define ctermfg=magenta guifg=#ca9ee6
+hi link Define Include
+hi elixirPrivateDefine ctermfg=red guifg=#ef2929
 
 " Algumas coisas no meio do regex, tipo barras, sinal de +
-hi elixirRegexEscapePunctuation ctermfg=red
+hi elixirRegexEscapePunctuation ctermfg=red guifg=#ef2929
 
 " Colocar corzinha em \\ e ->
 " Será que eu deveria incluir o underline _ ?
 syn match elixirCustomOutros /->\||>\|<>\|<-/
 hi elixirCustomOutros cterm=bold gui=bold
 
-hi elixirDocString ctermfg=211 guifg=#e57ba0
-hi elixirDocStringDelimiter ctermfg=211 guifg=#e57ba0
+" hi elixirDocString ctermfg=211 guifg=#e57ba0
+" hi elixirDocStringDelimiter ctermfg=211 guifg=#e57ba0
+hi link elixirDocString Comment
+hi link elixirDocStringDelimiter Comment
 
 " __FILE__ __DIR__ __MODULE__ __ENV__ __CALLER__ __STACKTRACE__
 hi elixirPseudoVariable ctermfg=197 guifg=#ff005f
