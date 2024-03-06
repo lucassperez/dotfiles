@@ -112,6 +112,9 @@ hi @text.uri gui=ITALIC cterm=ITALIC
 hi clear @string.special.url
 hi link @string.special.url @text.uri
 
+hi clear @module
+hi link @module Type
+
 " hi @text.uri guifg=#CCCCCC gui=NONE cterm=NONE
 " hi clear @nospell
 " hi link @nospell @text.uri
