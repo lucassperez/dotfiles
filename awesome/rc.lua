@@ -1226,7 +1226,7 @@ awful.rules.rules = {
       buttons = clientbuttons,
       screen = awful.screen.preferred,
       placement = awful.placement.no_overlap + awful.placement.no_offscreen,
-      callback = function(c) -- make gnome things floating (but not nautilus)
+      callback = function(c) -- make gnome things floating (but neither nautilus nor gnome terminal)
         if type(c.class) ~= 'string' then return end
         if c.class:match('[Oo]rg.[Gg]nome.[Nn]autilus') then return end
         if c.class:match('[Gg]nome%-[Tt]erminal') then return end
@@ -1364,6 +1364,7 @@ awful.rules.rules = {
     properties = { ontop = true },
     rule_any = {
       class = {
+        '[Gg]nome%-mines',
         '[Gg]edit',
         'kate',
         'notes',
@@ -1486,6 +1487,38 @@ screen_temperature:set(5250)
 
 -- https://www.reddit.com/r/awesomewm/comments/6cwevs/the_purpose_of_run_lua_code/
 -- Okay, I guess
-prt = function(...)
+Prt = function(...)
   naughty.notify({ text = table.concat({ ... }, '\t') })
+end
+
+Select_n_tag = function(n)
+  if n == 0 then
+    -- naughty.notify({
+    --   text = 'Provided n is 0, using 10 instead'
+    -- })
+    n = 10
+  end
+
+  if type(n) ~= 'number' then
+    naughty.notify({
+      text = 'Provided n must be a number.\ntype(n) = ' .. tostring(type(n)),
+    })
+    return
+  end
+
+  if n <= 0 then
+    naughty.notify({
+      text = 'Provided n must be positive.\nn = ' .. tostring(n),
+    })
+    return
+  end
+
+  if n > #tags then
+    naughty.notify({
+      text = 'Index out of bounds.\nn = ' .. tostring(n) .. '\n#tags = ' .. tostring(#tags),
+    })
+    return
+  end
+
+  charitable.select_tag(tags[n], awful.screen.focused())
 end
