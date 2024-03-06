@@ -33,7 +33,7 @@ mason_lspconfig.setup_handlers({
       local ok, result = pcall(require, 'plugins.lsp.' .. server_name)
       if not ok then
         vim.notify(result, vim.log.levels.WARN)
-      else
+      elseif type(result) == 'table' then
         options = result
       end
     -- else
