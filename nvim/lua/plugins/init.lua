@@ -279,7 +279,8 @@ local plugins = {
   -- Emmet can be replaced with emmet_ls (LSP), but ragtag...? ):
   {
     'tpope/vim-ragtag',
-    filetype = { 'eruby' },
+    filetype = { 'eruby', 'elixir', 'eelixir' },
+    enabled = true,
     init = function()
       -- https://github.com/tpope/vim-ragtag/blob/master/doc/ragtag.txt
       vim.cmd([[
@@ -288,7 +289,6 @@ local plugins = {
         let g:ragtag_global_maps = 1
       ]])
     end,
-    enabled = false,
   },
   {
     'mattn/emmet-vim',
