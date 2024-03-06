@@ -1,3 +1,6 @@
+vim.treesitter.language.register('heex', 'elixir')
+vim.treesitter.language.register('elixir', 'elixir')
+
 -- local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
 -- parser_config.elixir = {
 --   install_info = {

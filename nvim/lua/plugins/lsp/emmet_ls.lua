@@ -5,6 +5,7 @@ return {
   capabilities = capabilities,
   filetypes = {
     'eruby',
+    'elixir',
     'html',
     'template',
     'css',
