@@ -10,7 +10,7 @@ first_line=`head -n 1 -- $1`
 # This strips everything from the right to left
 # until if finds a #. So if a line starts with # or
 # whitespaces and then #, it will be considered empty.
-if [ -z `echo ${first_line%%#*}` ]; then
+if [ -z "`echo ${first_line%%#*}`" ]; then
   # Se a mensagem de commit estiver vazia,
   # simplesmente retorna e deixa o git
   # fazer o que normalmente faria.
