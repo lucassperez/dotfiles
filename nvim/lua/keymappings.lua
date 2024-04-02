@@ -103,7 +103,7 @@ vim.keymap.set('n', '<C-q>', function()
   for _, buf in pairs(vim.fn.getbufinfo()) do
     -- If it has a name, is listed and has changes
     if buf.name ~= '' and buf.listed ~= 0 and buf.changed ~= 0 then
-      vim.cmd('b ' .. buf.bufnr)
+      vim.cmd('buffer ' .. buf.bufnr)
       vim.cmd('w')
     end
   end
@@ -234,97 +234,6 @@ end, { silent = true, desc = 'Tenta escrever a entrada para o debugger na linha 
 
 -- É brincadeira que :noh<CR> não vem por padrão em algum lugar, viu...
 vim.keymap.set('n', '<Esc>', ':noh<CR>', { desc = 'Remove os destaques feitos por busca' })
-
--- Rodar linter e testes automatizados de dentro do vim (tem que ter um "runner" setado antes)
--- Dependendo do tipo de arquivo, será feito algo diferente.
--- Linguagens configuradas:
--- - Ruby (rubocop e rspec)
--- - Elixir (credo/formatter e test)
--- Mnemônicos: rubocop all (rua), rubocop file (ruf), rubocop main/master (rum)
---             rspec all (ra), rspec (rs), rspec near (rn),
---             rspec directory (rd), rspec main/master (rm)
---             attach (<leader>a)
-
--- Basicamente, "ru" = linter (RUbocop) e "r" = testes (Rspec)
-
--- Setar um runner pro Vim Tmux Runner e mandar alguns sinais úteis, como
--- Control + d e Control + c
--- I don't know why, but one day I woke up and it stopped doing this, even
--- though the last commit on this plugin was 6 months ago.
--- So I created my own function that does some checks.
-local function tmuxShowPanesNumbersOnAttatchIfMultiplePanes()
-  -- If tmux not running, exits.
-  if os.getenv('TMUX') == nil then return end
-
-  -- If command somehow fails, exits.
-  -- If there is some tmux in the background, this command returns
-  -- something, even if nvim is not inside tmux, so that's why the
-  -- env var TMUX check above is necessary.
-  local tmux_panes = io.popen('tmux list-panes')
-  if tmux_panes == nil then return end
-
-  -- If only one tmux pane, exits.
-  local _ = tmux_panes:read()
-  local second_read = tmux_panes:read()
-  if second_read == nil then
-    print('No other tmux panes')
-    return
-  end
-
-  -- If more than 2 panes (at least two other than neovim itself),
-  -- shows panes' numbers on screen.
-  local third_read = tmux_panes:read()
-  tmux_panes:close()
-  if third_read then vim.cmd('silent !tmux display-panes') end
-
-  -- When only exactly two panes, attaches directly.
-  -- Using pcall so I can cancel it with <C-c> without
-  -- getting a giant error message.
-  pcall(vim.cmd.VtrAttachToPane)
-end
-vim.keymap.set('n', '<leader>A', vim.cmd.VtrAttachToPane, { desc = 'VtrAttachToPane' })
-vim.keymap.set(
-  'n',
-  '<leader>a',
-  tmuxShowPanesNumbersOnAttatchIfMultiplePanes,
-  { desc = 'VtrAttach ou mostra os números dos paineis caso haja mais que dois' }
-)
-vim.keymap.set('n', '<A-d>', vim.cmd.VtrSendCtrlD, { desc = 'VtrSendCtrlD' })
-vim.keymap.set('n', '<A-c>', vim.cmd.VtrSendCtrlC, { desc = 'VtrSendCtrlC' })
-
--- linter all & linter this file
-vim.keymap.set('n', '<leader>rua', ':silent!wa<CR>:lua RunLinter {}<CR>')
-vim.keymap.set('n', '<leader>ruf', ':silent!wa<CR>:lua RunLinter { cur_file = true }<CR>')
--- The "n" stands for "near", makes sense to me to be equal to "ruf", "f" for "file"
-vim.keymap.set('n', '<leader>run', ':silent!wa<CR>:lua RunLinter { cur_file = true }<CR>')
-
--- test all, test this file, test this file this line & test this directory
-vim.keymap.set('n', '<leader>ra', ':silent!wa<CR>:lua RunAutomatedTest {}<CR>')
-vim.keymap.set('n', '<leader>rs', ':silent!wa<CR>:lua RunAutomatedTest { cur_file = true }<CR>')
-vim.keymap.set('n', '<leader>rn', ':silent!wa<CR>:lua RunAutomatedTest { cur_file = true, cur_line = true }<CR>')
-vim.keymap.set('n', '<leader>rd', ':silent!wa<CR>:lua RunAutomatedTest { cur_dir = true }<CR>')
--- TODO make this actually work/be good. Meanwhile,
--- it is probably best to just send !! via Vtr.
--- Update: I made a cache mechanism, I think this is actually good now.
--- I just have to remember to use this instead of just sending !!.
-vim.keymap.set('n', '<leader>rp', ':silent!wa<CR>:lua RunLastTest()<CR>')
-
--- Pegando os arquivos no diff com a main/master e executando testes/linters
--- Mmenônicos: rspec-main (rm) e rubocop-main (rum)
-vim.keymap.set('n', '<leader>rm', ':silent!wa<CR>:lua FromGit.genericTest()<CR>')
-vim.keymap.set('n', '<leader>rum', ':silent!wa<CR>:lua FromGit.genericLinter()<CR>')
-
--- Run last command executado no painel "anexado"
--- Na verdade simplesmente executa !!, que só vai funcionar num shell, mesmo
-vim.keymap.set('n', '<leader>rl', ":silent!wa<CR>:call VtrSendCommand('!!')<CR>")
-
--- Executa o arquivo como um script a depender do seu "filetype"
--- Ver o script para detalhes
-vim.keymap.set('n', '<leader>rr', ':silent!wa<CR>:lua ExecuteFileAsScript()<CR>', { silent = true })
-vim.keymap.set('n', '<leader>R', ':lua AutoExecuteOnSave()<CR>', { silent = true })
-
--- Tenta compilar o arquivo a depender do seu "filetype"
-vim.keymap.set('n', '<leader>rc', ':silent!wa<CR>:lua CompileFile()<CR>')
 
 --- "Snippets" ---
 local snips_path = vim.fn.stdpath('config') .. '/snippets'

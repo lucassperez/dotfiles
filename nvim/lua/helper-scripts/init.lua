@@ -10,5 +10,7 @@ return {
     require_function('helper-scripts.vtr.compile-file')
     require_function('helper-scripts.togglebetweentestandfile')
     require_function('helper-scripts.write-debugger-breakpoint')
+
+    require_function('helper-scripts.vtr.keymappings')
   end,
 }
