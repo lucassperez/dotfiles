@@ -115,6 +115,7 @@ require('cokeline').setup({
 
         -- If I don't wan't to count the modified icon in the
         -- truncation calculation, I add it after the truncation.
+        if buffer.is_readonly then r = r .. '[RO]' end
         if buffer.is_modified then r = r .. '[+]' end
 
         return r
