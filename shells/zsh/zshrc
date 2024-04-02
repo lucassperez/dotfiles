@@ -180,20 +180,13 @@ bindkey "^I" expand-or-complete-prefix
 bindkey '^[[Z' reverse-menu-complete # shift tab
 
 # Control + esquerda/direita, respectivamente
-bindkey ";5D" backward-word
-bindkey ";5C" forward-word
-
-# Dentro do tmux, control + esquerda/direita está gerando isso
-bindkey "5D" backward-word
-bindkey "5C" forward-word
+# https://unix.stackexchange.com/questions/58870/ctrl-left-right-arrow-keys-issue
+bindkey "^[[1;5D" backward-word
+bindkey "^[[1;5C" forward-word
 
 # If ZDOTDIR is set, use it, otherwise, check if XDG_CONFIG_HOME is set, then use
 # it followed by /zsh, and if not, use $HOME/.config/zsh
 source "${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
-
-# Será que isso devia ficar aqui?
-# Aumenta a quantidade de vezes que uma tecla é apertada quando seguramos ela
-# xset r rate 220 25
 
 eval "$(zoxide init zsh)"
 
@@ -227,8 +220,8 @@ fi
 # which probably happens when the neofetch is called before tmux.
 neofetch --ascii "${XDG_CONFIG_HOME:-$HOME/.config}/neofetch/ascii-art" --ascii_colors 3 7
 
-# But I want the message to appear after neofetch when there is already a tmux
-# session running, but not if I am currently at tmux.
+# But I want the parse-tmux-ls message to appear after neofetch when there is
+# already a tmux session running, but not if I am currently at tmux.
 if [ $_is_there_a_tmux_session_running ] && [ -z "$TMUX" ]; then
   printf "Já existe pelo menos uma instância do \e[32mtmux\e[0m rodando:\n"
   . "$HOME/scripts/parse-tmux-ls.sh"
