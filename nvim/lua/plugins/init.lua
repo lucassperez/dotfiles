@@ -212,7 +212,17 @@ local plugins = {
       vim.keymap.set('n', '<C-l>', '<cmd>TmuxNavigateRight<CR>')
     end,
   },
-  { 'christoomey/vim-tmux-runner', cmd = { 'VtrAttachToPane', 'VtrSendCommand', 'VtrSendCtrlD', 'VtrSendCtrlC' } },
+  {
+    -- 'christoomey/vim-tmux-runner',
+    'lucassperez/vim-tmux-runner',
+    branch = 'get-attached-pane',
+    cmd = {
+      'VtrAttachToPane',
+      'VtrSendCommand',
+      'VtrSendCtrlD',
+      'VtrSendCtrlC',
+    }
+  },
 
   -- LSP
   ------
