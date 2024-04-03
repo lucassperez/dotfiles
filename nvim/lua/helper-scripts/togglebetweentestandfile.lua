@@ -9,6 +9,19 @@ local function elixirFunction()
   return result
 end
 
+local function goFunction()
+  -- Assuming same directory test files
+  local filename = vim.fn.expand('%')
+  local path = ''
+  if string.match(filename, '%w*_test%.go$') then
+    path = string.gsub(filename, '_test', '')
+  else
+    path = string.gsub(filename, '%.go$', '_test.go')
+  end
+  if path == '' then return nil end
+  return path
+end
+
 -- Switches to test files with the same name and on the same directory,
 -- but with ".test" as file extension
 local function tsReactFunction()
@@ -79,6 +92,7 @@ end
 local filenameFunctions = {
   elixir = elixirFunction,
   ruby = rubyFunction,
+  go = goFunction,
   typescriptreact = tsReactFunction,
   typescript = tsReactFunction,
   clojure = clojureFunction,
