@@ -114,6 +114,7 @@ local plugins = {
   },
   -- https://github.com/uga-rosa/ccc.nvim/blob/main/doc/ccc.txt
   -- Maybe change colorizer for this?
+  -- Or this? https://github.com/brenoprata10/nvim-highlight-colors
   {
     'NvChad/nvim-colorizer.lua',
     cmd = {
@@ -167,12 +168,6 @@ local plugins = {
     'kyazdani42/nvim-tree.lua',
     keys = require('plugins.nvim-tree').keys(),
     config = require('plugins.nvim-tree').setup,
-  },
-  {
-    'stevearc/oil.nvim',
-    cmd = 'Oil',
-    keys = require('plugins.oil').keys(),
-    config = require('plugins.oil').setup,
   },
   {
     'monaqa/dial.nvim',

@@ -31,7 +31,6 @@
   "nvim-treesitter-textobjects": { "branch": "master", "commit": "7f00d94543f1fd37cab2afa2e9a6cd54e1c6b9ef" },
   "nvim-ts-context-commentstring": { "branch": "main", "commit": "7ab799a9792f7cf3883cf28c6a00ad431f3d382a" },
   "nvim-various-textobjs": { "branch": "main", "commit": "035243ea3c4bf005b24d8068666c7d571c708503" },
-  "oil.nvim": { "branch": "master", "commit": "6953c2c17d8ae7454b28c44c8767eebede312e6f" },
   "plenary.nvim": { "branch": "master", "commit": "4f71c0c4a196ceb656c824a70792f3df3ce6bb6d" },
   "rainbow-delimiters.nvim": { "branch": "master", "commit": "90bab50ebf2ce8859fdd69064552665cc9882353" },
   "stylua.nvim": { "branch": "main", "commit": "15336a99c599ff10b04d324310bc1295f5203acb" },

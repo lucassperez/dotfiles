@@ -15,6 +15,8 @@ local function setup()
   require('oil').setup({
     -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`
     -- To be honest, it doesn't work even when set to true.
+    -- It does not work because Oil is lazy loaded.
+    -- If not, it will work correctly.
     default_file_explorer = false,
     -- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
     -- options with a `callback` (e.g. { callback = function() ... end, desc = '', nowait = true })
