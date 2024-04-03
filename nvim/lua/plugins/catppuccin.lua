@@ -70,6 +70,7 @@ require('catppuccin').setup({
       SignColumn = { fg = '#a8a8a8' },
       LineNr = { fg = '#8a8a8a' },
       Comment = { fg = '#aaaaaa' },
+      Todo = { fg='#aaaaaa', bg='none', style = { 'bold' } },
       NonText = { fg = '#729ecb', style = { 'bold' } },
       VertSplit = { fg = 'NONE', style = { 'reverse' } },
       StatusLine = { fg = 'NONE', style = { 'bold', 'reverse' } },
@@ -79,6 +80,7 @@ require('catppuccin').setup({
 
       -- Search       = { fg='#c6d0f5', bg='#506373' },
       -- CurSearch    = { fg='#506373', bg='#c6d0f5' },
+      diffChanged = { fg='#e5c890' }
     }
     -- if vim.bo.filetype == 'elixir' then
     --   local my_colors_palette = require('catppuccin.palettes').get_palette(my_flavour)
@@ -114,6 +116,17 @@ hi link @string.special.url @text.uri
 
 hi clear @module
 hi link @module Type
+
+hi clear @comment.todo
+hi clear @comment.error
+hi clear @comment.warning
+hi clear @comment.hint
+hi clear @comment.note
+hi @comment.todo    gui=BOLD
+hi @comment.error   gui=BOLD
+hi @comment.warning gui=BOLD
+hi @comment.hint    gui=BOLD
+hi @comment.note    gui=BOLD
 
 " hi @text.uri guifg=#CCCCCC gui=NONE cterm=NONE
 " hi clear @nospell
