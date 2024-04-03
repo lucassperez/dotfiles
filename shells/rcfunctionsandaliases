@@ -10,6 +10,7 @@ alias polrc="nvim $CONFIG_PATH/polybar/config"
 alias xmorc="nvim $CONFIG_PATH/xmonad/xmonad.hs ~/.xmobarrc"
 alias qtlrc="nvim $CONFIG_PATH/qtile/config.py"
 alias lwrc="nvim $CONFIG_PATH/leftwm/config.toml"
+alias hprc="nvim $CONFIG_PATH/hypr/hyprland.conf $CONFIG_PATH/waybar/config $CONFIG_PATH/waybar/style.css"
 
 zshrc() {
   nvim \

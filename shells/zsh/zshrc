@@ -1,3 +1,7 @@
+# Info about zsh (and bash) configuration files orders, ideas
+# of what should go in each etc.
+# https://unix.stackexchange.com/questions/71253/what-should-shouldnt-go-in-zshenv-zshrc-zlogin-zprofile-zlogout
+
 source "$HOME/.asdf/asdf.sh"
 fpath=(${ASDF_DIR}/completions $ZDOTDIR/completions $fpath)
 
@@ -193,6 +197,15 @@ eval "$(zoxide init zsh)"
 source "$HOME/.aliases"
 source "$HOME/.functions"
 source "$HOME/.rcfunctionsandaliases"
+
+# Consider dot as a separator, meaning that pressing
+# control+w in front of something like this:
+# make migrations.status
+# Will not delete the whole word "migrations.status",
+# and instead will leave this:
+# make migrations.
+# https://github.com/ohmyzsh/ohmyzsh/issues/8743
+# export WORDCHARS=`echo $WORDCHARS | tr -d '.'`
 
 # https://superuser.com/questions/1585256/inserting-ssh-agent-into-i3wms-startup-so-its-available-to-all-processes-in-th
 # eval $(keychain --eval --agents ssh --quick --quiet)

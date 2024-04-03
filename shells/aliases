@@ -28,6 +28,7 @@ alias path='echo $PATH | tr ":" "\n"'
 alias glo='git log --oneline'
 alias glq='git log --oneline -15'
 alias gl='~/scripts/git-stuff/git-log-main-master.sh --oneline'
+alias glg='git log --graph --pretty=format:'\''%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset'\'' --abbrev-commit --date=relative'
 alias gds='git diff --staged'
 alias gdsn='git diff --staged --name-only'
 alias gdns='git diff --name-only --staged'
@@ -59,5 +60,7 @@ alias vim='nvim'
 alias nv='nvim'
 alias vn='nvim'
 alias oil='nvim -c :Oil'
+
+alias fzf="fzf --preview 'bat --color=always {}'"
 
 [ -f "$HOME/.local/aliases.local" ] && source "$HOME/.local/aliases.local"

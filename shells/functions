@@ -8,9 +8,7 @@ fzv() {
   # fzf and nvim
   # When doing results=`fzf`, some keybindings don't seem to work,
   # but they do when using $(fzf) instead.
-
-  # Why not add some nice flags?--height 40% --layout=reverse --border
-  local results=$(fzf)
+  local results=$(fzf --preview 'bat --color=always {}')
   [ -z $results ] && return
 
   nvim "$results"

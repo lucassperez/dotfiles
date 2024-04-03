@@ -50,7 +50,12 @@ export ERL_AFLAGS='-kernel shell_history enabled -kernel shell_history_file_byte
 export KERL_BUILD_DOCS=yes
 
 export FZF_DEFAULT_COMMAND="fd --type f"
-export FZF_DEFAULT_OPTS="--preview 'bat --color=always {}'"
+# Bat can't render anything that is not a file, and fzf can be used for
+# anything, not just files. So, when piping output to fzf that are not files,
+# bat will just error out. For example, ps -ef | fzf
+# So, using preview in FZF_DEFAULT_OPTS is just overall weird
+# and might not be a good idea overall.
+# export FZF_DEFAULT_OPTS="--preview 'bat --color=always {}'"
 
 prepend_to_PATH() {
   # If no path is given, returns
