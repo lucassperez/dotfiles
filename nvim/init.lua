@@ -1,15 +1,15 @@
 -- Useful to print tables
 function P(...)
   if ... == nil then
-    vim.notify('nil')
+    vim.notify('nil', vim.log.levels.INFO)
     return
   end
 
   for _, value in pairs({ ... }) do
     if type(value) == 'string' then
-      vim.notify(value)
+      vim.notify(value, vim.log.levels.INFO)
     else
-      vim.notify(vim.inspect(value))
+      vim.notify(vim.inspect(value), vim.log.levels.INFO)
     end
   end
 
@@ -23,13 +23,13 @@ local function protected_require(path)
   local ok, result = pcall(require, path)
   if not ok then
     -- Only print this the first time a pcall returned an error
-    if not any_require_failed then print('ERROR!') end
+    if not any_require_failed then vim.notify('ERROR! @@', vim.log.levels.ERROR) end
 
     any_require_failed = true
-    print('Could not require the path `' .. path .. '`')
+    vim.notify('Could not require the path `' .. path .. '`', vim.log.levels.ERROR)
 
     -- Print only first line of the error
-    print('  ' .. string.sub(result, 1, string.find(result, '\n')))
+    vim.notify('  ' .. string.sub(result, 1, string.find(result, '\n')), vim.log.levels.ERROR)
 
     local file = io.open(protected_require_log_file_path, 'a')
     if file then
