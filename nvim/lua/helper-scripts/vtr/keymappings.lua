@@ -13,7 +13,7 @@ local function tmuxShowPanesNumbersOnAttatchIfMultiplePanes()
   local _ = tmux_panes:read()
   local second_read = tmux_panes:read()
   if second_read == nil then
-    print('No other tmux panes')
+    vim.notify('No other tmux panes', vim.log.levels.INFO)
     return -1
   end
 
@@ -40,15 +40,15 @@ local function autoAttachAndRunCommand(command, args, stringForm, isVim)
     if canAttach == -1 then
       return
     end
-  -- else
-  --   local check = os.execute("tmux list-panes -F '#{pane_index}' | grep -q '^" .. attachedPane .. "$'")
-  --   if check > 0 then
-  --     print('Attached pane does not exist anymore')
-  --     local canAttach = tmuxShowPanesNumbersOnAttatchIfMultiplePanes()
-  --     if canAttach == -1 then
-  --       return
-  --     end
-  --   end
+  else
+    local check = os.execute("tmux list-panes -F '#{pane_index}' | grep -q '^" .. attachedPane .. "$'")
+    if check > 0 then
+      vim.notify('Attached pane does not exist anymore\n', vim.log.levels.WARN)
+      local canAttach = tmuxShowPanesNumbersOnAttatchIfMultiplePanes()
+      if canAttach == -1 then
+        return
+      end
+    end
   end
 
   if stringForm then
