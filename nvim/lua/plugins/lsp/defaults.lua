@@ -98,8 +98,8 @@ local function default_on_attach(client, bufnr)
     vim.lsp.buf.format({ async = true })
   end, { desc = 'LSP: Formata o buffer atual' })
 
-  local root_dir = client.config.root_dir
-  if root_dir then vim.api.nvim_set_current_dir(root_dir) end
+  -- local root_dir = client.config.root_dir
+  -- if root_dir then vim.api.nvim_set_current_dir(root_dir) end
 end
 
 local default_capabilities = vim.lsp.protocol.make_client_capabilities()

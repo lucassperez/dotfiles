@@ -21,8 +21,8 @@ local function on_attach(client, bufnr)
     end, { desc = 'LSP: Formata o buffer atual usando stylua' })
   end
 
-  local root_dir = client.config.root_dir
-  if root_dir then vim.api.nvim_set_current_dir(root_dir) end
+  -- local root_dir = client.config.root_dir
+  -- if root_dir then vim.api.nvim_set_current_dir(root_dir) end
 end
 
 return {

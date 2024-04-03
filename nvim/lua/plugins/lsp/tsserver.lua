@@ -55,8 +55,8 @@ local on_attach = function(client, bufnr)
   --   desc = 'LSP: Formats the buffer before write with tsserver (It uses Format no_async user command)',
   -- })
 
-  local root_dir = client.config.root_dir
-  if root_dir then vim.api.nvim_set_current_dir(root_dir) end
+  -- local root_dir = client.config.root_dir
+  -- if root_dir then vim.api.nvim_set_current_dir(root_dir) end
 end
 
 -- local null_ls = require('null-ls')
