@@ -36,7 +36,9 @@ alphabet = 'asdfhjklgçqweryuiotpzxcvbnm,1234567890;.'
 action = 'Paste'
 post_processing = true
 binding = { key = 'H', mods = 'Control|Shift' }
-regex = '([0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}|[a-f0-9]{40})|([a-f0-9]{12})|([a-f0-9]{7})'
+# regex = '([0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}|[a-f0-9]{40})|([a-f0-9]{12})|([a-f0-9]{7})'
+# Se cortar, tentar descomentar o de baixo e comentar o de cima
+regex = '([0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12})|([a-f0-9]{7,})'
 
 # https://alacritty.org/config-alacritty.html
 [[hints.enabled]]
