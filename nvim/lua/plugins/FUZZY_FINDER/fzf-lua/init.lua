@@ -12,7 +12,11 @@ return {
   end,
 
   lsp_references = function()
-    require('fzf-lua').lsp_references({ jump_to_single_result = false })
+    -- Just for the record that ignore_current_line is a possible argument
+    require('fzf-lua').lsp_references({
+      jump_to_single_result = false,
+      ignore_current_line = false,
+    })
   end,
 
   lsp_implementation = function()

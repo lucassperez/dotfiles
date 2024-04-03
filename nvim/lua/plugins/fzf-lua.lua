@@ -22,8 +22,22 @@ local function init()
   end, { desc = '[FzfLua] Abre o FzfLua files' })
 
   vim.keymap.set('n', '<C-f>', function()
-    -- Not sure the differentece of live_grep and live_grep_native
-    require('fzf-lua').live_grep_native()
+    -- Not sure the difference of live_grep and live_grep_native
+    -- Okay, so looking at the source code, apparently the
+    -- native sets some options and calls the live_grep_mt, which
+    -- stands for multi threaded. The normal live_grep calls live_grep_st,
+    -- single threaded, when passed the opts.multiprocess flag as false.
+    -- Runnig the normal live_grep passing multiprocess = false is really bad.
+    -- And if no flag is passed, it actually runs the multi threaded one.
+    -- The normalize_opts function eventually calls utils.deep_tbl_clone passing
+    -- a "globals" table that has multiprocess set to true.
+    -- live_grep_native sets these opts:
+    -- opts.git_icons = false
+    -- opts.file_icons = false
+    -- opts.path_shorten = false
+    -- opts.rg_glob = false
+    -- opts.multiprocess = true
+    require('fzf-lua').live_grep_native({ git_icons = true })
   end, { desc = '[FzfLua] Abre o FzfLua live_grep_native' })
 
   vim.keymap.set('n', '<leader>p', function()
@@ -104,9 +118,12 @@ local function setup()
 
   vim.cmd([[
   hi clear FzfLuaCursorLine
-  hi link FzfLuaCursorLine Visual
-  hi FzfLuaCursorLine guibg=#61677d gui=NONE
-  hi FzfLuaCursor guifg=NONE guibg=NONE gui=BOLD
+  " hi link FzfLuaCursorLine Visual
+  " hi FzfLuaCursorLine gui=UNDERLINE
+  hi FzfLuaCursorLine guibg=#51576d gui=NONE
+  hi FzfLuaCursor guifg=NONE guibg=NONE gui=BOLD,UNDERLINE
+  " hi clear FzfLuaCursor
+  " hi link FzfLuaCursor MatchParen
   ]])
 end
 

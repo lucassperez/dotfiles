@@ -11,3 +11,11 @@
    git -C `git rev-parse --show-toplevel` ls-files --exclude-standard --cached --others
    funciona perfeitamente na linha de comando, mas não funciona se passar isso
    como cmd para o FzfLua, volta vazio, não mostra __nenhum__ arquivo ):
+
+Vendo o código fonte de fzf-lua/providers/lsp.lua, achei as seguintes opções:
+
+    jump_to_single_result;
+    ignore_current_line
+    cwd_only (?)
+    current_buffer_only
+    filter (?)
