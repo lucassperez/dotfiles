@@ -193,6 +193,12 @@ local plugins = {
       require('plugins.undotree')
     end,
   },
+  {
+    'sindrets/diffview.nvim',
+    cmd = require('plugins.diffview').cmd,
+    init = require('plugins.diffview').init,
+    config = require('plugins.diffview').setup,
+  },
 
   -- Clojure things
   -----------------
