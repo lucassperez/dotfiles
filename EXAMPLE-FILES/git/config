@@ -16,4 +16,10 @@
 [commit]
   verbose = true
 [push]
+  ; https://github.com/tjdevries/config_manager/blob/master/xdg_config/git/config
+  ; https://www.eficode.com/blog/git-autostash
   default = current
+; [pull]
+;   rebase = true
+; [rebase]
+;   autoStash = true
