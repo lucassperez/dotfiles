@@ -36,6 +36,10 @@ local function setup()
         vertical = { width = 0.99, height = 0.80 },
         horizontal = { width = 0.99, height = 0.80 },
       },
+      history = {
+        path = vim.fn.stdpath('data') .. '/databases/telescope_history.sqlite3',
+        limit = 100,
+      },
       mappings = {
         i = {
           ['<C-p>'] = 'cycle_history_prev',
@@ -66,6 +70,9 @@ local function setup()
         -- the default case_mode is 'smart_case'
       },
       undo = { layout_config = { preview_width = 0.7 } },
+      ['ui-select'] = {
+        require('telescope.themes').get_dropdown(),
+      },
     },
   })
 
@@ -84,6 +91,15 @@ local function keys()
       '<C-p>',
       function()
         telescopeGitOrFindFiles()
+      end,
+      { noremap = true },
+    },
+    {
+      mode = 'n',
+      desc = '[Telescope] Abre o telescope git_status, para arquivos alterados no git',
+      '<leader>F',
+      function()
+        telescope_builtin().git_status()
       end,
       { noremap = true },
     },
@@ -143,15 +159,26 @@ return {
       -- I don't want to load telescope when loading project_nvim, since
       -- I want to lazy load telescope.
       -- require('telescope').load_extension('projects')
+      require('telescope').load_extension('ui-select')
     end,
     dependencies = {
       'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope-ui-select.nvim',
       {
         'nvim-telescope/telescope-fzf-native.nvim',
         build = 'make',
         config = function()
           require('telescope').load_extension('fzf')
         end,
+      },
+      {
+        -- If not working, read this https://github.com/nvim-telescope/telescope-smart-history.nvim/issues/4
+        'nvim-telescope/telescope-smart-history.nvim',
+        config = function()
+          require('telescope').load_extension('smart_history')
+        end,
+        -- Had to install sqlite-devel package, too
+        dependencies = 'kkharji/sqlite.lua',
       },
       {
         'debugloop/telescope-undo.nvim',
