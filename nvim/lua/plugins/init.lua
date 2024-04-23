@@ -235,7 +235,7 @@ local plugins = {
       'VtrSendCommand',
       'VtrSendCtrlD',
       'VtrSendCtrlC',
-    }
+    },
   },
 
   -- LSP
@@ -281,6 +281,7 @@ local plugins = {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     event = 'FileType',
+    cmd = { 'TSInstall', 'TSUninstall', 'TSInstallInfo', 'TSInstallFromGrammar' },
     config = function()
       require('plugins.tree-sitter')
     end,
