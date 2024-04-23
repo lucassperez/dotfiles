@@ -85,26 +85,26 @@ vim.keymap.set(
   { desc = 'VtrAttach ou mostra os números dos paineis caso haja mais que dois' }
 )
 
-vim.keymap.set('n', '<A-d>', function() f(vim.cmd.VtrSendCtrlD) end, { desc = 'VtrSendCtrlD' })
-vim.keymap.set('n', '<A-c>', function() f(vim.cmd.VtrSendCtrlC) end, { desc = 'VtrSendCtrlC' })
+vim.keymap.set('n', '<A-d>', function() f(vim.cmd.VtrSendCtrlD) end, { desc = '[VtrHelperScripts] VtrSendCtrlD' })
+vim.keymap.set('n', '<A-c>', function() f(vim.cmd.VtrSendCtrlC) end, { desc = '[VtrHelperScripts] VtrSendCtrlC' })
 
 -- linter all & linter this file
 vim.keymap.set('n', '<leader>rua', function ()
   vim.cmd('silent!wa')
   f(RunLinter, {}, 'RunLinter {}')
-end)
+end, { desc = '[VtrHelperScripts] RunLinter all' })
 
 vim.keymap.set('n', '<leader>ruf', function ()
   vim.cmd('silent!wa')
   f(RunLinter, { cur_file = true }, 'RunLinter { cur_file = true }')
-end)
+end, { desc = '[VtrHelperScripts] RunLinter current file' })
 
 -- The same as "ruf". The "n" stands for near, in case of linter
 -- for me it just makes sense to be the whole file.
 vim.keymap.set('n', '<leader>ruf', function ()
   vim.cmd('silent!wa')
   f(RunLinter, { cur_file = true }, 'RunLinter { cur_file = true }')
-end)
+end, { desc = '[VtrHelperScripts] RunLinter near (current file)' })
 
 
 -- Test all, test this file, test this file this line & test this directory
@@ -112,27 +112,27 @@ end)
 vim.keymap.set('n', '<leader>ra', function ()
   vim.cmd('silent!wa')
   f(RunAutomatedTest, {}, 'RunAutomatedTest {}')
-end)
+end, { desc = '[VtrHelperScripts] RunTest all' })
 
 vim.keymap.set('n', '<leader>rs', function ()
   vim.cmd('silent!wa')
   f(RunAutomatedTest, { cur_file = true }, 'RunAutomatedTest { cur_file = true }')
-end)
+end, { desc = '[VtrHelperScripts] RunTest current file' })
 
 vim.keymap.set('n', '<leader>rn', function ()
   vim.cmd('silent!wa')
   f(RunAutomatedTest, { cur_file = true, cur_line = true }, 'RunAutomatedTest { cur_file = true, cur_line = true }')
-end)
+end, { desc = '[VtrHelperScripts] RunTest near (current line)' })
 
 vim.keymap.set('n', '<leader>rd', function ()
   vim.cmd('silent!wa')
   f(RunAutomatedTest, { cur_dir = true }, 'RunAutomatedTest { cur_dir = true }')
-end)
+end, { desc = '[VtrHelperScripts] RunTest current dir' })
 
 vim.keymap.set('n', '<leader>rp', function ()
   vim.cmd('silent!wa')
   f(RunLastTest, nil, 'RunLastTest()')
-end)
+end, { desc = '[VtrHelperScripts] RunTest last test (cached in nvim)' })
 
 -- Pegando os arquivos no diff com a main/master e executando testes/linters
 -- Mmenônicos: rspec-main (rm) e rubocop-main (rum)
@@ -140,19 +140,19 @@ end)
 vim.keymap.set('n', '<leader>rm', function ()
   vim.cmd('silent!wa')
   f(FromGit.genericTest, nil, 'FromGit.genericTest()')
-end)
+end, { desc = '[VtrHelperScripts] FromGit.genericTest run test files from git diff' })
 
 vim.keymap.set('n', '<leader>rum', function ()
   vim.cmd('silent!wa')
   f(FromGit.genericLinter, 'FromGit.genericLinter()')
-end)
+end, { desc = '[VtrHelperScripts] FromGit.genericLinter run linter in files from git diff' })
 
 -- Run last command executado no painel "anexado"
 -- Na verdade simplesmente executa !!, que só vai funcionar num shell, mesmo
 vim.keymap.set('n', '<leader>rl', function ()
   vim.cmd('silent!wa')
   f(vim.cmd.VtrSendCommand, '!!', "VtrSendCommand('!!')", true)
-end)
+end, { desc = '[VtrHelperScripts] Run last command (!! in shell)' })
 
 -- Executa o arquivo como um script a depender do seu "filetype"
 -- Ver o script para detalhes
@@ -160,15 +160,15 @@ end)
 vim.keymap.set('n', '<leader>rr', function ()
   vim.cmd('silent!wa')
   f(ExecuteFileAsScript, nil, 'ExecuteFileAsScript()')
-end)
+end, { desc = '[VtrHelperScripts] ExecuteFileAsScript using shebang or trying to guess from filetype, if supported' })
 
 vim.keymap.set('n', '<leader>R', function ()
   vim.cmd('silent!wa')
   f(AutoExecuteOnSave, nil, 'AutoExecuteOnSave()')
-end)
+end, { desc = '[VtrHelperScripts] ExecuteFileAsScript automatically on save' })
 
 -- Tenta compilar o arquivo a depender do seu "filetype"
 vim.keymap.set('n', '<leader>rc', function ()
   vim.cmd('silent!wa')
   f(CompileFile, nil, 'CompileFile')
-end)
+end, { desc = '[VtrHelperScripts] CompileFile tries to guess from filetype if supported' })
