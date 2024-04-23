@@ -45,6 +45,13 @@ local opts = {
 }
 
 local plugins = {
+  {
+    'FabijanZulj/blame.nvim',
+    cmd = { 'BlameToggle' },
+    config = function()
+      require('plugins.blame')
+    end,
+  },
   -- Without lazy loading
   -----------------------
   -- Lualine, barbar and catppuccin
