@@ -21,6 +21,10 @@ local function init()
     require('fzf-lua').files()
   end, { desc = '[FzfLua] Abre o FzfLua files' })
 
+  vim.keymap.set('n', '<leader>F', function ()
+    require('fzf-lua').git_status()
+  end, { desc = '[FzfLua] Abre o FzfLua git_status, para arquivos alterados no git' })
+
   vim.keymap.set('n', '<C-f>', function()
     -- Not sure the difference of live_grep and live_grep_native
     -- Okay, so looking at the source code, apparently the

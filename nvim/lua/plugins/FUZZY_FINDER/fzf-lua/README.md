@@ -5,6 +5,8 @@
 
 2. Por que no comando FzfLua buffers eu não consigo mexer o cursor pelas opções?
    Dessa maneira também não consigo ver o preview. Esquisito.
+   Agora eu consigo. Masoq. Mas de qualquer forma, não dá pra colocar o cursor
+   sobre o buffer atual.
 
 3. O comando FzfLua git_files poderia ter um jeito de mostrar arquivos que ainda
    estão untracked pelo git. O comando
