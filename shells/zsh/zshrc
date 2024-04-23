@@ -2,6 +2,12 @@
 # of what should go in each etc.
 # https://unix.stackexchange.com/questions/71253/what-should-shouldnt-go-in-zshenv-zshrc-zlogin-zprofile-zlogout
 
+# ASDF_FORCE_PREPEND
+# Whether or not to prepend the asdf shims and path directories to the front-most (highest-priority) part of the PATH.
+#  If Unset: On macOS, defaults to yes; but on other systems, defaults to no
+#  If yes: Force asdf directories to the front of the PATH
+#  If set to any string other than yes: Do not force asdf directories to the front of the PATH
+#  Usage: ASDF_FORCE_PREPEND=no . "<path-to-asdf-directory>/asdf.sh"
 source "$HOME/.asdf/asdf.sh"
 fpath=(${ASDF_DIR}/completions $ZDOTDIR/completions $fpath)
 
@@ -24,6 +30,14 @@ setopt hist_ignore_all_dups inc_append_history
 HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 HISTSIZE=4000
 SAVEHIST=4000
+
+# https://asdf-vm.com/manage/configuration.html#asdfconfigfile
+export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/asdfrc"
+# https://asdf-vm.com/manage/configuration.html#environment-variables
+# TODO
+# ASDF_DATA_DIR
+# The location where asdf will install plugins, shims and tool versions.
+# Can be set to any location. Must be an absolute path.
 
 # Lines configured by zsh-newuser-install
 setopt nomatch notify

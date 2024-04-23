@@ -56,6 +56,7 @@ export FZF_DEFAULT_COMMAND="fd --type f"
 # So, using preview in FZF_DEFAULT_OPTS is just overall weird
 # and might not be a good idea overall.
 # export FZF_DEFAULT_OPTS="--preview 'bat --color=always {}'"
+ export FZF_DEFAULT_OPTS="--bind 'ctrl-e:execute(echo {+} | xargs -o nvim)'"
 
 prepend_to_PATH() {
   # If no path is given, returns

@@ -8,6 +8,8 @@ export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 # echo "=== $(date) ===" >>$LOG
 # echo "Caller: $0" >>$LOG
 
+export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/asdfrc"
+
 # The format of process time reports with the time keyword.
 # The default is ‘%J %U user %S system %P cpu %*E total’.
 # https://zsh.sourceforge.io/Doc/Release/Parameters.html
