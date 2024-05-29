@@ -21,7 +21,7 @@ local function init()
     require('fzf-lua').files()
   end, { desc = '[FzfLua] Abre o FzfLua files' })
 
-  vim.keymap.set('n', '<leader>F', function ()
+  vim.keymap.set('n', '<leader>F', function()
     require('fzf-lua').git_status()
   end, { desc = '[FzfLua] Abre o FzfLua git_status, para arquivos alterados no git' })
 
@@ -45,7 +45,7 @@ local function init()
   end, { desc = '[FzfLua] Abre o FzfLua live_grep_native' })
 
   vim.keymap.set('n', '<leader>p', function()
-    require('fzf-lua').buffers({ sort_lastused = true })
+    require('fzf-lua').buffers({ sort_lastused = true, ['fzf_opts.--header-lines'] = false })
   end, { desc = '[FzfLua] Abre o FzfLua buffers' })
 
   vim.keymap.set('n', '<leader>h', function()
