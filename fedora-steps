@@ -19,6 +19,9 @@ Enable tap to click https://askubuntu.com/questions/1156192/how-to-enable-tap-to
 (/usr/share/X11/xorg.conf.d/40-libinput.conf)
 Maybe comment out the addition of /home/USER/bin in /etc/zprofile? Or maybe start using it, could be nice, too.
 
+Maybe edit /etc/systemd/logind.conf, I prefer to set HandlePowerKey=ignore and
+HandlePowerKeyLongPress=poweroff, I don\'t think we even need acpid
+
 QUANDO EU USO O chsh PRA POR O ZSH, NÃO IMPORTA O QUE EU FAÇA,
 NEM O ~/.profile NEM O ~/.zprofile ERAM LIDOS
 DAÍ EU CRIEI O ARQUIVO /etc/profile.local. ISSO FUNCIONA NO
