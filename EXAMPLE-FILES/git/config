@@ -5,6 +5,8 @@
 ;   path = /home/lucas/algumaoutracoisa/.gitconfig
 [core]
   editor = "env vim +0 -c 'hi ColorColumn ctermbg=125 ctermfg=white' -c 'set colorcolumn=51' -c 'set textwidth=0' -c 'map <C-q> :wq<CR>' -c 'nmap H ^' -c 'nmap L $' -c 'nmap } }k' -c 'nmap <Space><Space> }ddggpcw'"
+  ; other possibility for editor
+  ; nvim --clean -u <PATH_TO_nvim-clean-git>
   ; The default perl script diff-highlight does not report diffs so precisely,
   ; but normal delta is too cluttered. So I prefer this. Clean, looks like
   ; standard git diff and also shows highlights of added/removed
