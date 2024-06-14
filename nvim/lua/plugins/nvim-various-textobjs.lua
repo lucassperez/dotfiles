@@ -5,59 +5,59 @@ textobjs.setup({
   -- lookForwardLines = 5, -- Set to 0 to only look in the current line.
 })
 
--- Functions that differentiate inner and outer
--- reiceves a boolean parameter where inner is
--- true and outer is false
-local inner = true
-local outer = false
-
--- exception: indentation textobj requires two parameters, first for exclusion of the
+-- The indentation textobj requires two parameters, first for exclusion of the
 -- starting border, second for the exclusion of ending border
 vim.keymap.set({ 'o', 'x' }, 'ii', function()
-  textobjs.indentation(true, true)
+  textobjs.indentation('inner', 'inner')
 end)
 vim.keymap.set({ 'o', 'x' }, 'ai', function()
-  textobjs.indentation(false, true)
+  textobjs.indentation('outer', 'outer')
 end)
 
-local function map(function_name, keys, opt)
+local function map(function_name, keys, opt, desc)
+  if desc == nil then
+    desc = function_name
+  else
+    desc = function_name .. ': ' .. desc
+  end
+
   vim.keymap.set({ 'o', 'x' }, keys, function()
     textobjs[function_name](opt)
-  end)
+  end, { desc = '[VariousTextObjs] '.. desc })
 end
 
-map('entireBuffer', 'gG')
+map('entireBuffer', 'gG', nil, 'O buffer inteiro')
 
 -- Value in key-value pair
-map('value', 'v', inner)
-map('value', 'V', inner)
-map('value', 'iv', inner)
-map('value', 'av', outer)
+map('value', 'v', 'inner', 'Valor em um par Chave-Valor')
+map('value', 'V', 'inner', 'Valor em um par Chave-Valor')
+map('value', 'iv', 'inner', 'Valor em um par Chave-Valor')
+map('value', 'av', 'outer', 'Valor em um par Chave-Valor')
 
 -- Key in key-value pair
-map('key', 'K', inner)
-map('key', 'ik', inner)
-map('key', 'ak', outer)
+map('key', 'K', 'inner',  'Chave em um par Chave-Valor')
+map('key', 'ik', 'inner', 'Chave em um par Chave-Valor')
+map('key', 'ak', 'outer', 'Chave em um par Chave-Valor')
 
-map('number', 'in', inner)
-map('number', 'an', outer)
+map('number', 'in', 'inner', 'Número')
+map('number', 'an', 'outer', 'Número')
 
 -- [[]]
-map('doubleSquareBrackets', 'iD', inner)
-map('doubleSquareBrackets', 'aD', outer)
+map('doubleSquareBrackets', 'iD', 'inner', 'Duplo colchetes')
+map('doubleSquareBrackets', 'aD', 'outer', 'Duplo colchetes')
 
 -- Like built in vim word 'w' buf treating -, _ or
 -- . as word delimiters and only part of camelcase
-map('subword', 'iS', inner)
-map('subword', 'aS', outer)
+map('subword', 'iS', 'inner', 'Como `w` padrão do vim, só que considerando -, _ e . como delimitadores')
+map('subword', 'aS', 'outer', 'Como `w` padrão do vim, só que considerando -, _ e . como delimitadores')
 
 -- Column down until indent or shorter line.
 -- Accepts {count} for multiple columns.
-map('column', '|')
+map('column', '|', nil, 'Desce em linha vertical até achar uma linha mais curta. Aceita {conta} para múltiplas colunas')
 
 -- I'm not sure what this one does
-map('shellPipe', 'iP', inner)
-map('shellPipe', 'aP', outer)
+map('shellPipe', 'iP', 'inner')
+map('shellPipe', 'aP', 'outer')
 
 vim.keymap.set('n', 'gx', function()
   textobjs.url() -- select URL
@@ -69,4 +69,4 @@ vim.keymap.set('n', 'gx', function()
 
     vim.cmd('!xdg-open "' .. url .. '"')
   end
-end, { desc = '[VariousTextObjs] Abridor esperto de URL' })
+end, { desc = '[VariousTextObjs] url: Abridor esperto de URL' })
