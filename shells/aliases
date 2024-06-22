@@ -43,6 +43,8 @@ alias gb='git branch'
 alias gsh='git stash'
 alias gshp='git stash pop'
 alias gr='git add . && git rebase --continue'
+alias gfk='git_fetch_checkout'
+alias gkf='git_fetch_checkout'
 alias ts='tig status'
 alias pwdcp="pwd | tr -d '\n' | xclip -selection clipboard && pwd"
 alias browsersync='browser-sync start --server --directory --files **/*'
@@ -59,5 +61,6 @@ alias xall='~/scripts/conf-keyboard.sh && ~/scripts/enable-touchpad-tap.sh'
 alias vim='nvim'
 alias nv='nvim'
 alias vn='nvim'
+alias vc='vimgit -c'
 
 [ -f "$HOME/.local/aliases.local" ] && source "$HOME/.local/aliases.local"

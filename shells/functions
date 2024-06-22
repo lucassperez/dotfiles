@@ -8,11 +8,25 @@ fzv() {
   # fzf and nvim
   # When doing results=`fzf`, some keybindings don't seem to work,
   # but they do when using $(fzf) instead.
-  local results=$(fzf --preview 'bat --color=always {}')
+  local results=$(fzf --multi --preview 'bat --color=always {}')
   [ -z $results ] && return
 
-  nvim "$results"
   echo "$results"
+  echo "$results" | xargs -d '\n' nvim
+}
+
+git_fetch_checkout() {
+  if [ -z "$1" ]; then
+    return 1
+  fi
+
+  git fetch origin "$1"
+
+  if [ "$?" -gt 0 ]; then
+    exit "$?"
+  fi
+
+  git checkout "$1"
 }
 
 vimgit() {
@@ -20,20 +34,35 @@ vimgit() {
   local staged
   local help
   local unknown_args
+  local grep_pattern
 
-  for arg in "$@"; do
-    case "$arg" in
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
       -c|--conflict)
         conflict=sim
+        shift
         ;;
       -s|--staged)
         staged=sim
+        shift
         ;;
       -h|--help)
         help=sim
+        break
+        ;;
+      -g|--grep)
+        # TODO: Think about maybe passing grep options to grep?
+        # Or at least make it possible to grep case insensitively?
+        if [ -z "$2" ]; then
+          echo 'An argument must be passed to -g or --grep option'
+          return 1
+        fi
+        grep_pattern="$2"
+        shift 2
         ;;
       *)
-        unknown_args="$arg, $unknown_args"
+        unknown_args="$1, $unknown_args"
+        shift
         ;;
     esac
   done
@@ -43,6 +72,7 @@ vimgit() {
     echo 'Possible options:'
     echo '    -c  --conflict  Only lists files with git conflict markers (lines starting with <<<<<<<, ======= or >>>>>>>)'
     echo '    -s  --staged    Only lists files that are staged'
+    echo '    -g  --grep      Pass a pattern to grep over the result before opening files in vim'
     echo 'If both conflict and staged options are passed, staged is ignored.'
     # If unknown_args is not empty but help is, I'm going to both
     # print this help message and open vim. Do I want this?
@@ -56,19 +86,23 @@ vimgit() {
 
   local files
   if [ -n "$conflict" ]; then
-    files=`git status --porcelain | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $2}' | xargs grep -l '^[<=>]\{7\}' | tr '\n' ' '`
+    files=`git status --porcelain | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $2}' | xargs grep -l '^[<=>]\{7\}'`
   elif [ -n "$staged" ]; then
     # Easier to use git diff than awk [[:blank:]] or something fancy
-    files=`git diff --name-only --staged | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $1}' | tr '\n' ' '`
+    files=`git diff --name-only --staged | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $1}'`
   else
-    files=`git status --porcelain | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $2}' | tr '\n' ' '`
+    files=`git status --porcelain | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $2}'`
   fi
 
   [ -z $files ] && return
 
   (
     cd `git rev-parse --show-toplevel`
-    nvim `echo $files`
+    if [ -n "$grep_pattern" ]; then
+      nvim `echo $files | grep "$grep_pattern" | tr '\n' ' '`
+    else
+      nvim `echo $files | tr '\n' ' '`
+    fi
   )
 }
 
