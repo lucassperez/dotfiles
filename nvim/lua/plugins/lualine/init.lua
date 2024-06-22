@@ -18,7 +18,24 @@ require('lualine').setup({
     lualine_a = { custom_functions.mode },
     lualine_b = { custom_functions.getfile },
     lualine_c = { '' },
-    lualine_x = { custom_functions.diagnostics, custom_functions.diff, custom_functions.lsp },
+    lualine_x = {
+      function()
+        -- This separator, sep, is needed because "diff" might
+        -- change the color of the text, changing the color of "lsp", too.
+        -- Putting it here prevents the next block from having its color
+        -- alterated by the previous function.
+        -- Lualine apparently automatically adds it when I used this format:
+        -- lualine_x = { custom_functions.diagnostics, custom_functions.diff, custom_functions.lsp },
+        local sep = '%#lualine_c_command#'
+        return string.format(
+          '%s %s%s %s',
+          custom_functions.diagnostics(),
+          custom_functions.diff(),
+          sep,
+          custom_functions.lsp()
+        )
+      end,
+    },
     lualine_y = { 'filetype' },
     lualine_z = { custom_functions.getlines },
   },
