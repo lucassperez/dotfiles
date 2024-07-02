@@ -15,6 +15,7 @@ require('nvim-treesitter.configs').setup({
   highlight = {
     enable = true,
     disable = { 'vue' },
+    additional_vim_regex_highlighting = { 'elixir' },
   },
   incremental_selection = {
     enable = true,
