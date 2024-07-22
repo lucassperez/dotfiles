@@ -72,8 +72,8 @@ local function calculate_widget_output(stdout)
   elseif state == 'Charging' then
     message = ' ' .. percentage .. '%'
     color = '#00ff00'
-    -- elseif state == 'Not charging' then
-    --   message = '? '..percentage..'%'
+    elseif state == 'Not charging' then
+    message = '? ' .. percentage .. '%'
   elseif percentage >= 90 then
     message = ' ' .. percentage .. '%'
   elseif percentage >= 67 then
