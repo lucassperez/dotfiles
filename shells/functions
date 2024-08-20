@@ -73,6 +73,21 @@ vimgit() {
           return 1
         fi
         grep_pattern="$2"
+        grep_options=''
+        shift 2
+        ;;
+      -v|--vgrep|-vg|-gv)
+        # Grep can return only non match with -v flag (grep -v).
+        # Since I did not implement passing arguments to grep, I made
+        # this -v option here, too. The long name "vgrep" is kind of
+        # random, but thought it sounded better than grepv
+        if [ -z "$2" ]; then
+          echo 'An argument must be passed to -v or --vgrep option'
+          return 1
+        fi
+        # TODO: Allow multiple -v without overriding the last pattern
+        grep_pattern="$2"
+        grep_options=-v
         shift 2
         ;;
       *)
@@ -85,9 +100,10 @@ vimgit() {
   if [ -n "$unknown_args" -o -n "$help" ]; then
     [ -n "$unknown_args" ] && echo "Unknown option \`${unknown_args%%, }\`"
     echo 'Possible options:'
-    echo '    -c  --conflict  Only lists files with git conflict markers (lines starting with <<<<<<<, ======= or >>>>>>>)'
-    echo '    -s  --staged    Only lists files that are staged'
-    echo '    -g  --grep      Pass a pattern to grep over the result before opening files in vim'
+    echo '    -c  --conflict      Only lists files with git conflict markers (lines starting with <<<<<<<, ======= or >>>>>>>)'
+    echo '    -s  --staged        Only lists files that are staged'
+    echo '    -g  --grep          Pass a pattern to grep over the result before opening files in vim'
+    echo '    -v -gv -vg --vgrep  Pass a pattern to grep inverse matches (add -v to grep command)'
     echo 'If both conflict and staged options are passed, staged is ignored.'
     # If unknown_args is not empty but help is, I'm going to both
     # print this help message and open vim. Do I want this?
@@ -101,23 +117,38 @@ vimgit() {
 
   local files
   if [ -n "$conflict" ]; then
-    files=`git status --porcelain | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $2}' | xargs grep -l '^[<=>]\{7\}'`
+    files=`git status --porcelain | awk '{print $2}' | xargs grep -l '^[<=>]\{7\}'`
   elif [ -n "$staged" ]; then
     # Easier to use git diff than awk [[:blank:]] or something fancy
-    files=`git diff --name-only --staged | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $1}'`
+    files=`git diff --name-only --staged | awk '{print $1}'`
   else
-    files=`git status --porcelain | awk -v git_top_level=$(git rev-parse --show-toplevel) '{print git_top_level "/" $2}'`
+    files=`git status --porcelain | awk '{print $2}'`
   fi
 
   [ -z $files ] && return
 
-  (
-    cd `git rev-parse --show-toplevel`
-    if [ -n "$grep_pattern" ]; then
-      nvim `echo $files | grep "$grep_pattern" | tr '\n' ' '`
+  if [ -n "$grep_pattern" ]; then
+    if [ -n "$grep_options" ]; then
+      files=`echo $files | tr ' ' '\n' | grep "$grep_options" "$grep_pattern"`
     else
-      nvim `echo $files | tr '\n' ' '`
+      files=`echo $files | tr ' ' '\n' | grep "$grep_pattern"`
     fi
+  fi
+
+  [ -z $files ] && return
+
+  local final_files=''
+  # Decided it is easier to store the toplevel like this and use the variables
+  # than using awk -v git_top_level=$(git rev-parse --show-toplevel) etc
+  local toplevel=`git rev-parse --show-toplevel`
+  for f in `echo $files`; do
+    final_files="$final_files\n$toplevel/$f"
+  done
+  final_files=`echo $final_files | sed '/^[[:space:]]*$/d'`
+
+  (
+    cd $toplevel
+    nvim `echo $final_files`
   )
 }
 
