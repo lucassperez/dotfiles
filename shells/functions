@@ -29,6 +29,21 @@ git_fetch_checkout() {
   git checkout "$1"
 }
 
+git_branch_delete_remote_if_not_local_with_same_name() {
+  local local_branches=`git branch | tr -d '*'`
+  local remote_branches=`git branch -r | grep -v '\<origin/HEAD\>'`
+  local i=''
+  for b in `echo $remote_branches`; do
+    if ! `echo $local_branches | grep -q "\<${b##origin/}\>"`; then
+      git branch -d -r $b
+      i='.'
+    fi
+  done
+  if [ -z $i ]; then
+    echo 'Nada para deletar'
+  fi
+}
+
 vimgit() {
   local conflict
   local staged
