@@ -257,6 +257,20 @@ git_branch_grep_fzf() {
   git checkout "$b"
 }
 
+yeet_docker() {
+  printf 'Tem certeza? [y/N] '
+  read resp
+  resp=`echo $resp | tr '[:upper:]' '[:lower:]'`
+  case $resp in
+    y|s|yes|si|sim)
+      docker ps -qa | xargs docker stop
+      docker volume ls -q | xargs docker volume rm
+      docker image ls -q | xargs docker rmi
+      docker ps -qa | xargs docker rm
+      ;;
+  esac
+}
+
 simplexev() {
   xev | awk -F '[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
 }
