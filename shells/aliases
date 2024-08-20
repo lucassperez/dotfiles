@@ -2,6 +2,8 @@
 
 alias als='nvim ~/.aliases ~/.rcfunctionsandaliases `[ -f "$HOME/.local/aliases.local" ] && echo "$HOME/.local/aliases.local"`'
 alias fus='nvim ~/.functions ~/.rcfunctionsandaliases `[ -f "$HOME/.local/functions.local" ] && echo "$HOME/.local/functions.local"`'
+alias alsfus='nvim ~/.aliases `[ -f "$HOME/.local/aliases.local" ] && echo "$HOME/.local/aliases.local"` ~/.functions `[ -f "$HOME/.local/functions.local" ] && echo "$HOME/.local/functions.local"` ~/.rcfunctionsandaliases'
+alias fusals='nvim ~/.functions `[ -f "$HOME/.local/functions.local" ] && echo "$HOME/.local/functions.local"` ~/.aliases `[ -f "$HOME/.local/aliases.local" ] && echo "$HOME/.local/aliases.local"` ~/.rcfunctionsandaliases'
 
 alias which='(alias; declare -f) | /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot'
 
