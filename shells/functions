@@ -164,9 +164,9 @@ git_branch_grep_fzf() {
 
     if [ -z "$selected" ]; then; return; 3; fi
 
-    selected=`echo "$selected" | tr -d '*' | tr -d '[[:blank:]]'`
+    selected=`echo "$selected" | sed 's/^\(*\|+\)\?\s*//' | tr -d '[[:blank:]]'`
     imprimir_mensagem_mudando_de_branch "$selected"
-    git checkout `echo "$selected" | sed 's/^\*\?\s*//'`
+    git checkout "$selected"
     return
   fi
 
@@ -213,7 +213,7 @@ git_branch_grep_fzf() {
   fi
 
   if [ -n "$create_and_checkout" ]; then
-    echo "Criando e mudando para \e[1m$1\e[0m"
+    echo "Criando e mudando para \e[1m$create_and_checkout\e[0m"
     git checkout -b "$create_and_checkout"
     return
   fi
