@@ -308,9 +308,9 @@ redme() {
 
 testnvim() {
   local log=/tmp/__log_testnvim__`date +%Y%m%d_%H%M%S`
-  printf "\n\t\e[1mnvim --headless --startuptime $log +q && tail -1 $log && rm $log\e[0m\n\n"
+  printf "\n\t\e[1mnvim --headless --startuptime $log +q && tail -2 $log | head -1 && rm $log\e[0m\n\n"
   for i in `seq 10`; do
-    nvim --headless --startuptime $log +q && tail -1 $log && rm $log
+    nvim --headless --startuptime $log +q && tail -2 $log | head -1 && rm $log
   done
   if ! which hyperfine 2>/dev/null 1>&2; then
     printf "\n\t\e[1mhyperfine is not installed\e[0m\n\n"
