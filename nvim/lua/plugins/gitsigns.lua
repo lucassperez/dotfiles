@@ -1,22 +1,6 @@
 local gitsigns = require('gitsigns')
 
 gitsigns.setup({
-  signs = {
-    add = { hl = 'GitSignsAdd', numhl = 'GitSignsAddNr', linehl = '' },
-    change = { hl = 'GitSignsChange', numhl = 'GitSignsChangeNr', linehl = '' },
-    delete = { hl = 'GitSignsDelete', numhl = 'GitSignsDeleteNr', linehl = '' },
-    topdelete = { hl = 'GitSignsTopDelete', numhl = 'GitSignsTopDeleteNr', linehl = '' },
-    changedelete = {
-      hl = 'GitSignsChangeDelete',
-      numhl = 'GitSignsChangeDeleteNr',
-      linehl = '',
-    },
-    untracked = {
-      hl = 'GitSignsAdd',
-      numhl = 'GitSignsAddNr',
-      linehl = '',
-    },
-  },
   signcolumn = false, -- Toggle with `:Gitsigns toggle_signs`
   numhl = true, -- Toggle with `:Gitsigns toggle_numhl`
   linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
@@ -45,9 +29,6 @@ gitsigns.setup({
     relative = 'cursor',
     row = 0,
     col = 1,
-  },
-  yadm = {
-    enable = false,
   },
   on_attach = function(bufnr)
     local function buf_map(mode, lhs, rhs, opts)
@@ -95,17 +76,32 @@ hi GitSignsChange         guifg=#c39f00 gui=ITALIC,BOLD    ctermfg=3   cterm=ITA
 hi GitSignsDelete         guifg=#ec2929 gui=UNDERLINE,BOLD ctermfg=red cterm=UNDERLINE,BOLD
 hi GitSignsChangeDelete   guifg=#d75f00 gui=UNDERCURL,BOLD ctermfg=166 cterm=UNDERCURL,BOLD
 " I've been crazy searching on wtf is top delete, so
-" I set a werid color for it and started deleting lines.
+" I set a weird color for it and started deleting lines.
 " Very shortly I learned that apparently, it is when
 " you delete the first line of the file.
 " And you know what? I think I'm gonna keep it (:
 hi GitSignsTopDelete      guifg=#ff5fff gui=UNDERLINE,BOLD ctermfg=207 cterm=UNDERLINE,BOLD
+
+hi GitSignsUntracked guifg=#44aa44
+hi link GitSignsUntrackedNr GitSignsUntracked
 
 hi link GitSignsAddNr          GitSignsAdd
 hi link GitSignsChangeNr       GitSignsChange
 hi link GitSignsDeleteNr       GitSignsDelete
 hi link GitSignsChangeDeleteNr GitSignsChangeDelete
 hi link GitSignsTopDeleteNr    GitSignsTopDelete
+hi link GitSignsUntrackedNr GitSignsAddNr
+
+hi GitSignsStaged guifg=#85bdda gui=BOLD,UNDERLINE
+hi! link GitSignsStagedNr GitSignsStaged
+hi! link GitSignsStagedAdd GitSignsStaged
+hi! link GitSignsStagedChange GitSignsStaged
+hi! link GitSignsStagedDelete GitSignsStaged
+hi! link GitSignsStagedChangeDelete GitSignsStaged
+hi! link GitSignsStagedAddNr GitSignsStaged
+hi! link GitSignsStagedChangeNr GitSignsStaged
+hi! link GitSignsStagedDeleteNr GitSignsStaged
+hi! link GitSignsStagedChangeDeleteNr GitSignsStaged
 
 hi GitSignsCurrentLineBlame guifg=#cccccc gui=ITALIC ctermfg=252 cterm=ITALIC
 ]])
