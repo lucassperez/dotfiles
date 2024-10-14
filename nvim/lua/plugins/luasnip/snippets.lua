@@ -3,3 +3,4 @@
 
 require('plugins.luasnip.lua')
 require('plugins.luasnip.go')
+require('plugins.luasnip.elixir')
