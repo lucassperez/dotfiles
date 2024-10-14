@@ -333,4 +333,12 @@ testmix() {
   echo $res | mix test --failed | grep "test.*_test\.exs:.*(test)" | sort -n
 }
 
+youtube_download_audio() {
+  if [ "$#" -le 0 ]; then
+    echo 'Nenhum argumento passado'
+    return 1
+  fi
+  yt-dlp --extract-audio "$@"
+}
+
 [ -f "$HOME/.local/functions.local" ] && source "$HOME/.local/functions.local"
