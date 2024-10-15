@@ -25,11 +25,15 @@ luasnip.filetype_extend('eelixir', { 'elixir' })
 luasnip.filetype_extend('heex', { 'elixir' })
 
 local function pathToPascalCase(path)
+  if path == '' then return '' end
   local t = type(path)
-  if t ~= 'string' then return '', 'Wrong value passed to pathToPascalCase: ' .. path .. ', of type ' .. t end
+  if t ~= 'string' then
+    local msg = 'Wrong value passed to pathToPascalCase: ' .. path .. ', of type ' .. t
+    return '', msg
+  end
 
   -- local p, changed = string.gsub(path, '^lib/', '')
-  -- if changed == 0 then return 'Not in ^lib/ style of path', true end
+  -- if changed == 0 then return '', 'Not in ^lib/ style of path' end
   local p = path
 
   local underline_byte = string.byte('_')
@@ -57,7 +61,7 @@ local function pathToPascalCase(path)
     end
   end
 
-  if r[1] == nil then return '', 'r is empty' end
+  if r[1] == nil then return '', 'elixir defmodule snippet: `r` table is empty' end
   if r[1] >= 97 and r[1] <= 122 then r[1] = r[1] - 32 end
 
   return string.char(unpack(r))
@@ -67,7 +71,7 @@ local function defmodule_snippet()
   local module_name, error = pathToPascalCase(vim.fn.expand('%:r'))
   if error then
     vim.notify(error, vim.log.levels.ERROR)
-    return {}
+    return fmt('Arquivo ganhou o filetype elixir após sua criação, precisa recarregar os snippets', i(1))
   end
   module_name = string.gsub(module_name, '^%.*', '')
 
