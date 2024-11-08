@@ -8,7 +8,7 @@
 
 # Idea: Create templates with env vars and use envsubst to create the real
 # config files with the variables values.
-import = [
+general.import = [
   '~/.config/alacritty/base.toml',
   '~/.config/alacritty/local.toml',
 ]

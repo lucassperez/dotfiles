@@ -2,7 +2,7 @@
 # https://alacritty.org/config-alacritty.html
 
 # Color scheme
-import = ['~/.config/alacritty/modified-catppuccin-frappe.toml']
+general.import = ['~/.config/alacritty/modified-catppuccin-frappe.toml']
 
 [env]
 TERM = 'xterm-256color'
