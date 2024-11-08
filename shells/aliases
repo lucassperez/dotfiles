@@ -7,7 +7,7 @@ alias fusals='nvim ~/.functions `[ -f "$HOME/.local/functions.local" ] && echo "
 
 alias which='(alias; declare -f) | /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot'
 
-alias ls='ls --color=auto -F --group-directories-first'
+alias ls='ls -h --color=auto -F --group-directories-first'
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
 alias grep='grep --color=auto'
@@ -44,7 +44,7 @@ alias gk='git checkout'
 alias gb='git branch'
 alias gsh='git stash'
 alias gshp='git stash pop'
-alias gr='git add . && git rebase --continue'
+alias gr='git_rebase_or_cherry_pick_add_all_and_continue'
 alias gfk='git_fetch_checkout'
 alias gkf='git_fetch_checkout'
 alias k='git_branch_grep_fzf'

@@ -15,6 +15,15 @@ fzv() {
   echo "$results" | xargs -d '\n' nvim
 }
 
+git_rebase_or_cherry_pick_add_all_and_continue() {
+  git add .
+  if `git status | grep -q 'You are currently cherry-picking commit'`; then
+    git cherry-pick --continue
+  else
+    git rebase --continue
+  fi
+}
+
 git_fetch_checkout() {
   if [ -z "$1" ]; then
     return 1
@@ -34,7 +43,7 @@ git_branch_delete_remote_if_not_local_with_same_name() {
   local remote_branches=`git branch -r | grep -v '\<origin/HEAD\>'`
   local i=''
   for b in `echo $remote_branches`; do
-    if ! `echo $local_branches | grep -q "\<${b##origin/}\>"`; then
+    if ! `echo $local_branches | grep -q "^\s*${b##origin/}$"`; then
       git branch -d -r $b
       i='.'
     fi
