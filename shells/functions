@@ -17,10 +17,14 @@ fzv() {
 
 git_rebase_or_cherry_pick_add_all_and_continue() {
   git add .
-  if `git status | grep -q 'You are currently cherry-picking commit'`; then
+  local git_status_message=`git status`
+  if `echo "$git_status_message" | grep -q 'You are currently cherry-picking commit'`; then
     git cherry-pick --continue
-  else
+  elif `echo "$git_status_message" | grep -q 'You are currently rebasing branch'`; then
     git rebase --continue
+  else
+    echo 'Não soube definir se estamos num cherry pick ou rebase a partir da mensagem do git status. ):'
+    return 1
   fi
 }
 
