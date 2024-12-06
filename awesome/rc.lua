@@ -1462,7 +1462,7 @@ end)
 
 -- Start up things
 awful.spawn.with_shell('nm-applet')
-awful.spawn.with_shell('blueman-applet')
+-- awful.spawn.with_shell('blueman-applet')
 awful.spawn.with_shell(scripts_dir .. '/killall-and-start/flameshot.sh')
 awful.spawn.with_shell(scripts_dir .. '/killall-and-start/unclutter.sh')
 awful.spawn.with_shell(scripts_dir .. '/killall-and-start/xplugd.sh')
