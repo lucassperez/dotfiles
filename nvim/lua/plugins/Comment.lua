@@ -45,6 +45,8 @@ vim.keymap.set(
   commented_lines_textobject,
   { silent = true, desc = '[Comment] Textobject for adjacent commented lines' }
 )
+vim.keymap.set('n', 'yc', 'yy<cmd>normal gcc<CR>p')
+vim.keymap.set('n', 'yC', 'yy<cmd>normal gcc<CR>P')
 
 local ft = require('Comment.ft')
 -- filetype and (commentstring or { commentrings })

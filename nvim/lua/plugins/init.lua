@@ -158,6 +158,8 @@ local plugins = {
       { mode = { 'n', 'v', 'o' }, 'gc', desc = '[Comment] Toggle line comments' },
       { mode = { 'n', 'v', 'o' }, 'gb', desc = '[Comment] Toggle block comments' },
       { mode = 'o', 'u' },
+      { mode = 'n', 'yc' },
+      { mode = 'n', 'yC' }
     },
     config = function()
       require('plugins.Comment')
