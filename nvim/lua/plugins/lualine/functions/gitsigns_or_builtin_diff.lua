@@ -11,6 +11,15 @@ if not pcall(require, 'gitsigns') then return 'diff' end
 
 local verbose = true
 
+--[[
+Whatever comes after this gets the colors from diff.
+I could add a `.. '%#lualine_c_command#'` at the end
+to "reset" the colors, but then it gets reset to lualine_c.
+If this was set to lualine_a, b, y or z, it would reset to the wrong color.
+Because of this, I'm setting the "color" reset at the init file.
+Not cool, but I'm not sure of a better way.
+]]
+
 local function verboseFunc()
   local h = require('gitsigns').get_hunks()
   if #h == 0 then return '' end
