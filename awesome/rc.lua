@@ -91,9 +91,9 @@ local limited_tile = require('limited-tile')
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
   awful.layout.suit.tile,
+  awful.layout.suit.tile.bottom,
   awful.layout.suit.tile.left,
   awful.layout.suit.fair,
-  awful.layout.suit.tile.bottom,
   -- awful.layout.suit.max, -- I made mod + m toggle max layout instead of maximize
   -- awful.layout.suit.magnifier, -- magnifier is so weird
   -- awful.layout.suit.floating, -- Control + Super + Space toggle floating in focused client
@@ -339,9 +339,9 @@ local tags = charitable.create_tags({ '1', '2', '3', '4', '5', '6', '7', '8', '9
   awful.layout.layouts[1],
   awful.layout.layouts[1],
   awful.layout.layouts[1],
-  awful.layout.suit.spiral.dwindle,
-  awful.layout.suit.spiral.dwindle,
   awful.layout.layouts[1],
+  awful.layout.layouts[1],
+  awful.layout.suit.tile.bottom,
 })
 awful.screen.connect_for_each_screen(function(s)
   -- Wallpaper
@@ -1276,7 +1276,7 @@ awful.rules.rules = {
         'Polls',
         'FeatherPad',
         'Erlang',
-        'Pavucontrol',
+        '[Pp]avucontrol',
         'kmines',
         'kate',
         'Navigator',
@@ -1369,7 +1369,7 @@ awful.rules.rules = {
         'kate',
         'notes',
         'FeatherPad',
-        'Pavucontrol',
+        '[Pp]avucontrol',
         'floating-alacritty',
       },
       name = {
