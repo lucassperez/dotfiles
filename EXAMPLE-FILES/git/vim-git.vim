@@ -6,6 +6,10 @@ nmap H ^
 nmap L $
 nmap } }k
 nmap <Space><Space> }ddggpcw
+nnoremap <M-j> :m .+1<CR>
+nnoremap <M-k> :m .-2<CR>
+vnoremap <M-j> :m '>+1<CR>gv
+vnoremap <M-k> :m '<-2<CR>gv
 
 hi ColorColumn ctermfg=DarkRed ctermbg=125 guibg=DarkRed
 hi Statement cterm=none term=none ctermfg=130 gui=none guifg=Brown
