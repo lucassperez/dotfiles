@@ -61,12 +61,10 @@ vim.api.nvim_create_user_command('Session', function(opts)
   local command = args[1]
 
   local filename_starts_at = 2
-  local unknown_command = false
 
   if command ~= 'new' and command ~= 'create_or_update' and command ~= 'load' then
     command = 'create_or_update'
     filename_starts_at = 1
-    unknown_command = true
   end
 
   if opts.bang then command = 'create_or_update' end
@@ -115,7 +113,7 @@ end, {
   desc = 'Cria uma sessão. Se não passar nenhum argumento, o nome padrão é vim-session.vim.',
   -- :h command-attributes
   nargs = '*', -- 0 or more arguments allowed
-  complete = function(arg_lead, cmd_line, cursor_pos)
+  complete = function(_arg_lead, _cmd_line, _cursor_pos)
     return {
       'new',
       'create_or_update',
