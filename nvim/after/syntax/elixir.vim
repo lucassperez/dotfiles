@@ -1,5 +1,5 @@
 " Com tree sitter, só quero os private defines
-match elixirPrivateDefine /\<def\(guard\|macro\)*p\>/
+match elixirPrivateDefine /\<def\(guard\|macro\)\?p\>/
 "hi elixirPrivateDefine ctermfg=red guifg=#e85858
 hi elixirPrivateDefine ctermfg=red guifg=#e58183
 
