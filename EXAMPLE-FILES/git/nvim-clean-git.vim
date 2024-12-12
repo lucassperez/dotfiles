@@ -7,7 +7,7 @@ map <C-q> :wq<CR>
 nmap H ^
 nmap L $
 nmap } }k
-nmap <Space><Space> }ddggpcw
+nmap <Space><Space> }ddggpcwf<Esc>
 
 " Colorscheme do nvim 0.9.5
 "hi ColorColumn    ctermfg=15 ctermbg=125 guibg=DarkRed

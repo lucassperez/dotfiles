@@ -5,7 +5,7 @@ map <C-q> :wq<CR>
 nmap H ^
 nmap L $
 nmap } }k
-nmap <Space><Space> }ddggpcw
+nmap <Space><Space> }ddggpcwf<Esc>
 nnoremap <M-j> :m .+1<CR>
 nnoremap <M-k> :m .-2<CR>
 vnoremap <M-j> :m '>+1<CR>gv
