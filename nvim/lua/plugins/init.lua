@@ -181,7 +181,7 @@ local plugins = {
   },
   {
     'kyazdani42/nvim-tree.lua',
-    keys = require('plugins.nvim-tree').keys(),
+    keys = require('plugins.nvim-tree').keys,
     config = require('plugins.nvim-tree').setup,
   },
   {

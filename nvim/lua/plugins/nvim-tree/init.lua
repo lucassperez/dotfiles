@@ -9,28 +9,26 @@
 -- }
 -- So we can define what the mapping actually do from lazy instead of
 -- calling vim.keymap.set from inside the setup function.
-local function keys()
-  return {
-    {
-      mode = 'n',
-      desc = '[NvimTree] Abre nvim-tree',
-      '<C-n>',
-      function()
-        require('nvim-tree.api').tree.toggle()
-      end,
-      { noremap = true, silent = false },
-    },
-    {
-      mode = 'n',
-      desc = '[NvimTree] Abre nvim-tree com o cursor no arquivo atual',
-      '<leader>n',
-      function()
-        require('nvim-tree.api').tree.toggle({ find_file = true })
-      end,
-      { noremap = true, silent = false },
-    },
-  }
-end
+local keys = {
+  {
+    mode = 'n',
+    desc = '[NvimTree] Abre nvim-tree',
+    '<C-n>',
+    function()
+      require('nvim-tree.api').tree.toggle()
+    end,
+    { noremap = true, silent = false },
+  },
+  {
+    mode = 'n',
+    desc = '[NvimTree] Abre nvim-tree com o cursor no arquivo atual',
+    '<leader>n',
+    function()
+      require('nvim-tree.api').tree.toggle({ find_file = true })
+    end,
+    { noremap = true, silent = false },
+  },
+}
 
 local function setup()
   require('nvim-tree').setup({
