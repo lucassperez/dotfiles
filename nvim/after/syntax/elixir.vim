@@ -1,7 +1,7 @@
-" Com tree sitter, só quero os private defines
-match elixirPrivateDefine /\<def\(guard\|macro\)\?p\>/
-"hi elixirPrivateDefine ctermfg=red guifg=#e85858
+" Adicionei o arquivo nvim/queries/elixir/highlights.scm
+" pra cuidar do match.
 hi elixirPrivateDefine ctermfg=red guifg=#e58183
+hi link @elixirPrivateDefine elixirPrivateDefine
 
 " " Utilizando os grupos definidos em:
 " " https://github.com/elixir-editors/vim-elixir
