@@ -1,8 +1,9 @@
 local textobjs = require('various-textobjs')
 
 textobjs.setup({
-  useDefaultKeymaps = false,
-  -- lookForwardLines = 5, -- Set to 0 to only look in the current line.
+  keymaps = {
+    useDefaults = false,
+  },
 })
 
 -- The indentation textobj requires two parameters, first for exclusion of the
