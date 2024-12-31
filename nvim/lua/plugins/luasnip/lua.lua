@@ -79,21 +79,23 @@ luasnip.add_snippets('lua', {
     'func',
     fmt('{}({})\n\t{}\nend', {
       d(1, function()
-        -- Subtract 2 because this snippet is "2 lines tall".
-        -- The getpos('.') and getline('.') gives info about the end
-        -- of the snippet, so in this case, when we subtract 2 we get
-        -- the info about the start of the snippet.
         local positions = vim.fn.getpos('.')
-        local line_nr = positions[2] - 2
+        local line_nr = positions[2]
         local line_up_to_cursor = vim.fn.getline(line_nr):sub(1, positions[3])
 
-        if line_up_to_cursor:match('[%w=]') then return sn(nil, t('function ')) end
+        local local_function_snippet = fmt('local function {}', { i(1) })
+        local function_snippet = fmt('function {}', { i(1) })
+
+        if line_up_to_cursor:match('[%w=]') then
+          local choice = c(1, { function_snippet, local_function_snippet })
+          return sn(nil, choice)
+        end
 
         return sn(
           nil,
           c(1, {
-            fmt('local function {}', { i(1) }),
-            fmt('function {}', { i(1) }),
+            local_function_snippet,
+            function_snippet,
           })
         )
       end, {}),
