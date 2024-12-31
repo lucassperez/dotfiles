@@ -70,6 +70,7 @@ cmp.setup({
       })[entry.source.name]
       return vim_item
     end,
+    expandable_indicator = true, -- show ~ when entry is expandable, like a snippet for example
     -- local symbol_map = {
     --   Text = 'Txt',
     --   Method = 'Met',
