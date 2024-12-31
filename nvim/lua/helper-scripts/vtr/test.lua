@@ -1,5 +1,10 @@
 local test_cache = ''
 
+local function directory_exists(path)
+  local stat = vim.loop.fs_stat(path)
+  return stat and stat.type == "directory"
+end
+
 local function kaochaFilename(opts)
   opts = opts or {}
 
@@ -91,13 +96,15 @@ function RunAutomatedTest(opts)
   if filetype == 'elixir' then
     test_command = 'mix test ' .. filename .. line_number
   elseif filetype == 'ruby' then
-    test_command = 'bundle exec rspec ' .. filename .. line_number
+    if directory_exists('spec/') then
+      test_command = 'bundle exec rspec ' .. filename .. line_number
+    else
+      test_command = 'bundle exec rails test ' .. filename .. line_number
+    end
   elseif filetype == 'typescriptreact' or filetype == 'typescript' then
     test_command = 'yarn test ' .. filename
   elseif filetype == 'clojure' then
-    local file = io.open('bin/kaocha')
-    if file then
-      file:close()
+    if directory_exists('bin/kaocha') then
       test_command = 'lein kaocha' .. kaochaFilename(opts)
     else
       test_command = 'lein test ' .. filename
