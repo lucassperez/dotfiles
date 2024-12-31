@@ -24,7 +24,7 @@ local function map(function_name, keys, opt, desc)
 
   vim.keymap.set({ 'o', 'x' }, keys, function()
     textobjs[function_name](opt)
-  end, { desc = '[VariousTextObjs] '.. desc })
+  end, { desc = '[VariousTextObjs] ' .. desc })
 end
 
 map('entireBuffer', 'gG', nil, 'O buffer inteiro')
@@ -36,7 +36,7 @@ map('value', 'iv', 'inner', 'Valor em um par Chave-Valor')
 map('value', 'av', 'outer', 'Valor em um par Chave-Valor')
 
 -- Key in key-value pair
-map('key', 'K', 'inner',  'Chave em um par Chave-Valor')
+map('key', 'K', 'inner', 'Chave em um par Chave-Valor')
 map('key', 'ik', 'inner', 'Chave em um par Chave-Valor')
 map('key', 'ak', 'outer', 'Chave em um par Chave-Valor')
 
@@ -54,7 +54,12 @@ map('subword', 'aS', 'outer', 'Como `w` padrão do vim, só que considerando -, 
 
 -- Column down until indent or shorter line.
 -- Accepts {count} for multiple columns.
-map('column', '|', nil, 'Desce em linha vertical até achar uma linha mais curta. Aceita {conta} para múltiplas colunas')
+map(
+  'column',
+  '|',
+  nil,
+  'Desce em linha vertical até achar uma linha mais curta. Aceita {conta} para múltiplas colunas'
+)
 
 -- I'm not sure what this one does
 map('shellPipe', 'iP', 'inner')
