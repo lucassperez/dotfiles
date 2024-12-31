@@ -340,8 +340,8 @@ local tags = charitable.create_tags({ '1', '2', '3', '4', '5', '6', '7', '8', '9
   awful.layout.layouts[1],
   awful.layout.layouts[1],
   awful.layout.layouts[1],
-  awful.layout.layouts[1],
   awful.layout.suit.tile.bottom,
+  awful.layout.layouts[1],
 })
 awful.screen.connect_for_each_screen(function(s)
   -- Wallpaper
@@ -635,6 +635,8 @@ local globalkeys = gears.table.join(
     else
       awful.client.focus.global_bydirection('left')
     end
+
+    if client.focus then client.focus:raise() end
   end, { group = 'client', description = 'focus left global' }),
   awful.key({ modkey }, 'j', function()
     local selected_tag = awful.screen.focused().selected_tag
@@ -650,6 +652,8 @@ local globalkeys = gears.table.join(
     else
       awful.client.focus.global_bydirection('down')
     end
+
+    if client.focus then client.focus:raise() end
   end, { group = 'client', description = 'focus down global' }),
   awful.key({ modkey }, 'k', function()
     -- If there is no client, it doesn't get a screen. While this
@@ -672,6 +676,8 @@ local globalkeys = gears.table.join(
     else
       awful.client.focus.global_bydirection('up')
     end
+
+    if client.focus then client.focus:raise() end
   end, { group = 'client', description = 'focus up global' }),
   awful.key({ modkey }, 'l', function()
     local actual_layout = awful.screen.focused().selected_tag.layout
@@ -683,6 +689,8 @@ local globalkeys = gears.table.join(
     else
       awful.client.focus.global_bydirection('right')
     end
+
+    if client.focus then client.focus:raise() end
   end, { group = 'client', description = 'focus right global' }),
   awful.key({ modkey, shift }, 'q', function()
     awful.client.focus.byidx(-1)
