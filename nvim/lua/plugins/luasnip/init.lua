@@ -61,6 +61,22 @@ vim.keymap.set({ 'i', 's' }, '<C-j>', function()
     luasnip.expand()
   elseif luasnip.locally_jumpable(1) then
     luasnip.jump(1)
+  else
+    local line = vim.api.nvim_get_current_line() -- Get the current line
+    local cursor_col = vim.api.nvim_win_get_cursor(0)[2] -- Get the cursor column (0-based)
+
+    -- If between > and <, <C-j> makes this: >|< into this:
+    -- >
+    --   |
+    -- <
+    -- Not sure if this file is the place for this, but okay
+    if
+      cursor_col > 0
+      and line:sub(cursor_col, cursor_col) == '>'
+      and line:sub(cursor_col + 1, cursor_col + 1) == '<'
+    then
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<CR><CR><Up><Tab>', true, false, true), 'n', false)
+    end
   end
 end, { silent = true })
 
