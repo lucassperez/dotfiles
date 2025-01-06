@@ -20,7 +20,7 @@ if not ok then
 end
 
 local opts = {
-  lockfile = vim.fn.stdpath('config') .. '/plugins-lock.json',
+  lockfile = vim.fn.stdpath('config') .. '/plugins-lock-lazy.json',
   install = {
     colorscheme = { 'catppuccin', 'habamax' },
   },
