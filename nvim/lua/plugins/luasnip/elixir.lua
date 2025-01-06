@@ -86,7 +86,7 @@ local function defmodule_snippet()
 end
 
 local function pre_format_inspect_snippet()
-  return fmt('{}<pre>{}\n\t<%= inspect({}, pretty: true) %>\n{}</pre>{}', { i(5), i(3), i(1, '@form'), i(4), i(2) })
+  return fmt('{}<pre>{}\n\t<%= inspect(@{}, pretty: true) %>\n{}</pre>{}', { i(5), i(3), i(1, 'form'), i(4), i(2) })
 end
 
 luasnip.add_snippets('elixir', {
