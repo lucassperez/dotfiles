@@ -159,7 +159,7 @@ local plugins = {
       { mode = { 'n', 'v', 'o' }, 'gb', desc = '[Comment] Toggle block comments' },
       { mode = 'o', 'u' },
       { mode = 'n', 'yc' },
-      { mode = 'n', 'yC' }
+      { mode = 'n', 'yC' },
     },
     config = function()
       require('plugins.Comment')
@@ -349,6 +349,7 @@ local plugins = {
   -- is apparently make it buggy
   {
     'cohama/lexima.vim',
+    enabled = true,
     event = 'InsertEnter',
     config = function()
       require('plugins.lexima')
@@ -364,6 +365,7 @@ local plugins = {
   -- Suddenly close tag does not work with lazy loading anymore... ):
   {
     'alvan/vim-closetag',
+    enabled = true,
     -- event = 'InsertEnter',
     init = function()
       require('plugins.vim-closetag')
