@@ -375,6 +375,14 @@ local plugins = {
       require('plugins.vim-closetag')
     end,
   },
+  {
+    'windwp/nvim-ts-autotag',
+    enabled = false,
+    config = function()
+      -- Ensure nvim-ts-autotag is properly set up
+      require('nvim-ts-autotag').setup()
+    end,
+  },
 }
 
 -- Fuzzy Finder, FzfLua or Telescope
