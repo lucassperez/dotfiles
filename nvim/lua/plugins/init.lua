@@ -319,8 +319,12 @@ local plugins = {
   },
   {
     'mattn/emmet-vim',
-    filetype = { 'html', 'css', 'eruby' },
+    filetype = { 'html', 'css', 'eruby', 'heex', 'elixir', 'eelixir' },
     enabled = false,
+    init = function()
+      -- Command actually is leader+comma, so it is <C-x>,
+      vim.cmd("let g:user_emmet_leader_key='<C-x>'")
+    end,
   },
   {
     'hrsh7th/nvim-cmp',
