@@ -304,6 +304,8 @@ local plugins = {
 
   -- Both ragtag and emmet, I can't seem to lazy load them correctly
   -- Emmet can be replaced with emmet_ls (LSP), but ragtag...? ):
+  -- Or maybe I should use emmet_language_server instead.
+  -- Theoretically there is this to enhance emmet_language_server: https://github.com/olrtg/nvim-emmet
   {
     'tpope/vim-ragtag',
     filetype = { 'eruby', 'elixir', 'eelixir', 'heex' },
