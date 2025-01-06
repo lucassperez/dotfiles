@@ -26,7 +26,10 @@ cmp.setup({
     -- next line when there are auto completion options avaiable,
     -- which is pretty much always. I know I can just ALT_o in
     -- insert mode, but I prefer to just Enter away. F this.
-    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    -- ['<CR>'] = cmp.mapping.confirm({ select = false }),
+
+    ['<C-y>'] = cmp.mapping.confirm({ select = nil }),
+    ['<C-j>'] = cmp.mapping.confirm({ select = true }),
 
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-p>'] = cmp.mapping.select_prev_item(),
