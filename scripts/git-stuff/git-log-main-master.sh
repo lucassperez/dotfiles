@@ -27,15 +27,11 @@ fi
 
 # https://stackoverflow.com/questions/37351664/colors-in-dash-not-bash
 ACTUAL_BRANCH=$(git branch --show-current)
-if [ "$ACTUAL_BRANCH" = main -o "$ACTUAL_BRANCH" = master -o "$ACTUAL_BRANCH" = develop ]; then
+if [ "$ACTUAL_BRANCH" = main -o "$ACTUAL_BRANCH" = master ]; then
   echo -e Currently at branch "\e[91;1m$ACTUAL_BRANCH\e[0m", executing the command "\e[1mgit log -15 $@\e[0m"
   git log -15 "$@"
   # Just exit to keep the exit code of git log, be it zero or non zero
   exit
-
-elif [ "$(git rev-parse --verify -q develop)" ]; then
-  echo -e "\e[1;30;43mTODO\e[0m Remover a branch develop do script, um dia"
-  BRANCH=develop
 
 elif [ "$(git rev-parse --verify -q main)" ]; then
   BRANCH=main
