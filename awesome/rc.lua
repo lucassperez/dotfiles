@@ -15,6 +15,11 @@ local beautiful = require('beautiful')
 
 -- Notification library
 local naughty = require('naughty')
+-- Default timeout seems to be 5 seconds.
+-- I'm increasing it quite a bit, to 15 seconds.
+-- I hope it is not too much.
+naughty.config.defaults.timeout = 15
+
 local menubar = require('menubar')
 local hotkeys_popup = require('awful.hotkeys_popup')
 -- hotkeys_popup.new{modifiers_fg='#00ff00'}
