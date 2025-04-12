@@ -25,7 +25,7 @@ alias lAl='ls -Al'
 # Meus apelidos
 alias psgrep='ps aux | grep'
 alias showppa='echo "/etc/apt/sources.list.d" && ls /etc/apt/sources.list.d'
-alias diff='diff --color=auto'
+alias diff='diff -s --color=auto'
 alias path='echo $PATH | tr ":" "\n"'
 alias glo='git log --oneline'
 alias glq='git log --oneline -15'
