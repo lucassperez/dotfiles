@@ -2,17 +2,7 @@
 # of what should go in each etc.
 # https://unix.stackexchange.com/questions/71253/what-should-shouldnt-go-in-zshenv-zshrc-zlogin-zprofile-zlogout
 
-# ASDF_FORCE_PREPEND
-# Whether or not to prepend the asdf shims and path directories to the front-most (highest-priority) part of the PATH.
-#  If Unset: On macOS, defaults to yes; but on other systems, defaults to no
-#  If yes: Force asdf directories to the front of the PATH
-#  If set to any string other than yes: Do not force asdf directories to the front of the PATH
-#  Usage: ASDF_FORCE_PREPEND=no . "<path-to-asdf-directory>/asdf.sh"
-source "$HOME/.asdf/asdf.sh"
-fpath=(${ASDF_DIR}/completions $ZDOTDIR/completions $fpath)
-
-# fpath=($ZDOTDIR/completions $fpath)
-# eval "$(rtx activate zsh)"
+fpath=($ZDOTDIR/completions $fpath)
 
 # zsh rename thing omg this exists!
 # https://unix.stackexchange.com/questions/1136/batch-renaming-files
