@@ -4,23 +4,23 @@ return {
   lazyPluginSpec = require('plugins.FUZZY_FINDER.fzf-lua.config').lazyPluginSpec,
 
   diagnostics = function()
-    require('fzf-lua').diagnostics_workspace({ jump_to_single_result = false })
+    require('fzf-lua').diagnostics_workspace({ jump1 = false })
   end,
 
   lsp_definition = function()
-    require('fzf-lua').lsp_definitions({ jump_to_single_result = true })
+    require('fzf-lua').lsp_definitions({ jump1 = true })
   end,
 
   lsp_references = function()
     -- Just for the record that ignore_current_line is a possible argument
     require('fzf-lua').lsp_references({
-      jump_to_single_result = false,
+      jump1 = false,
       ignore_current_line = false,
     })
   end,
 
   lsp_implementation = function()
-    require('fzf-lua').lsp_implementations({ jump_to_single_result = false })
+    require('fzf-lua').lsp_implementations({ jump1 = false })
   end,
 
   code_action = function()

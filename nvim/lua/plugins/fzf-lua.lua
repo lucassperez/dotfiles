@@ -128,6 +128,8 @@ local function setup()
   hi FzfLuaCursor guifg=NONE guibg=NONE gui=BOLD,UNDERLINE
   " hi clear FzfLuaCursor
   " hi link FzfLuaCursor MatchParen
+  hi clear FzfLuaLivePrompt
+  hi link FzfLuaLivePrompt FzfLuaNormal
   ]])
 end
 
