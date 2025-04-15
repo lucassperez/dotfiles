@@ -99,6 +99,7 @@ local plugins = {
     end,
   },
   {
+    enabled = false,
     'hoob3rt/lualine.nvim',
     config = function()
       require('plugins.lualine')

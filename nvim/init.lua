@@ -23,7 +23,7 @@ local function protected_require(path)
   local ok, result = pcall(require, path)
   if not ok then
     -- Only print this the first time a pcall returned an error
-    if not any_require_failed then vim.notify('ERROR! @@', vim.log.levels.ERROR) end
+    if not any_require_failed then vim.notify('ERROR!', vim.log.levels.ERROR) end
 
     any_require_failed = true
     vim.notify('Could not require the path `' .. path .. '`', vim.log.levels.ERROR)
@@ -52,18 +52,20 @@ protected_require('keymappings')
 protected_require('settings')
 protected_require('commands') -- Vimscript used to create commands
 protected_require('plugins')
+protected_require('statusline')
+
 -- At some point I made the plugins/init.lua return a function that received
 -- the protected_require function and use it inside the lazy config calls,
 -- but I think lazy makes it reliable enough that the module will always be
 -- loaded when calling the plugins, so the protected_require was no longer
 -- needed for loading plugins configurations.
 
+-- Meus próprios scritpts
+protected_require('helper-scripts').require_scripts(protected_require)
+
 -- https://www.reddit.com/r/neovim/comments/14ecf5o/semantic_highlights_messing_with_todo_comments/
 -- https://github.com/stsewd/tree-sitter-comment/issues/22
 vim.api.nvim_set_hl(0, '@lsp.type.comment', {})
-
--- Meus próprios scritpts
-protected_require('helper-scripts').require_scripts(protected_require)
 
 if any_require_failed then
   print('---')
