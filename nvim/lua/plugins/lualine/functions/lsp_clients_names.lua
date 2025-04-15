@@ -25,6 +25,9 @@ return function()
   --   buf_clients = vim.lsp.get_active_clients({ bufnr = 0 })
   -- end
 
+  -- get_active_clients is deprecated in neovim 0.11.0,
+  -- should use get_clients
+
   -- local p = require('lsp-progress').progress()
   -- if p == '' then p = 'LSP Off' end
   -- return p
@@ -36,7 +39,7 @@ return function()
   -- pra manter a tela inicial.
   if vim.bo.filetype == '' then return '' end
 
-  local buf_clients = vim.lsp.get_active_clients({ bufnr = 0 })
+  local buf_clients = vim.lsp.get_clients({ bufnr = 0 })
 
   if #buf_clients == 0 then return '' end
 

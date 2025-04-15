@@ -51,28 +51,32 @@ require('lualine').setup({
   extensions = {},
 })
 
+-- TODO After updating to neovim 0.11.0, the gitsigns became bold
+-- and I don't know why and this irritates me A LOT.
+-- Also, it switched the guifg and guibg. Whaaat.
+-- Did the statusline highlight color string change?
 vim.cmd([[
-hi lualine_x_diff_added_command  guifg=#00af00 guibg=#3c474d
-hi lualine_x_diff_added_inactive guifg=#00af00
-hi lualine_x_diff_added_insert   guifg=#00af00
-hi lualine_x_diff_added_normal   guifg=#00af00
-hi lualine_x_diff_added_replace  guifg=#00af00
-hi lualine_x_diff_added_terminal guifg=#00af00
-hi lualine_x_diff_added_visual   guifg=#00af00
+hi lualine_x_diff_added_command     guibg=#00af00 guifg=#3c474d gui=none
+hi lualine_x_diff_added_inactive    guibg=#00af00 gui=none
+hi lualine_x_diff_added_insert      guibg=#00af00 gui=none
+hi lualine_x_diff_added_normal      guibg=#00af00 gui=none
+hi lualine_x_diff_added_replace     guibg=#00af00 gui=none
+hi lualine_x_diff_added_terminal    guibg=#00af00 gui=none
+hi lualine_x_diff_added_visual      guibg=#00af00 gui=none
 
-hi lualine_x_diff_modified_command  guifg=#c39f00 guibg=#3c474d
-hi lualine_x_diff_modified_inactive guifg=#c39f00
-hi lualine_x_diff_modified_insert   guifg=#c39f00
-hi lualine_x_diff_modified_normal   guifg=#c39f00
-hi lualine_x_diff_modified_replace  guifg=#c39f00
-hi lualine_x_diff_modified_terminal guifg=#c39f00
-hi lualine_x_diff_modified_visual   guifg=#c39f00
+hi lualine_x_diff_modified_command  guibg=#c39f00 guifg=#3c474d gui=none
+hi lualine_x_diff_modified_inactive guibg=#c39f00 gui=none
+hi lualine_x_diff_modified_insert   guibg=#c39f00 gui=none
+hi lualine_x_diff_modified_normal   guibg=#c39f00 gui=none
+hi lualine_x_diff_modified_replace  guibg=#c39f00 gui=none
+hi lualine_x_diff_modified_terminal guibg=#c39f00 gui=none
+hi lualine_x_diff_modified_visual   guibg=#c39f00 gui=none
 
-hi lualine_x_diff_removed_command  guifg=#ec2929 guibg=#3c474d
-hi lualine_x_diff_removed_inactive guifg=#ec2929
-hi lualine_x_diff_removed_insert   guifg=#ec2929
-hi lualine_x_diff_removed_normal   guifg=#ec2929
-hi lualine_x_diff_removed_replace  guifg=#ec2929
-hi lualine_x_diff_removed_terminal guifg=#ec2929
-hi lualine_x_diff_removed_visual   guifg=#ec2929
+hi lualine_x_diff_removed_command   guibg=#ec2929 guifg=#3c474d gui=none
+hi lualine_x_diff_removed_inactive  guibg=#ec2929 gui=none
+hi lualine_x_diff_removed_insert    guibg=#ec2929 gui=none
+hi lualine_x_diff_removed_normal    guibg=#ec2929 gui=none
+hi lualine_x_diff_removed_replace   guibg=#ec2929 gui=none
+hi lualine_x_diff_removed_terminal  guibg=#ec2929 gui=none
+hi lualine_x_diff_removed_visual    guibg=#ec2929 gui=none
 ]])
