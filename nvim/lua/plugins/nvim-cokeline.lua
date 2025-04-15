@@ -30,7 +30,7 @@ local colors = {
     visible = '#efefef',
   },
   bg = {
-    active = 'NONE',
+    active = '#292e35',
     inactive = '#2e3436',
     visible = '#6c6c6c',
   },
