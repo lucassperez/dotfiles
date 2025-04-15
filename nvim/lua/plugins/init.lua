@@ -54,8 +54,7 @@ local plugins = {
   },
   -- Without lazy loading
   -----------------------
-  -- Lualine, barbar and catppuccin
-  -- are also not being lazy loaded.
+  -- Catppuccin is also not being lazy loaded.
   'elixir-editors/vim-elixir',
   {
     'kylechui/nvim-surround',
@@ -96,13 +95,6 @@ local plugins = {
     event = 'BufRead',
     config = function()
       require('plugins.gitsigns')
-    end,
-  },
-  {
-    enabled = false,
-    'hoob3rt/lualine.nvim',
-    config = function()
-      require('plugins.lualine')
     end,
   },
   {
