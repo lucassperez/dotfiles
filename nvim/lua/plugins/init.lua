@@ -352,7 +352,7 @@ local plugins = {
   -- Weird, but using lexima for endwise complete and putting new line + indent
   -- when, eg, pressing enter inside parens.
   -- I think nvim-autopairs should be able to do it, but having lexima as well
-  -- is apparently make it buggy
+  -- is apparently making it buggy.
   {
     'cohama/lexima.vim',
     enabled = true,
