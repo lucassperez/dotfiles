@@ -1,3 +1,13 @@
+--[[
+The tsserver changed its name to ts_ls
+But the typescript.nvim plugin still internally uses tsserver, but it is abandoned.
+https://github.com/jose-elias-alvarez/typescript.nvim/issues/80
+But anyways, I can probably live without any custom ts_ls config file.
+To replace typescript.nvim, this also exists: https://github.com/pmizio/typescript-tools.nvim
+Who knows.
+]]
+
+--[[
 -- Typescript Language Server
 
 -- https://jose-elias-alvarez.medium.com/configuring-neovims-lsp-client-for-typescript-development-5789d58ea9c
@@ -15,11 +25,11 @@ local defaults = require('plugins.lsp.defaults')
 local on_attach = function(client, bufnr)
   defaults.keymaps(bufnr)
 
-  local function map(lhs, rhs, command, description)
-    local map_opts = { noremap = true, buffer = bufnr }
-    if description then map_opts.desc = 'LSP: ' .. description end
-    vim.keymap.set(lhs, rhs, command, map_opts)
-  end
+  -- local function map(lhs, rhs, command, description)
+  --   local map_opts = { noremap = true, buffer = bufnr }
+  --   if description then map_opts.desc = 'LSP: ' .. description end
+  --   vim.keymap.set(lhs, rhs, command, map_opts)
+  -- end
 
   vim.keymap.set('n', '\\f', function()
     typescript.actions.addMissingImports()
@@ -73,3 +83,4 @@ end
 return {
   on_attach = on_attach,
 }
+]]
