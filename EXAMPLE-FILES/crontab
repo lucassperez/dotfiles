@@ -1,0 +1,4 @@
+# Todos os dias às 10h, às 20h e ao ligar o pc.
+0 10 * * * /caminho/para/scripts/update-discord.sh -l /caminho/para/update-discord-invocations -m CRON-10-da-manhã
+0 20 * * * /caminho/para/scripts/update-discord.sh -l /caminho/para/update-discord-invocations -m CRON-20-da-noite
+@reboot /caminho/para/scripts/update-discord.sh -l /caminho/para/update-discord-invocations -m CRON-reboot

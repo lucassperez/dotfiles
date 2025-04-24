@@ -1,15 +1,36 @@
 #!/bin/sh
 
-# Esse não funciona porque o comando Discord -v bloqueia!
-# Ele abre o Discord e o script fica travado.
-# discord_ver=`./Discord/Discord -v | sed -n 's/Discord \([0\.]*\)/\1/p'`
-# Pra pegar a versão, to usando jq e o build_info.json.
+while getopts 'h:l:m:' arg; do
+  case "$arg" in
+    h)
+      home="$OPTARG"
+      ;;
+    l)
+      log="$OPTARG"
+      ;;
+    m)
+      message="$OPTARG"
+      ;;
+  esac
+done
+
+if [ -z $home ]; then
+  home="$HOME"
+fi
+
+if [ -n "$log" ]; then
+  echo "=== $(date) ===" >> $log
+  echo "Parâmetros (@): $@" >> $log
+  if [ -n "$message" ]; then
+    echo "$message" >> $log
+  fi
+fi
 
 which jq >/dev/null || exit
 which wget >/dev/null || exit
 
-mkdir -pv "$HOME/sources/discord-tar-balls"
-mkdir -pv "$HOME/.local/bin"
+mkdir -pv "$home/sources/discord-tar-balls"
+mkdir -pv "$home/.local/bin"
 
 add_old_sufix() {
   if [ -e $1 ]; then
@@ -28,13 +49,40 @@ add_old_sufix_tar() {
   fi
 }
 
+### Baixa o discord.
+####################
+
 printf -- '\n=== Downloading discord ===\n\n'
 
-wget 'https://discord.com/api/download?platform=linux&format=tar.gz'
-tar -x -f 'download?platform=linux&format=tar.gz'
+tmp_dir=`mktemp -d "/tmp/discord_$(date '+%N')_XXXXX"`
+tar_file="$tmp_dir/discord.tar.gz"
 
-discord_ver=`jq '.version' ./Discord/resources/build_info.json | tr -d '"'`
-discord_dir="$HOME/sources/discord-tar-balls/discord-$discord_ver"
+wget 'https://discord.com/api/download?platform=linux&format=tar.gz' -O "$tar_file"
+tar -x -f "$tar_file" -C "$tmp_dir"
+
+### Verifica a versão atual com a baixada.
+##########################################
+
+discord_ver=`jq '.version' "$tmp_dir/Discord/resources/build_info.json" | tr -d '"'`
+
+version_file="$home/sources/discord-tar-balls/my_current_discord_version.json"
+current_version=`[ -f $version_file ] && cat $version_file || echo 'empty'`
+
+if [ "$current_version" = "$discord_ver" ]; then
+  printf -- "=== Discord is already on latest version: $discord_ver ===\n"
+  printf -- "=== Removing temporary directory: $tmp_dir ===\n"
+  rm -r $tmp_dir
+  printf -- "=== Exiting ===\n"
+  exit
+fi
+
+### Verifica se já existe um diretório com o nome novo.
+### Com o passo anterior de verificar a versão
+### atual, isso não deveria mais ser necessário,
+### mas eu mantive mesmo assim.
+#######################################################
+
+discord_dir="$home/sources/discord-tar-balls/discord-$discord_ver"
 
 if [ -d "$discord_dir" ]; then
   new_old_dir_name=`add_old_sufix $discord_dir`
@@ -42,25 +90,57 @@ if [ -d "$discord_dir" ]; then
   mv $discord_dir $new_old_dir_name
 fi
 
+### Move o diretório descomprimido, Discord.
+### Tira lá do diretório temporário (/tmp/discord_...)
+### e coloca na home do usuário (discord_dir, ~/sources/discord-tar-balls/...).
+###############################################################################
+
 mkdir $discord_dir
-mv Discord $discord_dir
+mv "$tmp_dir/Discord" "$discord_dir"
 
-if [ -L "$HOME/.local/bin/discord" ]; then
-  printf -- "=== Symlink in $HOME/.local/bin/discord already exists, DELETING it! ===\n"
-  rm "$HOME/.local/bin/discord"
-elif [ -e "$HOME/.local/bin/discord" ]; then
-  new_old_discord_path=`add_old_sufix "$HOME/.local/bin/discord"`
-  printf -- "=== File in $HOME/.local/bin/discord already exists, renaming it to $new_old_discord_path ===\n"
-  mv "$HOME/.local/bin/discord" $new_old_discord_path
+### Cria o symlink, deletando caso ele já exista.
+#################################################
+
+if [ -L "$home/.local/bin/discord" ]; then
+  printf -- "=== Symlink in $home/.local/bin/discord already exists, DELETING it! ===\n"
+  rm "$home/.local/bin/discord"
+elif [ -e "$home/.local/bin/discord" ]; then
+  new_old_discord_path=`add_old_sufix "$home/.local/bin/discord"`
+  printf -- "=== File in $home/.local/bin/discord already exists, renaming it to $new_old_discord_path ===\n"
+  mv "$home/.local/bin/discord" $new_old_discord_path
 fi
 
-printf -- "=== Creating symlink to $HOME/.local/bin/discord ===\n"
-ln -s "$discord_dir/Discord/Discord" "$HOME/.local/bin/discord"
+printf -- "=== Creating symlink to $home/.local/bin/discord ===\n"
+ln -s "$discord_dir/Discord/Discord" "$home/.local/bin/discord"
 
-tar_path="$HOME/sources/discord-tar-balls/discord-$discord_ver.tar.gz"
-if [ -e "$tar_path" ]; then
-  new_old_tar_name=`add_old_sufix_tar $tar_path tar`
-  printf -- "=== File $tar_path already exists, renaming it to $new_old_tar_name ===\n"
-  mv $tar_path $new_old_tar_name
+### Move o arquivo tar que foi baixado.
+### Tira do diretório temporário (/tmp/discord...)
+### e põe na home do usuário também (discord_dir, ~/sources/discord-tar-balls/...).
+###################################################################################
+
+new_tar_path="$home/sources/discord-tar-balls/discord-$discord_ver.tar.gz"
+if [ -e "$new_tar_path" ]; then
+  new_old_tar_name=`add_old_sufix_tar $new_tar_path tar`
+  printf -- "=== File $new_tar_path already exists, renaming it to $new_old_tar_name ===\n"
+  mv $new_tar_path $new_old_tar_name
 fi
-mv 'download?platform=linux&format=tar.gz' $tar_path
+mv $tar_file $new_tar_path
+
+### Remove o diretório temporário.
+### Ele deve estar vazio agora que já foram movidos o
+### diretório descomprimido (Discord) e o tar.
+### Portanto, o rmdir deve funcionar.
+#####################################################
+
+printf -- "=== Removing temporary directory: $tmp_dir\n"
+rmdir "$tmp_dir"
+
+### Cria ou atualiza o arquivo de versão.
+#########################################
+
+if [ -f "$version_file" ]; then
+  printf -- "=== Updating the discord version file: $version_file ===\n"
+else
+  printf -- "=== Creating the discord version file: $version_file ===\n"
+fi
+echo "$discord_ver" > $version_file
