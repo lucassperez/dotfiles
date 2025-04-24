@@ -37,7 +37,7 @@ if echo $first_line | grep -vq "^\[.\+\]\($\| .\+\)"; then
   staged_files=`echo $staged_files | sed 's|awesome|awesomewm|'`
 
   # Join the files with a /
-  tag="[`echo $staged_files | tr ' ' '/'`]"
+  tag="[`echo $staged_files | sort -u | tr ' ' ','`]"
 
   printf "Adicionar automaticamente $tag?\n"
   printf "[Y/n/(i)gnorar] "
