@@ -49,6 +49,18 @@ add_old_sufix_tar() {
   fi
 }
 
+update_version_file() {
+  local version_file=$1
+  local version=$2
+
+  if [ -f "$version_file" ]; then
+    printf -- "=== Updating the discord version file: $version_file ===\n"
+  else
+    printf -- "=== Creating the discord version file: $version_file ===\n"
+  fi
+  echo "{\"version\": \"$version\", \"last_check\": \"$(date '+%Y-%m-%d %H:%M:%S %z')\"}" | jq > $version_file
+}
+
 ### Baixa o discord.
 ####################
 
@@ -66,12 +78,20 @@ tar -x -f "$tar_file" -C "$tmp_dir"
 discord_ver=`jq '.version' "$tmp_dir/Discord/resources/build_info.json" | tr -d '"'`
 
 version_file="$home/sources/discord-tar-balls/my_current_discord_version.json"
-current_version=`[ -f $version_file ] && cat $version_file || echo 'empty'`
+
+if [ -f $version_file ]; then
+  current_version=`jq '.version' $version_file | tr -d '"'`
+else
+  current_version=''
+fi
 
 if [ "$current_version" = "$discord_ver" ]; then
-  printf -- "=== Discord is already on latest version: $discord_ver ===\n"
+  printf -- "=== Discord is already on latest version: $current_version ===\n"
   printf -- "=== Removing temporary directory: $tmp_dir ===\n"
   rm -r $tmp_dir
+
+  update_version_file $version_file $current_version
+
   printf -- "=== Exiting ===\n"
   exit
 fi
@@ -138,9 +158,6 @@ rmdir "$tmp_dir"
 ### Cria ou atualiza o arquivo de versão.
 #########################################
 
-if [ -f "$version_file" ]; then
-  printf -- "=== Updating the discord version file: $version_file ===\n"
-else
-  printf -- "=== Creating the discord version file: $version_file ===\n"
-fi
-echo "$discord_ver" > $version_file
+update_version_file $version_file $discord_ver
+printf -- "=== Exiting ===\n"
+exit
