@@ -32,78 +32,83 @@ local colors = {
   git = {
     added = '#00af00',
     modified = '#c39f00',
-    removed = '#ec2929'
-  }
+    removed = '#ec2929',
+  },
 }
 
-local mode_highlight_group = 'StatusLine_My_Mode_Normal'
-
-local mode_mapping = {
-  ['n'] = 'NORMAL',
-  ['no'] = 'O-PENDING',
-  ['nov'] = 'O-PENDING',
-  ['noV'] = 'O-PENDING',
-  ['no\22'] = 'O-PENDING',
-  ['niI'] = 'NORMAL',
-  ['niR'] = 'NORMAL',
-  ['niV'] = 'NORMAL',
-  ['nt'] = 'NORMAL',
-  ['ntT'] = 'NORMAL',
-  ['v'] = 'VISUAL',
-  ['vs'] = 'VISUAL',
-  ['V'] = 'V-LINE',
-  ['Vs'] = 'V-LINE',
-  ['\22'] = 'V-BLCK',
-  ['\22s'] = 'V-BLCK',
-  ['s'] = 'SELECT',
-  ['S'] = 'S-LINE',
-  ['\19'] = 'S-BLCK',
-  ['i'] = 'INSERT',
-  ['ic'] = 'INSERT',
-  ['ix'] = 'INSERT',
-  ['R'] = 'REPLCE',
-  ['Rc'] = 'REPLCE',
-  ['Rx'] = 'REPLCE',
-  ['Rv'] = 'V-REPLCE',
-  ['Rvc'] = 'V-REPLCE',
-  ['Rvx'] = 'V-REPLCE',
-  ['c'] = 'COMMND',
-  ['cv'] = 'EX',
-  ['ce'] = 'EX',
-  ['r'] = 'REPLCE',
-  ['rm'] = 'MORE',
-  ['r?'] = 'CONFIRM',
-  ['!'] = 'SHELL',
-  ['t'] = 'TERMINAL',
+local mode = {
+  highlight_group = 'StatusLine_My_Mode_Normal',
+  name = 'NORMAL',
+  mapping = {
+    ['n'] = 'NORMAL',
+    ['no'] = 'O-PENDING',
+    ['nov'] = 'O-PENDING',
+    ['noV'] = 'O-PENDING',
+    ['no\22'] = 'O-PENDING',
+    ['niI'] = 'NORMAL',
+    ['niR'] = 'NORMAL',
+    ['niV'] = 'NORMAL',
+    ['nt'] = 'NORMAL',
+    ['ntT'] = 'NORMAL',
+    ['v'] = 'VISUAL',
+    ['vs'] = 'VISUAL',
+    ['V'] = 'V-LINE',
+    ['Vs'] = 'V-LINE',
+    ['\22'] = 'V-BLCK',
+    ['\22s'] = 'V-BLCK',
+    ['s'] = 'SELECT',
+    ['S'] = 'S-LINE',
+    ['\19'] = 'S-BLCK',
+    ['i'] = 'INSERT',
+    ['ic'] = 'INSERT',
+    ['ix'] = 'INSERT',
+    ['R'] = 'REPLCE',
+    ['Rc'] = 'REPLCE',
+    ['Rx'] = 'REPLCE',
+    ['Rv'] = 'V-REPLCE',
+    ['Rvc'] = 'V-REPLCE',
+    ['Rvx'] = 'V-REPLCE',
+    ['c'] = 'COMMND',
+    ['cv'] = 'EX',
+    ['ce'] = 'EX',
+    ['r'] = 'REPLCE',
+    ['rm'] = 'MORE',
+    ['r?'] = 'CONFIRM',
+    ['!'] = 'SHELL',
+    ['t'] = 'TERMINAL',
+  },
 }
 
 --[[
-This function also dynamically changes the value
-of the mode_highlight_group depending on the
+This function dynamically changes the value
+of the mode.highlight_group depending on the
 current vim mode (normal, insert, visual etc)
 ]]
-function M.mode()
+local function set_mode_highlight_group()
   local current_mode = vim.api.nvim_get_mode().mode
 
-  local mode = mode_mapping[current_mode] or current_mode
+  mode.name = mode.mapping[current_mode] or current_mode
+  local m = mode.name
 
-  if mode:find('NORMAL') then
-    mode_highlight_group = 'StatusLine_My_Mode_Normal'
-  elseif mode:find('INSERT') then
-    mode_highlight_group = 'StatusLine_My_Mode_Insert'
-  elseif mode:find('VISUAL') or mode:find('V-') or mode:find('SELECT') or mode:find('S-') then
-    mode_highlight_group = 'StatusLine_My_Mode_Visual'
-  elseif mode:find('COMMND') or mode:find('EX') then
-    mode_highlight_group = 'StatusLine_My_Mode_Command'
-  elseif mode:find('REPLCE') then
-    mode_highlight_group = 'StatusLine_My_Mode_Replace'
-  elseif mode:find('TERMINAL') then
-    mode_highlight_group = 'StatusLine_My_Mode_Terminal'
+  if m == 'NORMAL' then
+    mode.highlight_group = 'StatusLine_My_Mode_Normal'
+  elseif m == 'INSERT' then
+    mode.highlight_group = 'StatusLine_My_Mode_Insert'
+  elseif m == 'VISUAL' or m:find('^V-') or m == 'SELECT' or m:find('^S-') then
+    mode.highlight_group = 'StatusLine_My_Mode_Visual'
+  elseif m == 'COMMND' or mode.name == 'EX' then
+    mode.highlight_group = 'StatusLine_My_Mode_Command'
+  elseif m == 'REPLCE' then
+    mode.highlight_group = 'StatusLine_My_Mode_Replace'
+  elseif m == 'TERMINAL' then
+    mode.highlight_group = 'StatusLine_My_Mode_Terminal'
   else
-    mode_highlight_group = 'StatusLine_My_Mode_Fallback'
+    mode.highlight_group = 'StatusLine_My_Mode_Fallback'
   end
+end
 
-  return string.format('%%#%s# %s %%*', mode_highlight_group, mode)
+function M.mode()
+  return ' ' .. mode.name .. ' '
 end
 
 --[[
@@ -177,14 +182,18 @@ function M.filename()
 end
 
 function M.filetype()
-  return ' ' .. vim.bo.filetype .. ' '
+  local filetype = vim.bo.filetype
+  if filetype == '' then
+    return ''
+  else
+    return ' ' .. vim.bo.filetype .. ' '
+  end
 end
 
 function M.status_line_color_a()
-  -- This uses the mode_highlight_group variable to
+  -- This uses the mode.highlight_group variable to
   -- dynamically change the color depending on the mode.
-  -- This variable is set in the M.mode function.
-  return string.format('%%#%s#', mode_highlight_group)
+  return string.format('%%#%s#', mode.highlight_group)
 end
 
 function M.status_line_color_b()
@@ -206,10 +215,10 @@ function M.render()
     return ' ' .. M.filename() .. '%=' .. M.filetype() .. M.lines()
   end
 
+  set_mode_highlight_group()
+
   return table.concat({
-    -- M.status_line_color_a(),
-    -- I'm setting the mode color inside the M.mode function because
-    -- otherwise, it was updating in weird ways.
+    M.status_line_color_a(),
     M.mode(),
     M.status_line_color_b(),
     M.filename(),
@@ -218,10 +227,10 @@ function M.render()
     M.diagnostic(),
     ' ',
     M.git_diff(),
-    ' ',
     -- Git diff removes the colors at the end to avoid coloring everything
     -- afterwards as, for example, green. So we set the color again.
     M.status_line_color_c(),
+    ' ',
     M.lsp_clients_names(),
     ' ',
     M.status_line_color_b(),
@@ -236,17 +245,17 @@ vim.cmd(string.format('hi StatusLine guifg=%s guibg=%s gui=none', colors.fg, col
 
 vim.cmd(string.format('hi StatusLine_My_Filename guifg=%s guibg=%s gui=none', colors.fg, colors.bg2))
 
-vim.cmd('hi StatusLine_My_GitDiff_Added    guifg=' .. colors.git.added)
-vim.cmd('hi StatusLine_My_GitDiff_Modified guifg=' .. colors.git.modified)
-vim.cmd('hi StatusLine_My_GitDiff_Removed  guifg=' .. colors.git.removed)
+vim.cmd(string.format('hi StatusLine_My_GitDiff_Added    guifg=%s guibg=%s', colors.git.added, colors.bg3))
+vim.cmd(string.format('hi StatusLine_My_GitDiff_Modified guifg=%s guibg=%s', colors.git.modified, colors.bg3))
+vim.cmd(string.format('hi StatusLine_My_GitDiff_Removed  guifg=%s guibg=%s', colors.git.removed, colors.bg3))
 
-vim.cmd(string.format('hi StatusLine_My_Mode_Normal   guibg=%s guifg=%s gui=bold', colors.green, colors.bg1))
-vim.cmd(string.format('hi StatusLine_My_Mode_Visual   guibg=%s guifg=%s gui=bold', colors.red, colors.bg1))
-vim.cmd(string.format('hi StatusLine_My_Mode_Insert   guibg=%s guifg=%s gui=bold', colors.fg, colors.bg1))
-vim.cmd(string.format('hi StatusLine_My_Mode_Command  guibg=%s guifg=%s gui=bold', colors.aqua, colors.bg1))
-vim.cmd(string.format('hi StatusLine_My_Mode_Replace  guibg=%s guifg=%s gui=bold', colors.orange, colors.bg1))
-vim.cmd(string.format('hi StatusLine_My_Mode_Terminal guibg=%s guifg=%s gui=bold', colors.purple, colors.bg1))
-vim.cmd(string.format('hi StatusLine_My_Mode_Fallback guibg=%s guifg=%s gui=bold', colors.preto, colors.branco))
+vim.cmd(string.format('hi StatusLine_My_Mode_Normal   guifg=%s guibg=%s gui=bold', colors.bg1, colors.green))
+vim.cmd(string.format('hi StatusLine_My_Mode_Visual   guifg=%s guibg=%s gui=bold', colors.bg1, colors.red))
+vim.cmd(string.format('hi StatusLine_My_Mode_Insert   guifg=%s guibg=%s gui=bold', colors.bg1, colors.fg))
+vim.cmd(string.format('hi StatusLine_My_Mode_Command  guifg=%s guibg=%s gui=bold', colors.bg1, colors.aqua))
+vim.cmd(string.format('hi StatusLine_My_Mode_Replace  guifg=%s guibg=%s gui=bold', colors.bg1, colors.orange))
+vim.cmd(string.format('hi StatusLine_My_Mode_Terminal guifg=%s guibg=%s gui=bold', colors.bg1, colors.purple))
+vim.cmd(string.format('hi StatusLine_My_Mode_Fallback guifg=%s guibg=%s gui=bold', colors.branco, colors.preto))
 ----------
 
 --- Options
@@ -254,7 +263,7 @@ vim.cmd(string.format('hi StatusLine_My_Mode_Fallback guibg=%s guifg=%s gui=bold
 -- a global status line.
 local inactive_white = true
 if inactive_white then
-  vim.cmd(string.format('hi StatusLineNC guibg=%s guifg=%s gui=none', colors.offwhite, colors.preto))
+  vim.cmd(string.format('hi StatusLineNC guifg=%s guibg=%s gui=none', colors.preto, colors.offwhite))
 else
   vim.cmd('hi clear StatusLineNC')
   vim.cmd('hi link StatusLineNC StatusLine')
