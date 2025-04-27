@@ -92,16 +92,18 @@ local function set_mode_highlight_group()
 
   if m == 'NORMAL' then
     mode.highlight_group = 'StatusLine_My_Mode_Normal'
-  elseif m == 'INSERT' then
-    mode.highlight_group = 'StatusLine_My_Mode_Insert'
-  elseif m == 'VISUAL' or m:find('^V-') or m == 'SELECT' or m:find('^S-') then
-    mode.highlight_group = 'StatusLine_My_Mode_Visual'
   elseif m == 'COMMND' or mode.name == 'EX' then
     mode.highlight_group = 'StatusLine_My_Mode_Command'
+  elseif m == 'INSERT' then
+    mode.highlight_group = 'StatusLine_My_Mode_Insert'
+  elseif m == 'VISUAL' or m:find('^V%-') then
+    mode.highlight_group = 'StatusLine_My_Mode_Visual'
   elseif m == 'REPLCE' then
     mode.highlight_group = 'StatusLine_My_Mode_Replace'
   elseif m == 'TERMINAL' then
     mode.highlight_group = 'StatusLine_My_Mode_Terminal'
+  elseif m == 'SELECT' or m:find('^S%-') then
+    mode.highlight_group = 'StatusLine_My_Mode_Select'
   else
     mode.highlight_group = 'StatusLine_My_Mode_Fallback'
   end
@@ -250,11 +252,12 @@ vim.cmd(string.format('hi StatusLine_My_GitDiff_Modified guifg=%s guibg=%s', col
 vim.cmd(string.format('hi StatusLine_My_GitDiff_Removed  guifg=%s guibg=%s', colors.git.removed, colors.bg3))
 
 vim.cmd(string.format('hi StatusLine_My_Mode_Normal   guifg=%s guibg=%s gui=bold', colors.bg1, colors.green))
-vim.cmd(string.format('hi StatusLine_My_Mode_Visual   guifg=%s guibg=%s gui=bold', colors.bg1, colors.red))
+vim.cmd(string.format('hi StatusLine_My_Mode_Command  guifg=%s guibg=%s gui=bold', colors.bg1, colors.purple))
 vim.cmd(string.format('hi StatusLine_My_Mode_Insert   guifg=%s guibg=%s gui=bold', colors.bg1, colors.fg))
-vim.cmd(string.format('hi StatusLine_My_Mode_Command  guifg=%s guibg=%s gui=bold', colors.bg1, colors.aqua))
+vim.cmd(string.format('hi StatusLine_My_Mode_Visual   guifg=%s guibg=%s gui=bold', colors.bg1, colors.red))
 vim.cmd(string.format('hi StatusLine_My_Mode_Replace  guifg=%s guibg=%s gui=bold', colors.bg1, colors.orange))
-vim.cmd(string.format('hi StatusLine_My_Mode_Terminal guifg=%s guibg=%s gui=bold', colors.bg1, colors.purple))
+vim.cmd(string.format('hi StatusLine_My_Mode_Terminal guifg=%s guibg=%s gui=bold', colors.bg1, colors.aqua))
+vim.cmd(string.format('hi StatusLine_My_Mode_Select   guifg=%s guibg=%s gui=bold', colors.red, colors.bg1))
 vim.cmd(string.format('hi StatusLine_My_Mode_Fallback guifg=%s guibg=%s gui=bold', colors.branco, colors.preto))
 ----------
 
