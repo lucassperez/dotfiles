@@ -52,13 +52,28 @@ add_old_sufix_tar() {
 update_version_file() {
   local version_file=$1
   local version=$2
+  local did_update=$3
+
+  local now_timestamp=`date '+%Y-%m-%d %H:%M:%S %z'`
+  local last_update
 
   if [ -f "$version_file" ]; then
     printf -- "=== Updating the discord version file: $version_file ===\n"
   else
     printf -- "=== Creating the discord version file: $version_file ===\n"
+    touch "$version_file"
   fi
-  echo "{\"version\": \"$version\", \"last_check\": \"$(date '+%Y-%m-%d %H:%M:%S %z')\"}" | jq > $version_file
+
+  if [ -n "$did_update" ]; then
+    last_update="\"$now_timestamp\""
+  else
+    last_update=`[ -f "$version_file" ] && jq -r '.last_update' "$version_file"`
+    if [ "$last_update" != null ]; then
+      last_update="\"$last_update\""
+    fi
+  fi
+
+  echo "{\"version\": \"$version\", \"last_check\": \"$now_timestamp\", \"last_update\": $last_update}" | jq > $version_file
 }
 
 ### Baixa o discord.
@@ -75,12 +90,12 @@ tar -x -f "$tar_file" -C "$tmp_dir"
 ### Verifica a versão atual com a baixada.
 ##########################################
 
-discord_ver=`jq '.version' "$tmp_dir/Discord/resources/build_info.json" | tr -d '"'`
+discord_ver=`jq -r '.version' "$tmp_dir/Discord/resources/build_info.json"`
 
 version_file="$home/sources/discord-tar-balls/my_current_discord_version.json"
 
 if [ -f $version_file ]; then
-  current_version=`jq '.version' $version_file | tr -d '"'`
+  current_version=`jq -r '.version' $version_file`
 else
   current_version=''
 fi
@@ -90,7 +105,7 @@ if [ "$current_version" = "$discord_ver" ]; then
   printf -- "=== Removing temporary directory: $tmp_dir ===\n"
   rm -r $tmp_dir
 
-  update_version_file $version_file $current_version
+  update_version_file "$version_file" "$current_version"
 
   printf -- "=== Exiting ===\n"
   exit
@@ -158,6 +173,6 @@ rmdir "$tmp_dir"
 ### Cria ou atualiza o arquivo de versão.
 #########################################
 
-update_version_file $version_file $discord_ver
+update_version_file "$version_file" "$discord_ver" 'yes'
 printf -- "=== Exiting ===\n"
 exit
