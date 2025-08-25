@@ -42,7 +42,7 @@ git_fetch_checkout() {
   git checkout "$1"
 }
 
-git_branch_delete_remote_if_not_local_with_same_name() {
+git_branch_delete_remote_if_no_local_with_the_same_name() {
   local local_branches=`git branch | tr -d '*'`
   local remote_branches=`git branch -r | grep -v '\<origin/HEAD\>'`
   local i=''
@@ -63,6 +63,7 @@ vimgit() {
   local help
   local unknown_args
   local grep_pattern
+  local diff_branch
 
   while [ "$#" -gt 0 ]; do
     case "$1" in
@@ -103,6 +104,19 @@ vimgit() {
         grep_options=-v
         shift 2
         ;;
+      -b|--branch)
+        if [ -z "$2" ]; then
+          echo 'An argument must be passed to -b or --branch option'
+          return 1
+        fi
+        if `git branch | grep -wq "\<$2\>"`; then
+          diff_branch="$2"
+        else
+          echo "Branch \e[1;31m$2\e[0m not found"
+          return 2
+        fi
+        shift 2
+        ;;
       *)
         unknown_args="$1, $unknown_args"
         shift
@@ -117,6 +131,7 @@ vimgit() {
     echo '    -s  --staged        Only lists files that are staged'
     echo '    -g  --grep          Pass a pattern to grep over the result before opening files in vim'
     echo '    -v -gv -vg --vgrep  Pass a pattern to grep inverse matches (add -v to grep command)'
+    echo '    -b  --branch        Pass a branch name to get the files changed between HEAD and that branch'
     echo 'If both conflict and staged options are passed, staged is ignored.'
     # If unknown_args is not empty but help is, I'm going to both
     # print this help message and open vim. Do I want this?
@@ -134,6 +149,8 @@ vimgit() {
   elif [ -n "$staged" ]; then
     # Easier to use git diff than awk [[:blank:]] or something fancy
     files=`git diff --name-only --staged | awk '{print $1}'`
+  elif [ -n "$diff_branch" ]; then
+    files=`git diff --name-only "$diff_branch" | awk '{print $1}'`
   else
     files=`git status --porcelain | awk '{print $2}'`
   fi
