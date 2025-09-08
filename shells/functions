@@ -143,16 +143,26 @@ vimgit() {
     echo 'Both conflict and staged options passed, using only conflict.'
   fi
 
+  # Git porcelain outputs some text and the beginning of the line.
+  # If it starts with R, it means the file was renamed, and it appears like this:
+  # R old_name -> new_name
+  # If awk finds a line that starts with R, it prints the 4th column, which is the new_name,
+  # so it ignores the old_name and opens the correct new file
+  # If it starts with D, it means it was deleted. Opening it in vimgit just shows an empty
+  # file, so this ignores deleted files as well.
+  # If it starts with anything else, including ?? (new files), it opens them.
+  git_porcelain_awk_command='/^ ?R / { print $4; next} /^ ?D / { next } { print $2 }'
+
   local files
   if [ -n "$conflict" ]; then
-    files=`git status --porcelain | awk '{print $2}' | xargs grep -l '^[<=>]\{7\}'`
+    files=`git status --porcelain | awk "$git_porcelain_awk_command" | xargs grep -l '^[<=>]\{7\}'`
   elif [ -n "$staged" ]; then
     # Easier to use git diff than awk [[:blank:]] or something fancy
     files=`git diff --name-only --staged | awk '{print $1}'`
   elif [ -n "$diff_branch" ]; then
     files=`git diff --name-only "$diff_branch" | awk '{print $1}'`
   else
-    files=`git status --porcelain | awk '{print $2}'`
+    files=`git status --porcelain | awk "$git_porcelain_awk_command"`
   fi
 
   [ -z $files ] && return
