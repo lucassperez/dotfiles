@@ -45,10 +45,19 @@ This allows it to show the battery of devices
 To install ruby, we probably need this first: sudo dnf install openssl1.1 openssl1.1-devel libyaml libyaml-devel
 Libyaml and libyaml-devel is needed for 3.2, don\'t know about others
 
+Fedora 42+:
+https://github.com/rbenv/ruby-build/wiki#fedora-42-and-ruby-31
+https://github.com/rbenv/ruby-build/discussions/2529
+Eu tive esse problema com o ruby 3.1.4 e resolvi assim:
+RUBY_CFLAGS="-std=gnu17" asdf install ruby 3.1.4
+
 When compiling erlang, use KERL_BUILD_DOCS=yes
 
 Maybe xcolor. And to "cargo install" it, it needs xcursor. Install it with the following command:
 `dnf install libXcursor-devel`
+
+# Audio previews are annoying
+sudo chmod -x /usr/libexec/org.gnome.NautilusPreviewer
 
 # === COMMANDS START HERE ===
 
