@@ -45,6 +45,18 @@ This allows it to show the battery of devices
 To install ruby, we probably need this first: sudo dnf install openssl1.1 openssl1.1-devel libyaml libyaml-devel
 Libyaml and libyaml-devel is needed for 3.2, don\'t know about others
 
+Changing Display Manager from GDM to LXDM:
+sudo dnf in lxdm
+!!!Login into TTY!!!
+sudo systemctl stop gdm.service
+sudo systemctl disable gdm.service
+sudo systemctl enable lxdm
+Now maybe reboot, or maybe firsr start it?
+sudo systemctl start lxdm
+Everything should be fine now. Login once selecting
+the "awesome" desktop and from now on it will autoselect
+"awesome" on start! (:
+
 Fedora 42+:
 https://github.com/rbenv/ruby-build/wiki#fedora-42-and-ruby-31
 https://github.com/rbenv/ruby-build/discussions/2529
