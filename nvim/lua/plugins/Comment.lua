@@ -53,6 +53,7 @@ local ft = require('Comment.ft')
 -- ft.set('template', { '<!--%s-->', '<!--%s-->' })
 -- ft.template = { '<!--%s-->', '<!--%s-->' }
 ft.template = { '<!--%s-->', '{{/*%s*/}}' }
+ft.heex = { '<%!-- %s --%>', '<%!-- %s --%>' }
 
 -- This would also be valid:
 -- ft({ 'type1', 'type2', }, { 'line_commentstring', 'block_commentstring', })
