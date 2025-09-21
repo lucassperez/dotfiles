@@ -54,7 +54,7 @@ update_version_file() {
   local version=$2
   local did_update=$3
 
-  local now_timestamp=`date '+%Y-%m-%d %H:%M:%S %z'`
+  local now_timestamp=`date '+%Y-%m-%d, %A %H:%M:%S %z'`
   local last_update
 
   if [ -f "$version_file" ]; then
