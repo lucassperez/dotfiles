@@ -46,3 +46,7 @@ function! SuperFoldToggle()
 endfunction
 nmap <silent> zf :call SuperFoldToggle()<CR>
 ]])
+
+local cd_command_string = ":execute 'cd' getcwd()"
+vim.api.nvim_create_user_command('CD', cd_command_string, {})
+vim.api.nvim_create_user_command('Cd', cd_command_string, {})
