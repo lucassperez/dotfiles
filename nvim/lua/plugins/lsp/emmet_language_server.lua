@@ -6,7 +6,7 @@ return {
     'css',
     'eruby',
     'heex',
-    'elixir',
+    -- 'elixir',
     'eelixir',
     -- 'javascript',
     -- 'javascriptreact',
