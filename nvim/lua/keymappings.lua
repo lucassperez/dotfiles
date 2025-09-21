@@ -10,19 +10,16 @@ vim.g.maplocalleader = ','
 
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
-vim.keymap.set(
-  'n',
-  '<leader>M',
-  ':Inspect<CR>',
-  { desc = 'Mostra informações, como o grupo de destaque (highlight), da coisa/palavra embaixo do cursor usando a funcionalidade padrão Inspect' }
-)
+vim.keymap.set('n', '<leader>M', ':Inspect<CR>', {
+  desc = 'Mostra informações, como o grupo de destaque (highlight), da coisa/palavra embaixo do cursor usando a funcionalidade padrão Inspect',
+})
 
-vim.keymap.set(
-  'n',
-  '<leader>m',
-  ':FloatingInspect<CR>',
-  { desc = 'Mostra o grupo de destaque (highlight) da coisa/palavra embaixo do cursor numa janela flutuante usando minha função customizada FloatingInspect' }
-)
+vim.keymap.set('n', '<leader>m', ':FloatingInspect<CR>', {
+  desc = 'Mostra o grupo de destaque (highlight) da coisa/palavra embaixo do cursor numa janela flutuante usando minha função customizada FloatingInspect',
+})
+
+-- Search only in visual area when in visual mode.
+vim.keymap.set('x', '/', '<Esc>/\\%V') --search within visual selection - this is magic
 
 -- https://vim.fandom.com/wiki/Format_pasted_text_automatically
 -- Some options:
@@ -31,8 +28,8 @@ vim.keymap.set(
 --   p to p=`]
 --   p to p=`]^
 if vim.bo.filetype ~= '' then
-  vim.keymap.set({'n', 'v'}, 'p', 'p=`]^')
-  vim.keymap.set({'n', 'v'}, 'P', 'P=`]^')
+  vim.keymap.set({ 'n', 'v' }, 'p', 'p=`]^')
+  vim.keymap.set({ 'n', 'v' }, 'P', 'P=`]^')
 end
 
 -- Go to command mode without using shift
@@ -133,8 +130,18 @@ vim.keymap.set(
 )
 
 -- Não entrar no insert mode após usar leader + o/O
-vim.keymap.set('n', '<leader>o', 'o<C-c>', { desc = 'Insere linha abaixo, como o, mas saindo do modo de inserção no final' })
-vim.keymap.set('n', '<leader>O', 'O<C-c>', { desc = 'Insere linha acim, como O, mas saindo do modo de inserção no final' })
+vim.keymap.set(
+  'n',
+  '<leader>o',
+  'o<C-c>',
+  { desc = 'Insere linha abaixo, como o, mas saindo do modo de inserção no final' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>O',
+  'O<C-c>',
+  { desc = 'Insere linha acim, como O, mas saindo do modo de inserção no final' }
+)
 
 -- Abrir links no firefox (quebra quando tem # :C)
 -- O plugin nvim-various-textobjects ta fazendo isso já e de forma
@@ -238,7 +245,11 @@ vim.keymap.set('n', '<Esc>', ':noh<CR>', { desc = 'Remove os destaques feitos po
 --- "Snippets" ---
 local snips_path = vim.fn.stdpath('config') .. '/snippets'
 vim.keymap.set('n', ',html', ':read ' .. snips_path .. '/html5<CR>i<Backspace><C-c>6jf>l')
-vim.keymap.set('n', ',rfce', ':read ' .. snips_path .. "/reactfunctcomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>5k")
+vim.keymap.set(
+  'n',
+  ',rfce',
+  ':read ' .. snips_path .. "/reactfunctcomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>5k"
+)
 -- vim.keymap.set('n', ',vue', ':read '..snips_path.."/vuecomp<CR>i<Backspace><C-c>:%s/$1/=expand('%:t:r')/g<CR>0")
 vim.keymap.set('n', ',go', ':read ' .. snips_path .. '/gomain<CR>i<Backspace><C-c>5jS')
 
