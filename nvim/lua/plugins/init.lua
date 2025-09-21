@@ -112,20 +112,22 @@ local plugins = {
     end,
     dependencies = 'nvim-lua/plenary.nvim',
   },
-  -- https://github.com/uga-rosa/ccc.nvim/blob/main/doc/ccc.txt
-  -- Maybe change colorizer for this?
-  -- Or this? https://github.com/brenoprata10/nvim-highlight-colors
   {
-    'NvChad/nvim-colorizer.lua',
-    cmd = {
-      'ColorizerToggle',
-      'ColorizerAttachToBuffer',
-      'ColorizerDetachFromBuffer',
-      'ColorizerReloadAllBuffers',
-    },
-    config = function()
-      require('plugins.nvim-colorizer')
+    'eero-lehtinen/oklch-color-picker.nvim',
+    init = function()
+      vim.api.nvim_create_user_command('ColorHighlightToggle', require('oklch-color-picker').highlight.toggle, {})
     end,
+    config = function()
+      require('oklch-color-picker').setup({
+        highlight = {
+          enabled = false,
+        },
+      })
+    end,
+    keys = {
+      vim.keymap.set('n', '<Leader>C', ':ColorHighlightToggle<CR>'),
+      vim.keymap.set('n', '<Leader>V', ':ColorPickOklch<CR>'),
+    },
   },
 
   -- This is both "color and visuals" and "useful or somewhat useful commands"
