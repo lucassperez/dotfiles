@@ -136,3 +136,9 @@ function RunLastTest()
 
   vim.cmd.VtrSendCommand(test_cache)
 end
+
+function GetTestCache()
+  return P(test_cache)
+end
+
+vim.api.nvim_create_user_command('GetTestCache', GetTestCache, {})
