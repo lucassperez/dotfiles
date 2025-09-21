@@ -49,7 +49,7 @@ vim.opt.listchars = {
   nbsp = '%',
   extends = '»',
   precedes = '«',
-  leadmultispace = '┊' .. string.format('%-' .. (my_shiftwidth - 1) .. 's', ''),
+  leadmultispace = '┊' .. string.format('%-' .. (vim.o.shiftwidth - 1) .. 's', ''),
 }
 vim.opt.textwidth = 0
 -- Eu odeio demais formatoptions "t", "c", "r" e "o" ):<
