@@ -336,6 +336,8 @@ local taglist_buttons = gears.table.join(
     charitable.toggle_tag(t, awful.screen.focused())
   end)
 )
+
+-- Default tags and their default layouts
 local tags = charitable.create_tags({ '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' }, {
   awful.layout.layouts[1],
   awful.layout.layouts[1],
@@ -345,9 +347,10 @@ local tags = charitable.create_tags({ '1', '2', '3', '4', '5', '6', '7', '8', '9
   awful.layout.layouts[1],
   awful.layout.layouts[1],
   awful.layout.layouts[1],
-  awful.layout.suit.tile.bottom,
+  awful.layout.layouts[1],
   awful.layout.layouts[1],
 })
+
 awful.screen.connect_for_each_screen(function(s)
   -- Wallpaper
   set_wallpaper(s)
