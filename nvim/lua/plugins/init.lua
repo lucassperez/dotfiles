@@ -239,8 +239,11 @@ local plugins = {
   ------
   {
     'williamboman/mason.nvim',
-    event = { 'BufRead', 'BufNewFile' },
-    cmd = 'Mason',
+    -- event = { 'BufRead', 'BufNewFile' },
+    -- cmd = 'Mason',
+    -- I wasn't able to lazy load this properly
+    -- with the new nvim 0.11 Lsp/Mason/LspConfig stuff
+    lazy = false,
     config = function()
       require('plugins.lsp')
     end,
@@ -261,9 +264,10 @@ local plugins = {
         config = function()
           require('lazydev').setup({
             library = {
-              -- See the configuration section for more details
-              -- Load luvit types when the `vim.uv` word is found
-              { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+              {
+                path = '${3rd}/luv/library',
+                words = { 'vim%.uv' },
+              },
             },
           })
         end,
