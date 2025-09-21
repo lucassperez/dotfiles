@@ -120,7 +120,7 @@ wanted to avoid coloring what comes afterwards as those colors.
 We could make every component end with %* to clear and start with its own color,
 but I decided to put the colors at the render function.
 ]]
-function M.git_diff()
+function M.git_diff(minimal)
   -- OBS: In neovim 0.11.0, get_hunks works a little different
   -- and sometimes show more hunks than there really are.
   -- )=
@@ -147,6 +147,11 @@ function M.git_diff()
 
   diff_str = diff_str:gsub('%s*$', '')
 
+  if minimal then
+    -- return string.format('%s%%* (%s)', diff_str, #h)
+    return string.format('h: %s %s%%*', #h, diff_str)
+  end
+
   return 'hunks: ' .. #h .. ' diff: ' .. diff_str .. '%*'
 end
 
@@ -167,10 +172,14 @@ function M.lsp_clients_names()
   return s
 end
 
-function M.diagnostic()
+function M.diagnostic(minimal)
   local diagnostics_amount = #(vim.diagnostic.get(0))
 
   if diagnostics_amount == 0 then return '' end
+
+  if minimal then
+    return 'd: '.. diagnostics_amount
+  end
 
   return 'diagnostics: ' .. diagnostics_amount
 end
@@ -219,6 +228,8 @@ function M.render()
 
   set_mode_highlight_group()
 
+  local minimal = true
+
   return table.concat({
     M.status_line_color_a(),
     M.mode(),
@@ -226,9 +237,9 @@ function M.render()
     M.filename(),
     M.status_line_color_c(),
     '%=',
-    M.diagnostic(),
+    M.diagnostic(minimal),
     ' ',
-    M.git_diff(),
+    M.git_diff(minimal),
     -- Git diff removes the colors at the end to avoid coloring everything
     -- afterwards as, for example, green. So we set the color again.
     M.status_line_color_c(),
