@@ -98,14 +98,17 @@ local function setup()
         -- The percentage that the PREVIEW window takes when opening.
         -- These numbers do not reflect the preview window size upon rotation,
         -- only at opening, as far as I could tell.
-        vertical = 'down:45%', -- up|down:size
-        horizontal = 'right:50%', -- right|left:size
+        vertical = 'down:50%', -- up|down:size
+        horizontal = 'right:65%', -- right|left:size
 
         -- Layout horizontal the preview is by the side of the input
         -- Layout vertical the preview is on top/below of the input
         -- Flex apparently it tries horizontal,
         -- but if window is too small, it opens vertical
         layout = 'flex', -- horizontal|vertical|flex
+
+        -- #cols to switch to horizontal on flex
+        flip_columns = 130,
 
         delay = 10, -- delay(ms) displaying the preview, prevents lag on fast scrolling
 
@@ -125,9 +128,14 @@ local function setup()
   " hi link FzfLuaCursorLine Visual
   " hi FzfLuaCursorLine gui=UNDERLINE
   hi FzfLuaCursorLine guibg=#51576d gui=NONE
+
   hi FzfLuaCursor guifg=NONE guibg=NONE gui=BOLD,UNDERLINE
   " hi clear FzfLuaCursor
   " hi link FzfLuaCursor MatchParen
+
+  hi clear FzfLuaNormal
+  hi link FzfLuaNormal Normal
+
   hi clear FzfLuaLivePrompt
   hi link FzfLuaLivePrompt FzfLuaNormal
   ]])
