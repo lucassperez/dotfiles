@@ -1311,6 +1311,7 @@ awful.rules.rules = {
         'Polls', -- all of this is more zoom shitty non sense
         'Breakout Rooms - In Progress',
         'xdg-su: /usr/sbin/yast2',
+        'Oklch Color Picker',
       },
       role = {
         'AlarmWindow', -- Thunderbird's calendar.
@@ -1390,6 +1391,7 @@ awful.rules.rules = {
       },
       name = {
         'Extension: %(Bitwarden %- Free Password Manager%) %- Bitwarden',
+        'Oklch Color Picker',
       },
     },
   },
