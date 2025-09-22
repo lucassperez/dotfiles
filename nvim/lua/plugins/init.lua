@@ -255,7 +255,19 @@ local plugins = {
         -- used this "not not" to cast it to boolean.
         -- enabled = function () return not not os.execute('cargo -v 2>/dev/null 1>&2') end
       },
-      'folke/neodev.nvim',
+      {
+        'folke/lazydev.nvim',
+        ft = 'lua',
+        config = function()
+          require('lazydev').setup({
+            library = {
+              -- See the configuration section for more details
+              -- Load luvit types when the `vim.uv` word is found
+              { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+            },
+          })
+        end,
+      },
       'williamboman/mason-lspconfig.nvim',
       'jose-elias-alvarez/typescript.nvim',
       'neovim/nvim-lspconfig',

@@ -10,7 +10,6 @@ local default_on_attach = defaults.on_attach
 local default_capabilities = defaults.capabilities
 
 require('plugins.fidget')
-require('plugins.neodev')
 require('mason').setup()
 
 local mason_lspconfig = require('mason-lspconfig')
