@@ -397,4 +397,29 @@ youtube_download_audio() {
   yt-dlp --extract-audio "$@"
 }
 
+midi_xev() {
+  aplaymidi -l
+  printf "\n"
+  printf "> Qual porta? "
+  local porta
+  read porta
+
+  if echo "$porta" | grep -qv ":[0-9]\+$"; then
+    porta="$porta:0"
+  fi
+
+  echo ">> USANDO PORTA $porta"
+  printf "\n"
+
+  aseqdump -p "$porta":0 | grep -v Clock
+}
+
+novation_launchkey_midi_xev() {
+  local nome='Launchkey MK4 37 MIDI In'
+  local porta=$(aplaymidi -l | grep 'Launchkey MK4 37 MIDI In' | awk '{print $1}')
+  echo "Nome da porta: $nome"
+  echo "Número da Porta: $porta\n"
+  aseqdump -p "$porta" | grep -v Clock
+}
+
 [ -f "$HOME/.local/functions.local" ] && source "$HOME/.local/functions.local"
