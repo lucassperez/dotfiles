@@ -145,25 +145,41 @@ vimgit() {
 
   # Git porcelain outputs some text and the beginning of the line.
   # If it starts with R, it means the file was renamed, and it appears like this:
-  # R old_name -> new_name
-  # If awk finds a line that starts with R, it prints the 4th column, which is the new_name,
-  # so it ignores the old_name and opens the correct new file
+  #   R old_name -> new_name
+  #   If awk finds a line that starts with R, it prints the 4th column, which is the new_name,
+  #   so it ignores the old_name and opens the correct new file.
   # If it starts with D, it means it was deleted. Opening it in vimgit just shows an empty
-  # file, so this ignores deleted files as well.
-  # If it starts with anything else, including ?? (new files), it opens them.
-  git_porcelain_awk_command='/^ ?R / { print $4; next} /^ ?D / { next } { print $2 }'
+  #   file, so this ignores deleted files as well.
+  # If it starts with ??, it is either a new file or new directory. In this case,
+  #   git status --porcelain would only show the file name if directory already
+  #   exists, and if the directory is new, it would stop in the new directory.
+  #   Opening this in vim would open the directory (eg, Netrw buffer).
+  #   That is why the git ls-files command is added, to get only the new files.
+  #   If there is no ?? file, the git ls-files command returns empty, so we're fine.
+  # If it starts with anything else, it opens them.
+  git_porcelain_awk_command_with_new_files_complement() {
+    local files=`\
+      git status --porcelain | \
+      awk '/^ ?R / { print $4; next} /^ ?D / { next } /^\?\?/ { next } { print $2 }'`
+
+    echo "$files\n$(git ls-files --exclude-standard --others)"
+  }
 
   local files
   if [ -n "$conflict" ]; then
-    files=`git status --porcelain | awk "$git_porcelain_awk_command" | xargs grep -l '^[<=>]\{7\}'`
+    files=`git_porcelain_awk_command_with_new_files_complement | xargs grep -l '^[<=>]\{7\}'`
   elif [ -n "$staged" ]; then
     # Easier to use git diff than awk [[:blank:]] or something fancy
     files=`git diff --name-only --staged | awk '{print $1}'`
   elif [ -n "$diff_branch" ]; then
-    files=`git diff --name-only "$diff_branch" | awk '{print $1}'`
+    # TODO: Lidar com arquivos novos e renomeados aqui também.
+    # Talvez usar git diff --name-status?
+    files=`git diff --name-only "$diff_branch"`
+    files="$files\n$(git ls-files --exclude-standard --others)"
   else
-    files=`git status --porcelain | awk "$git_porcelain_awk_command"`
+    files=`git_porcelain_awk_command_with_new_files_complement`
   fi
+
 
   [ -z $files ] && return
 
