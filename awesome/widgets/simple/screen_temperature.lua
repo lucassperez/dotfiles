@@ -25,6 +25,7 @@ local function draw_widget()
 end
 
 draw_widget()
+
 awful.widget.watch('xsct', 1, function(_, stdout)
   calculate_widget_output(stdout)
 end, widget)
