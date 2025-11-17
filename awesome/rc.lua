@@ -1381,7 +1381,7 @@ awful.rules.rules = {
     properties = { ontop = true },
     rule_any = {
       class = {
-        '[Gg]nome%-mines',
+        '[Mm]ines',
         '[Gg]edit',
         'kate',
         'notes',
