@@ -56,3 +56,5 @@ for _, server_name in pairs(installed_servers) do
 
   vim.lsp.config(server_name, options)
 end
+
+vim.lsp.document_color.enable(false)
