@@ -143,21 +143,11 @@ local plugins = {
   -------------------------------------
   {
     'numToStr/Comment.nvim',
-    keys = {
-      { mode = { 'n', 'v', 'o' }, 'gc', desc = '[Comment] Toggle line comments' },
-      { mode = { 'n', 'v', 'o' }, 'gb', desc = '[Comment] Toggle block comments' },
-      { mode = 'o', 'u' },
-      { mode = 'n', 'yc' },
-      { mode = 'n', 'yC' },
-    },
     config = function()
       require('plugins.Comment')
     end,
     dependencies = {
       'JoosepAlviste/nvim-ts-context-commentstring',
-      -- init = function()
-      --   vim.g.skip_ts_context_commentstring_module = true
-      -- end,
       config = function()
         -- https://github.com/JoosepAlviste/nvim-ts-context-commentstring/issues/82
         require('ts_context_commentstring').setup({ enable_autocmd = false })

@@ -10,7 +10,10 @@ local function commented_lines_textobject()
     ctype = utils.ctype.linewise,
     range = range,
   }
-  local cstr = require('Comment.ft').calculate(ctx) or vim.bo.commentstring
+  -- local ok, cstr = pcall(require('Comment.ft').calculate, ctx)
+  -- cstr = (ok and cstr) or vim.bo.commentstring
+  local cstr = vim.bo.commentstring
+
   local ll, rr = utils.unwrap_cstr(cstr)
   local padding = true
   local is_commented = utils.is_commented(ll, rr, padding)
@@ -45,8 +48,6 @@ vim.keymap.set(
   commented_lines_textobject,
   { silent = true, desc = '[Comment] Textobject for adjacent commented lines' }
 )
-vim.keymap.set('n', 'yc', 'yy<cmd>normal gcc<CR>p')
-vim.keymap.set('n', 'yC', 'yy<cmd>normal gcc<CR>P')
 
 local ft = require('Comment.ft')
 -- filetype and (commentstring or { commentrings })
