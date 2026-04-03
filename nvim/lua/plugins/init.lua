@@ -161,9 +161,9 @@ local plugins = {
     end,
     dependencies = {
       'JoosepAlviste/nvim-ts-context-commentstring',
-      init = function()
-        vim.g.skip_ts_context_commentstring_module = true
-      end,
+      -- init = function()
+      --   vim.g.skip_ts_context_commentstring_module = true
+      -- end,
       config = function()
         -- https://github.com/JoosepAlviste/nvim-ts-context-commentstring/issues/82
         require('ts_context_commentstring').setup({ enable_autocmd = false })
@@ -293,14 +293,21 @@ local plugins = {
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    event = 'FileType',
-    cmd = { 'TSInstall', 'TSUninstall', 'TSInstallInfo', 'TSInstallFromGrammar' },
+    lazy = false,
+    branch = 'main',
     config = function()
       require('plugins.tree-sitter')
     end,
     dependencies = {
-      'JoosepAlviste/nvim-ts-context-commentstring',
-      'nvim-treesitter/nvim-treesitter-textobjects',
+      {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        branch = 'main',
+        init = function ()
+          -- Disable entire built-in ftplugin mappings to avoid conflicts.
+          -- See https://github.com/neovim/neovim/tree/master/runtime/ftplugin for built-in ftplugins.
+          vim.g.no_plugin_maps = true
+        end,
+      },
       {
         'hiphish/rainbow-delimiters.nvim',
         init = function()
