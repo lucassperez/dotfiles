@@ -45,41 +45,8 @@ local opts = {
 }
 
 local plugins = {
-  {
-    'FabijanZulj/blame.nvim',
-    cmd = { 'BlameToggle' },
-    config = function()
-      require('plugins.blame')
-    end,
-  },
-  -- Without lazy loading
-  -----------------------
-  -- Catppuccin is also not being lazy loaded.
-  'elixir-editors/vim-elixir',
-  {
-    'kylechui/nvim-surround',
-    config = function()
-      require('plugins.nvim-surround')
-    end,
-  },
-  {
-    'chrisgrieser/nvim-various-textobjs',
-    config = function()
-      require('plugins.nvim-various-textobjs')
-    end,
-  },
-
-  -- Using mini.ai to fix specifically this
-  -- https://www.reddit.com/r/neovim/comments/13c9ycn/comment/jjfjs1h/?context=3
-  {
-    'echasnovski/mini.ai',
-    version = '*',
-    config = function()
-      require('plugins.mini.ai')
-    end,
-  },
-
   -- Colors and visuals
+  -- Main UI building
   ---------------------
   {
     'catppuccin/nvim',
@@ -112,6 +79,78 @@ local plugins = {
     end,
     dependencies = 'nvim-lua/plenary.nvim',
   },
+  'elixir-editors/vim-elixir',
+
+  -----------------------------------------------
+  -----------------------------------------------
+  -----------------------------------------------
+
+  -- Code editing actions
+  -----------------------
+  {
+    'kylechui/nvim-surround',
+    config = function()
+      require('plugins.nvim-surround')
+    end,
+  },
+  {
+    'chrisgrieser/nvim-various-textobjs',
+    config = function()
+      require('plugins.nvim-various-textobjs')
+    end,
+  },
+  {
+    -- Using mini.ai to fix specifically this
+    -- https://www.reddit.com/r/neovim/comments/13c9ycn/comment/jjfjs1h/?context=3
+    'echasnovski/mini.ai',
+    version = '*',
+    config = function()
+      require('plugins.mini.ai')
+    end,
+  },
+  {
+    'andymass/vim-matchup',
+    event = { 'BufRead', 'BufNew' },
+    init = function()
+      require('plugins.vim-matchup')
+    end,
+  },
+  {
+    'numToStr/Comment.nvim',
+    config = function()
+      require('plugins.Comment')
+    end,
+    dependencies = {
+      'JoosepAlviste/nvim-ts-context-commentstring',
+      config = function()
+        -- https://github.com/JoosepAlviste/nvim-ts-context-commentstring/issues/82
+        require('ts_context_commentstring').setup({ enable_autocmd = false })
+      end,
+    },
+  },
+  {
+    'monaqa/dial.nvim',
+    keys = {
+      { mode = { 'n', 'v' }, '<C-a>', desc = '[Dial] plugin dial C-a' },
+      { mode = { 'n', 'v' }, '<C-x>', desc = '[Dial] plugin dial C-x' },
+      { mode = 'v', 'g<C-a>', desc = '[Dial] plugin dial g-C-a' },
+      { mode = 'v', 'g<C-x>', desc = '[Dial] plugin dial g-C-x' },
+    },
+    config = function()
+      require('plugins.dial')
+    end,
+  },
+
+  -----------------------------------------------
+  -----------------------------------------------
+  -----------------------------------------------
+
+  -- Commands and features
+  ------------------------
+  {
+    'famiu/bufdelete.nvim',
+    keys = require('plugins.bufdelete'),
+  },
   {
     'eero-lehtinen/oklch-color-picker.nvim',
     init = function()
@@ -129,50 +168,16 @@ local plugins = {
       vim.keymap.set('n', '<Leader>V', ':ColorPickOklch<CR>'),
     },
   },
-
-  -- This is both "color and visuals" and "useful or somewhat useful commands"
-  {
-    'andymass/vim-matchup',
-    event = { 'BufRead', 'BufNew' },
-    init = function()
-      require('plugins.vim-matchup')
-    end,
-  },
-
-  -- Useful or somewhat useful commands
-  -------------------------------------
-  {
-    'numToStr/Comment.nvim',
-    config = function()
-      require('plugins.Comment')
-    end,
-    dependencies = {
-      'JoosepAlviste/nvim-ts-context-commentstring',
-      config = function()
-        -- https://github.com/JoosepAlviste/nvim-ts-context-commentstring/issues/82
-        require('ts_context_commentstring').setup({ enable_autocmd = false })
-      end,
-    },
-  },
-  {
-    'famiu/bufdelete.nvim',
-    keys = require('plugins.bufdelete'),
-  },
   {
     'kyazdani42/nvim-tree.lua',
     keys = require('plugins.nvim-tree').keys,
     config = require('plugins.nvim-tree').setup,
   },
   {
-    'monaqa/dial.nvim',
-    keys = {
-      { mode = { 'n', 'v' }, '<C-a>', desc = '[Dial] plugin dial C-a' },
-      { mode = { 'n', 'v' }, '<C-x>', desc = '[Dial] plugin dial C-x' },
-      { mode = 'v', 'g<C-a>', desc = '[Dial] plugin dial g-C-a' },
-      { mode = 'v', 'g<C-x>', desc = '[Dial] plugin dial g-C-x' },
-    },
+    'FabijanZulj/blame.nvim',
+    cmd = { 'BlameToggle' },
     config = function()
-      require('plugins.dial')
+      require('plugins.blame')
     end,
   },
   {
@@ -182,10 +187,9 @@ local plugins = {
     config = require('plugins.diffview').setup,
   },
 
-  -- Clojure things
-  -----------------
-  -- { 'Olical/conjure', ft = { 'clojure' }, },
-  -- { 'guns/vim-sexp', ft = { 'clojure' }, },
+  -----------------------------------------------
+  -----------------------------------------------
+  -----------------------------------------------
 
   -- Tmux related plugins
   -----------------------
@@ -211,6 +215,10 @@ local plugins = {
       'VtrSendCtrlC',
     },
   },
+
+  -----------------------------------------------
+  -----------------------------------------------
+  -----------------------------------------------
 
   -- LSP
   ------
@@ -257,13 +265,9 @@ local plugins = {
     },
   },
 
-  -- Testar esses aqui também, aproveitar que eu já uso o lualine.
-  -- Alternativas para o fidget.
-  -- 'arkav/lualine-lsp-progress',
-  -- 'linrongbin16/lsp-progress.nvim',
-  -- 'jose-elias-alvarez/null-ls.nvim',
-  -- https://github.com/jay-babu/mason-nvim-dap.nvim
-  -- https://github.com/jay-babu/mason-null-ls.nvim
+  -----------------------------------------------
+  -----------------------------------------------
+  -----------------------------------------------
 
   -- TreeSitter
   -------------
@@ -293,6 +297,10 @@ local plugins = {
       },
     },
   },
+
+  -----------------------------------------------
+  -----------------------------------------------
+  -----------------------------------------------
 
   -- Completion and things that write in general
   ----------------------------------------------
@@ -343,12 +351,11 @@ local plugins = {
       },
     },
   },
-
-  -- Weird, but using lexima for endwise complete and putting new line + indent
-  -- when, eg, pressing enter inside parens.
-  -- I think nvim-autopairs should be able to do it, but having lexima as well
-  -- is apparently making it buggy.
   {
+    -- Weird, but using lexima for endwise complete and putting new line + indent
+    -- when, eg, pressing enter inside parens.
+    -- I think nvim-autopairs should be able to do it, but having lexima as well
+    -- is apparently making it buggy.
     'cohama/lexima.vim',
     enabled = true,
     event = 'InsertEnter',
@@ -363,7 +370,6 @@ local plugins = {
       require('plugins.nvim-autopairs')
     end,
   },
-  -- Suddenly close tag does not work with lazy loading anymore... ):
   {
     'alvan/vim-closetag',
     enabled = true,
@@ -376,7 +382,6 @@ local plugins = {
     'windwp/nvim-ts-autotag',
     enabled = false,
     config = function()
-      -- Ensure nvim-ts-autotag is properly set up
       require('nvim-ts-autotag').setup()
     end,
   },
