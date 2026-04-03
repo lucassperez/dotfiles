@@ -69,6 +69,6 @@ protected_require('helper-scripts').require_scripts(protected_require)
 vim.api.nvim_set_hl(0, '@lsp.type.comment', {})
 
 if any_require_failed then
-  print('---')
-  print('Check file ' .. protected_require_log_file_path .. '/nvim-require.log for more information')
+  vim.notify('---', vim.log.levels.ERROR)
+  vim.notify('Check file ' .. protected_require_log_file_path .. '/nvim-require.log for more information', vim.log.levels.ERROR)
 end
