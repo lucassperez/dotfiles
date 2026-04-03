@@ -30,23 +30,6 @@ call SetupCommandAlias('qA',  'qa')
 -- can't setup the 'qA' command, for example,
 -- which has questionable usefulness, but still...
 
-vim.cmd([[
-" https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/after/plugin/folds.vim
-function! SuperFoldToggle()
-    " Force the fold on the current line to immediately open or close.  Unlike za
-    " and zo it only takes one application to open any fold.  Unlike zO it does
-    " not open recursively, it only opens the current fold.
-    if foldclosed('.') == -1
-        silent! foldclose
-    else
-        while foldclosed('.') != -1
-            silent! foldopen
-        endwhile
-    endif
-endfunction
-nmap <silent> zf :call SuperFoldToggle()<CR>
-]])
-
 local cd_command_string = ":execute 'cd' getcwd()"
 vim.api.nvim_create_user_command('CD', cd_command_string, {})
 vim.api.nvim_create_user_command('Cd', cd_command_string, {})
