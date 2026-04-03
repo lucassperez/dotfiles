@@ -116,16 +116,29 @@ local plugins = {
     end,
   },
   {
-    'numToStr/Comment.nvim',
+    'nvim-mini/mini.comment',
+    version = '*',
     config = function()
-      require('plugins.Comment')
+      require('mini.comment').setup({
+        -- Vamos testar com false por um tempo
+        ignore_blank_line = false,
+        mappings = {
+          textobject = 'u',
+        },
+        options = {
+          custom_commentstring = function()
+            return require('ts_context_commentstring').calculate_commentstring() or vim.bo.commentstring
+          end,
+        },
+      })
     end,
     dependencies = {
-      'JoosepAlviste/nvim-ts-context-commentstring',
-      config = function()
-        -- https://github.com/JoosepAlviste/nvim-ts-context-commentstring/issues/82
-        require('ts_context_commentstring').setup({ enable_autocmd = false })
-      end,
+      {
+        'JoosepAlviste/nvim-ts-context-commentstring',
+        config = function()
+          require('ts_context_commentstring').setup({ enable_autocmd = false })
+        end
+      },
     },
   },
   {
