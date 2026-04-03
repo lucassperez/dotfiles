@@ -48,6 +48,7 @@ end
 -- Sobre as cores:
 -- https://icyphox.sh/blog/nvim-lua/
 
+protected_require('intro')
 protected_require('keymappings')
 protected_require('settings')
 protected_require('commands') -- Vimscript used to create commands
