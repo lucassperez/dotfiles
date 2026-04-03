@@ -1,1 +1,1 @@
-/home/lucas/dotfiles/nvim/lua/plugins/telescope.lua
+../../telescope.lua
