@@ -122,11 +122,25 @@ vim.keymap.set({ 'n', 'v', 'o' }, 'H', '^', { desc = 'Vai para o começo da linh
 vim.keymap.set('n', '<leader><Space>', '<C-6>', { desc = 'Abre o último arquivo (:h alternate-file)' })
 
 -- Copiar para o clipboard do sistema o caminho do arquivo
+-- Caminho absoluto
 vim.keymap.set(
   'n',
-  '<leader>f',
+  '<leader>fa',
   ':let @+ = expand("%:p")<CR>',
-  { desc = 'Copia o caminho do arquivo para o clipboard do sistema' }
+  { desc = 'Copia o caminho absoluto do arquivo para o clipboard do sistema' }
+)
+-- Caminho relativo
+vim.keymap.set(
+  'n',
+  '<leader>fr',
+  function ()
+    local pwd = vim.fn.getcwd()
+    local full_path = vim.fn.expand("%:p")
+    local relative_path = string.gsub(full_path, '^' .. pwd .. '/?', '')
+    vim.fn.setreg("+", relative_path)
+    P('Copiado para o clipboard do sistema: ' .. relative_path)
+  end,
+  { desc = 'Copia o caminho relativo do arquivo para o clipboard do sistema' }
 )
 
 -- Não entrar no insert mode após usar leader + o/O
