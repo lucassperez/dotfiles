@@ -141,12 +141,6 @@ local plugins = {
 
   -- Useful or somewhat useful commands
   -------------------------------------
-  -- {
-  --   'mg979/vim-visual-multi',
-  --   lazy = true,
-  --   keys = require('plugins.vim-visual-multi').keys,
-  --   init = require('plugins.vim-visual-multi').init,
-  -- },
   {
     'numToStr/Comment.nvim',
     keys = {
