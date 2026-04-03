@@ -4,21 +4,21 @@ local CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}"
 
 alias bashrc='nvim ~/.bashrc ~/.bash_profile'
 alias awerc="nvim $CONFIG_PATH/awesome/rc.lua"
-alias ktrc="nvim $CONFIG_PATH/kitty/kitty.conf"
-alias i3rc="nvim $CONFIG_PATH/i3/config $CONFIG_PATH/i3/i3blocks.conf"
-alias polrc="nvim $CONFIG_PATH/polybar/config"
-alias xmorc="nvim $CONFIG_PATH/xmonad/xmonad.hs ~/.xmobarrc"
-alias qtlrc="nvim $CONFIG_PATH/qtile/config.py"
-alias lwrc="nvim $CONFIG_PATH/leftwm/config.toml"
-alias hprc="nvim $CONFIG_PATH/hypr/hyprland.conf $CONFIG_PATH/waybar/config $CONFIG_PATH/waybar/style.css"
+
+unset CONFIG_PATH
+
+print_filename_if_it_exists() {
+  [ -f "$1" ] && echo "$1"
+}
 
 zshrc() {
   nvim \
-    $ZDOTDIR/.zshrc \
-    `[ -f "$ZDOTDIR/zshrc.local" ] && echo "$ZDOTDIR/zshrc.local"` \
-    ~/.profile \
-    ~/.zshenv \
-    `[ -f "$ZDOTDIR/zshenv.local" ] && echo "$ZDOTDIR/zshenv.local"` \
+    `print_filename_if_it_exists "$ZDOTDIR/.zshrc"` \
+    `print_filename_if_it_exists "$ZDOTDIR/zshrc.local"` \
+    `print_filename_if_it_exists "~/.profile"` \
+    `print_filename_if_it_exists "$ZDOTDIR/.zprofile"` \
+    `print_filename_if_it_exists ~/.zshenv` \
+    `print_filename_if_it_exists "$ZDOTDIR/zshenv.local"` \
     "$@"
 }
 
@@ -26,10 +26,10 @@ vimrc() {
   local CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}"
 
   nvim \
-    $CONFIG_PATH/nvim/lua/plugins/init.lua \
-    $CONFIG_PATH/nvim/lua/settings.lua \
-    $CONFIG_PATH/nvim/lua/keymappings.lua \
-    $CONFIG_PATH/nvim/init.lua \
+    `print_filename_if_it_exists "$CONFIG_PATH/nvim/lua/plugins/init.lua"` \
+    `print_filename_if_it_exists "$CONFIG_PATH/nvim/lua/settings.lua"` \
+    `print_filename_if_it_exists "$CONFIG_PATH/nvim/lua/keymappings.lua"` \
+    `print_filename_if_it_exists "$CONFIG_PATH/nvim/init.lua"` \
     "$@"
 }
 
@@ -37,39 +37,17 @@ tmuxrc() {
   local CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}"
 
   nvim \
-    $CONFIG_PATH/tmux/tmux.conf \
-    `[ -f "$CONFIG_PATH/tmux/tmux.conf.local" ] && echo "$CONFIG_PATH/tmux/tmux.conf.local"` \
+    `print_filename_if_it_exists "$CONFIG_PATH/tmux/tmux.conf"` \
+    `print_filename_if_it_exists "$CONFIG_PATH/tmux/tmux.conf.local"` \
     "$@"
 }
 
 alrc() {
   local CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}"
 
-  local AL_PATH="$CONFIG_PATH/alacritty"
-
-  if [ -f "$AL_PATH/alacritty.toml" ]; then
-    local alacritty_config="$AL_PATH/alacritty.toml"
-  else
-    local alacritty_config="$AL_PATH/alacritty.yml"
-  fi
-
-  if [ -f "$AL_PATH/base.toml" ]; then
-    local base_config="$AL_PATH/base.toml"
-  else
-    local base_config="$AL_PATH/base.yml"
-  fi
-
-  if [ -f "$AL_PATH/local.toml" ]; then
-    local local_config="$AL_PATH/local.toml"
-  else
-    local local_config="$AL_PATH/local.yml"
-  fi
-
   nvim \
-    $base_config \
-    `[ -f "$local_config" ] && echo "$local_config"` \
-    $alacritty_config \
+    `print_filename_if_it_exists "$CONFIG_PATH/alacritty/base.toml"` \
+    `print_filename_if_it_exists "$CONFIG_PATH/alacritty/local.toml"` \
+    `print_filename_if_it_exists "$CONFIG_PATH/alacritty/alacritty.toml"` \
     "$@"
 }
-
-unset CONFIG_PATH
