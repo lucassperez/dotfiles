@@ -33,3 +33,12 @@ call SetupCommandAlias('qA',  'qa')
 local cd_command_string = ":execute 'cd' getcwd()"
 vim.api.nvim_create_user_command('CD', cd_command_string, {})
 vim.api.nvim_create_user_command('Cd', cd_command_string, {})
+
+-- %s/:\?\(['"a-zA-Z_0-9]*\) *=> *\(:\?'.*'\|:\?".*"\|:\?[a-zA-Z_0-9!?]*\)/\1: \2
+-- Regex I came up with when I was starting with vim.
+-- Transforms the rocket hash to symbol syntax. Works in ruby and elixir. Hopefully.
+-- Maybe I could add this to filetype files or something, but anyways.
+vim.api.nvim_create_user_command('RocketHash', [[%s/:\?\(['"a-zA-Z_0-9]*\) *=> *\(:\?'.*'\|:\?".*"\|:\?[a-zA-Z_0-9!?]*\)/\1: \2]], {})
+
+-- https://til.hashrocket.com/posts/ha0ci0pvkj-format-json-in-vim-with-jq
+vim.api.nvim_create_user_command('JqDocument', [[%!jq]], {})
