@@ -186,13 +186,6 @@ local plugins = {
     end,
   },
   {
-    'mbbill/undotree',
-    cmd = 'UndotreeToggle',
-    init = function()
-      require('plugins.undotree')
-    end,
-  },
-  {
     'sindrets/diffview.nvim',
     cmd = require('plugins.diffview').cmd,
     init = require('plugins.diffview').init,
