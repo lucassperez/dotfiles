@@ -29,7 +29,12 @@ local function protected_require(path)
     vim.notify('Could not require the path `' .. path .. '`', vim.log.levels.ERROR)
 
     -- Print only first line of the error
-    vim.notify('  ' .. string.sub(result, 1, string.find(result, '\n')), vim.log.levels.ERROR)
+    -- vim.notify('  ' .. string.sub(result, 1, string.find(result, '\n')), vim.log.levels.ERROR)
+
+    -- Get first 7 lines
+    local tbl_lines = vim.split(result, '\n')
+    local str_lines = table.concat(vim.list_slice(tbl_lines, 1, 7), '\n')
+    vim.notify(str_lines, vim.log.levels.ERROR)
 
     local file = io.open(protected_require_log_file_path, 'a')
     if file then
