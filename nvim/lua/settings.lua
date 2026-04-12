@@ -76,11 +76,11 @@ vim.opt.undodir = { vim.fn.stdpath('config') .. '/undodir' }
 vim.o.undofile = true -- arquivo para poder dar undo no diretório acima
 vim.opt.complete:remove('i') -- https://medium.com/usevim/set-complete-e76b9f196f0f
 
--- :help vim.highlight.on_yank()
+-- :help vim.hl.on_yank()
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
-    vim.highlight.on_yank({ timeout = 80, higroup = 'HighlightOnYank' })
+    vim.hl.on_yank({ timeout = 80, higroup = 'HighlightOnYank' })
   end,
   group = highlight_group,
   pattern = '*',
