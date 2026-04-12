@@ -263,7 +263,12 @@ local plugins = {
       'jose-elias-alvarez/typescript.nvim',
       'neovim/nvim-lspconfig',
       'hrsh7th/cmp-nvim-lsp',
-      { 'j-hui/fidget.nvim', tag = 'legacy' },
+      {
+        'j-hui/fidget.nvim',
+        config = function ()
+          require('plugins.fidget')
+        end
+      }
     },
   },
 
@@ -279,13 +284,13 @@ local plugins = {
     lazy = false,
     branch = 'main',
     config = function()
-      require('plugins.tree-sitter')
+      require('plugins.nvim-treesitter')
     end,
     dependencies = {
       {
         'nvim-treesitter/nvim-treesitter-textobjects',
         branch = 'main',
-        init = function ()
+        init = function()
           -- Disable entire built-in ftplugin mappings to avoid conflicts.
           -- See https://github.com/neovim/neovim/tree/master/runtime/ftplugin for built-in ftplugins.
           vim.g.no_plugin_maps = true
