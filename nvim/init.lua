@@ -70,10 +70,6 @@ protected_require('statusline')
 -- Meus próprios scritpts
 protected_require('helper-scripts').require_scripts(protected_require)
 
--- https://www.reddit.com/r/neovim/comments/14ecf5o/semantic_highlights_messing_with_todo_comments/
--- https://github.com/stsewd/tree-sitter-comment/issues/22
-vim.api.nvim_set_hl(0, '@lsp.type.comment', {})
-
 if any_require_failed then
   vim.notify('---', vim.log.levels.ERROR)
   vim.notify('Check file ' .. protected_require_log_file_path .. '/nvim-require.log for more information', vim.log.levels.ERROR)

@@ -58,6 +58,10 @@ for _, server_name in pairs(installed_servers) do
 end
 
 vim.lsp.document_color.enable(false)
+-- https://www.reddit.com/r/neovim/comments/14ecf5o/semantic_highlights_messing_with_todo_comments/
+-- https://github.com/stsewd/tree-sitter-comment/issues/22
+vim.api.nvim_set_hl(0, '@lsp.type.comment', {})
+
 vim.diagnostic.config({
   jump = {
     on_jump = function(_, bufnr)
