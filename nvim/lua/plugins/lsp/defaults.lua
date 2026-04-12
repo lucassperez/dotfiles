@@ -1,9 +1,3 @@
--- local function goToDiagnosticAndCenter(direction)
---   local should_center = vim.diagnostic['get_' .. direction]({ wrap = false })
---   vim.diagnostic['goto_' .. direction]({ wrap = false })
---   if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end
--- end
-
 local function default_key_maps(bufnr)
   local function map(lhs, rhs, command, description)
     local map_opts = { noremap = true, buffer = bufnr }
@@ -66,20 +60,15 @@ local function default_key_maps(bufnr)
     end
   end, formatDesc('Mostra diagnósticos', fuzzy_finder.diagnostics))
 
-  -- map('n', '[d', function()
-  --   goToDiagnosticAndCenter('prev')
-  -- end, 'Mostra o próximo diagnóstico do buffer')
-
-  -- map('n', ']d', function()
-  --   goToDiagnosticAndCenter('next')
-  -- end, 'Mostra o diagnóstico anterior do buffer')
-
+  local should_center = false
   map('n', '[d', function()
-    vim.diagnostic.goto_prev({ wrap = false })
+    vim.diagnostic.jump({ count = -vim.v.count1, wrap = false })
+    if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end
   end, 'Mostra o próximo diagnóstico do buffer')
 
   map('n', ']d', function()
-    vim.diagnostic.goto_next({ wrap = false })
+    vim.diagnostic.jump({ count = vim.v.count1, wrap = false })
+    if should_center then vim.api.nvim_feedkeys('zz', 'n', false) end
   end, 'Mostra o diagnóstico anterior do buffer')
 
   map('n', '\\i', function()
@@ -106,7 +95,7 @@ local default_capabilities = vim.lsp.protocol.make_client_capabilities()
 local cmp_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
 if cmp_ok then default_capabilities = cmp_nvim_lsp.default_capabilities(default_capabilities) end
 
--- Some specific servers calll only the keymaps and then override some
+-- Some specific servers call only the keymaps and then override some
 -- keymappings, which is more flexible than calling the default on_attach
 -- function directly.
 return {

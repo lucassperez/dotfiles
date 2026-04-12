@@ -58,3 +58,14 @@ for _, server_name in pairs(installed_servers) do
 end
 
 vim.lsp.document_color.enable(false)
+vim.diagnostic.config({
+  jump = {
+    on_jump = function(_, bufnr)
+      vim.diagnostic.open_float({
+        bufnr = bufnr,
+        scope = 'cursor',
+        focus = false
+      })
+    end
+  }
+})
