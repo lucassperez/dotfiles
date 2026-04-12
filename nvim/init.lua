@@ -58,7 +58,7 @@ protected_require('intro')
 protected_require('keymappings')
 protected_require('settings')
 protected_require('commands')
-protected_require('plugins')
+protected_require('new-plugins')
 protected_require('statusline')
 
 -- At some point I made the plugins/init.lua return a function that received

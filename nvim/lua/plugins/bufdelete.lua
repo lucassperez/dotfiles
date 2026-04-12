@@ -1,20 +1,18 @@
 return {
   {
     mode = 'n',
-    '<leader>d',
-    function()
-      require('bufdelete').bufdelete(0)
-      print(':Bdelete')
-    end,
-    desc = '[Bufdelete] Fecha o buffer atual',
+    lhs = '<leader>d',
+    rhs = ':Bdelete<CR>',
+    opts = {
+      desc = '[Bufdelete] Fecha o buffer atual',
+    },
   },
   {
     mode = 'n',
-    '<A-D>',
-    function()
-      require('bufdelete').bufdelete(0)
-      print(':Bdelete')
-    end,
-    desc = '[Bufdelete] Fecha o buffer atual',
+    lhs = '<A-D>',
+    rhs = ':Bdelete<CR>',
+    opts = {
+      desc = '[Bufdelete] Fecha o buffer atual',
+    },
   },
 }

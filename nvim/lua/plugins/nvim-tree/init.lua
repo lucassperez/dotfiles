@@ -12,21 +12,27 @@
 local keys = {
   {
     mode = 'n',
-    desc = '[NvimTree] Abre nvim-tree',
-    '<C-n>',
-    function()
+    lhs = '<C-n>',
+    rhs = function()
       require('nvim-tree.api').tree.toggle()
     end,
-    { noremap = true, silent = false },
+    opts = {
+      desc = '[NvimTree] Abre nvim-tree',
+      noremap = true,
+      silent = false,
+    },
   },
   {
     mode = 'n',
-    desc = '[NvimTree] Abre nvim-tree com o cursor no arquivo atual',
-    '<leader>n',
-    function()
+    lhs = '<leader>n',
+    rhs = function()
       require('nvim-tree.api').tree.toggle({ find_file = true })
     end,
-    { noremap = true, silent = false },
+    opts = {
+      desc = '[NvimTree] Abre nvim-tree com o cursor no arquivo atual',
+      noremap = true,
+      silent = false,
+    },
   },
 }
 
