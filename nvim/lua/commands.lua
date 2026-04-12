@@ -42,3 +42,12 @@ vim.api.nvim_create_user_command('RocketHash', [[%s/:\?\(['"a-zA-Z_0-9]*\) *=> *
 
 -- https://til.hashrocket.com/posts/ha0ci0pvkj-format-json-in-vim-with-jq
 vim.api.nvim_create_user_command('JqDocument', [[%!jq]], {})
+
+vim.api.nvim_create_user_command('Undotree', function()
+  vim.api.nvim_del_user_command('Undotree')
+  vim.cmd([[
+  packadd nvim.undotree
+  Undotree
+  ]])
+end, {})
+vim.keymap.set('n', '<leader>u', ':Undotree<CR>')
