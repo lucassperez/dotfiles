@@ -1,0 +1,331 @@
+local opts = {
+    max_buffer_name_size = 35,
+    no_name = '[No Name]',
+    modified = '[+]',
+    readonly = '[RO]',
+    ellipsis = '…',
+    directory_separator = package.config:sub(1, 1),
+    colors = {
+        fg = {
+            current = '#efefef',
+            visible = '#efefef',
+            invisible = '#616163',
+            -- tab_counter = '#599eff',
+            -- tab_counter = '#c86c5f',
+            tab_counter = '#789c57',
+            -- tab_counter = '#a7c080',
+        },
+        bg = {
+            current = '#292e35',
+            visible = '#6c6c6c',
+            invisible = '#2e3436',
+            tab_counter = '#292e35',
+        },
+    },
+    visibility_to_hl = {
+        [0] = '%#TablineInvisible#',
+        [1] = '%#TablineVisible#',
+        [2] = '%#TablineCurrent#',
+    }
+}
+
+---------------------
+---- DEFINIÇÕES -----
+---------------------
+
+State
+- current_i - index para buffers
+- current_bufnr
+- buffers - []Buf
+- tab_len - tamanho da informação das tabs (com padding)
+- tab_str - informação das tabs (tipo " 1/2")
+- buf_tree - * (atualização: buf_tree_flattened, uma lista)
+
+---------------------
+
+Buf
+- bufnr - inteiro
+- path - /home/lucas/projetos/blablabla/init.lua
+- modified - bool
+- readonly - bool
+- visibility - 0/1/2 : 0 = invisível / 1 = visível / 2 = current
+---------------------
+
+* buf_tree
+Fazer um algorítmo que transforma (bufnr_1, { 'nvim', 'lua', 'plugins', 'init.lua' })
+em algo assim:
+
+{
+  ['init.lua'] = {
+    plugins = {
+      lua = {
+        nvim = { <bufnr_1> }
+      }
+    }
+  }
+}
+
+E depois se continuar com (bufnr_2, { 'nvim', 'init.lua }) em
+
+{
+  ['init.lua'] = {
+    plugins = {
+      lua = {
+        nvim = { <bufnr_1> }
+      }
+    },
+    nvim = { <bufnr_2> }
+  }
+}
+
+* A buf_tree depois vira buf_tree_flattened, que basicamente é uma lista. Ela é
+criada para cada chave (filename). Vai entrando nas ramificações e quando acha
+uma tabela com uma única chave, é seguro dizer que achou um nome único para
+colocar na tabline. Daí desce até pegar o bufnr e cria de volta uma tabela tipo:
+
+{
+  bufnr_1 = { plugins, init.lua },
+  bufnr_2 = { nvim, init.lua }
+}
+
+Um exemplo pode ser assim:
+{
+  [1] = { 'plugins', 'init.lua', },
+  [2] = { 'nvim', 'init.lua', },
+  [36] = { ... }
+}
+Os índices são os bufnrs (:
+
+---------------------
+Criar uma função que, munida de buf_tree, tab_len, tab_str e buffers, cria o texto pra por na tabline.
+Essa função pode decidir o hl usando o visibility_to_hl.
+Ela deve sempre mostrar o current buffer, pra isso, ela começa aconstruir o texto da tabline a partir
+do current_i. Basta fazer uma iteração circular em buffers começando em current_i.
+Se a soma desse texto for superar vim.o.columns ou algo parecido, ou se voltar para current_i,
+então paramos o laço de execução.
+---------------------
+
+Algoritmo:
+
+Tab:
+----
+local current_tab = vim.fn.tabpagenr()
+local total_tabs = vim.fn.tabpagenr('$')
+local tabs_str = string.format(' %s/%s ', current_tab, total_tabs)
+state.tab_str = tabs_str
+state.tab_len = vim.fn.strdisplaywidth(tabs_str)
+
+Buf:
+----
+---------------------
+ESTÁGIO 1: PREPARAÇÃO
+---------------------
+Pega todos os bufnrs { 1, 2, 4, 10 } -- local lista_bufnrs = vim.api.nvim_list_bufs()
+Pega os visíveis?
+
+local visible = {}
+for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+  local buf = vim.api.nvim_win_get_buf(win)
+  visible[buf] = true
+end
+
+ESTÁGIO 2: Construir []Buf?
+---------------------------
+for _, bufnr in pairs(lista_bufnrs) do
+  build_buf_obj(bufnr, visible)
+end
+
+function build_buf_obj(bufnr, visible)
+  local buf = {
+    bufnr = bufnr,
+    path = vim.api.nvim_buf_get_name(0),
+    modified = vim.bo[bufnr].modified,
+    readonly = vim.bo[bufnr].readonly,
+  }
+  if bufnr == state.current_bufnr then
+    buf.visibility = 2
+  else
+    buf.visibility = 0 -- invisible
+    for _, visible_bufnr in ipairs(visible) do
+      if visible_bufnr == bufnr then
+        buf.visibility = 1
+        break
+      end
+    end
+  end
+end
+
+-----------------------------
+ESTÁGIO 3: Construir buf_tree
+-----------------------------
+
+Mistério
+Atualização:
+
+1. Separa o caminho. Exemplo: nvim/lua/plugins/init.lua -> { nvim, lua, plugins, init.lua }
+2. Itera de trás pra frente (primeiro init.lua, depois plugins, depois lua, depois nvim)
+  - Pra cada chave, verifica se já tem buf_tree[chave]
+    - Se sim, é porque é um arquivo com nome repetido (exemplo: dois init.lua em diretórios separados)
+      - Nesse caso, só segue a recursão, porque isso significa que já tem chave = { ... }
+    - Se não, é a primeira vez que acha um arquivo com esse nome
+      - Coloca tabela vazia {}
+3. Faz isso para todos os paths de todos os buffers
+Isso vai gerar algo assim:
+
+{
+  ['init.lua'] = {
+    plugins = {
+      lua = {
+        nvim = { <bufnr_1> }
+      }
+    },
+    nvim = { <bufnr_2> }
+  }
+}
+
+--------------------------------
+ESTÁGIO 4: Fazer os nomes únicos
+--------------------------------
+
+{
+  ['init.lua'] = {
+    plugins = {
+      lua = {
+        nvim = { <bufnr_1> }
+      }
+    },
+    nvim = { <bufnr_2> }
+  }
+}
+
+!!!
+MEGA IMPORTANTE
+!!!
+  Pra cada chave (nó/galho da árvore), se o seu valor tiver tamanho 1  ou 0, o
+  caminho percorrido até aqui
+        >> JÁ É O SUFICIENTE PARA IDENTIFICAR UM NOME ÚNICO PRO ARQUIVO! <<
+!!!
+MEGA IMPORTANTE
+!!!
+
+OBS: Em lua, #tabela retorna a quantidade de elementos POSICIONAIS (como se fosse array).
+     A gente quer saber quantas CHAVES a tabela tem. Nesse caso, o operador # não vai funcionar.
+     Opções:
+       - Calcular as chaves de uma tabela e ver o tamanho
+         - Conseguimos guardar todas as chaves se isso for interessante para depois
+         - Alocações possivelmente desnecessárias, visto que normalmente os
+           arquivos já têm nomes únicos
+       - Iterar pela tabela e parar na segunda volta
+         - Nenhuma alocação de tabela, no máximo um inteiro/booleano, nos casos
+           mais comuns
+         - No caso de que realmente o nó têm mais de um filho, vamos ter que
+           iterar de qualquer jeito pela tabela
+Eu optei pela segunda opção para evitar alocação de memória nos casos mais comuns.
+
+No caso de achar um nó com apenas 1 filho, graças à propriedade MEGA IMPORTANTE
+citada acima, podemos simplesmente parar de coletar os caminhos e seguir
+recurisvamente até o final do galho, até chegar na última folha (leaf), que é
+uma tabela sem nenhuma chave mas com um valor POSICIONAL na primeira posição,
+que em lua é o índice 1. Esse valor é o bufnr do buffer que tem esse nome como o
+seu nome único de arquivo.
+
+Depois, fazemos o flat dessa buf_tree com esses caminhos unicamente
+identificáveis e seus bufnrs, assim:
+
+{
+  [bufnr_1] = <nome único 1>,
+  [bufnr_2] = <nome único 2>,
+  [bufnr_3] = <nome único 3>,
+}
+
+OBS: Usar lógica de truncamento do nome aqui.
+
+Perceba que em lua, quando os índices são inteiros sequenciais começando em 1,
+essa tabela "é um array". O que isso pode gerar é que caso tenhamos bufnrs
+começando em 1, ao fazer um print dessa tabela, ela pode aparecer como um array,
+causando confusão.
+
+Exemplo:
+
+{
+  [1] = 'nvim/init.lua',
+  [2] = 'keymappings.lua',
+  [10] = 'plugins/init.lua',
+}
+
+Ao fazer o print disso, podemos ver:
+
+{ [1] = 'nvim/init.lua', [2] = 'keymappings.lua', [10] = 'plugins/init.lua' }
+{ 'nvim/init.lua', 'keymappings.lua', [10] = 'plugins/init.lua' }
+
+Causando estranhamento. Mas lua é assim mesmo.
+E pior ainda, caso todos os bufnr estejam em sequência e começando do 1, podemos
+ver isso:
+
+{
+  [1] = 'nvim/init.lua',
+  [2] = 'keymappings.lua',
+  [3] = 'plugins/init.lua',
+}
+
+print(vim.inspect(t))
+
+{ 'nvim/init.lua', 'keymappings.lua', 'plugins/init.lua', }
+
+--------------------------
+ESTÁGIO 5: Fazer a tabline
+--------------------------
+
+A ideia geral é calcular uma janela visível, quais índices começamos e
+terminamos de iterar sobre state.buffers para mostrar. Pode ser que não caibam
+todos os buffers, então essa janela se torna bastante útil.
+
+A ideia também é manter o buffer atual centralizado, a menos que estejamos perto
+do primeiro ou último buffer.
+
+Quando chegamos no primeiro ou último buffer, não damos a volta na hora de
+mostrar a tabline, mas um :Bufnext ou :Bufprevious deve sim dar a volta.
+
+A implementacão foi feita assim:
+
+Para cada state.buffer, é calculado um "entry".
+Inicialmente eu não gostei muito dessa ideia, porque os buffers já são uma
+estrutura organizada com as informações necessárias para o render. Mas eu refiz
+as estruturas num novo formato para mais clareza. Provavelmente é possível
+remover isso, mas seguimos. Um entry tem o seguinte formato:
+
+{
+  path = //o caminho calculado pela buf_tree (e buf_tree_flattened)
+  hl = //o highlight group a ser usado. Depende da visibilidade (atual, visível, invisível)
+  width = //o tamanho que essa entry gasta na tabline
+  bufnr = //o seu bufnr
+}
+
+Munido da lista de entries, calcula-se a janela visível: start_i e end_i.
+Estes são inteiros, índices onde devemos buscar buffers em state.buffers/entries
+para mostrar.
+A ordem das entries é a mesma de state.buffers. Dessa forma, ao reordenar o
+state.buffers, reordenaremos as entries.
+
+É feita uma tentativa de manter o current_i mais ou menos centralizado dentro
+dessa janela.
+
+Esses índices são calculados de forma a tentar preencher toda a tabline mas não
+passar o tamanho total dela, levando em conta o tamanho do nome do arquivo,
+incluindo modificadores (readonly, modified) e um padding.
+Esse padding hoje está hardcoded na função renderer.render_window. No final há
+algo assim: string.format(... %s ...), que vira o entry.path.
+Eu odiei hard codar o padding, mas como é um código usado por mim, e não um
+plugin, eu deixei assim. Não tenho a flexibilidade de um nvim-cokeline, por
+exemplo, que é maravilhoso.
+
+Então iteramos pelos entries visíveis (de start_i até end_i), truncamos nomes
+muito grandes e renderizamos.
+
+Existem dois tipos de truncamentos:
+1. Nome do arquivo muito grande (opts.max_buffer_name_size)
+2. Nome não caberia na tabline
+
+Para o segundo tipo, não truncamos o buffer atual.
+Truncamos somente nas pontas também.
+

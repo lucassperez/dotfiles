@@ -1,5 +1,3 @@
-local pw = require('pack_wrap')
-
 local fuzzy_finder = require('plugins.FUZZY_FINDER')
 
 local function r(path)
@@ -8,7 +6,7 @@ local function r(path)
   end
 end
 
-pw.prepare({
+require('pack_wrap').call({
   -- Colors and visuals
   -- Main UI building
   ---------------------
@@ -22,6 +20,7 @@ pw.prepare({
     r('plugins.gitsigns'),
   },
   {
+    disable = true,
     'lucassperez/nvim-cokeline',
     r('plugins.nvim-cokeline'),
     dependencies = { 'nvim-lua/plenary.nvim' },
