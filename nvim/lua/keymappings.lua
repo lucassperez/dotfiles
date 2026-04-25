@@ -27,18 +27,16 @@ vim.keymap.set('x', '/', '<Esc>/\\%V') --search within visual selection - this i
 --   p to ]p
 --   p to p=`]
 --   p to p=`]^
-if vim.bo.filetype ~= '' then
-  vim.keymap.set({ 'n', 'v' }, 'p', 'p=`]^')
-  vim.keymap.set({ 'n', 'v' }, 'P', 'P=`]^')
-end
+vim.keymap.set({ 'n', 'v' }, 'p', 'p=`]^')
+vim.keymap.set({ 'n', 'v' }, 'P', 'P=`]^')
+
 
 -- Go to command mode without using shift
-vim.keymap.set({ 'n', 'v' }, ';', ':')
+-- vim.keymap.set({ 'n', 'v' }, ';', ':')
 
 -- Map some commands do not copy empty line to register.
 -- Also does not copy line made of only whitespaces.
 -- Do I really want this? :thinking:
-
 local function mapWhitespaceLine(command)
   -- TODO find a way to make this work in visual mode.
   -- How to get selection area?
@@ -86,6 +84,9 @@ vim.keymap.set('n', 'q:', '<Nop>')
 -- of insert mode, which did not happen with Esc.
 -- This probably happens because C-c don't fire the InsertLeave event. Here we
 --  map it to <Esc> for it to start firing this event.
+-- Also, when V-Block selecting and adding text, exiting Insert Mode with Esc
+-- writes that to all lines selected, but with standard C-c it doesn't.
+-- This keymap also makes it happen with C-c.
 vim.keymap.set('i', '<C-c>', '<Esc>')
 
 -- Novos paineis (horizontal e vertical) e fechar o atual
@@ -306,13 +307,3 @@ vim.keymap.set('n', '<leader>=', ':wincmd =<CR>', { desc = 'Deixa todas as janel
 vim.keymap.set('n', '<leader>e', function()
   TestAndFile.toggle()
 end, { silent = true, desc = 'Tenta alternar entre um arquivo e o seu teste' })
-
-function RELOAD()
-  local config_path = vim.fn.stdpath('config')
-  vim.cmd(':so ' .. config_path .. '/init.lua')
-  vim.cmd(':luafile ' .. config_path .. '/lua/keymappings.lua')
-  vim.cmd(':luafile ' .. config_path .. '/lua/settings.lua')
-  print('REALOAD(): Sourcing init.vim, lua/keymappings.lua and lua/settings.lua')
-end
-
-vim.keymap.set('n', '<leader>zl', RELOAD, { desc = 'Recarrega as configs, keymappings e tudo mais do nvim' })

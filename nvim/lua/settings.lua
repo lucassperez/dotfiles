@@ -8,8 +8,12 @@ vim.o.expandtab = true -- tab com espaços
 
 vim.o.ignorecase = true -- busca case insensitive
 vim.o.smartcase = true -- busca case sensitive SSE tiver pelo menos uma letra maiúscula
-vim.o.scrolloff = 1 -- sempre mostra pelo menos uma linha abaixo e acima do cursor
-vim.o.sidescrolloff = 3 -- sempre mostra pelo menos três colunas à direita e à esquerda do cursor
+
+-- vim.o.scrolloff = 1 -- sempre mostra pelo menos uma linha abaixo e acima do cursor
+-- vim.o.sidescrolloff = 3 -- sempre mostra pelo menos três colunas à direita e à esquerda do cursor
+vim.o.scrolloff = 25 -- sempre mostra pelo menos uma linha abaixo e acima do cursor
+vim.o.sidescrolloff = 15 -- sempre mostra pelo menos quinze colunas à direita e à esquerda do cursor
+
 vim.o.lazyredraw = true -- espera o macro acabar pra redesenhar a tela ao invés de ir redesenhando enquanto executa o macro
 vim.o.mouse = 'a' -- habilita o mouse (a significa all). Sacrilégio!
 vim.o.showmode = false -- não mostra o modo na linha de comando. Posso fazer isso com a statusline se eu quiser
