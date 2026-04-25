@@ -1,55 +1,18 @@
 --[[
 Eu ia chamar de Pack Wrapper,
 mas PackWrap soa mt bem kkj
-
-PackWrap funciona com 2 fases, Preparação e Execução.
-
-Preparação:
-- Normaliza os specs para o formato do vim.pack
-- Recursivamente faz o flat quando um plugin adiciona a chave dependencies
-- Separa em before/after
-
-Execução:
-- Cria os autocommands para os hooks
-- Execute os callbacks before
-- vim.pack.add() todos os plugins
-- Executa os callbacks after
 ]]
 
 local function blank_state()
   return {
+    loaded = {},
     resolved = {},
     seen = {},
     visiting = {},
-    buckets = {
-      plugins = {},
-      -- O before é para plugins com init
-      before = {},
-      -- O config é para plugins com config
-      after = {},
-      hooks = {},
-    },
   }
 end
 
-local state = blank_state()
-
-local function normalize_hook(plugin)
-  local hook_type = type(plugin.hook)
-
-  if hook_type == 'function' then
-    plugin.hook = {
-      kinds = { 'install', 'update' },
-      callback = plugin.hook,
-    }
-  elseif hook_type == 'table' then
-    if plugin.hook.kinds == nil then
-      plugin.hook.kinds = { 'install', 'update' }
-    elseif type(plugin.hook.kinds) == 'string' then
-      plugin.hook.kinds = { plugin.hook.kinds }
-    end
-  end
-end
+local state
 
 local function assume_github_if_not_specified(src)
   if src == nil then
@@ -63,165 +26,236 @@ local function assume_github_if_not_specified(src)
   return 'https://github.com/' .. src
 end
 
-local function normalize(plugin)
-  if type(plugin) == 'string' then
-    plugin = { src = plugin }
+local function normalized_hook(plugin)
+  if not plugin.hook then return nil end
+
+  if type(plugin.hook) == 'function' then
+    return {
+      kind = { 'install', 'update' },
+      callback = plugin.hook,
+    }
   end
 
-  if plugin[1] then
-    if plugin.src == nil and type(plugin[1]) == 'string' then
-      plugin.src = plugin[1]
+  if type(plugin.hook.callback) == 'string' then
+    plugin.hook.callback = function()
+      vim.cmd(plugin.hook.callback)
     end
-    plugin[1] = nil
   end
 
-  plugin.src = assume_github_if_not_specified(plugin.src)
+  if type(plugin.hook.callback) ~= 'function' then
+    vim.notify('pack_wrap#normalized_hook: Plugin must provide a function as hook callback: ' .. plugin.name, vim.log.levels.ERROR)
+    vim.notify('pack_wrap#normalized_hook: Skipping', vim.log.levels.ERROR)
+    return nil
+  end
 
-  if not plugin.src then
+  local h = {
+    kind = nil,
+    callback = plugin.callback
+  }
+
+  if plugin.kind == nil then
+    h.kind = { 'install', 'update' }
+  elseif type(plugin.kind) == 'string' then
+    h.kind = { plugin.kind }
+  end
+
+  return h
+end
+
+local function normalized(plugin)
+  local src
+
+  if type(plugin) == 'string' then
+    src = plugin
+  else
+    src = plugin.src or plugin[1]
+  end
+
+  src = assume_github_if_not_specified(src)
+
+  if not src then
     error('pack_wrap#normalize: Plugin spec não possui src: ' .. vim.inspect(plugin))
   end
 
-  if plugin[2] then
-    if type(plugin[2]) == 'function' then
-      if plugin.after == nil then
-        plugin.after = plugin[2]
-      end
-    else
-      error('pack_wrap#normalize: O segundo item posicional deve ser uma função: ' .. vim.inspect(plugin))
-    end
-    plugin[2] = nil
-  end
+  local name = plugin.name or string.match(src, '[^/]+$')
 
-  if plugin.name == nil then
-    plugin.name = string.match(plugin.src, '[^/]+$')
-  end
-
-  if not plugin.name or plugin.name == '' then
+  if not name or name == '' then
     error('pack_wrap#normalize: Plugin spec não possui name: ' .. vim.inspect(plugin))
   end
 
-  if plugin.dependencies == nil then
-    plugin.dependencies = {}
+  local version = plugin.version
+  local after = plugin.after or plugin[2]
+  local before = plugin.before
+  local dependencies = vim.deepcopy(plugin.dependencies) or {}
+  local hook = normalized_hook(plugin)
+  local filetype = plugin.filetype
+
+  if type(filetype) == 'string' then
+    filetype = { filetype }
   end
 
-  if plugin.hook then
-    normalize_hook(plugin)
-  end
+  return {
+    name = name,
+    src = src,
+    version = version,
+    dependencies = dependencies,
+    before = before,
+    after = after,
+    hook = hook,
+    filetype = filetype
+  }
+end
 
-  return plugin
+local function make_resolved(plugin)
+  return {
+    name = plugin.name,
+    src = plugin.src,
+    version = plugin.version,
+    data = {
+      before = plugin.before,
+      after = plugin.after,
+      hook = plugin.hook,
+      filetype = plugin.filetype,
+    }
+  }
 end
 
 local function resolve(plugin)
-  plugin = normalize(plugin)
-
-  if state.seen[plugin.src] then
+  if plugin.disable then
     return
   end
 
-  if state.visiting[plugin.src] then
-    error('pack_wrap#resolve: Dependência cíclica detectada: ' .. plugin.name)
+  local normalized_plugin = normalized(plugin)
+
+  if state.seen[normalized_plugin.name] then
+    error(string.format('pack_wrap#resolve: Plugin\'s com o mesmo nome detectados: %s', normalized_plugin.name))
   end
 
-  state.visiting[plugin.src] = true
-  state.seen[plugin.src] = true
+  if state.visiting[normalized_plugin.name] then
+    error('pack_wrap#resolve: Dependência cíclica detectada: ' .. normalized_plugin.name)
+  end
 
-  for _, dep in ipairs(plugin.dependencies) do
+  state.visiting[normalized_plugin.name] = true
+  state.seen[normalized_plugin.name] = true
+
+  for _, dep in ipairs(normalized_plugin.dependencies) do
+    -- TODO Decide what to do when parent has filetype, but child does not
     resolve(dep)
   end
 
-  state.visiting[plugin.src] = nil
+  state.visiting[normalized_plugin.name] = nil
 
-  table.insert(state.resolved, plugin)
-end
-
-local function bucketize()
-  for _, plugin in ipairs(state.resolved) do
-    local pack_spec = {
-      src = plugin.src,
-      name = plugin.name,
-      version = plugin.version
-    }
-
-    table.insert(state.buckets.plugins, pack_spec)
-
-    if plugin.before then
-      table.insert(state.buckets.before, plugin.before)
-    end
-
-    if plugin.after then
-      table.insert(state.buckets.after, plugin.after)
-    end
-
-    if plugin.hook then
-      table.insert(state.buckets.hooks, {
-        plugin = pack_spec,
-        hook = plugin.hook,
-      })
-    end
-  end
+  table.insert(state.resolved, make_resolved(normalized_plugin))
 end
 
 local function register_hooks_auto_commands()
-  for _, item in ipairs(state.buckets.hooks) do
-    vim.api.nvim_create_autocmd('PackChanged', {
-      once = true,
-      callback = function(ev)
-        local name, kind = ev.data.spec.name, ev.data.kind
+  vim.api.nvim_create_autocmd('PackChanged', {
+    group = vim.api.nvim_create_augroup('PackWrapChanged', { clear = true }),
+    callback = function(ev)
+      local plugin = ev.data.spec
 
-        if name ~= item.plugin.name then
+      if plugin.data == nil or plugin.data.hook == nil then
+        return
+      end
+
+      local event_kind = ev.data.kind
+
+      local matches = false
+      for _, k in ipairs(plugin.data.hook.kind) do
+        if k == event_kind then
+          matches = true
+          break
+        end
+      end
+
+      if not matches then
+        return
+      end
+
+      if not ev.data.active then
+        vim.cmd.packadd(plugin.name)
+      end
+
+      if plugin.data.hook.callback then
+        plugin.data.hook.callback(ev)
+      end
+    end
+  })
+end
+
+local function register_filetype_autocmds(ft_plugins)
+  for _, plugin in ipairs(ft_plugins) do
+    -- TODO think about registering one autocmd per filetype instead
+    -- of one autocmd per plugin?
+    vim.api.nvim_create_autocmd('FileType', {
+      group = vim.api.nvim_create_augroup('PackWrapFt', { clear = true }),
+      pattern = plugin.data.filetype,
+      -- once = true,
+      callback = function()
+        if state.loaded[plugin.name] then
           return
         end
 
-        local matches
-        for _, k in ipairs(item.hook.kinds) do
-          if k == kind then
-            matches = true
-            break
-          end
-        end
+        state.loaded[plugin.name] = true
 
-        if not matches then
-          return
-        end
-
-        if not ev.data.active then
-          vim.cmd.packadd(item.plugin.name)
-        end
-
-        if item.hook.callback then
-          item.hook.callback(ev)
-        end
+        if plugin.data.before then plugin.data.before() end
+        vim.cmd.packadd(plugin.name)
+        if plugin.data.after then plugin.data.after() end
       end
     })
   end
 end
 
-local function prepare(list)
-  state = blank_state()
+local function execute()
+  local before = {}
+  local after = {}
+  local ft_plugins = {}
+  local eager = {}
 
+  for _, plugin in ipairs(state.resolved) do
+    if plugin.data.filetype then
+      table.insert(ft_plugins, plugin)
+    else
+      table.insert(eager, plugin)
+
+      if plugin.data.before then
+        table.insert(before, plugin.data.before)
+      end
+      if plugin.data.after then
+        table.insert(after, plugin.data.after)
+      end
+    end
+  end
+
+  register_hooks_auto_commands()
+  register_filetype_autocmds(ft_plugins)
+
+  for _, callback in ipairs(before) do
+    callback()
+  end
+
+  vim.pack.add(state.resolved, { load = false })
+
+  for _, plugin in ipairs(eager) do
+    state.loaded[plugin.name] = true
+  end
+
+  for _, callback in ipairs(after) do
+    callback()
+  end
+
+  return state
+end
+
+local function call(list)
+  state = blank_state()
   for _, plugin in ipairs(list) do
     resolve(plugin)
   end
-
-  bucketize()
-end
-
-local function execute()
-  register_hooks_auto_commands()
-
-  for _, callback in ipairs(state.buckets.before) do
-    callback()
-  end
-
-  vim.pack.add(state.buckets.plugins)
-
-  for _, callback in ipairs(state.buckets.after) do
-    callback()
-  end
+  execute()
+  require('pack_wrap.user_commands').create(state.loaded)
 end
 
 return {
-  prepare = prepare,
-  execute = execute,
-  create_user_commands = require('pack_wrap.user_commands'),
+  call = call,
 }

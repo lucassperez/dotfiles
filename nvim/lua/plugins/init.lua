@@ -1,83 +1,35 @@
-local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+local fuzzy_finder = require('plugins.FUZZY_FINDER')
 
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    'git',
-    'clone',
-    '--filter=blob:none',
-    'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable', -- latest stable release
-    lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
-
-local ok, lazy = pcall(require, 'lazy')
-if not ok then
-  print('Could not require lazy!')
-  print('Exiting from plugins/init.lua')
-  return
+local function map_from_keys(keys)
+  for _, k in ipairs(keys) do
+    vim.keymap.set(k.mode, k.lhs, k.rhs, k.opts)
+  end
 end
 
-local opts = {
-  lockfile = vim.fn.stdpath('config') .. '/plugins-lock-lazy.json',
-  install = {
-    colorscheme = { 'catppuccin', 'habamax' },
-  },
-  ui = {
-    icons = {
-      cmd = '👊',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '⚙️',
-      keys = '🔑',
-      plugin = '🔌',
-      runtime = '🏃',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
-      import = '📦',
-      require = '🚚',
-    },
-  },
-}
+local function r(path)
+  return function()
+    require(path)
+  end
+end
 
-local plugins = {
+require('pack_wrap').call({
   -- Colors and visuals
   -- Main UI building
   ---------------------
   {
     'catppuccin/nvim',
+    r('plugins.catppuccin'),
     name = 'catppuccin',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require('plugins.catppuccin')
-    end,
   },
   {
     'lewis6991/gitsigns.nvim',
-    event = 'BufRead',
-    config = function()
-      require('plugins.gitsigns')
-    end,
+    r('plugins.gitsigns'),
   },
   {
-    -- Will need sometime like one of these to use with it:
-    -- https://github.com/ojroques/nvim-bufdel
-    -- https://github.com/famiu/bufdelete.nvim
-    -- https://github.com/moll/vim-bbye
-    -- 'willothy/nvim-cokeline',
-    -- dir = '~/trb/FORKS/nvim-cokeline',
+    disable = true,
     'lucassperez/nvim-cokeline',
-    branch = 'buffer-picker-indexes',
-    enabled = true,
-    config = function()
-      require('plugins.nvim-cokeline')
-    end,
-    dependencies = 'nvim-lua/plenary.nvim',
+    r('plugins.nvim-cokeline'),
+    dependencies = { 'nvim-lua/plenary.nvim' },
   },
   'elixir-editors/vim-elixir',
 
@@ -89,56 +41,49 @@ local plugins = {
   -----------------------
   {
     'kylechui/nvim-surround',
-    config = function()
+    after = function()
       require('plugins.nvim-surround')
     end,
   },
   {
     'chrisgrieser/nvim-various-textobjs',
-    config = function()
+    after = function()
       require('plugins.nvim-various-textobjs')
+    end,
+  },
+  {
+    'andymass/vim-matchup',
+    before = function()
+      require('plugins.vim-matchup')
     end,
   },
   {
     -- Using mini.ai to fix specifically this
     -- https://www.reddit.com/r/neovim/comments/13c9ycn/comment/jjfjs1h/?context=3
     'echasnovski/mini.ai',
-    version = '*',
-    config = function()
+    version = vim.version.range('*'),
+    after = function()
       require('plugins.mini.ai')
     end,
   },
   {
-    'andymass/vim-matchup',
-    event = { 'BufRead', 'BufNew' },
-    init = function()
-      require('plugins.vim-matchup')
-    end,
-  },
-  {
     'nvim-mini/mini.comment',
-    version = '*',
-    config = function()
+    version = vim.version.range('*'),
+    after = function()
       require('plugins.mini.comment')
     end,
     dependencies = {
       {
         'JoosepAlviste/nvim-ts-context-commentstring',
-        config = function()
+        after = function()
           require('ts_context_commentstring').setup({ enable_autocmd = false })
-        end
+        end,
       },
     },
   },
   {
     'monaqa/dial.nvim',
-    keys = {
-      { mode = { 'n', 'v' }, '<C-a>', desc = '[Dial] plugin dial C-a' },
-      { mode = { 'n', 'v' }, '<C-x>', desc = '[Dial] plugin dial C-x' },
-      { mode = 'v', 'g<C-a>', desc = '[Dial] plugin dial g-C-a' },
-      { mode = 'v', 'g<C-x>', desc = '[Dial] plugin dial g-C-x' },
-    },
-    config = function()
+    after = function()
       require('plugins.dial')
     end,
   },
@@ -151,42 +96,44 @@ local plugins = {
   ------------------------
   {
     'famiu/bufdelete.nvim',
-    keys = require('plugins.bufdelete'),
+    after = function()
+      map_from_keys(require('plugins.bufdelete'))
+    end
   },
   {
     'eero-lehtinen/oklch-color-picker.nvim',
-    init = function()
-      vim.api.nvim_create_user_command('ColorHighlightToggle', require('oklch-color-picker').highlight.toggle, {})
-    end,
-    config = function()
+    after = function()
+      vim.api.nvim_create_user_command('ColorHighlightToggle', function()
+        require('oklch-color-picker').highlight.toggle()
+      end, {})
+
+      vim.keymap.set('n', '<leader>C', ':ColorHighlightToggle<CR>')
+      vim.keymap.set('n', '<leader>V', ':ColorPickOklch<CR>')
+
       require('oklch-color-picker').setup({
         highlight = {
           enabled = false,
         },
       })
     end,
-    keys = {
-      vim.keymap.set('n', '<Leader>C', ':ColorHighlightToggle<CR>'),
-      vim.keymap.set('n', '<Leader>V', ':ColorPickOklch<CR>'),
-    },
   },
   {
     'kyazdani42/nvim-tree.lua',
-    keys = require('plugins.nvim-tree').keys,
-    config = require('plugins.nvim-tree').setup,
+    after = function()
+      map_from_keys(require('plugins.nvim-tree').keys)
+      require('plugins.nvim-tree').setup()
+    end
   },
   {
     'FabijanZulj/blame.nvim',
-    cmd = { 'BlameToggle' },
-    config = function()
+    after = function()
       require('plugins.blame')
     end,
   },
   {
     'sindrets/diffview.nvim',
-    cmd = require('plugins.diffview').cmd,
-    init = require('plugins.diffview').init,
-    config = require('plugins.diffview').setup,
+    before = require('plugins.diffview').init,
+    after = require('plugins.diffview').setup,
   },
 
   -----------------------------------------------
@@ -196,9 +143,9 @@ local plugins = {
   -- Tmux related plugins
   -----------------------
   {
+    disable = true,
     'christoomey/vim-tmux-navigator',
-    cmd = { 'TmuxNavigateLeft', 'TmuxNavigateDown', 'TmuxNavigateUp', 'TmuxNavigateRight' },
-    init = function()
+    before = function()
       vim.g.tmux_navigator_no_mappings = 1
       vim.keymap.set('n', '<C-h>', '<cmd>TmuxNavigateLeft<CR>')
       vim.keymap.set('n', '<C-j>', '<cmd>TmuxNavigateDown<CR>')
@@ -207,15 +154,10 @@ local plugins = {
     end,
   },
   {
+    disable = true,
     -- 'christoomey/vim-tmux-runner',
     'lucassperez/vim-tmux-runner',
-    branch = 'get-attached-pane',
-    cmd = {
-      'VtrAttachToPane',
-      'VtrSendCommand',
-      'VtrSendCtrlD',
-      'VtrSendCtrlC',
-    },
+    version = 'get-attached-pane',
   },
 
   -----------------------------------------------
@@ -226,29 +168,31 @@ local plugins = {
   ------
   {
     'williamboman/mason.nvim',
-    -- event = { 'BufRead', 'BufNewFile' },
-    -- cmd = 'Mason',
-    -- I wasn't able to lazy load this properly
-    -- with the new nvim 0.11 Lsp/Mason/LspConfig stuff
-    lazy = false,
-    config = function()
+    after = function()
       require('plugins.lsp')
     end,
-    build = ':MasonUpdate',
+    hook = {
+      kind = { 'install', 'update' },
+      callback = function()
+        vim.cmd('MasonUpdate')
+        require('plugins.lsp')
+      end,
+    },
     dependencies = {
       {
         'wesleimp/stylua.nvim',
-        build = 'cargo install stylua',
-        dependencies = 'nvim-lua/plenary.nvim',
-        -- Since os.execute may return nil, the LSP was annoyed that I could be
-        -- using a possibly not boolean value and enabled wants a boolean, I
-        -- used this "not not" to cast it to boolean.
-        -- enabled = function () return not not os.execute('cargo -v 2>/dev/null 1>&2') end
+        hook = {
+          kind = 'install',
+          callback = function()
+            vim.cmd('!cargo install stylua')
+          end,
+        },
+        dependencies = { 'nvim-lua/plenary.nvim' },
       },
       {
         'folke/lazydev.nvim',
-        ft = 'lua',
-        config = function()
+        filetype = 'lua',
+        after = function()
           require('lazydev').setup({
             library = {
               {
@@ -265,10 +209,10 @@ local plugins = {
       'hrsh7th/cmp-nvim-lsp',
       {
         'j-hui/fidget.nvim',
-        config = function ()
+        after = function()
           require('plugins.fidget')
-        end
-      }
+        end,
+      },
     },
   },
 
@@ -279,30 +223,33 @@ local plugins = {
   -- TreeSitter
   -------------
   {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    lazy = false,
-    branch = 'main',
-    config = function()
+    src = 'nvim-treesitter/nvim-treesitter',
+    version = 'main',
+    after = function ()
       require('plugins.nvim-treesitter')
     end,
-    dependencies = {
-      {
-        'nvim-treesitter/nvim-treesitter-textobjects',
-        branch = 'main',
-        init = function()
-          -- Disable entire built-in ftplugin mappings to avoid conflicts.
-          -- See https://github.com/neovim/neovim/tree/master/runtime/ftplugin for built-in ftplugins.
-          vim.g.no_plugin_maps = true
-        end,
-      },
-      {
-        'hiphish/rainbow-delimiters.nvim',
-        init = function()
-          require('plugins.rainbow-delimiters')
-        end,
-      },
+    hook = {
+      kind = 'update',
+      callback = function()
+        vim.cmd('TSUpdate')
+        require('plugins.nvim-treesitter')
+      end,
     },
+  },
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    version = 'main',
+    before = function()
+      -- Disable entire built-in ftplugin mappings to avoid conflicts.
+      -- See https://github.com/neovim/neovim/tree/master/runtime/ftplugin for built-in ftplugins.
+      vim.g.no_plugin_maps = true
+    end,
+  },
+  {
+    'hiphish/rainbow-delimiters.nvim',
+    after = function()
+      require('plugins.rainbow-delimiters')
+    end,
   },
 
   -----------------------------------------------
@@ -311,37 +258,29 @@ local plugins = {
 
   -- Completion and things that write in general
   ----------------------------------------------
-
-  -- Both ragtag and emmet, I can't seem to lazy load them correctly
-  -- Emmet can be replaced with emmet_ls (LSP), but ragtag...? ):
-  -- Or maybe I should use emmet_language_server instead.
-  -- Theoretically there is this to enhance emmet_language_server: https://github.com/olrtg/nvim-emmet
   {
     'tpope/vim-ragtag',
     filetype = { 'eruby', 'elixir', 'eelixir', 'heex' },
-    enabled = true,
-    init = function()
+    before = function()
       -- https://github.com/tpope/vim-ragtag/blob/master/doc/ragtag.txt
       vim.cmd([[
-        inoremap <M-o>       <Esc>o
-        inoremap <C-j>       <Down>
-        let g:ragtag_global_maps = 1
+      inoremap <M-o>       <Esc>o
+      inoremap <C-j>       <Down>
+      let g:ragtag_global_maps = 1
       ]])
     end,
   },
-  {
-    'mattn/emmet-vim',
-    filetype = { 'html', 'css', 'eruby', 'heex', 'elixir', 'eelixir' },
-    enabled = false,
-    init = function()
-      -- Command actually is leader+comma, so it is <C-x>,
-      vim.cmd("let g:user_emmet_leader_key='<C-x>'")
-    end,
-  },
+  -- {
+  --   'mattn/emmet-vim',
+  --   filetype = { 'html', 'css', 'eruby', 'heex', 'elixir', 'eelixir' },
+  --   before = function()
+  --     -- Command actually is leader+comma, so it is <C-x>,
+  --     vim.cmd("let g:user_emmet_leader_key='<C-x>'")
+  --   end,
+  -- },
   {
     'hrsh7th/nvim-cmp',
-    event = 'InsertEnter',
-    config = function()
+    after = function()
       require('plugins.cmp')
     end,
     dependencies = {
@@ -350,12 +289,12 @@ local plugins = {
       'hrsh7th/cmp-nvim-lua',
       {
         'L3MON4D3/LuaSnip',
-        config = function()
+        after = function()
           require('plugins.luasnip')
         end,
-        -- 'https://github.com/rafamadriz/friendly-snippets',
-        dependencies = 'saadparwaiz1/cmp_luasnip',
       },
+      -- 'https://github.com/rafamadriz/friendly-snippets',
+      'saadparwaiz1/cmp_luasnip',
     },
   },
   {
@@ -364,39 +303,39 @@ local plugins = {
     -- I think nvim-autopairs should be able to do it, but having lexima as well
     -- is apparently making it buggy.
     'cohama/lexima.vim',
-    enabled = true,
-    event = 'InsertEnter',
-    config = function()
+    after = function()
       require('plugins.lexima')
     end,
   },
   {
     'windwp/nvim-autopairs',
-    event = 'InsertEnter',
-    config = function()
+    after = function()
       require('plugins.nvim-autopairs')
     end,
   },
   {
     'alvan/vim-closetag',
-    enabled = true,
-    -- event = 'InsertEnter',
-    init = function()
+    before = function()
       require('plugins.vim-closetag')
     end,
   },
+  -- {
+  --   'windwp/nvim-ts-autotag',
+  --   enabled = false,
+  --   after = function()
+  --     require('nvim-ts-autotag').setup()
+  --   end,
+  -- },
+
+  -----------------------------------------------
+  -----------------------------------------------
+  -----------------------------------------------
+
+  -- FzfLua
+  ---------
   {
-    'windwp/nvim-ts-autotag',
-    enabled = false,
-    config = function()
-      require('nvim-ts-autotag').setup()
-    end,
+    'ibhagwan/fzf-lua',
+    before = fuzzy_finder.lazyPluginSpec.init,
+    after = fuzzy_finder.lazyPluginSpec.config,
   },
-}
-
--- Fuzzy Finder, FzfLua or Telescope
--------------------------------------
-local ok_fuzz, fuzzy_finder = pcall(require, 'plugins.FUZZY_FINDER')
-if ok_fuzz and fuzzy_finder ~= nil then table.insert(plugins, fuzzy_finder.lazyPluginSpec) end
-
-lazy.setup(plugins, opts)
+})

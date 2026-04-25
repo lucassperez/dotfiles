@@ -21,7 +21,7 @@ protected_require.try_require('ui2')
 protected_require.try_require('keymappings')
 protected_require.try_require('settings')
 protected_require.try_require('commands')
-protected_require.try_require('new-plugins')
+protected_require.try_require('plugins')
 protected_require.try_require('statusline')
 protected_require.try_require('tabline')
 
