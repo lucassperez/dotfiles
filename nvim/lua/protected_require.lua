@@ -1,6 +1,6 @@
 local state = {
-  error_count = 0,
-  log_path = vim.fn.stdpath('config') .. '/nvim-require.log'
+  log_path = vim.fn.stdpath('config') .. '/nvim-require.log',
+  errors = {},
 }
 
 local function try_require(path)
@@ -10,22 +10,15 @@ local function try_require(path)
     return result
   end
 
-  state.error_count = state.error_count + 1
+  table.insert(state.errors, 'Could not require the path `' .. path .. '`')
 
-  -- Only print this the first time a pcall returned an error
-  if state.error_count == 1 then
-    vim.notify('ERROR!', vim.log.levels.ERROR)
-  end
-
-  vim.notify('Could not require the path `' .. path .. '`', vim.log.levels.ERROR)
-
-  -- Print only first line of the error
-  -- vim.notify('  ' .. string.sub(result, 1, string.find(result, '\n')), vim.log.levels.ERROR)
+  -- Get only first line of the error
+  -- table.insert(errors, '  ' .. string.sub(result, 1, string.find(result, '\n')))
 
   -- Get first 7 lines
   local tbl_lines = vim.split(result, '\n')
   local str_lines = table.concat(vim.list_slice(tbl_lines, 1, 7), '\n')
-  vim.notify(str_lines, vim.log.levels.ERROR)
+  table.insert(state.errors, str_lines)
 
   local file = io.open(state.log_path, 'a')
   if file then
@@ -39,7 +32,11 @@ local function try_require(path)
 end
 
 local function report_errors()
-  if state.error_count > 0 then
+  if #state.errors > 0 then
+    vim.notify('ERROR!', vim.log.levels.ERROR)
+    for _, error in ipairs(state.errors) do
+      vim.notify(error, vim.log.levels.ERROR)
+    end
     vim.notify('---', vim.log.levels.WARN)
     vim.notify('Check file ' .. state.log_path .. ' for more information', vim.log.levels.WARN)
   end
