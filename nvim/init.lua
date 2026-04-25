@@ -24,6 +24,7 @@ protected_require.try_require('commands')
 protected_require.try_require('plugins')
 protected_require.try_require('statusline')
 protected_require.try_require('tabline')
+protected_require.try_require('tmux')
 
 local helper_scripts = protected_require.try_require('helper-scripts')
 if helper_scripts then
