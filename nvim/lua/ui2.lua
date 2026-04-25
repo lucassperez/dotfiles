@@ -1,9 +1,17 @@
-local v = vim.version()
-if v.major == 0 and v.minor < 12 then
-  return
-end
-
 require('vim._core.ui2').enable({})
+
+-- When typing : and then backspace, the old UI ui leave
+-- the command line empty and go back to normal mode,
+-- but with UI2, it leaves a dangling : back there.
+-- So this fixes it by printing nothing.
+-- I kinda hate this workaround, though.
+vim.api.nvim_create_autocmd('CmdlineLeavePre', {
+  callback = function ()
+    if vim.fn.getcmdline() == '' then
+      vim.api.nvim_echo({ { '', '' } }, false, { id = 'ui2-clear-cmdline' })
+    end
+  end
+})
 
 -- Don't syntax highlight cmdline
 -- It is hideous
