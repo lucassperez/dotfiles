@@ -159,9 +159,6 @@ end
 ESTÁGIO 3: Construir buf_tree
 -----------------------------
 
-Mistério
-Atualização:
-
 1. Separa o caminho. Exemplo: nvim/lua/plugins/init.lua -> { nvim, lua, plugins, init.lua }
 2. Itera de trás pra frente (primeiro init.lua, depois plugins, depois lua, depois nvim)
   - Pra cada chave, verifica se já tem buf_tree[chave]
@@ -181,6 +178,16 @@ Isso vai gerar algo assim:
     },
     nvim = { <bufnr_2> }
   }
+}
+
+EDGE CASE:
+
+Se dois buffers genuinamente tiverem o mesmo path, como por exemplo
+ambos não terem nome ([No Name], por exemplo), ambos vão cair na mesma ponta
+da buf_tree. Nesse caso, adicionamos ambos os bufnrs:
+
+{
+  ['[No Name]'] = { <bufnr_1>, <bufnr_2> }
 }
 
 --------------------------------
@@ -328,4 +335,3 @@ Existem dois tipos de truncamentos:
 
 Para o segundo tipo, não truncamos o buffer atual.
 Truncamos somente nas pontas também.
-

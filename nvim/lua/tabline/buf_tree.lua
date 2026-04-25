@@ -1,11 +1,22 @@
+-- If node[1] is present, it means we are at a leaf.
+-- Note that nodes usually are tables with keys. Only the last leaf will
+-- have a positional argument.
+local function is_leaf(node)
+  -- return not not node[1]
+  return type(node[1]) == 'number'
+end
+
 -- When reaching nodes that only has 1 or 0 keys, we have to go
--- to the last leaf to retrieve the bufnr. Reaching such node means
+-- to the last leaf to retrieve the bufnr. Reaching such a node means
 -- that it is already enough to uniquely name a buffer.
-local function get_bufnr_from_last_leaf(node)
-  -- If node[1] is present, it is the bufnr we are looking for.
-  -- Note that nodes usually are tables with keys. Only the last leaf will
-  -- have a positional argument (at index 1), which happens to be the bufnr.
-  if node[1] then return node[1] end
+local function follow_linear_chain_until_leaf(node)
+  -- Generally speaking, node[1] is already the bufnr we are looking for.
+  -- There is a possible edge case where two buffers actually have the same
+  -- exact path. This can happen when both are unnamed.
+  -- In this case, the leaf/last node will have many bufnrs.
+  -- This is why we return the leaf, and not the bufnr at node[1].
+  -- We would be ignoring other bufnrs in this edge case.
+  if is_leaf(node) then return node end
 
   local key
   for k in pairs(node) do
@@ -28,17 +39,18 @@ local function get_bufnr_from_last_leaf(node)
     return nil
   end
 
-  return get_bufnr_from_last_leaf(node[key])
+  return follow_linear_chain_until_leaf(node[key])
 end
 
 local function has_at_most_one_child(node)
-  local second_lap = false
-  for _ in pairs(node) do
-    if second_lap then
-      return false
+  local found_a_child = false
+  for k in pairs(node) do
+    if type(k) == 'string' then
+      if found_a_child then
+        return false
+      end
+      found_a_child = true
     end
-
-    second_lap = true
   end
 
   return true
@@ -56,20 +68,32 @@ It then stops collecting keys and dives until it finds the bufnr at the last
 leaf of the node and extract it.
 ]]
 local function collect_uniquely_identifiable_paths(node, path, result)
-  if has_at_most_one_child(node) then
+  if is_leaf(node) or has_at_most_one_child(node) then
     -- It is imperative that in the buf_tree, when a node has <= 1 children,
-    -- the entire subtree is a linear chain until leaf, where we have the bufnr
-    -- as a positional argument. Or current node is already the leaf, in which
-    -- case, the node has 0 children. In both caes, the get_bufnr_from_last_leaf
-    -- function will handle it.
+    -- the entire subtree is a linear chain until leaf, where we have bufnrs
+    -- as positional arguments. Or current node is already the leaf.
+    -- In both cases, the follow_linear_chain_until_leaf function will retrieve
+    -- the last node (leaf).
+    -- There is a weird edge case where the leaf may hold multiple bufnrs. This
+    -- is the case if multiple buffers have the same exact name, which happens
+    -- for unnamed buffers.
 
-    -- The unpack pattern makes a shallow copy, but path is a list/array without
-    -- nested tables/lists/arrays, so I guess we're good not using vim.deepcopy?
-    local copy = { unpack(path) }
-    local bufnr = get_bufnr_from_last_leaf(node)
-    if bufnr then table.insert(copy, bufnr) end
-    table.insert(result, copy)
-    return
+    local leaf = follow_linear_chain_until_leaf(node)
+    if not leaf then
+      vim.notify(
+        string.format('tabline: Leaf is nil! %s -- %s', path, vim.inspect(node)),
+        vim.log.levels.ERROR
+      )
+    else
+      for _, bufnr in ipairs(leaf) do
+        -- The unpack pattern makes a shallow copy, but path is a list/array without
+        -- nested tables/lists/arrays, so I guess we're good not using vim.deepcopy?
+        local copy = { unpack(path) }
+        table.insert(copy, bufnr)
+        table.insert(result, copy)
+      end
+      return
+    end
   end
 
   for child in pairs(node) do
@@ -119,7 +143,13 @@ local function calculate_buf_tree(buffers, directory_separator)
       current = current[key]
     end
 
-    current[1] = bufnr
+    -- Weird edge case: The last node, the leaf, can potentially be
+    -- reached by two different buffers if they have the exact same path.
+    -- This can happen when both are unnamed buffers.
+    -- So instead of simply setting current[1] = bufnr, we are
+    -- adding bufnr to the last node. Later, we iterate over them during
+    -- the flatten buf_tree phase.
+    current[#current + 1] = bufnr
   end
 
   return buf_tree
