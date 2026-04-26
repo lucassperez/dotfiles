@@ -349,7 +349,7 @@ local function call(list)
     resolve(pack_spec)
   end
   execute()
-  require('pack_wrap.user_commands').create(state.loaded)
+  require('pack_wrap.user_commands').create(state.loaded, state.resolved)
 end
 
 return {
