@@ -1,28 +1,34 @@
--- Lua Language Server
-
-local function on_attach(client, bufnr)
-  require('plugins.lsp.defaults').keymaps(bufnr)
-
+local function on_attach(_, bufnr)
   local ok = pcall(require, 'stylua')
 
   if ok then
-    vim.keymap.set('n', '\\f', function()
+    local function format()
       require('stylua').format({
         bufnr = bufnr,
         config_path = vim.fn.stdpath('config') .. '/default-stylua.toml',
       })
-    end, { noremap = true, buffer = bufnr, desc = 'LSP: Formata o buffer atual usando stylua' })
+    end
 
-    vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
-      require('stylua').format({
-        bufnr = bufnr,
-        config_path = vim.fn.stdpath('config') .. '/default-stylua.toml',
-      })
-    end, { desc = 'LSP: Formata o buffer atual usando stylua' })
+    local desc = 'LSP: Formata o buffer atual usando stylua'
+
+    vim.keymap.set('n', '\\f', format, { noremap = true, buffer = bufnr, desc = desc })
+    vim.api.nvim_buf_create_user_command(bufnr, 'Format', format, { desc = desc })
   end
 
   -- local root_dir = client.config.root_dir
   -- if root_dir then vim.api.nvim_set_current_dir(root_dir) end
+end
+
+local function hook(options)
+  require('lazydev').setup({
+    library = {
+      {
+        path = '${3rd}/luv/library',
+        words = { 'vim%.uv' },
+      },
+    },
+  })
+  options.capabilities.textDocument.completion.completionItem.snippetSupport = false
 end
 
 return {
@@ -57,4 +63,4 @@ return {
       },
     },
   },
-}
+}, hook

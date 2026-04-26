@@ -1,8 +1,13 @@
-local capabilities = require('plugins.lsp.defaults').capabilities
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
 return {
-  capabilities = capabilities,
+  capabilities = {
+    textDocument = {
+      completion = {
+        completionItem = {
+          snippetSupport = true, -- snippets are required by emmet_ls
+        },
+      },
+    },
+  },
   filetypes = {
     'eruby',
     -- 'elixir',

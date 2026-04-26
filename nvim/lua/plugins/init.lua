@@ -167,18 +167,13 @@ require('pack_wrap').call({
   -- LSP
   ------
   {
+    -- Create a cronjob with
+    -- nvim --headless -c "lua require('mason')" -c 'MasonUpdate' -c 'qall'
     'williamboman/mason.nvim',
-    after = function()
-      require('plugins.lsp')
-    end,
-    hook = {
-      kind = { 'install', 'update' },
-      callback = function()
-        vim.cmd('MasonUpdate')
-        require('plugins.lsp')
-      end,
-    },
+    r('lsp'),
     dependencies = {
+      'neovim/nvim-lspconfig',
+      'hrsh7th/cmp-nvim-lsp',
       {
         'wesleimp/stylua.nvim',
         hook = {
@@ -190,28 +185,14 @@ require('pack_wrap').call({
         dependencies = { 'nvim-lua/plenary.nvim' },
       },
       {
+        -- I placed the config call inside lua_ls config file.
         'folke/lazydev.nvim',
         filetype = 'lua',
-        after = function()
-          require('lazydev').setup({
-            library = {
-              {
-                path = '${3rd}/luv/library',
-                words = { 'vim%.uv' },
-              },
-            },
-          })
-        end,
       },
-      'williamboman/mason-lspconfig.nvim',
-      'jose-elias-alvarez/typescript.nvim',
-      'neovim/nvim-lspconfig',
-      'hrsh7th/cmp-nvim-lsp',
       {
+        disable = false,
         'j-hui/fidget.nvim',
-        after = function()
-          require('plugins.fidget')
-        end,
+        r('plugins.fidget'),
       },
     },
   },

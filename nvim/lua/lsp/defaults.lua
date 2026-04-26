@@ -80,7 +80,7 @@ local function default_key_maps(bufnr)
   end, formatDesc('Mostra quem implementa', fuzzy_finder.lsp_implementation))
 end
 
-local function default_on_attach(client, bufnr)
+local function default_on_attach(_, bufnr)
   default_key_maps(bufnr)
 
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function()
@@ -93,7 +93,9 @@ end
 
 local default_capabilities = vim.lsp.protocol.make_client_capabilities()
 local cmp_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
-if cmp_ok then default_capabilities = cmp_nvim_lsp.default_capabilities(default_capabilities) end
+if cmp_ok then
+  default_capabilities = cmp_nvim_lsp.default_capabilities(default_capabilities)
+end
 
 -- Some specific servers call only the keymaps and then override some
 -- keymappings, which is more flexible than calling the default on_attach
@@ -101,5 +103,6 @@ if cmp_ok then default_capabilities = cmp_nvim_lsp.default_capabilities(default_
 return {
   on_attach = default_on_attach,
   capabilities = default_capabilities,
+  -- TODO eliminar isso
   keymaps = default_key_maps,
 }

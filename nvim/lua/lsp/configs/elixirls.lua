@@ -1,5 +1,3 @@
--- Elixir Language Server
-
 return {
   -- cmd = { '/path/of/the/binary/elixir-ls/release-directory/language_server.sh' };
   settings = {

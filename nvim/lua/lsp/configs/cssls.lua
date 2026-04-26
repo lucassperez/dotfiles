@@ -1,13 +1,16 @@
--- CSS Language Server
-
 -- npm i -g vscode-langservers-extracted
 -- npm i -g cssmodules-language-server
 
-local capabilities = require('plugins.lsp.defaults').capabilities
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
 return {
-  capabilities = capabilities,
+  capabilities = {
+    textDocument = {
+      completion = {
+        completionItem = {
+          snippetSupport = true,
+        },
+      },
+    },
+  },
 }
 
 -- local function on_attach(client, bufnr)
