@@ -14,6 +14,62 @@ end
 
 local state
 
+local function nil_if_empty_table(table)
+  if type(table) ~= 'table' then
+    return table
+  end
+
+  if #table > 0 then
+    return table
+  end
+
+  for _ in pairs(table) do
+    return table
+  end
+
+  return nil
+end
+
+local function is_lazy(plugin)
+  if not plugin.data then
+    return false
+  end
+
+  if plugin.data.filetype or plugin.data.event then
+    return true
+  end
+
+  return false
+end
+
+local function load_plugin(plugin)
+  if plugin.data.disable then
+    vim.notify('Tried loading disabled plugin: ' .. vim.inspect(plugin), vim.log.levels.WARN)
+    vim.notify('Skipping', vim.log.levels.WARN)
+    return
+  end
+
+  if state.loaded[plugin.name] then
+    return
+  end
+
+  for _, dep in ipairs(plugin.data.dependencies or {}) do
+    load_plugin(dep)
+  end
+
+  state.loaded[plugin.name] = true
+
+  if plugin.data.before then plugin.data.before() end
+
+  local ok, result = pcall(vim.cmd.packadd, plugin.name)
+  if not ok then
+    vim.notify('Something wrong happened when packadd-ing ' .. plugin.name, vim.log.WARN)
+    vim.notify(result, vim.log.WARN)
+  end
+
+  if plugin.data.after then plugin.data.after() end
+end
+
 local function assume_github_if_not_specified(src)
   if src == nil then
     return nil
@@ -30,65 +86,98 @@ local function normalized_hook(plugin)
   if not plugin.hook then return nil end
 
   if type(plugin.hook) == 'function' then
+    -- If hook is a function itself,
+    -- assume install and update kinds
     return {
       kind = { 'install', 'update' },
       callback = plugin.hook,
     }
   end
 
-  if type(plugin.hook.callback) == 'string' then
-    plugin.hook.callback = function()
+  local kind = plugin.hook.kind
+  local callback = plugin.hook.callback
+
+  if type(callback) == 'string' then
+    callback = function()
       vim.cmd(plugin.hook.callback)
     end
   end
 
-  if type(plugin.hook.callback) ~= 'function' then
+  if type(callback) ~= 'function' then
     vim.notify('pack_wrap#normalized_hook: Plugin must provide a function as hook callback: ' .. plugin.name, vim.log.levels.ERROR)
     vim.notify('pack_wrap#normalized_hook: Skipping', vim.log.levels.ERROR)
     return nil
   end
 
-  local h = {
-    kind = nil,
-    callback = plugin.callback
-  }
-
-  if plugin.kind == nil then
-    h.kind = { 'install', 'update' }
-  elseif type(plugin.kind) == 'string' then
-    h.kind = { plugin.kind }
+  if kind == nil then
+    kind = { 'install', 'update' }
+  elseif type(kind) == 'string' then
+    kind = { kind }
   end
 
-  return h
+  return {
+    kind = kind,
+    callback = callback,
+  }
 end
 
-local function normalized(plugin)
+-- Receives a user spec and translates to vim.pack format
+local function normalized(user_spec)
   local src
 
-  if type(plugin) == 'string' then
-    src = plugin
+  if user_spec[1] and type(user_spec[1]) ~= 'string' then
+    error(
+      string.format(
+        'pack_wrap#normalized: Plugin com primeiro argumento posicoinal do tipo errado (deveria ser string): %s (%s)',
+        vim.inspect(user_spec[1]),
+        vim.inspect(user_spec)
+      )
+    )
+  end
+
+  if user_spec[2] and type(user_spec[2]) ~= 'function' then
+    error(
+      string.format(
+        'pack_wrap#normalized: Plugin com segundo argumento posicoinal do tipo errado (deveria ser função): %s (%s)',
+        vim.inspect(user_spec[2]),
+        vim.inspect(user_spec)
+      )
+    )
+  end
+
+  if type(user_spec) == 'string' then
+    src = user_spec
   else
-    src = plugin.src or plugin[1]
+    src = user_spec.src or user_spec[1]
   end
 
   src = assume_github_if_not_specified(src)
 
   if not src then
-    error('pack_wrap#normalize: Plugin spec não possui src: ' .. vim.inspect(plugin))
+    error('pack_wrap#normalized: Plugin spec não possui src: ' .. vim.inspect(user_spec))
   end
 
-  local name = plugin.name or string.match(src, '[^/]+$')
+  local name = user_spec.name or string.match(src, '[^/]+$')
 
   if not name or name == '' then
-    error('pack_wrap#normalize: Plugin spec não possui name: ' .. vim.inspect(plugin))
+    error('pack_wrap#normalized: Plugin spec não possui name: ' .. vim.inspect(user_spec))
   end
 
-  local version = plugin.version
-  local after = plugin.after or plugin[2]
-  local before = plugin.before
-  local dependencies = vim.deepcopy(plugin.dependencies) or {}
-  local hook = normalized_hook(plugin)
-  local filetype = plugin.filetype
+  local version = user_spec.version
+  local after = user_spec.after or user_spec[2]
+  local before = user_spec.before
+
+  -- local dependencies = vim.deepcopy(user_spec.dependencies) or {}
+  local dependencies = {}
+  if user_spec.dependencies then
+    for _, dep in ipairs(user_spec.dependencies) do
+      table.insert(dependencies, normalized(dep))
+    end
+  end
+
+  local hook = normalized_hook(user_spec)
+  local filetype = user_spec.filetype
+  local event = user_spec.event
 
   if type(filetype) == 'string' then
     filetype = { filetype }
@@ -98,54 +187,52 @@ local function normalized(plugin)
     name = name,
     src = src,
     version = version,
-    dependencies = dependencies,
-    before = before,
-    after = after,
-    hook = hook,
-    filetype = filetype
-  }
-end
-
-local function make_resolved(plugin)
-  return {
-    name = plugin.name,
-    src = plugin.src,
-    version = plugin.version,
     data = {
-      before = plugin.before,
-      after = plugin.after,
-      hook = plugin.hook,
-      filetype = plugin.filetype,
+      -- even if data is empty, I'm leaving it in so we don't have to
+      -- nil check everytime we try to access a field inside data.
+      -- Eg: if plugin.data.after then ... end would have to be if plugin.data and plugin.data.after then ... end
+      -- That would be too annoying.
+      disable = user_spec.disable,
+      dependencies = nil_if_empty_table(dependencies),
+      before = before,
+      after = after,
+      hook = nil_if_empty_table(hook),
+      filetype = nil_if_empty_table(filetype),
+      event = event,
     }
   }
 end
 
 local function resolve(plugin)
-  if plugin.disable then
+  if plugin.data.disable then
     return
   end
 
-  local normalized_plugin = normalized(plugin)
-
-  if state.seen[normalized_plugin.name] then
-    error(string.format('pack_wrap#resolve: Plugin\'s com o mesmo nome detectados: %s', normalized_plugin.name))
+  if state.seen[plugin.name] then
+    vim.notify(string.format(
+      'pack_wrap#resolve: Plugins com o mesmo nome detectados: %s', plugin.name),
+      vim.log.levels.WARN
+    )
+    vim.notify('Ignorando ocorrências posteriores e usando a primeira configuração que apareceu.', vim.log.levels.WARN)
+    return
   end
 
-  if state.visiting[normalized_plugin.name] then
-    error('pack_wrap#resolve: Dependência cíclica detectada: ' .. normalized_plugin.name)
+  if state.visiting[plugin.name] then
+    error('pack_wrap#resolve: Dependência cíclica detectada: ' .. plugin.name)
   end
 
-  state.visiting[normalized_plugin.name] = true
-  state.seen[normalized_plugin.name] = true
+  state.visiting[plugin.name] = true
+  state.seen[plugin.name] = true
 
-  for _, dep in ipairs(normalized_plugin.dependencies) do
-    -- TODO Decide what to do when parent has filetype, but child does not
-    resolve(dep)
+  if plugin.data.dependencies then
+    for _, dep in ipairs(plugin.data.dependencies) do
+      resolve(dep)
+    end
   end
 
-  state.visiting[normalized_plugin.name] = nil
+  state.visiting[plugin.name] = nil
 
-  table.insert(state.resolved, make_resolved(normalized_plugin))
+  table.insert(state.resolved, plugin)
 end
 
 local function register_hooks_auto_commands()
@@ -173,7 +260,12 @@ local function register_hooks_auto_commands()
       end
 
       if not ev.data.active then
-        vim.cmd.packadd(plugin.name)
+        -- There is a chance hook does not even need
+        -- the plugin loaded, but I kept it since I don't
+        -- have many hooks anyways.
+        -- But one example is stylua's hook, that just
+        -- calls a cargo install.
+        load_plugin(plugin)
       end
 
       if plugin.data.hook.callback then
@@ -183,65 +275,68 @@ local function register_hooks_auto_commands()
   })
 end
 
-local function register_filetype_autocmds(ft_plugins)
+local function register_filetype_autocmds(ft_plugins, group)
   for _, plugin in ipairs(ft_plugins) do
     -- TODO think about registering one autocmd per filetype instead
     -- of one autocmd per plugin?
     vim.api.nvim_create_autocmd('FileType', {
-      group = vim.api.nvim_create_augroup('PackWrapFt', { clear = true }),
+      group = group,
       pattern = plugin.data.filetype,
       -- once = true,
       callback = function()
-        if state.loaded[plugin.name] then
-          return
-        end
+        load_plugin(plugin)
+      end
+    })
+  end
+end
 
-        state.loaded[plugin.name] = true
-
-        if plugin.data.before then plugin.data.before() end
-        vim.cmd.packadd(plugin.name)
-        if plugin.data.after then plugin.data.after() end
+local function register_event_autocmds(event_plugins, group)
+  for _, plugin in ipairs(event_plugins) do
+    vim.api.nvim_create_autocmd(plugin.data.event, {
+      group = group,
+      once = true,
+      callback = function()
+        load_plugin(plugin)
       end
     })
   end
 end
 
 local function execute()
-  local before = {}
-  local after = {}
-  local ft_plugins = {}
   local eager = {}
+  -- Lazy
+  local ft_plugins = {}
+  local event_plugins = {}
+  local any_lazy = false
 
   for _, plugin in ipairs(state.resolved) do
-    if plugin.data.filetype then
-      table.insert(ft_plugins, plugin)
+    if is_lazy(plugin) then
+      any_lazy = true
+
+      if plugin.data.filetype then
+        table.insert(ft_plugins, plugin)
+      end
+      if plugin.data.event then
+        table.insert(event_plugins, plugin)
+      end
     else
       table.insert(eager, plugin)
-
-      if plugin.data.before then
-        table.insert(before, plugin.data.before)
-      end
-      if plugin.data.after then
-        table.insert(after, plugin.data.after)
-      end
     end
   end
 
   register_hooks_auto_commands()
-  register_filetype_autocmds(ft_plugins)
 
-  for _, callback in ipairs(before) do
-    callback()
+  if any_lazy then
+    local group = vim.api.nvim_create_augroup('PackWrapLazy', { clear = true })
+
+    register_filetype_autocmds(ft_plugins, group)
+    register_event_autocmds(event_plugins, group)
   end
 
   vim.pack.add(state.resolved, { load = false })
 
   for _, plugin in ipairs(eager) do
-    state.loaded[plugin.name] = true
-  end
-
-  for _, callback in ipairs(after) do
-    callback()
+    load_plugin(plugin)
   end
 
   return state
@@ -249,8 +344,9 @@ end
 
 local function call(list)
   state = blank_state()
-  for _, plugin in ipairs(list) do
-    resolve(plugin)
+  for _, user_spec in ipairs(list) do
+    local pack_spec = normalized(user_spec)
+    resolve(pack_spec)
   end
   execute()
   require('pack_wrap.user_commands').create(state.loaded)
