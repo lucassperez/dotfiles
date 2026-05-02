@@ -1,7 +1,7 @@
 return {
   tag = '[Telescope]',
-  project_picker = require('plugins.FUZZY_FINDER.telescope.project'),
-  lazyPluginSpec = require('plugins.FUZZY_FINDER.telescope.config').lazyPluginSpec,
+  project_picker = require('plugins.telescope.project'),
+  lazyPluginSpec = require('plugins.telescope.config').lazyPluginSpec,
 
   diagnostics = function()
     require('telescope.builtin').diagnostics()

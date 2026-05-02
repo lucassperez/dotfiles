@@ -1,4 +1,4 @@
-local fuzzy_finder = require('plugins.FUZZY_FINDER')
+local fzf = require('plugins.fzf-lua')
 
 local function map_from_keys(keys)
   for _, k in ipairs(keys) do
@@ -316,7 +316,7 @@ require('pack_wrap').call({
   ---------
   {
     'ibhagwan/fzf-lua',
-    before = fuzzy_finder.lazyPluginSpec.init,
-    after = fuzzy_finder.lazyPluginSpec.config,
+    before = fzf.lazyPluginSpec.init,
+    after = fzf.lazyPluginSpec.config,
   },
 })

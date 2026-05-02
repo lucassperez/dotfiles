@@ -1,3 +1,7 @@
+-- I don't even have project_nvim anymore, and I don't think I have
+-- ever used it when I had. The reason I am keeping this here is
+-- just so I can see an fzf-lua.providers.ui_select example.
+
 return function()
   local recent_projects = require('project_nvim').get_recent_projects()
 

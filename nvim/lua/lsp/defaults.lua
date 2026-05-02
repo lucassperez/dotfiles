@@ -5,8 +5,8 @@ local function default_key_maps(bufnr)
     vim.keymap.set(lhs, rhs, command, map_opts)
   end
 
-  local fuzzy_finder = require('plugins.FUZZY_FINDER') or {}
-  local tag = string.format('%s%s', (fuzzy_finder.tag or ''), (fuzzy_finder.tag and ' ' or ''))
+  local fzf = require('plugins.fzf-lua') or {}
+  local tag = string.format('%s%s', (fzf.tag or ''), (fzf.tag and ' ' or ''))
 
   local function formatDesc(desc, fun)
     return string.format('%s%s', (fun and tag or ''), desc)
@@ -17,12 +17,12 @@ local function default_key_maps(bufnr)
   end, 'Formata o buffer atual')
 
   map('n', 'K', function()
-    if fuzzy_finder.lsp_definition then
-      fuzzy_finder.lsp_definition()
+    if fzf.lsp_definition then
+      fzf.lsp_definition()
     else
       vim.lsp.buf.definition()
     end
-  end, formatDesc('Vai para a definição', fuzzy_finder.lsp_definition))
+  end, formatDesc('Vai para a definição', fzf.lsp_definition))
 
   map('n', '\\k', function()
     vim.lsp.buf.hover()
@@ -33,32 +33,32 @@ local function default_key_maps(bufnr)
   end, 'Renomeia')
 
   map('n', '\\r', function()
-    if fuzzy_finder.lsp_references then
-      fuzzy_finder.lsp_references()
+    if fzf.lsp_references then
+      fzf.lsp_references()
     else
       vim.lsp.buf.references()
     end
-  end, formatDesc('Mostra as referências (onde é usado)', fuzzy_finder.lsp_references))
+  end, formatDesc('Mostra as referências (onde é usado)', fzf.lsp_references))
 
   map('n', '\\ca', function()
-    if fuzzy_finder.code_action then
-      fuzzy_finder.code_action()
+    if fzf.code_action then
+      fzf.code_action()
     else
       vim.lsp.buf.code_action()
     end
-  end, formatDesc('Code action', fuzzy_finder.code_action))
+  end, formatDesc('Code action', fzf.code_action))
 
   map('n', '\\d', function()
     vim.diagnostic.open_float()
   end, 'Mostra diagnóstico da linha em janela flutuante')
 
   map('n', '\\D', function()
-    if fuzzy_finder.diagnostics then
-      fuzzy_finder.diagnostics()
+    if fzf.diagnostics then
+      fzf.diagnostics()
     else
       vim.diagnostic.open_float()
     end
-  end, formatDesc('Mostra diagnósticos', fuzzy_finder.diagnostics))
+  end, formatDesc('Mostra diagnósticos', fzf.diagnostics))
 
   local should_center = false
   map('n', '[d', function()
@@ -72,12 +72,12 @@ local function default_key_maps(bufnr)
   end, 'Mostra o diagnóstico anterior do buffer')
 
   map('n', '\\i', function()
-    if fuzzy_finder.lsp_implementation then
-      fuzzy_finder.lsp_implementation()
+    if fzf.lsp_implementation then
+      fzf.lsp_implementation()
     else
       vim.lsp.buf.implementation()
     end
-  end, formatDesc('Mostra quem implementa', fuzzy_finder.lsp_implementation))
+  end, formatDesc('Mostra quem implementa', fzf.lsp_implementation))
 end
 
 local function default_on_attach(_, bufnr)

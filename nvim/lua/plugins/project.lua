@@ -53,7 +53,7 @@ vim.api.nvim_create_user_command('Project', function(opts)
       return
     end
 
-    local ok, fuzzy_finder = pcall(require, 'plugins.FUZZY_FINDER')
+    local ok, fuzzy_finder = pcall(require, 'plugins.fzf-lua')
     if ok and fuzzy_finder ~= nil then
       fuzzy_finder.project_picker()
     else
