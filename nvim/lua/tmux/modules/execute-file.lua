@@ -63,7 +63,7 @@ local function build_command()
          cmd .. filename
 end
 
-local function execute_file()
+local function execute_file(clear_before_send)
   local command, msg = build_command()
 
   if not command then
@@ -71,7 +71,7 @@ local function execute_file()
     return
   end
 
-  runner.send_tmux_keys(command)
+  runner.send_tmux_keys(command, clear_before_send)
 end
 
 local auto_execute = {
@@ -80,7 +80,7 @@ local auto_execute = {
   filename = nil,
 }
 
-local function toggle_auto_execute()
+local function toggle_auto_execute(clear_before_send)
   local filename = vim.fn.expand('%')
 
   if auto_execute.active and auto_execute.filename ~= filename then
@@ -112,7 +112,7 @@ local function toggle_auto_execute()
   auto_execute.autocmd_id = vim.api.nvim_create_autocmd('BufWritePost', {
     group = group,
     callback = function()
-      runner.send_tmux_keys(command)
+      runner.send_tmux_keys(command, clear_before_send)
     end,
     desc = 'Auto execute on save for file ' .. filename,
   })
@@ -122,7 +122,7 @@ local function toggle_auto_execute()
 
 
   vim.cmd.echohl('String')
-  vim.cmd.echo(string.format([['Auto run started for %s']], filename))
+  vim.cmd.echo(string.format([['Auto run (clear_before_send = %s) started for %s']], clear_before_send, filename))
   vim.cmd.echohl('None')
 end
 

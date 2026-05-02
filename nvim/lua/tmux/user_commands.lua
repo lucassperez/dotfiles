@@ -2,6 +2,7 @@ local runner = require('tmux.runner')
 local modules = require('tmux.modules')
 
 local scopes = {
+  attach = { 'clear', 'show', 'attach' },
   from_git_generic = { 'test', 'linter' },
   test = { 'file', 'line', 'dir', 'all', 'last', 'get_cache' },
   linter = { 'file', 'line', 'dir', 'all' },
@@ -33,14 +34,43 @@ end
 -- RUNNER --
 ------------
 
-vim.api.nvim_create_user_command('TmuxAttach', function()
+vim.api.nvim_create_user_command('TmuxAttach', function(opts)
+  local scope = opts.fargs[1] or 'attach'
+
+  if not guard(scope, scopes.attach) then return end
+
+  if scope == 'clear' then
+    local old = runner.clear_attached_pane()
+    if old == nil then
+      vim.notify('TmuxAttach: Nenhum painel para desafixar.')
+    else
+      vim.notify('TmuxAttach: Painel desafixado: ' .. old.index)
+    end
+
+    return
+  end
+
+  if scope == 'show' then
+    local attached_pane = runner.get_attached_pane()
+    if attached_pane then
+      vim.notify('TmuxAttach: Painel atual: ' .. attached_pane.id)
+    else
+      vim.notify('TmuxAttach: Nenhum painel fixado.')
+    end
+
+    return
+  end
+
   runner.attach_pane()
-end, {})
+end, {
+  nargs = '?',
+  complete = complete(scopes.attach),
+})
 
 vim.api.nvim_create_user_command('TmuxSend', function(opts)
   if opts.range > 0 and #opts.fargs > 0 then
     vim.notify(
-      'TmuxSend: não é permitido passar argumentos e um range simultaneamente',
+      'TmuxSend: Não é permitido passar argumentos e um range simultaneamente',
       vim.log.levels.ERROR
     )
     return
@@ -102,8 +132,10 @@ vim.api.nvim_create_user_command('TmuxTest', function(opts)
 
   if not guard(scope, scopes.test) then return end
 
+  local clear_screen = not opts.bang
+
   if scope == 'last' then
-    modules.test.run_last()
+    modules.test.run_last(clear_screen)
     return
   end
 
@@ -112,10 +144,11 @@ vim.api.nvim_create_user_command('TmuxTest', function(opts)
     return
   end
 
-  modules.test.run(scope)
+  modules.test.run(scope, clear_screen)
 end, {
   nargs = '?',
   complete = complete(scopes.test),
+  bang = true,
 })
 
 ------------
@@ -127,10 +160,13 @@ vim.api.nvim_create_user_command('TmuxLinter', function(opts)
 
   if not guard(scope, scopes.linter) then return end
 
-  modules.linter.run(scope)
+  local clear_screen = not opts.bang
+
+  modules.linter.run(scope, clear_screen)
 end, {
   nargs = '?',
   complete = complete(scopes.linter),
+  bang = true,
 })
 
 ------------------
@@ -142,14 +178,17 @@ vim.api.nvim_create_user_command('TmuxExecuteFile', function(opts)
 
   if not guard(scope, scopes.execute_file) then return end
 
+  local clear_screen = not opts.bang
+
   if scope == 'now' then
-    modules.execute_file.execute_file()
+    modules.execute_file.execute_file(clear_screen)
   elseif scope == 'toggle' then
-    modules.execute_file.toggle_auto_execute()
+    modules.execute_file.toggle_auto_execute(clear_screen)
   end
 end, {
   nargs = '?',
   complete = complete(scopes.execute_file),
+  bang = true,
 })
 
 -------------

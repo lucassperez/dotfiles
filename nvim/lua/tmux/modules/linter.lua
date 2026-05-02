@@ -1,5 +1,5 @@
 -- scope one of file|line|dir|all
-local function run(scope)
+local function run(scope, clear_before_send)
   scope = scope or 'file'
 
   local filetype = vim.bo.filetype
@@ -24,7 +24,7 @@ local function run(scope)
     vim.notify('Não sei rodar um linter para arquivos do tipo ' .. filetype, vim.log.levels.ERROR)
   end
 
-  require('tmux.runner').send_tmux_keys(cmd)
+  require('tmux.runner').send_tmux_keys(cmd, clear_before_send)
 end
 
 return {

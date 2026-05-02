@@ -1,5 +1,9 @@
 local attached_pane = nil
 
+local function call_if(callback)
+  if type(callback) == 'function' then callback() end
+end
+
 local function list_panes()
   local result = vim.fn.systemlist('tmux list-panes -F "#{pane_index}:#{pane_id}"')
   local panes = {}
@@ -19,18 +23,8 @@ local function current_pane()
  return { index = result[1], id = result[2], }
 end
 
-local function is_valid_pane(pane)
-  if not pane then return false end
-
-  for _, p in ipairs(list_panes()) do
-    if p.id == pane.id then
-      return true
-    end
-  end
-
-  return false
-end
-
+-- Attach_pane is async because of possible vim.ui.input.
+-- So we pass a callback to it to be executed after vim.ui.input returns.
 local function attach_pane(callback)
   if not vim.env.TMUX then
     vim.notify('Não há uma sessão de tmux rodando', vim.log.levels.ERROR)
@@ -41,7 +35,7 @@ local function attach_pane(callback)
 
   if #panes <= 1 then
     vim.notify('Não há painéis o suficiente', vim.log.levels.ERROR)
-    if type(callback) == 'function' then callback(false) end
+    call_if(callback)
     return
   end
 
@@ -54,7 +48,7 @@ local function attach_pane(callback)
         vim.cmd.echohl('String')
         vim.cmd.echo(string.format([['Painel fixado: %s']], p.index))
         vim.cmd.echohl('None')
-        if type(callback) == 'function' then callback(true) end
+        call_if(callback)
         return
       end
     end
@@ -66,7 +60,7 @@ local function attach_pane(callback)
     vim.ui.input({ prompt = 'Painel tmux nº: ' }, function(input)
       vim.cmd.echohl('None')
       if not input then
-        if type(callback) == 'function' then callback(false) end
+        call_if(callback)
         return
       end
 
@@ -74,7 +68,7 @@ local function attach_pane(callback)
         if p.index == input then
           if p.id == current.id then
             vim.notify('Não é possível anexar o painel atual', vim.log.levels.ERROR)
-            if type(callback) == 'function' then callback(false) end
+            call_if(callback)
             return
           end
 
@@ -83,13 +77,12 @@ local function attach_pane(callback)
           vim.cmd.echo(string.format([['Painel fixado: %s']], input))
           vim.cmd.echohl('None')
 
-          if type(callback) == 'function' then callback(true) end
+          call_if(callback)
           return
         end
       end
 
       vim.notify('Painel não encontrado', vim.log.levels.ERROR)
-      -- if type(callback) == 'function' then callback(false) end
     end)
   end)
 end
@@ -100,13 +93,42 @@ local function ensure_attached(callback)
     return
   end
 
-  if not is_valid_pane(attached_pane) then
-    attached_pane = nil
-    attach_pane(callback)
+  local all_panes = list_panes()
+
+  local is_current_valid = false
+  for _, p in ipairs(all_panes) do
+    if p.id == attached_pane.id then
+      is_current_valid = true
+      break
+    end
+  end
+
+  if is_current_valid then
+    call_if(callback)
     return
   end
 
-  if type(callback) == 'function' then callback(true) end
+  -- If attached pane doesn't exist anymore but you
+  -- want to try and auto attach to another pane that
+  -- has the same index, use the commented code below.
+  -- local candidate
+  -- for _, p in ipairs(all_panes) do
+  --   if p.index == attached_pane.index then
+  --     candidate = p
+  --     break
+  --   end
+  -- end
+  -- if candidate and candidate.id ~= current_pane().id then
+  --   attached_pane = candidate
+  -- else
+  --   attached_pane = nil
+  --   attach_pane(callback)
+  --   return
+  -- end
+  -- call_if(callback)
+
+  attached_pane = nil
+  attach_pane(callback)
 end
 
 local function send_tmux_keys(str, clear_before_send)
@@ -151,7 +173,11 @@ return {
   attach_pane = attach_pane,
   send_tmux_keys = send_tmux_keys,
   get_attached_pane = function()
-    print(vim.inspect(attached_pane))
     return attached_pane
+  end,
+  clear_attached_pane = function()
+    local old = attached_pane
+    attached_pane = nil
+    return old
   end,
 }

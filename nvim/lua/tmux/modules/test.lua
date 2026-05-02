@@ -79,7 +79,7 @@ local function ruby_cmd(filename, line_number)
 end
 
 -- scope one of file|line|dir|all
-local function run(scope)
+local function run(scope, clear_before_send)
   scope = scope or 'file'
 
   local filetype = vim.bo.filetype
@@ -130,16 +130,16 @@ local function run(scope)
   end
 
   test_cache = test_command
-  runner.send_tmux_keys(test_command)
+  runner.send_tmux_keys(test_command, clear_before_send)
 end
 
-local function run_last()
+local function run_last(clear_before_send)
   if test_cache == '' then
     vim.notify('Ainda não foi executado nenhum teste para por no cache', vim.log.levels.WARN)
     return
   end
 
-  runner.send_tmux_keys(test_cache)
+  runner.send_tmux_keys(test_cache, clear_before_send)
 end
 
 local function get_test_cache()
