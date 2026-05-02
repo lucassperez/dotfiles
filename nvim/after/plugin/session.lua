@@ -69,10 +69,9 @@ vim.api.nvim_create_user_command('Session', function(opts)
 
   if opts.bang then command = 'create_or_update' end
 
-  local buffers = vim.fn.getbufinfo()
   local at_least_one_file_open_that_exists_or_has_a_name = false
-  for _, b in pairs(buffers) do
-    if b.loaded == 1 and b.name ~= '' then
+  for _, b in pairs(vim.fn.getbufinfo({ buflisted = 1 })) do
+    if b.loaded == 1 and b.name ~= '' and vim.bo[b.bufnr].buftype == '' then
       at_least_one_file_open_that_exists_or_has_a_name = true
       break
     end

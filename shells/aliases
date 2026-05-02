@@ -67,6 +67,6 @@ alias vn='nvim'
 alias vc='vimgit -c'
 alias vm='vimgit --branch main'
 alias vimsession='nvim -c Session'
-alias vs='nvim -c Session'
+alias vs="nvim -c 'Session load'"
 
 [ -f "$HOME/.local/aliases.local" ] && source "$HOME/.local/aliases.local"
