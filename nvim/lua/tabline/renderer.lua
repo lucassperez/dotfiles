@@ -139,73 +139,59 @@ return {
     local function find_visible_window(entries)
       local start_i = state.current_i
       local end_i = state.current_i
+      local used = entries[state.current_i].width + padding_w
+      local truncate_index
 
-      -- Try to keep the current more or less in the middle
-
-      local used = entries[state.current_i].width
-
-      local overflow_used = false
-
-      local function try_expand_left()
-        if start_i <= 1 then
-          return false
-        end
-
-        used = used + entries[start_i - 1].width + padding_w
-
-        if used <= available or not overflow_used then
-          if used > available then
-            overflow_used = true
-          end
-
-          start_i = start_i - 1
-          return true
-        end
-
-        return false
-      end
-
-      local function try_expand_right()
-        if end_i >= #entries then
-          return false
-        end
-
-        used = used + entries[end_i + 1].width + padding_w
-
-        if used <= available or not overflow_used then
-          if used > available then
-            overflow_used = true
-          end
-
-          end_i = end_i + 1
-          return true
-        end
-
-        return false
-      end
-
-      local expand_left = true
+      local last_expand_was_left = false
 
       while true do
-        local expanded = false
+        if last_expand_was_left then
+          -- try right
+          if start_i > 1 then
+            used = used + entries[start_i - 1].width + padding_w
+            start_i = start_i - 1
+            if used > available then
+              truncate_index = start_i
+            end
+            if used >= available then
+              break
+            end
+          end
 
-        if expand_left then
-          expanded = try_expand_left() or try_expand_right()
+          last_expand_was_left = false
         else
-          expanded = try_expand_right() or try_expand_left()
+          -- try left
+          if end_i < #entries then
+            used = used + entries[end_i + 1].width + padding_w
+            end_i = end_i + 1
+            if used > available then
+              truncate_index = end_i
+            end
+            if used >= available then
+              break
+            end
+          end
+
+          last_expand_was_left = true
         end
 
-        expand_left = not expand_left
-
-        if not expanded then
+        if start_i <= 1 and end_i >= #entries then
           break
         end
       end
 
-      return start_i, end_i
+      if truncate_index == state.current_i then
+        if state.current_i == 1 then
+          truncate_index = 2
+        else
+          truncate_index = truncate_index - 1
+        end
+      end
+
+      return start_i, end_i, truncate_index
     end
 
-    local function render_window(entries, start_i, end_i)
+    local function render_window(entries, start_i, end_i, truncate_index)
       local total_width = 0
 
       local visible_entries_copy = {}
@@ -220,22 +206,15 @@ return {
         total_width = total_width + entries[i].width + padding_w
       end
 
-      if total_width > available then
+
+      if truncate_index then
         local overflow = total_width - available
-        local truncate_index
 
-        -- local middle = start_i + math.floor((end_i - start_i)/2)
-        -- local middle = math.floor((end_i + start_i)/2)
-        -- if state.current_i <= middle then
-        --   truncate_index = #visible_entries_copy
-        -- else
-        --   truncate_index = 1
-        -- end
-
-        if end_i == #visible_entries_copy then
-          truncate_index = 1
-        else
+        local middle = start_i + math.floor((end_i - start_i)/2)
+        if state.current_i <= middle then
           truncate_index = #visible_entries_copy
+        else
+          truncate_index = 1
         end
 
         if truncate_index == state.current_i then
@@ -249,7 +228,11 @@ return {
         local entry = visible_entries_copy[truncate_index]
 
         local target_width = entry.width - overflow
-        if target_width < 1 then target_width = 1 end
+
+        if target_width < 1 then
+          entry.very_small_width = target_width + padding_w
+          target_width = 1
+        end
 
         entry.path = truncate_string_left(entry.path, target_width)
         entry.width = vim.fn.strdisplaywidth(entry.path)
@@ -260,8 +243,20 @@ return {
       for i, entry in ipairs(visible_entries_copy) do
         -- Padding around entry.path is hardcoded, which I hate.
         -- ):
+
+        local format_str
+        -- Very small is when padding + ellipsis would be too big.
+        -- So we remove the padding depending on "how small" it is
+        if entry.very_small_width == 1 then
+          format_str = '%%%s@v:lua.MyTabline.click_handler@%s%s%%X'
+        elseif entry.very_small_width == 2 then
+          format_str = '%%%s@v:lua.MyTabline.click_handler@%s%s %%X'
+        else
+          format_str = '%%%s@v:lua.MyTabline.click_handler@%s %s %%X'
+        end
+
         tabline[i] = string.format(
-          '%%%s@v:lua.MyTabline.click_handler@%s %s %%X',
+          format_str,
           entry.bufnr,
           entry.hl,
           entry.path
@@ -278,9 +273,9 @@ return {
         end
 
         local entries = build_every_path_entry()
-        local start_i, end_i = find_visible_window(entries)
+        local start_i, end_i, truncate_index = find_visible_window(entries)
 
-        return render_window(entries, start_i, end_i)
+        return render_window(entries, start_i, end_i, truncate_index)
       end
     }
   end
