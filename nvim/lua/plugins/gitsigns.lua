@@ -1,6 +1,7 @@
 local gitsigns = require('gitsigns')
 
 gitsigns.setup({
+  signs_staged_enable = true,
   signcolumn = false, -- Toggle with `:Gitsigns toggle_signs`
   numhl = true, -- Toggle with `:Gitsigns toggle_numhl`
   linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
@@ -38,19 +39,26 @@ gitsigns.setup({
     end
 
     local should_centralize = false
+
     local function map_hunk_navigation(keymap, direction, show_preview, description)
-      buf_map('n', keymap, function()
-        gitsigns.nav_hunk(direction, { wrap = false, preview = show_preview }, should_centralize and function()
-          vim.fn.feedkeys('zz', 'n')
-        end or nil, { desc = '[Gitsigns] ' .. description })
-      end)
+      buf_map(
+        'n',
+        keymap,
+        function()
+          gitsigns.nav_hunk(
+            direction,
+            { wrap = false, preview = show_preview, target = 'all', },
+            should_centralize and function () vim.fn.feedkeys('zz', 'n') end or nil
+          )
+        end,
+        { desc = '[Gitsigns] ' .. description }
+      )
     end
 
     map_hunk_navigation('[c', 'prev', false, 'Vai para o hunk anterior do git')
     map_hunk_navigation(']c', 'next', false, 'Vai para o próximo hunk do git')
     map_hunk_navigation('[C', 'prev', true, 'Vai para o hunk anterior do git e mostra o diff')
     map_hunk_navigation(']C', 'next', true, 'Vai para o próximo hunk do git e mostra o diff')
-
 
     buf_map('n', ',ch', function()
       gitsigns.preview_hunk()

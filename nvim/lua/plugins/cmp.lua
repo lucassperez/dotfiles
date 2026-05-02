@@ -29,7 +29,6 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({ select = false }),
 
     ['<C-y>'] = cmp.mapping.confirm({ select = false }),
-    ['<C-j>'] = cmp.mapping.confirm({ select = true }),
 
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-p>'] = cmp.mapping.select_prev_item(),

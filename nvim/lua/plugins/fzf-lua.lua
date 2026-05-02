@@ -49,12 +49,15 @@ local function init()
   end, { desc = '[FzfLua] Abre o FzfLua buffers' })
 
   vim.keymap.set('n', '<leader>h', function()
-    require('fzf-lua').oldfiles({ sort_lastused = true })
+    require('fzf-lua').oldfiles({ sort_lastused = true, cwd_only = true, })
   end, { desc = '[FzfLua] Abre o FzfLua oldfiles' })
 end
 
 local function setup()
   require('fzf-lua').setup({
+    lsp = {
+      cwd_only = true,
+    },
     keymap = {
       builtin = {
         ['<C-d>'] = 'preview-page-down',

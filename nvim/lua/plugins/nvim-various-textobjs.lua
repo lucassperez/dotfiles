@@ -61,10 +61,6 @@ map(
   'Desce em linha vertical até achar uma linha mais curta. Aceita {conta} para múltiplas colunas'
 )
 
--- I'm not sure what this one does
-map('shellPipe', 'iP', 'inner')
-map('shellPipe', 'aP', 'outer')
-
 vim.keymap.set('n', 'gx', function()
   textobjs.url() -- select URL
   local foundURL = vim.fn.mode():find('v') -- only switches to visual mode if found

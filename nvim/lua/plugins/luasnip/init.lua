@@ -1,6 +1,8 @@
 local luasnip = require('luasnip')
 local types = require('luasnip.util.types')
 
+local cmp = require('cmp')
+
 require('plugins.luasnip.snippets')
 
 -- Aparentemente, sair do modo de inserção
@@ -61,6 +63,8 @@ vim.keymap.set({ 'i', 's' }, '<C-j>', function()
     luasnip.expand()
   elseif luasnip.locally_jumpable(1) then
     luasnip.jump(1)
+  elseif cmp.visible() then
+    cmp.confirm({ select = true })
   else
     local line = vim.api.nvim_get_current_line() -- Get the current line
     local cursor_col = vim.api.nvim_win_get_cursor(0)[2] -- Get the cursor column (0-based)
