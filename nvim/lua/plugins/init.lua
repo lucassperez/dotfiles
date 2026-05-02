@@ -316,7 +316,7 @@ require('pack_wrap').call({
   ---------
   {
     'ibhagwan/fzf-lua',
-    before = fzf.lazyPluginSpec.init,
-    after = fzf.lazyPluginSpec.config,
+    before = fzf.before,
+    after = fzf.after,
   },
 })

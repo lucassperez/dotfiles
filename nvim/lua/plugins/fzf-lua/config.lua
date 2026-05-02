@@ -1,4 +1,4 @@
-local function init()
+local function before()
   -- FzfLua resume volta a última coisa, interessante hein.
   -- Dá até pra passar como argumento, tipo FzfLua files resume=true
 
@@ -53,7 +53,7 @@ local function init()
   end, { desc = '[FzfLua] Abre o FzfLua oldfiles' })
 end
 
-local function setup()
+local function after()
   require('fzf-lua').setup({
     lsp = {
       cwd_only = true,
@@ -145,10 +145,7 @@ local function setup()
 end
 
 return {
-  lazyPluginSpec = {
-    'ibhagwan/fzf-lua',
-    cmd = 'FzfLua',
-    init = init,
-    config = setup,
-  },
+  cmd = 'FzfLua',
+  before = before,
+  after = after,
 }

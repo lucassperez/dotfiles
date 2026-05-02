@@ -2,7 +2,8 @@
 -- Set true for async, set an integer for timeout in mili seconds
 return {
   tag = '[FzfLua]',
-  lazyPluginSpec = require('plugins.fzf-lua.config').lazyPluginSpec,
+  before = require('plugins.fzf-lua.config').before,
+  after = require('plugins.fzf-lua.config').after,
 
   diagnostics = function()
     require('fzf-lua').diagnostics_workspace({ jump1 = false, async_or_timeout = true })
