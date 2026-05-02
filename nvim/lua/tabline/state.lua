@@ -17,6 +17,7 @@ local function build_buf_obj(bufnr, visible, current_bufnr, no_name)
     path = path,
     modified = vim.bo[bufnr].modified,
     readonly = vim.bo[bufnr].readonly,
+    non_modifiable = not vim.bo[bufnr].modifiable,
     visibility = 0,
   }
 

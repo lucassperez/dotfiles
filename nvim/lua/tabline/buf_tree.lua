@@ -126,8 +126,16 @@ local function calculate_buf_tree(buffers, directory_separator)
   local buf_tree = {}
 
   for _, buf in ipairs(buffers) do
-    -- splitted é tipo isso: { 'nvim', 'lua', 'plugins', 'init.lua' }
-    local splitted = vim.split(buf.path, directory_separator, { plain = true })
+    local splitted
+
+    if string.match(buf.path, '^[a-zA-Z]+://') then
+      -- Edge case: arquivos tipo health://
+      -- As barras estavam dando problema com o directory_separator na hora do split
+      splitted = { buf.path }
+    else
+      splitted = vim.split(buf.path, directory_separator, { plain = true })
+    end
+
     local bufnr = buf.bufnr
 
     local current = buf_tree

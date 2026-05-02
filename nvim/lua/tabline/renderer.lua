@@ -36,11 +36,11 @@ return {
       -- from buf_tree and buf_tree_flattened. The last item is the filename,
       -- and the first is the parent directory, if filename alone is not enough
       -- to uniquely identify the buffer.
-      -- Suffix is, for example, [+] for modified and [RO] for readonly.
+      -- Suffix is, for example, [+] for modified.
 
       if #list == 1 then
         -- This scenario is when the buffer's file name alone is unique,
-        -- but it is too big. So we truncate the string (from the left).
+        -- but it is too big. So we truncate the string from the left.
         local new_path = truncate_string_left(path_with_suffix, opts.max_buffer_name_size)
         return new_path, vim.fn.strdisplaywidth(new_path)
       end
@@ -105,6 +105,7 @@ return {
 
       if buf.readonly then suffix = suffix .. opts.readonly end
       if buf.modified then suffix = suffix .. opts.modified end
+      if buf.non_modifiable then suffix = suffix .. opts.non_modifiable end
 
       path = path .. suffix
 

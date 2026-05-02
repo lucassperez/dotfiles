@@ -3,6 +3,7 @@ local opts = {
   no_name = '[No Name]',
   modified = '[+]',
   readonly = '[RO]',
+  non_modifiable = '[-]',
   ellipsis = '…',
   ellipsis_width = nil,
   directory_separator = package.config:sub(1, 1),
