@@ -7,11 +7,6 @@ if vim_version.minor < 12 then
   return
 end
 
-local custom_screen = true
-if not custom_screen then
-  return
-end
-
 --[[
 The idea is to create a floating window
 with the text the same as the old intro,
@@ -24,7 +19,7 @@ split. The old intro also disappeared when doing this.
 
 vim.opt.shortmess:append('I')
 
-local function set_intro_highlights()
+local function create_intro_highlight_groups()
   vim.api.nvim_set_hl(0, 'IntroTitle', { fg = '#a6d189' })
   vim.api.nvim_set_hl(0, 'IntroText', { link = 'Normal' })
   vim.api.nvim_set_hl(0, 'IntroCode', { link = 'Identifier' })
@@ -56,67 +51,75 @@ local intro = {
   group = nil,
 }
 
-intro.ns = vim.api.nvim_create_namespace('IntroOverlayNS')
-intro.group = vim.api.nvim_create_augroup('IntroOverlay', { clear = true })
+local function initialize_intro_state()
+  intro.ns = vim.api.nvim_create_namespace('IntroOverlayNS')
+  intro.group = vim.api.nvim_create_augroup('IntroOverlay', { clear = true })
 
-intro.text.lines = {
-  { { '                 NVIM ' .. vim_version.build, 'IntroTitle' } },
-  { { '───────────────────────────────────────────────', 'IntroSeparator' } },
-  { { ' Nvim is open source and freely distributable!', 'IntroText' } },
-  { { '           https://neovim.io/#chat', 'IntroTitle' } },
-  { { '───────────────────────────────────────────────', 'IntroSeparator' } },
-  {
-    { 'type  ', 'IntroText', },
-    { ':', 'IntroSpecial', },
-    { 'help nvim', 'IntroCode' },
-    { '<Enter>', 'IntroSpecial' },
-    { '       if you are new!', 'IntroText' },
-  },
-  {
-    { 'type  ', 'IntroText' },
-    { ':', 'IntroSpecial', },
-    { 'checkhealth', 'IntroCode' },
-    { '<Enter>', 'IntroSpecial' },
-    { '     to optimize Nvim', 'IntroText' },
-  },
-  {
-    { 'type  ', 'IntroText' },
-    { ':', 'IntroSpecial', },
-    { 'q', 'IntroCode' },
-    { '<Enter>', 'IntroSpecial' },
-    { '               to exit', 'IntroText' },
-  },
-  {
-    { 'type  ', 'IntroText' },
-    { ':', 'IntroSpecial', },
-    { 'help', 'IntroCode' },
-    { '<Enter>', 'IntroSpecial' },
-    { '            for help', 'IntroText' },
-  },
-  { { '───────────────────────────────────────────────', 'IntroSeparator' } },
-  {
-    { 'type  ', 'IntroText' },
-    { ':', 'IntroSpecial', },
-    { 'help news', 'IntroCode' },
-    { '<Enter>', 'IntroSpecial' },
-    { (' to see changes in v%d.%d'):format(vim_version.major, vim_version.minor), 'IntroText' },
-  },
-  { { '───────────────────────────────────────────────', 'IntroSeparator' } },
-  { { '         Help poor children in Uganda!', 'IntroText' } },
-  {
-    { 'type  ', 'IntroText' },
-    { ':', 'IntroSpecial', },
-    { 'help Kuwasha', 'IntroCode' },
-    { '<Enter>', 'IntroSpecial' },
-    { '    for information', 'IntroText' },
-  },
-}
+  intro.text.lines = {
+    { { '' } },
+    { { '                 NVIM ' .. vim_version.build, 'IntroTitle' } },
+    { { '' } },
+    { { '───────────────────────────────────────────────', 'IntroSeparator' } },
+    { { ' Nvim is open source and freely distributable!', 'IntroText' } },
+    { { '           https://neovim.io/#chat', 'IntroTitle' } },
+    { { '───────────────────────────────────────────────', 'IntroSeparator' } },
+    {
+      { 'type  ', 'IntroText', },
+      { ':', 'IntroSpecial', },
+      { 'help nvim', 'IntroCode' },
+      { '<Enter>', 'IntroSpecial' },
+      { '       if you are new!', 'IntroText' },
+    },
+    {
+      { 'type  ', 'IntroText' },
+      { ':', 'IntroSpecial', },
+      { 'checkhealth', 'IntroCode' },
+      { '<Enter>', 'IntroSpecial' },
+      { '     to optimize Nvim', 'IntroText' },
+    },
+    {
+      { 'type  ', 'IntroText' },
+      { ':', 'IntroSpecial', },
+      { 'q', 'IntroCode' },
+      { '<Enter>', 'IntroSpecial' },
+      { '               to exit', 'IntroText' },
+    },
+    {
+      { 'type  ', 'IntroText' },
+      { ':', 'IntroSpecial', },
+      { 'help', 'IntroCode' },
+      { '<Enter>', 'IntroSpecial' },
+      { '            for help', 'IntroText' },
+    },
+    { { '───────────────────────────────────────────────', 'IntroSeparator' } },
+    {
+      { 'type  ', 'IntroText' },
+      { ':', 'IntroSpecial', },
+      { 'help news', 'IntroCode' },
+      { '<Enter>', 'IntroSpecial' },
+      { (' to see changes in v%d.%d'):format(vim_version.major, vim_version.minor), 'IntroText' },
+    },
+    { { '───────────────────────────────────────────────', 'IntroSeparator' } },
+    { { '         Help poor children in Uganda!', 'IntroText' } },
+    {
+      { 'type  ', 'IntroText' },
+      { ':', 'IntroSpecial', },
+      { 'help Kuwasha', 'IntroCode' },
+      { '<Enter>', 'IntroSpecial' },
+      { '    for information', 'IntroText' },
+    },
+  }
+end
 
 local function create_intro_buf()
   local buf = vim.api.nvim_create_buf(false, true)
   local line_len
 
-  for i, text in ipairs(intro.text.lines) do
+  if not intro.text.lines then
+    vim.notify('Intro#create_intro_buf: intro.text.lines é nulo! ' .. vim.inspect(intro.text), vim.log.levels.WARN)
+  end
+
+  for i, text in ipairs(intro.text.lines or {}) do
     vim.api.nvim_buf_set_lines(buf, i - 1, i - 1, false, { '' })
     vim.api.nvim_buf_set_extmark(buf, intro.ns, i - 1, 0, {
       virt_text = text,
@@ -140,8 +143,8 @@ local function create_intro_win(row, col, width, height)
     width = width,
     height = height,
     style = 'minimal',
-    -- border = 'none',
-    border = 'rounded',
+    border = 'none',
+    -- border = 'rounded',
     focusable = false,
     noautocmd = true,
   })
@@ -173,7 +176,7 @@ local function render_intro()
   local usable_width = vim.o.columns - 1
 
   -- Hide if terminal is too small
-  -- That +6 is also kind of magical, and without it
+  -- That +6 is kind of magical, but without it,
   -- it gets too squished before closing it if the
   -- terminal window gets shorter.
   if usable_width < width or vim.o.lines < height + 6 then
@@ -229,7 +232,24 @@ end
 vim.api.nvim_create_autocmd('VimEnter', {
   once = true,
   callback = function()
-    set_intro_highlights()
+    local show_intro = true
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      local is_real_buffer = vim.bo[buf].buflisted
+                             and vim.bo[buf].buftype == ''
+                             and vim.api.nvim_buf_get_name(buf) ~= ''
+                             and vim.api.nvim_buf_is_loaded(buf)
+      if is_real_buffer then
+        show_intro = false
+        break
+      end
+    end
+
+    if not show_intro then
+      return
+    end
+
+    initialize_intro_state()
+    create_intro_highlight_groups()
     render_intro()
 
     vim.api.nvim_create_autocmd('VimResized', {
@@ -239,14 +259,14 @@ vim.api.nvim_create_autocmd('VimEnter', {
 
     -- If you want to recolor the intro when changing colorscheme,
     -- uncomment the following block of code.
-    -- vim.api.nvim_create_autocmd('ColorScheme', {
-    --   group = intro.group,
-    --   callback = set_intro_highlights,
-    -- })
+    vim.api.nvim_create_autocmd('ColorScheme', {
+      group = intro.group,
+      callback = create_intro_highlight_groups,
+    })
 
     vim.api.nvim_create_autocmd({
       'InsertCharPre',
-      'BufReadPre',
+      'BufEnter',
       'CursorMoved',
     }, {
       group = intro.group,
