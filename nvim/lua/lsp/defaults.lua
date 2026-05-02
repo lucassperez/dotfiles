@@ -91,10 +91,12 @@ local function default_on_attach(_, bufnr)
   -- if root_dir then vim.api.nvim_set_current_dir(root_dir) end
 end
 
-local default_capabilities = vim.lsp.protocol.make_client_capabilities()
+local default_capabilities
 local cmp_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
 if cmp_ok then
   default_capabilities = cmp_nvim_lsp.default_capabilities(default_capabilities)
+else
+  default_capabilities = vim.lsp.protocol.make_client_capabilities()
 end
 
 -- Some specific servers call only the keymaps and then override some
