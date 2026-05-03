@@ -27,8 +27,8 @@ fi
 
 # https://stackoverflow.com/questions/37351664/colors-in-dash-not-bash
 ACTUAL_BRANCH=$(git branch --show-current)
-if [ "$ACTUAL_BRANCH" = main -o "$ACTUAL_BRANCH" = master ]; then
-  echo -e Currently at branch "\e[91;1m$ACTUAL_BRANCH\e[0m", executing the command "\e[1mgit log -15 $@\e[0m"
+if [ "$ACTUAL_BRANCH" = main -o "$ACTUAL_BRANCH" = master -o "$ACTUAL_BRANCH" = develop ]; then
+  printf "Currently at branch \e[91;1m$ACTUAL_BRANCH\e[0m, executing the command \e[1mgit log -15 $@\e[0m\n"
   git log -15 "$@"
   # Just exit to keep the exit code of git log, be it zero or non zero
   exit
@@ -39,8 +39,11 @@ elif [ "$(git rev-parse --verify -q main)" ]; then
 elif [ "$(git rev-parse --verify -q master)" ]; then
   BRANCH=master
 
+elif [ "$(git rev-parse --verify -q develop)" ]; then
+  BRANCH=develop
+
 else
-  echo Neither main nor master git branches found
+  echo Neither main, master nor develop git branches found
 
   exit 2
 fi
