@@ -75,6 +75,10 @@ vimgit() {
         staged=sim
         shift
         ;;
+      -S|--vstaged)
+        staged=reverse_staged
+        shift
+        ;;
       -h|--help)
         help=sim
         break
@@ -129,6 +133,7 @@ vimgit() {
     echo 'Possible options:'
     echo '    -c  --conflict      Only lists files with git conflict markers (lines starting with <<<<<<<, ======= or >>>>>>>)'
     echo '    -s  --staged        Only lists files that are staged'
+    echo '    -S --vstaged        Only lists files that are not staged'
     echo '    -g  --grep          Pass a pattern to grep over the result before opening files in vim'
     echo '    -v -gv -vg --vgrep  Pass a pattern to grep inverse matches (add -v to grep command)'
     echo '    -b  --branch        Pass a branch name to get the files changed between HEAD and that branch'
@@ -136,7 +141,11 @@ vimgit() {
     # If unknown_args is not empty but help is, I'm going to both
     # print this help message and open vim. Do I want this?
     # Might be weird.
-    [ -n "$help" ] && return
+
+    # This makes the program exit with non zero if help is not present,
+    # which means unknown_args is present. But exit 0 if help is present.
+    # So it exits 0 with --help, but exits non 0 with --dsadsa, for example.
+    [ -n "$help" ] && return || return
   fi
 
   if [ -n "$conflict" -a -n "$staged" ]; then
@@ -168,9 +177,11 @@ vimgit() {
   local files
   if [ -n "$conflict" ]; then
     files=`git_porcelain_awk_command_with_new_files_complement | xargs grep -l '^[<=>]\{7\}'`
-  elif [ -n "$staged" ]; then
+  elif [ -n "$staged" ] && [ "$staged" = sim ]; then
     # Easier to use git diff than awk [[:blank:]] or something fancy
     files=`git diff --name-only --staged | awk '{print $1}'`
+  elif [ -n "$staged" ] && [ "$staged" = reverse_staged ]; then
+    files=`git status --porcelain | awk '/^(\?\?| [A-CE-Z]|[A-Z][A-Z])/ { print $2 }'`
   elif [ -n "$diff_branch" ]; then
     # TODO: Lidar com arquivos novos e renomeados aqui também.
     # Talvez usar git diff --name-status?
@@ -215,12 +226,12 @@ git_branch_grep_fzf() {
 
   if [ "$#" -eq 0 ]; then
     local branches=`git branch`
-    local count=`echo $branches | wc -l`
+    local count=`echo $branches | wc -l | tr -d '[[:blank:]]'`
     local selected=`echo "$branches" | fzf --height=$(expr 2 + $count)`
 
     if [ -z "$selected" ]; then; return; 3; fi
 
-    selected=`echo "$selected" | sed 's/^\(*\|+\)\?\s*//' | tr -d '[[:blank:]]'`
+    selected=`echo "$selected" | sed -E 's/^[*+]?[[:blank:]]*//'`
     imprimir_mensagem_mudando_de_branch "$selected"
     git checkout "$selected"
     return
