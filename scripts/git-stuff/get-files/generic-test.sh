@@ -5,6 +5,7 @@
 # Author: Lucas Perez
 # Date: 11/12/2021
 # Last Update: 11/12/2021
+# Last Update: 02/05/2026
 #
 # Description: Tries to determine the language of current project and finds test
 #              files present in the diff with either main or master branch.
@@ -63,22 +64,22 @@ else
   exit 4
 fi
 
+git_diff_ls_files() {
+  echo "`git diff $1 --name-only`\n`git ls-files --exclude-standard --others`"
+}
+
 ACTUAL_BRANCH=$(git branch --show-current)
-if [ "$ACTUAL_BRANCH" = main -o "$ACTUAL_BRANCH" = master ]; then
-
+if [ "$ACTUAL_BRANCH" = main -o "$ACTUAL_BRANCH" = master -o "$ACTUAL_BRANCH" = develop ]; then
   [ "$NO_CLIP" ] || echo Current branch is "\e[91;1m$ACTUAL_BRANCH\e[0m"
-  FILES=$(git diff "$ACTUAL_BRANCH" --name-only | sort -u | grep -E "$GREP_PATTERN")
-
+  FILES=$(git_diff_ls_files "$ACTUAL_BRANCH" | sort -u | grep -E "$GREP_PATTERN")
+elif [ "$(git rev-parse --verify -q develop)" ]; then
+  FILES=$(git_diff_ls_files develop | sort -u | grep -E "$GREP_PATTERN")
 elif [ "$(git rev-parse --verify -q main)" ]; then
-
-  FILES=$(git diff main --name-only | sort -u | grep -E "$GREP_PATTERN")
-
+  FILES=$(git_diff_ls_files main | sort -u | grep -E "$GREP_PATTERN")
 elif [ "$(git rev-parse --verify -q master)" ]; then
-
-  FILES=$(git diff master --name-only | sort -u | grep -E "$GREP_PATTERN")
-
+  FILES=$(git_diff_ls_files master | sort -u | grep -E "$GREP_PATTERN")
 else
-  echo Neither main nor master git branches found
+  echo Neither main nor master nor develop git branches found
   exit 2
 fi
 
