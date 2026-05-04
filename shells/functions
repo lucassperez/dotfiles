@@ -15,6 +15,14 @@ fzv() {
   echo "$results" | xargs -d '\n' nvim
 }
 
+vimgit() {
+  ~/scripts/git-stuff/vimgit.sh "$@"
+}
+
+git_branch_grep_fzf() {
+  ~/scripts/git-stuff/git_branch_grep_fzf.sh "$@"
+}
+
 git_rebase_or_cherry_pick_add_all_and_continue() {
   git add .
   local git_status_message=`git status`
@@ -26,20 +34,6 @@ git_rebase_or_cherry_pick_add_all_and_continue() {
     echo 'Não soube definir se estamos num cherry pick ou rebase a partir da mensagem do git status. ):'
     return 1
   fi
-}
-
-git_fetch_checkout() {
-  if [ -z "$1" ]; then
-    return 1
-  fi
-
-  git fetch origin "$1"
-
-  if [ "$?" -gt 0 ]; then
-    exit "$?"
-  fi
-
-  git checkout "$1"
 }
 
 git_branch_delete_remote_if_no_local_with_the_same_name() {
@@ -55,273 +49,6 @@ git_branch_delete_remote_if_no_local_with_the_same_name() {
   if [ -z $i ]; then
     echo 'Nada para deletar'
   fi
-}
-
-vimgit() {
-  local conflict
-  local staged
-  local help
-  local unknown_args
-  local grep_pattern
-  local diff_branch
-
-  while [ "$#" -gt 0 ]; do
-    case "$1" in
-      -c|--conflict)
-        conflict=sim
-        shift
-        ;;
-      -s|--staged)
-        staged=sim
-        shift
-        ;;
-      -S|--vstaged)
-        staged=reverse_staged
-        shift
-        ;;
-      -h|--help)
-        help=sim
-        break
-        ;;
-      -g|--grep)
-        # TODO: Think about maybe passing grep options to grep?
-        # Or at least make it possible to grep case insensitively?
-        if [ -z "$2" ]; then
-          echo 'An argument must be passed to -g or --grep option'
-          return 1
-        fi
-        grep_pattern="$2"
-        grep_options=''
-        shift 2
-        ;;
-      -v|--vgrep|-vg|-gv)
-        # Grep can return only non match with -v flag (grep -v).
-        # Since I did not implement passing arguments to grep, I made
-        # this -v option here, too. The long name "vgrep" is kind of
-        # random, but thought it sounded better than grepv
-        if [ -z "$2" ]; then
-          echo 'An argument must be passed to -v or --vgrep option'
-          return 1
-        fi
-        # TODO: Allow multiple -v without overriding the last pattern
-        grep_pattern="$2"
-        grep_options=-v
-        shift 2
-        ;;
-      -b|--branch)
-        if [ -z "$2" ]; then
-          echo 'An argument must be passed to -b or --branch option'
-          return 1
-        fi
-        if `git branch | grep -wq "\<$2\>"`; then
-          diff_branch="$2"
-        else
-          echo "Branch \e[1;31m$2\e[0m not found"
-          return 2
-        fi
-        shift 2
-        ;;
-      *)
-        unknown_args="$1, $unknown_args"
-        shift
-        ;;
-    esac
-  done
-
-  if [ -n "$unknown_args" -o -n "$help" ]; then
-    [ -n "$unknown_args" ] && echo "Unknown option \`${unknown_args%%, }\`"
-    echo 'Possible options:'
-    echo '    -c  --conflict      Only lists files with git conflict markers (lines starting with <<<<<<<, ======= or >>>>>>>)'
-    echo '    -s  --staged        Only lists files that are staged'
-    echo '    -S --vstaged        Only lists files that are not staged'
-    echo '    -g  --grep          Pass a pattern to grep over the result before opening files in vim'
-    echo '    -v -gv -vg --vgrep  Pass a pattern to grep inverse matches (add -v to grep command)'
-    echo '    -b  --branch        Pass a branch name to get the files changed between HEAD and that branch'
-    echo 'If both conflict and staged options are passed, staged is ignored.'
-    # If unknown_args is not empty but help is, I'm going to both
-    # print this help message and open vim. Do I want this?
-    # Might be weird.
-
-    # This makes the program exit with non zero if help is not present,
-    # which means unknown_args is present. But exit 0 if help is present.
-    # So it exits 0 with --help, but exits non 0 with --dsadsa, for example.
-    [ -n "$help" ] && return || return
-  fi
-
-  if [ -n "$conflict" -a -n "$staged" ]; then
-    echo 'Both conflict and staged options passed, using only conflict.'
-  fi
-
-  # Git porcelain outputs some text and the beginning of the line.
-  # If it starts with R, it means the file was renamed, and it appears like this:
-  #   R old_name -> new_name
-  #   If awk finds a line that starts with R, it prints the 4th column, which is the new_name,
-  #   so it ignores the old_name and opens the correct new file.
-  # If it starts with D, it means it was deleted. Opening it in vimgit just shows an empty
-  #   file, so this ignores deleted files as well.
-  # If it starts with ??, it is either a new file or new directory. In this case,
-  #   git status --porcelain would only show the file name if directory already
-  #   exists, and if the directory is new, it would stop in the new directory.
-  #   Opening this in vim would open the directory (eg, Netrw buffer).
-  #   That is why the git ls-files command is added, to get only the new files.
-  #   If there is no ?? file, the git ls-files command returns empty, so we're fine.
-  # If it starts with anything else, it opens them.
-  git_porcelain_awk_command_with_new_files_complement() {
-    local files=`\
-      git status --porcelain | \
-      awk '/^ ?R / { print $4; next} /^ ?D / { next } /^\?\?/ { next } { print $2 }'`
-
-    echo "$files\n$(git ls-files --exclude-standard --others)"
-  }
-
-  local files
-  if [ -n "$conflict" ]; then
-    files=`git_porcelain_awk_command_with_new_files_complement | xargs grep -l '^[<=>]\{7\}'`
-  elif [ -n "$staged" ] && [ "$staged" = sim ]; then
-    # Easier to use git diff than awk [[:blank:]] or something fancy
-    files=`git diff --name-only --staged | awk '{print $1}'`
-  elif [ -n "$staged" ] && [ "$staged" = reverse_staged ]; then
-    files=`git status --porcelain | awk '/^(\?\?| [A-CE-Z]|[A-Z][A-Z])/ { print $2 }'`
-  elif [ -n "$diff_branch" ]; then
-    # TODO: Lidar com arquivos novos e renomeados aqui também.
-    # Talvez usar git diff --name-status?
-    files=`git diff --name-only "$diff_branch"`
-    files="$files\n$(git ls-files --exclude-standard --others)"
-  else
-    files=`git_porcelain_awk_command_with_new_files_complement`
-  fi
-
-
-  [ -z $files ] && return
-
-  if [ -n "$grep_pattern" ]; then
-    if [ -n "$grep_options" ]; then
-      files=`echo $files | tr ' ' '\n' | grep "$grep_options" "$grep_pattern"`
-    else
-      files=`echo $files | tr ' ' '\n' | grep "$grep_pattern"`
-    fi
-  fi
-
-  [ -z $files ] && return
-
-  local final_files=''
-  # Decided it is easier to store the toplevel like this and use the variables
-  # than using awk -v git_top_level=$(git rev-parse --show-toplevel) etc
-  local toplevel=`git rev-parse --show-toplevel`
-  for f in `echo $files`; do
-    final_files="$final_files\n$toplevel/$f"
-  done
-  final_files=`echo $final_files | sed '/^[[:space:]]*$/d'`
-
-  (
-    cd $toplevel
-    nvim `echo $final_files`
-  )
-}
-
-git_branch_grep_fzf() {
-  imprimir_mensagem_mudando_de_branch() {
-    echo "Mudando para \e[1m$1\e[0m"
-  }
-
-  if [ "$#" -eq 0 ]; then
-    local branches=`git branch`
-    local count=`echo $branches | wc -l | tr -d '[[:blank:]]'`
-    local selected=`echo "$branches" | fzf --height=$(expr 2 + $count)`
-
-    if [ -z "$selected" ]; then; return; 3; fi
-
-    selected=`echo "$selected" | sed -E 's/^[*+]?[[:blank:]]*//'`
-    imprimir_mensagem_mudando_de_branch "$selected"
-    git checkout "$selected"
-    return
-  fi
-
-  while [ "$#" -gt 0 ]; do
-    case "$1" in
-      -)
-        local checkout_last=yes
-        ;;
-      .)
-        local checkout_dot=yes
-        ;;
-      -b)
-        local create_and_checkout="$2"
-        shift
-        ;;
-      -h|--help)
-        echo 'Basicamente, recebe um padrão e busca uma branch git que casa com esse'
-        echo 'padrão. Caso exista mais de uma, joga as possíveis branches no fzf.'
-        echo 'A busca com o padrão ignora maiúsculas e minúsculas (grep -i).'
-        echo 'Caso nenhum padrão seja passado, passa todas as branches direto para o fzf.'
-        echo 'Caso duas branches casem com o padrão mas uma delas for a branch atual,'
-        echo 'mudamos direto para a outra branch.'
-        echo
-        echo 'Também é possível passar algumas opções para alterar a funcionalidade:'
-        echo
-        echo '-           Ir para a última branch (git checkout -)'
-        echo '.           Executa git checkout .'
-        echo '-b          Criar e mudar para a branch (git checkout -b)'
-        echo '-h --help   Mostra esse texto de ajuda'
-        return
-        ;;
-      *)
-        if [ -z "$grep_pattern" ]; then
-          local grep_pattern="$1"
-        fi
-    esac
-    shift
-  done
-
-  if [ -n "$checkout_last" ]; then
-    echo Mudando para a última branch
-    git checkout -
-    return
-  fi
-
-  if [ -n "$create_and_checkout" ]; then
-    echo "Criando e mudando para \e[1m$create_and_checkout\e[0m"
-    git checkout -b "$create_and_checkout"
-    return
-  fi
-
-  if [ -n "$checkout_dot" ]; then
-    echo 'Executando `git checkout .`'
-    git checkout .
-    return
-  fi
-
-  # TODO: Deixei grep -i pra ser case insensitive. Pensar sobre.
-  partial=`git branch | grep -i $grep_pattern`
-
-  if [ -z "$partial" ]; then
-    echo Nenhuma branch encontrada para o grep com "$grep_pattern"
-    return 10
-  fi
-
-  count=`echo "$partial" | wc -l`
-  if [ "$count" -eq 2 ] && echo "$partial" | grep -q '^*'; then
-    # Esse sed dá match na branch que não é a atual
-    # e tira os espaços do começo que houverem.
-    local b=`echo "$partial" | sed -n 's/^[^*]\s*//p'`
-    echo "Duas branches encontradas, mas uma era a atual.\nTrocando para a outra: \e[1m$b\e[0m"
-    git checkout `echo "$partial" | grep -v '^*'`
-    return
-  elif [ "$count" -gt 1 ]; then
-    echo Resultado com mais de uma branch encontrada para o grep com "$grep_pattern"
-    local selected=`echo "$partial" | fzf --height=$(expr 2 + $count)`
-
-    if [ -z "$selected" ]; then; return; 11; fi
-
-    selected=`echo "$selected" | tr -d '*' | tr -d '[[:blank:]]'`
-    imprimir_mensagem_mudando_de_branch "$selected"
-    git checkout `echo $selected | sed 's/^\*\?\s*//'`
-    return
-  fi
-
-  local b=`echo "$partial" | tr -d '*' | tr -d '[[:blank:]]'`
-  imprimir_mensagem_mudando_de_branch "$b"
-  git checkout "$b"
 }
 
 yeet_docker() {
@@ -341,24 +68,6 @@ yeet_docker() {
 simplexev() {
   xev | awk -F '[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
 }
-
-# path() {
-#   if [ $1 ] && [ $1 = '-h' -o $1 = '--help' -o $1 = 'help' ]; then
-#     echo "To show rtx dirs, call path with -r flag"
-#     return
-#   fi
-
-#   local show_rtx_path
-#   if [ $1 ] && [ $1 = -r ]; then
-#     show_rtx_path=sim
-#   fi
-#   result=`echo $PATH | tr ":" "\n"`
-#   if [ -z $show_rtx_path ]; then
-#     local rtx_data_dir="${RTX_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/rtx}/installs/"
-#     result=`echo $result | sed "s|^$rtx_data_dir.*$|$rtx_data_dir...|" | uniq`
-#   fi
-#   echo $result
-# }
 
 redme() {
   if [ -f "$1" ]; then
