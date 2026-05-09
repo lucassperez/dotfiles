@@ -103,18 +103,7 @@ require('pack_wrap').call({
   {
     'eero-lehtinen/oklch-color-picker.nvim',
     after = function()
-      vim.api.nvim_create_user_command('ColorHighlightToggle', function()
-        require('oklch-color-picker').highlight.toggle()
-      end, {})
-
-      vim.keymap.set('n', '<leader>C', ':ColorHighlightToggle<CR>')
-      vim.keymap.set('n', '<leader>V', ':ColorPickOklch<CR>')
-
-      require('oklch-color-picker').setup({
-        highlight = {
-          enabled = false,
-        },
-      })
+      require('plugins.oklch-color-picker')
     end,
   },
   {
