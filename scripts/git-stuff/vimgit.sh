@@ -113,7 +113,12 @@ git_porcelain_awk_command_with_new_files_complement() {
     git status --porcelain | \
     awk '/^ ?R / { print $4; next} /^ ?D / { next } /^\?\?/ { next } { print $2 }'`
 
-  echo "$files\n$(git ls-files --exclude-standard --others)"
+  local new_files=`git ls-files --exclude-standard --others`
+  if [ -n "$new_files" ]; then
+    files="$files\n$new_files"
+  fi
+
+  printf "%s\n" "$files"
 }
 
 files=''
@@ -128,7 +133,10 @@ elif [ -n "$diff_branch" ]; then
   # TODO: Lidar com arquivos novos e renomeados aqui também.
   # Talvez usar git diff --name-status?
   files=`git diff --name-only "$diff_branch"`
-  files="$files\n$(git ls-files --exclude-standard --others)"
+  new_files=`git ls-files --exclude-standard --others`
+  if [ -n "$new_files" ]; then
+    files="$files\n$new_files"
+  fi
 else
   files=`git_porcelain_awk_command_with_new_files_complement`
 fi
@@ -145,16 +153,17 @@ fi
 
 [ -z "$files" ] && exit
 
-final_files=''
-# Decided it is easier to store the toplevel like this and use the variables
-# than using awk -v git_top_level=$(git rev-parse --show-toplevel) etc
-toplevel=`git rev-parse --show-toplevel`
-for f in `echo $files`; do
-  final_files="$final_files\n$toplevel/$f"
-done
-final_files=`echo $final_files | sed '/^[[:space:]]*$/d'`
+# cd `git rev-parse --show-toplevel`
+# exec nvim $files
 
-(
-  cd $toplevel
-  nvim `echo $final_files`
-)
+# If we need shell dark magic to be more correct, here we go:
+toplevel=`git rev-parse --show-toplevel`
+set --
+while IFS= read -r f; do
+  set -- "$@" "$toplevel/$f"
+done <<EOF
+$files
+EOF
+[ "$#" -eq 0 ] && exit 0
+cd "$toplevel"
+exec nvim "$@"
