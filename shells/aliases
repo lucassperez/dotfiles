@@ -45,7 +45,7 @@ alias gb='git branch'
 alias gst='git stash'
 alias gstp='git stash pop'
 alias gr='git_rebase_or_cherry_pick_add_all_and_continue'
-alias k='git_branch_grep_fzf'
+alias k='~/scripts/git-stuff/git_branch_grep_fzf.sh'
 alias ts='tig status'
 alias pwdcp="pwd | tr -d '\n' | xclip -selection clipboard && pwd"
 alias browsersync='browser-sync start --server --directory --files **/*'
@@ -58,6 +58,8 @@ alias lwmtheme='leftwm-theme'
 alias enabletouchpadtap='~/scripts/enable-touchpad-tap.sh'
 alias xspeed='echo "xset r rate 220 25" && xset r rate 220 25'
 alias xall='~/scripts/conf-keyboard.sh && ~/scripts/enable-touchpad-tap.sh'
+
+alias vimgit='~/scripts/git-stuff/vimgit.sh'
 
 alias vim='nvim'
 alias nv='nvim'

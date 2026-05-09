@@ -15,14 +15,6 @@ fzv() {
   echo "$results" | xargs -d '\n' nvim
 }
 
-vimgit() {
-  ~/scripts/git-stuff/vimgit.sh "$@"
-}
-
-git_branch_grep_fzf() {
-  ~/scripts/git-stuff/git_branch_grep_fzf.sh "$@"
-}
-
 git_rebase_or_cherry_pick_add_all_and_continue() {
   git add .
   local git_status_message=`git status`
