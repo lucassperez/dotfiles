@@ -6,29 +6,29 @@ local function map_from_keys(keys)
   end
 end
 
-local function r(path)
-  return function()
-    require(path)
-  end
-end
-
 require('pack_wrap').call({
   -- Colors and visuals
   -- Main UI building
   ---------------------
   {
     'catppuccin/nvim',
-    r('plugins.catppuccin'),
+    after = function()
+      require('plugins.catppuccin')
+    end,
     name = 'catppuccin',
   },
   {
     'lewis6991/gitsigns.nvim',
-    r('plugins.gitsigns'),
+    after = function()
+      require('plugins.gitsigns')
+    end,
   },
   {
-    disable = true,
     'lucassperez/nvim-cokeline',
-    r('plugins.nvim-cokeline'),
+    disable = true,
+    after = function()
+      require('plugins.nvim-cokeline')
+    end,
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
   'elixir-editors/vim-elixir',
@@ -92,6 +92,19 @@ require('pack_wrap').call({
   -----------------------------------------------
   -----------------------------------------------
 
+  -- FzfLua
+  -- Fuzzy Finder
+  ---------------
+  {
+    'ibhagwan/fzf-lua',
+    before = fzf.before,
+    after = fzf.after,
+  },
+
+  -----------------------------------------------
+  -----------------------------------------------
+  -----------------------------------------------
+
   -- Commands and features
   ------------------------
   {
@@ -109,8 +122,9 @@ require('pack_wrap').call({
   {
     'kyazdani42/nvim-tree.lua',
     after = function()
-      map_from_keys(require('plugins.nvim-tree').keys)
-      require('plugins.nvim-tree').setup()
+      local nvim_tree = require('plugins.nvim-tree')
+      map_from_keys(nvim_tree.keys)
+      nvim_tree.setup()
     end
   },
   {
@@ -129,37 +143,15 @@ require('pack_wrap').call({
   -----------------------------------------------
   -----------------------------------------------
 
-  -- Tmux related plugins
-  -----------------------
-  {
-    disable = true,
-    'christoomey/vim-tmux-navigator',
-    before = function()
-      vim.g.tmux_navigator_no_mappings = 1
-      vim.keymap.set('n', '<C-h>', '<cmd>TmuxNavigateLeft<CR>')
-      vim.keymap.set('n', '<C-j>', '<cmd>TmuxNavigateDown<CR>')
-      vim.keymap.set('n', '<C-k>', '<cmd>TmuxNavigateUp<CR>')
-      vim.keymap.set('n', '<C-l>', '<cmd>TmuxNavigateRight<CR>')
-    end,
-  },
-  {
-    disable = true,
-    -- 'christoomey/vim-tmux-runner',
-    'lucassperez/vim-tmux-runner',
-    version = 'get-attached-pane',
-  },
-
-  -----------------------------------------------
-  -----------------------------------------------
-  -----------------------------------------------
-
   -- LSP
   ------
   {
     -- Create a cronjob with
     -- nvim --headless -c "lua require('mason')" -c 'MasonUpdate' -c 'qall'
     'williamboman/mason.nvim',
-    r('lsp'),
+    after = function()
+      require('lsp')
+    end,
     dependencies = {
       'neovim/nvim-lspconfig',
       'hrsh7th/cmp-nvim-lsp',
@@ -179,9 +171,11 @@ require('pack_wrap').call({
         filetype = 'lua',
       },
       {
-        disable = false,
         'j-hui/fidget.nvim',
-        r('plugins.fidget'),
+        disable = false,
+        after = function()
+          require('plugins.fidget')
+        end,
       },
     },
   },
@@ -195,7 +189,7 @@ require('pack_wrap').call({
   {
     src = 'nvim-treesitter/nvim-treesitter',
     version = 'main',
-    after = function ()
+    after = function()
       require('plugins.nvim-treesitter')
     end,
     hook = {
@@ -305,11 +299,23 @@ require('pack_wrap').call({
   -----------------------------------------------
   -----------------------------------------------
 
-  -- FzfLua
-  ---------
+  -- Tmux related plugins
+  -----------------------
   {
-    'ibhagwan/fzf-lua',
-    before = fzf.before,
-    after = fzf.after,
+    'christoomey/vim-tmux-navigator',
+    disable = true,
+    before = function()
+      vim.g.tmux_navigator_no_mappings = 1
+      vim.keymap.set('n', '<C-h>', '<cmd>TmuxNavigateLeft<CR>')
+      vim.keymap.set('n', '<C-j>', '<cmd>TmuxNavigateDown<CR>')
+      vim.keymap.set('n', '<C-k>', '<cmd>TmuxNavigateUp<CR>')
+      vim.keymap.set('n', '<C-l>', '<cmd>TmuxNavigateRight<CR>')
+    end,
+  },
+  {
+    -- 'christoomey/vim-tmux-runner',
+    'lucassperez/vim-tmux-runner',
+    disable = true,
+    version = 'get-attached-pane',
   },
 })
