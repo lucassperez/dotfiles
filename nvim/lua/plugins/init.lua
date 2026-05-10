@@ -253,6 +253,7 @@ require('pack_wrap').call({
     after = function()
       require('plugins.cmp')
     end,
+    event = 'InsertEnter',
     dependencies = {
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
@@ -273,21 +274,24 @@ require('pack_wrap').call({
     -- I think nvim-autopairs should be able to do it, but having lexima as well
     -- is apparently making it buggy.
     'cohama/lexima.vim',
-    after = function()
+    before = function()
       require('plugins.lexima')
     end,
+    event = 'InsertEnter',
   },
   {
     'windwp/nvim-autopairs',
     after = function()
       require('plugins.nvim-autopairs')
     end,
+    event = 'InsertEnter',
   },
   {
     'alvan/vim-closetag',
     before = function()
       require('plugins.vim-closetag')
     end,
+    event = 'InsertEnter',
   },
   -- {
   --   'windwp/nvim-ts-autotag',
