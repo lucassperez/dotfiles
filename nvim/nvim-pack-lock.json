@@ -49,11 +49,11 @@
       "src": "https://github.com/j-hui/fidget.nvim"
     },
     "fzf-lua": {
-      "rev": "ffa44ee9470743a7697d28df3a1a216fdfe2b09d",
+      "rev": "44816af2465bb0a17ae0f1f2d8a4f9c3df524fcd",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "gitsigns.nvim": {
-      "rev": "6d808f99bd63303646794406e270bd553ad7792e",
+      "rev": "dd3f588bacbeb041be6facf1742e42097f62165d",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "lazydev.nvim": {
@@ -64,12 +64,8 @@
       "rev": "ab621e4756465c9d354fce88cff2bd1aa7887065",
       "src": "https://github.com/cohama/lexima.vim"
     },
-    "mason-lspconfig.nvim": {
-      "rev": "0c2823e0418f3d9230ff8b201c976e84de1cb401",
-      "src": "https://github.com/williamboman/mason-lspconfig.nvim"
-    },
     "mason.nvim": {
-      "rev": "12ddd182d9efbdc848b540f16484a583d52da0fb",
+      "rev": "e54f5bf5f12c560da31c17eee5b3e1bd369f3ff9",
       "src": "https://github.com/williamboman/mason.nvim"
     },
     "mini.ai": {
@@ -83,27 +79,23 @@
       "version": ">=0.0.0"
     },
     "nvim-autopairs": {
-      "rev": "59bce2eef357189c3305e25bc6dd2d138c1683f5",
+      "rev": "7b9923abad60b903ece7c52940e1321d39eccc79",
       "src": "https://github.com/windwp/nvim-autopairs"
     },
     "nvim-cmp": {
       "rev": "a1d504892f2bc56c2e79b65c6faded2fd21f3eca",
       "src": "https://github.com/hrsh7th/nvim-cmp"
     },
-    "nvim-cokeline": {
-      "rev": "6434e44a41c6ed0a50c022622474ac43bdb045ff",
-      "src": "https://github.com/lucassperez/nvim-cokeline"
-    },
     "nvim-lspconfig": {
-      "rev": "8fde495949782bb61c2605174e231d145a048d8c",
+      "rev": "451d4ef9abd4f0f08e379ef0d55d1c391b6125a7",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-surround": {
-      "rev": "9291040de8cd8a4439eb64c441e8d5d2bf884a5a",
+      "rev": "2e93e154de9ff326def6480a4358bfc149d5da2c",
       "src": "https://github.com/kylechui/nvim-surround"
     },
     "nvim-tree.lua": {
-      "rev": "d277467fc0d1d0e2bca88165a1de6b526f9f6fe8",
+      "rev": "f9bfc0059eca24546b69a7006110463da4808f8f",
       "src": "https://github.com/kyazdani42/nvim-tree.lua"
     },
     "nvim-treesitter": {
@@ -125,7 +117,7 @@
       "src": "https://github.com/chrisgrieser/nvim-various-textobjs"
     },
     "oklch-color-picker.nvim": {
-      "rev": "3f343962643f63d75ae3bcf65669df2930e94411",
+      "rev": "9b5db80d5f6af8fbc31bad29f69ad76f63154944",
       "src": "https://github.com/eero-lehtinen/oklch-color-picker.nvim"
     },
     "plenary.nvim": {
@@ -140,10 +132,6 @@
       "rev": "15336a99c599ff10b04d324310bc1295f5203acb",
       "src": "https://github.com/wesleimp/stylua.nvim"
     },
-    "typescript.nvim": {
-      "rev": "4de85ef699d7e6010528dcfbddc2ed4c2c421467",
-      "src": "https://github.com/jose-elias-alvarez/typescript.nvim"
-    },
     "vim-closetag": {
       "rev": "d0a562f8bdb107a50595aefe53b1a690460c3822",
       "src": "https://github.com/alvan/vim-closetag"
@@ -155,19 +143,6 @@
     "vim-matchup": {
       "rev": "dccb2d12ef2a703d2f076b3cda36a3339449d1eb",
       "src": "https://github.com/andymass/vim-matchup"
-    },
-    "vim-ragtag": {
-      "rev": "51b313e8a2e3a44f37b9d625bc0d461e9066b7e9",
-      "src": "https://github.com/tpope/vim-ragtag"
-    },
-    "vim-tmux-navigator": {
-      "rev": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432",
-      "src": "https://github.com/christoomey/vim-tmux-navigator"
-    },
-    "vim-tmux-runner": {
-      "rev": "456f0a1d729e7f807ce0878388d284db75f61701",
-      "src": "https://github.com/lucassperez/vim-tmux-runner",
-      "version": "'get-attached-pane'"
     }
   }
 }
