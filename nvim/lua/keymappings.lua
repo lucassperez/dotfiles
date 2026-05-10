@@ -307,3 +307,33 @@ vim.keymap.set('n', '<leader>=', ':wincmd =<CR>', { desc = 'Deixa todas as janel
 vim.keymap.set('n', '<leader>e', function()
   TestAndFile.toggle()
 end, { silent = true, desc = 'Tenta alternar entre um arquivo e o seu teste' })
+
+-- RAGTAG
+-- Tpope's ragtag is only active for the filetypes
+-- hard coded in its source code. So I created these
+-- mappings to mimic the ragtag mappings I use.
+local function insert_pair(open, close)
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local line = vim.api.nvim_get_current_line()
+
+  local new = line:sub(1, col) .. open .. close .. line:sub(col + 1)
+
+  vim.api.nvim_set_current_line(new)
+  vim.api.nvim_win_set_cursor(0, { row, col + #open })
+end
+
+vim.keymap.set('i', '<C-x>-', function()
+  insert_pair('<% ', ' %>')
+end)
+
+vim.keymap.set('i', '<C-x>=', function()
+  insert_pair('<%= ', ' %>')
+end)
+
+vim.keymap.set('i', '<C-x>c', function()
+  insert_pair('<%# ', ' %>')
+end)
+
+vim.keymap.set('i', '<C-x>+', function()
+  insert_pair('<%# ', ' %>')
+end)

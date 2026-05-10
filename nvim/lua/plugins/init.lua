@@ -224,7 +224,7 @@ require('pack_wrap').call({
   ----------------------------------------------
   {
     'tpope/vim-ragtag',
-    filetype = { 'eruby', 'elixir', 'eelixir', 'heex' },
+    disable = true,
     before = function()
       -- https://github.com/tpope/vim-ragtag/blob/master/doc/ragtag.txt
       vim.cmd([[

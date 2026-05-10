@@ -44,4 +44,20 @@ npairs.add_rules({
       return opts.prev_char:match('.%]') ~= nil
     end)
     :use_key(']'),
+
+  Rule('<% ', '%>')
+    :replace_endpair(function()
+      return ' %>'
+    end)
+    :set_end_pair_length(3),
+  Rule('<%= ', '%>')
+    :replace_endpair(function()
+      return ' %>'
+    end)
+    :set_end_pair_length(3),
+  Rule('<%# ', '%>')
+    :replace_endpair(function()
+      return ' %>'
+    end)
+    :set_end_pair_length(3),
 })
