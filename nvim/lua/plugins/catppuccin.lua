@@ -164,6 +164,7 @@ hi DiagnosticVirtualTextHint     gui=ITALIC cterm=ITALIC
 hi DiagnosticVirtualTextInfo     gui=ITALIC cterm=ITALIC
 hi DiagnosticVirtualTextOk       gui=ITALIC cterm=ITALIC
 hi DiagnosticVirtualTextTextWarn gui=ITALIC cterm=ITALIC
+hi DiagnosticUnnecessary         gui=UNDERLINE
 ]])
 
 --[[
