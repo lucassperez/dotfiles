@@ -118,6 +118,22 @@ local state = {
   },
 }
 
+local function update_lsp_collection_state(client_id)
+  local client = vim.lsp.get_clients({ id = client_id })[1]
+
+  if not client then
+    return
+  end
+
+  local lsp_name = client.name
+  local lsp = state.lsp.collection[lsp_name] or {}
+
+  lsp.id = client_id
+  lsp.name = lsp_name
+
+  state.lsp.collection[lsp_name] = lsp
+end
+
 local function update_lsp_state()
   if vim.bo.filetype == '' then
     state.lsp.names = ''
@@ -320,20 +336,12 @@ vim.api.nvim_set_hl(0, 'StatusLine_My_Mode_Fallback', { fg = opts.colors.branco,
 local function attach_or_detach_func(args, count)
   state.lsp.count = state.lsp.count + count
 
-  if not opts.show_lsp_progress then
-    update_lsp_state()
-    return
+  if opts.show_lsp_progress then
+    local client_id = args.data and args.data.client_id
+    if client_id then
+      update_lsp_collection_state(client_id)
+    end
   end
-
-  local lsp_id = args.data.client_id
-  local lsp_name = vim.lsp.get_clients({ id = lsp_id })[1].name
-
-  local lsp = state.lsp.collection[lsp_name] or {}
-
-  lsp.id = lsp_id
-  lsp.name = lsp_name
-
-  state.lsp.collection[lsp_name] = lsp
 
   update_lsp_state()
 end
