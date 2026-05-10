@@ -196,7 +196,6 @@ require('pack_wrap').call({
       kind = 'update',
       callback = function()
         vim.cmd('TSUpdate')
-        require('plugins.nvim-treesitter')
       end,
     },
   },
