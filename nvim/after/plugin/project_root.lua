@@ -1,5 +1,9 @@
 -- https://www.reddit.com/r/neovim/comments/zy5s0l/you_dont_need_vimrooter_usually_or_how_to_set_up/
 
+if true then
+  return
+end
+
 ------ I've got no Roots. - MERTON, Alice
 -- Array of file names indicating root directory. Modify to your liking.
 local root_names = {
