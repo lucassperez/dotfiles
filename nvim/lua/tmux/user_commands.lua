@@ -25,8 +25,20 @@ local function guard(scope, list)
 end
 
 local function complete(list)
-  return function()
-    return list
+  return function(_, cmd_line, cursor_pos)
+    local before_cursor = cmd_line:sub(1, cursor_pos):gsub('^%s*', '')
+    local args = vim.split(before_cursor, '%s+', { trimempty = false })
+    local current = args[#args] or ''
+
+    local matches = {}
+
+    for _, item in ipairs(list) do
+      if item:find('^' .. vim.pesc(current)) then
+        table.insert(matches, item)
+      end
+    end
+
+    return matches
   end
 end
 
@@ -53,7 +65,7 @@ vim.api.nvim_create_user_command('TmuxAttach', function(opts)
   if scope == 'show' then
     local attached_pane = runner.get_attached_pane()
     if attached_pane then
-      vim.notify('TmuxAttach: Painel atual: ' .. attached_pane.id)
+      vim.notify(string.format('TmuxAttach: Painel atual: %s (%s)', attached_pane.index, attached_pane.id))
     else
       vim.notify('TmuxAttach: Nenhum painel fixado.')
     end
