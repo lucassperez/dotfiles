@@ -115,10 +115,10 @@ git_porcelain_awk_command_with_new_files_complement() {
 
   local new_files=`git ls-files --exclude-standard --others`
   if [ -n "$new_files" ]; then
-    files="$files\n$new_files"
+    printf "%s\n%s\n" "$files" "$new_files"
+  else
+    printf "%s\n" "$files"
   fi
-
-  printf "%s\n" "$files"
 }
 
 files=''

@@ -74,14 +74,14 @@ if [ -n "$checkout_dot" ]; then
 fi
 
 # TODO: Deixei grep -i pra ser case insensitive. Pensar sobre.
-partial=`git branch | grep -i $grep_pattern`
+partial=`git branch | grep -i "$grep_pattern"`
 
 if [ -z "$partial" ]; then
   printf "Nenhuma branch encontrada para o grep com $grep_pattern\n"
   exit 10
 fi
 
-count=`printf "$partial" | wc -l`
+count=`printf "%s\n" "$partial" | wc -l`
 if [ "$count" -eq 2 ] && printf "$partial" | grep -q '^*'; then
   # Esse sed dá match na branch que não é a atual
   # e tira os espaços do começo que houverem.
