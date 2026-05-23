@@ -1,4 +1,20 @@
--- state.tab_str, state.tab_len
+local function should_include(bufnr, visible_any_tab, visible_non_float, opts)
+  if vim.fn.isdirectory(vim.api.nvim_buf_get_name(bufnr)) == 1 then
+    return false
+  end
+
+  local whitelist = opts.whitelist_ft_names or {}
+  if visible_any_tab[bufnr] and whitelist[vim.bo[bufnr].filetype] then
+    return true
+  end
+
+  if vim.bo[bufnr].buflisted then
+    return true
+  end
+
+  return opts.show_unlisted_visible_non_floating and visible_non_float[bufnr] or false
+end
+
 local function update_state_tabs(state)
   local current_tab = vim.fn.tabpagenr()
   local total_tabs = vim.fn.tabpagenr('$')
@@ -6,10 +22,17 @@ local function update_state_tabs(state)
   state.tab_len = vim.fn.strdisplaywidth(state.tab_str)
 end
 
-local function build_buf_obj(bufnr, visible, current_bufnr, no_name)
+local function build_buf_obj(bufnr, visible_current_tab, current_bufnr, opts)
+  local ft = vim.bo[bufnr].filetype
   local path = vim.api.nvim_buf_get_name(bufnr)
-  if path == '' then
-    path = no_name
+
+  local whitelist_ft_names = opts.whitelist_ft_names or {}
+  if whitelist_ft_names[ft] then
+    path = whitelist_ft_names[ft]
+  elseif not vim.bo[bufnr].buflisted and ft ~= '' then
+    path = '[' .. ft:sub(1, 1):upper() .. ft:sub(2) .. ']'
+  elseif path == '' then
+    path = opts.no_name
   end
 
   local buf = {
@@ -23,7 +46,7 @@ local function build_buf_obj(bufnr, visible, current_bufnr, no_name)
 
   if bufnr == current_bufnr then
     buf.visibility = 2
-  elseif visible[bufnr] then
+  elseif visible_current_tab[bufnr] then
     buf.visibility = 1
     -- else
     --   buf.visibility = 0
@@ -32,37 +55,93 @@ local function build_buf_obj(bufnr, visible, current_bufnr, no_name)
 end
 
 local function update_state_buffers(state, opts)
-  local visible = {}
+  local visible_current_tab = {}
 
+  -- Here we list only buffers visible in current tab to get highlights right.
+  -- A buffer open in another tab should not get the visible highlight.
   for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    visible_current_tab[vim.api.nvim_win_get_buf(win)] = true
+  end
+
+  ----------------------
+  ----------------------
+  ----------------------
+
+  local visible_any_tab = {}
+  local visible_non_float = {}
+
+  -- But here we list visible windows that could go to the tabline with the
+  -- intention of including special buffers, like Netrw, Fzf, Help pages etc.
+  -- The special buffers have to be included in opts.whitelist_ft_names.
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
     local b = vim.api.nvim_win_get_buf(win)
-    visible[b] = true
-  end
-
-  local listed = {}
-  for _, bufnr in pairs(vim.api.nvim_list_bufs()) do
-    if vim.bo[bufnr].buflisted then
-      listed[bufnr] = true
+    visible_any_tab[b] = true
+    if opts.show_unlisted_visible_non_floating and vim.api.nvim_win_get_config(win).relative == '' then
+      visible_non_float[b] = true
     end
   end
 
+  ----------------------
+  ----------------------
+  ----------------------
+
+  local included = {}
   local new_buffers = {}
-  for _, buf in ipairs(state.buffers) do
-    if listed[buf.bufnr] then
-      -- Será que precisa recalcular o buf inteiro?
-      -- Acho que sim, né, ele pode ter sido minimizado etc
-      local fresh_buf = build_buf_obj(buf.bufnr, visible, state.current_bufnr, opts.no_name)
-      table.insert(new_buffers, fresh_buf)
-      listed[buf.bufnr] = nil
+
+  for _, bufnr in pairs(vim.api.nvim_list_bufs()) do
+    if should_include(bufnr, visible_any_tab, visible_non_float, opts) then
+      included[bufnr] = true
     end
   end
 
-  for bufnr in pairs(listed) do
-    local fresh_buf = build_buf_obj(bufnr, visible, state.current_bufnr, opts.no_name)
-    table.insert(new_buffers, fresh_buf)
+  --[[
+    Next loop gets the buffers that already existed (were in state.buffers) and
+    put in new_buffers list, and the loop that comes afterwards gets the buffers
+    that are new and put at the end of new_buffers.
+    This way, new_buffers will keep the old order, and put new guys at the end.
+    It does this by manipulating the included list.
+    At first, included has everyone in a possible random order. The order managed
+    by nvim is not neccessarily the order we want, specially if we have
+    reordered buffers.
+    So we first iterate the buffers that were present before (state.buffers).
+    If it is still to be presented (not removed), we put in new_buffers and
+    delete it from included!
+    Now on second pass, we iterate over every buffer (vim.api.nvim_list_bufs())
+    and if it still is in included, it means it is a new buffer, because it did
+    not get deleted. So it goes to the end of the new_buffers.
+  ]]
+
+  for _, buf in ipairs(state.buffers) do
+    if included[buf.bufnr] then
+      local fresh_buf = build_buf_obj(buf.bufnr, visible_current_tab, state.current_bufnr, opts)
+      table.insert(new_buffers, fresh_buf)
+      included[buf.bufnr] = nil
+    end
+  end
+
+  -- At this stage, included only has newly opened buffers.
+  -- Theoretically, if there is more than one newly opened buffer, iterating
+  -- it with pairs gives random order. So we should iterate over all buffers
+  -- again with vim.api.nvim_list_bufs, using the order nvim gives them since
+  -- that is the best we can do. Like this:
+  --         for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+  -- But usually there would be only one (or zero) buffers left inside included,
+  -- so I don't care having random order on the rare ocasion I open two or more
+  -- buffers at the same time. A random order is just as good than the order
+  -- assigned by neovim anyways, since it will also be random from the user's
+  -- perspective. A random for a random is just as random.
+  for bufnr in pairs(included) do
+    if included[bufnr] then
+      local fresh_buf = build_buf_obj(bufnr, visible_current_tab, state.current_bufnr, opts)
+      table.insert(new_buffers, fresh_buf)
+    end
   end
 
   state.buffers = new_buffers
+
+  ----------------------
+  ----------------------
+  ----------------------
 
   local found = false
 

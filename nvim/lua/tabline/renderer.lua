@@ -206,6 +206,10 @@ return {
         total_width = total_width + entries[i].width + padding_w
       end
 
+      if opts.add_debug_addons then
+        state.debug = state.debug or {}
+        state.debug.total_width = total_width
+      end
 
       if truncate_index then
         local overflow = total_width - available
@@ -268,12 +272,27 @@ return {
 
     return {
       buffers_paths = function()
+        if #state.buffers == 0 then
+          return 'xxx'
+        end
+
         if state.current_i < 1 or state.current_i > #state.buffers then
           state.current_i = 1
         end
 
         local entries = build_every_path_entry()
         local start_i, end_i, truncate_index = find_visible_window(entries)
+
+        if opts.add_debug_addons then
+          state.debug = {
+            available = available,
+            current_i = state.current_i,
+            start_i = start_i,
+            end_i = end_i,
+            truncate_index = truncate_index or 'NULÃO',
+            z_entries = entries,
+          }
+        end
 
         return render_window(entries, start_i, end_i, truncate_index)
       end

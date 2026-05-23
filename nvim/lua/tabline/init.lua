@@ -1,4 +1,5 @@
 local opts = {
+  add_debug_addons = false,
   max_buffer_name_size = 35,
   no_name = '[No Name]',
   modified = '[+]',
@@ -7,6 +8,18 @@ local opts = {
   ellipsis = '…',
   ellipsis_width = nil,
   directory_separator = package.config:sub(1, 1),
+  whitelist_ft_names = {
+    -- When show_unlisted_visible_non_floating is set to true,
+    -- the whitelist decides the name the buffer appears on the tabline.
+    -- When it is set to false, the a buffer whose filetype matches the
+    -- whitelist will be shown in the tabline anyways.
+    netrw = 'Netrw',
+    help = 'Help',
+    blame = 'Blame',
+    fzf = 'Fzf',
+    NvimTree = 'NvimTree',
+  },
+  show_unlisted_visible_non_floating = false,
   colors = {
     fg = {
       current = '#efefef',
@@ -43,11 +56,19 @@ local state = {
   buf_tree_cache_key = nil,
 }
 
+if opts.add_debug_addons then
+  vim.keymap.set('n', '<C-g>', function() return P(state.debug) end)
+end
+
 --------------------------------------------------
 --------------------------------------------------
 --------------------------------------------------
 
 local function goto_buffer(direction)
+  if #state.buffers == 0 then
+    return
+  end
+
   local new_i = state.current_i + direction
 
   if new_i > #state.buffers then
@@ -64,6 +85,10 @@ local function goto_buffer(direction)
 end
 
 local function move_current_buffer(direction)
+  if #state.buffers == 0 then
+    return
+  end
+
   local new_i = state.current_i + direction
 
   if new_i > #state.buffers then
@@ -98,12 +123,12 @@ local function goto_buffer_by_i(i)
 
   local buf
   if i == 0 or i > #state.buffers then
-    buf = state.buffers[#state.buffers]
+    i = #state.buffers
   elseif i < 0 then
-    buf = state.buffers[1]
-  else
-    buf = state.buffers[i]
+    i = 1
   end
+
+  buf = state.buffers[i]
 
   if not buf then
     vim.notify('Could not find buf somehow', vim.log.levels.ERROR)
@@ -223,4 +248,5 @@ return {
     })
   end,
   state = state,
+  debug = state.debug,
 }
