@@ -112,14 +112,57 @@ return {
       nargs = '*',
       bang = true,
       complete = function(_, cmd_line, cursor_pos)
-        local before_cursor = cmd_line:sub(1, cursor_pos)
-        local args = vim.split(before_cursor, '%s+')
+        local before_cursor = cmd_line:sub(1, cursor_pos):gsub('^%s*', '')
+        -- If we type :Pack list gitsigns.nvim<Space>, a trailing space,
+        -- and press enter, then the args (splitted list) will have an
+        -- empty string as the last argument. Which is great, because
+        -- we define "current" as the last item of the split.
+        -- But it keeps leading spaces as well. So that is why we gsubbed
+        -- leading whitespaces above when defining before_cursor.
+        local args = vim.split(before_cursor, '%s+', { trimempty = false })
+        local current = args[#args] or ''
+
+        local valid_subcommands = { 'list', 'update', 'delete' }
 
         if #args <= 2 then
-          return { 'list', 'update', 'delete' }
+          local matches = {}
+
+          for _, sub_cmd in ipairs(valid_subcommands) do
+            if sub_cmd:find('^' .. vim.pesc(current)) then
+              table.insert(matches, sub_cmd)
+            end
+          end
+
+          return matches
         end
 
-        return complete_resolved(resolved)()
+        if not vim.tbl_contains(valid_subcommands, args[2]) then
+          return {}
+        end
+
+        local selected = {}
+        -- The last arg is the one we are currently typing, so
+        -- we left out of the filtering of selected items.
+        for i = 3, #args - 1 do
+          selected[args[i]] = true
+        end
+
+        local matches = {}
+
+        local plugins_list = {}
+        for _, p in ipairs(resolved) do
+          plugins_list[#plugins_list+1] = p
+        end
+
+        for _, plugin in ipairs(plugins_list) do
+          local name = plugin.name
+
+          if not selected[name] and name:find('^' .. vim.pesc(current)) then
+            table.insert(matches, name)
+          end
+        end
+
+        return matches
       end
     })
 
