@@ -8,18 +8,25 @@ local opts = {
   ellipsis = '…',
   ellipsis_width = nil,
   directory_separator = package.config:sub(1, 1),
-  whitelist_ft_names = {
-    -- When show_unlisted_visible_non_floating is set to true,
-    -- the whitelist decides the name the buffer appears on the tabline.
-    -- When it is set to false, the a buffer whose filetype matches the
-    -- whitelist will be shown in the tabline anyways.
-    netrw = 'Netrw',
-    help = 'Help',
-    blame = 'Blame',
-    fzf = 'Fzf',
-    NvimTree = 'NvimTree',
+  unlisted_buffers = {
+    show_floating = true,
+    show_normal = true,
+    -- Whitelisted is necessary but not sufficient condition to show
+    -- the buffer in tabline.
+    -- After the ft passes the whitelist, it
+    whitelist_ft_names = {
+      -- If you pass "true", it derives the name shown in tabline by the
+      -- filetype. It capitalizes the first character and wraps in braces [].
+      -- If you pass a string, it uses that string exactly.
+      -- If you pass false, it wont show that filetype.
+      -- help = true
+      netrw = 'Netrw',
+      help = 'Help',
+      blame = 'Blame',
+      fzf = 'Fzf',
+      NvimTree = 'NvimTree',
+    },
   },
-  show_unlisted_visible_non_floating = false,
   colors = {
     fg = {
       current = '#efefef',

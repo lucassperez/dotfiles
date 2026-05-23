@@ -1,18 +1,27 @@
-local function should_include(bufnr, visible_any_tab, visible_non_float, opts)
+local function should_include(bufnr, visible_any_tab, visible_non_float, unlisted_opts)
   if vim.fn.isdirectory(vim.api.nvim_buf_get_name(bufnr)) == 1 then
     return false
-  end
-
-  local whitelist = opts.whitelist_ft_names or {}
-  if visible_any_tab[bufnr] and whitelist[vim.bo[bufnr].filetype] then
-    return true
   end
 
   if vim.bo[bufnr].buflisted then
     return true
   end
 
-  return opts.show_unlisted_visible_non_floating and visible_non_float[bufnr] or false
+  local whitelist = unlisted_opts.whitelist_ft_names or {}
+
+  if not whitelist[vim.bo[bufnr].filetype] then
+    return false
+  end
+
+  if unlisted_opts.show_normal and visible_non_float[bufnr] then
+    return true
+  end
+
+  if unlisted_opts.show_floating and visible_any_tab[bufnr] and not visible_non_float[bufnr] then
+    return true
+  end
+
+  return false
 end
 
 local function update_state_tabs(state)
@@ -26,11 +35,15 @@ local function build_buf_obj(bufnr, visible_current_tab, current_bufnr, opts)
   local ft = vim.bo[bufnr].filetype
   local path = vim.api.nvim_buf_get_name(bufnr)
 
-  local whitelist_ft_names = opts.whitelist_ft_names or {}
-  if whitelist_ft_names[ft] then
-    path = whitelist_ft_names[ft]
-  elseif not vim.bo[bufnr].buflisted and ft ~= '' then
-    path = '[' .. ft:sub(1, 1):upper() .. ft:sub(2) .. ']'
+  if not vim.bo[bufnr].buflisted then
+    local whitelist = (opts.unlisted_buffers or {}).whitelist_ft_names or {}
+    if whitelist[ft] == true then
+      -- If ft is in whitelist but without a name,
+      -- we capitalize the first character and wraps in braces [].
+      path = '[' .. ft:sub(1, 1):upper() .. ft:sub(2) .. ']'
+    else
+      path = whitelist[ft]
+    end
   elseif path == '' then
     path = opts.no_name
   end
@@ -48,9 +61,8 @@ local function build_buf_obj(bufnr, visible_current_tab, current_bufnr, opts)
     buf.visibility = 2
   elseif visible_current_tab[bufnr] then
     buf.visibility = 1
-    -- else
-    --   buf.visibility = 0
   end
+
   return buf
 end
 
@@ -71,12 +83,12 @@ local function update_state_buffers(state, opts)
   local visible_non_float = {}
 
   -- But here we list visible windows that could go to the tabline with the
-  -- intention of including special buffers, like Netrw, Fzf, Help pages etc.
-  -- The special buffers have to be included in opts.whitelist_ft_names.
+  -- intention of including special (unlisted) buffers, like Netrw, Fzf, Help pages etc.
+  -- The special buffers have to be included in opts.unlisted_buffers.whitelist_ft_names.
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     local b = vim.api.nvim_win_get_buf(win)
     visible_any_tab[b] = true
-    if opts.show_unlisted_visible_non_floating and vim.api.nvim_win_get_config(win).relative == '' then
+    if vim.api.nvim_win_get_config(win).relative == '' then
       visible_non_float[b] = true
     end
   end
@@ -89,7 +101,7 @@ local function update_state_buffers(state, opts)
   local new_buffers = {}
 
   for _, bufnr in pairs(vim.api.nvim_list_bufs()) do
-    if should_include(bufnr, visible_any_tab, visible_non_float, opts) then
+    if should_include(bufnr, visible_any_tab, visible_non_float, opts.unlisted_buffers) then
       included[bufnr] = true
     end
   end
