@@ -55,9 +55,17 @@ local function rubyFunction()
   local filename = vim.fn.expand('%')
   local result
   if filename:match('spec.*_spec.rb$') then
-    result = filename:gsub('^spec/(.*)_spec.rb$', 'app/%1.rb')
+    if filename:match('^spec/lib') then
+      result = filename:gsub('^spec/lib/(.*)_spec.rb$', 'lib/%1.rb')
+    else
+      result = filename:gsub('^spec/(.*)_spec.rb$', 'app/%1.rb')
+    end
   else
-    result = filename:gsub('^app/(.*).rb$', 'spec/%1_spec.rb')
+    if filename:match('^lib') then
+      result = filename:gsub('^lib/(.*).rb$', 'spec/lib/%1_spec.rb')
+    else
+      result = filename:gsub('^app/(.*).rb$', 'spec/%1_spec.rb')
+    end
   end
   return result
 end

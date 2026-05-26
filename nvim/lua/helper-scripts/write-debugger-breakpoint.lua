@@ -22,5 +22,5 @@ function WriteDebuggerBreakpoint(above)
     -- nvim_buf_set_text()
     vim.cmd('normal o' .. debugger_commands[filetype])
   end
-  vim.cmd('normal _')
+  vim.cmd('normal ==_')
 end
