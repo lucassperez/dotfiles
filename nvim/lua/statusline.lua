@@ -112,29 +112,13 @@ local state = {
     reg = '',
   },
   lsp = {
-    collection = {},
-    count = 0,
+    progress = {},
     names = '',
+    count = 0,
   },
 }
 
-local function update_lsp_collection_state(client_id)
-  local client = vim.lsp.get_clients({ id = client_id })[1]
-
-  if not client then
-    return
-  end
-
-  local lsp_name = client.name
-  local lsp = state.lsp.collection[lsp_name] or {}
-
-  lsp.id = client_id
-  lsp.name = lsp_name
-
-  state.lsp.collection[lsp_name] = lsp
-end
-
-local function update_lsp_state()
+local function update_lsp_state(name_to_skip)
   if vim.bo.filetype == '' then
     state.lsp.names = ''
     return
@@ -152,17 +136,14 @@ local function update_lsp_state()
   end
 
   local names = {}
-  if opts.show_lsp_progress then
-    for name, lsp in pairs(state.lsp.collection) do
-      if lsp.prog then
-        table.insert(names, string.format('%s (%s%%%%)', name, lsp.prog))
+  for _, client in ipairs(buf_clients) do
+    if client.name ~= name_to_skip then
+      local prog = opts.show_lsp_progress and state.lsp.progress[client.name]
+      if prog then
+        table.insert(names, string.format('%s (%s%%%%)', client.name, prog))
       else
-        table.insert(names, name)
+        table.insert(names, client.name)
       end
-    end
-  else
-    for _, client in pairs(buf_clients) do
-      table.insert(names, client.name)
     end
   end
 
@@ -216,15 +197,11 @@ local function git_hunks()
   -- and sometimes show more hunks than there really are.
   -- )=
 
-  local h = require('gitsigns').get_hunks(0)
+  local gs = package.loaded['gitsigns']
+  if not gs then return '' end
 
-  if not h then
-    return ''
-  end
-
-  if #h == 0 then
-    return ''
-  end
+  local h = gs.get_hunks(0)
+  if not h or #h == 0 then return '' end
 
   return 'h: ' .. #h .. ' '
 end
@@ -283,7 +260,7 @@ local function filetype()
     return ''
   end
 
-  return ' ' .. vim.bo.ft .. ' '
+  return ' ' .. ft .. ' '
 end
 
 local function macro_recording()
@@ -333,28 +310,20 @@ vim.api.nvim_set_hl(0, 'StatusLine_My_Mode_Fallback', { fg = opts.colors.branco,
 
 ----------
 
-local function attach_or_detach_func(args, count)
-  state.lsp.count = state.lsp.count + count
-
-  if opts.show_lsp_progress then
-    local client_id = args.data and args.data.client_id
-    if client_id then
-      update_lsp_collection_state(client_id)
-    end
-  end
-
-  update_lsp_state()
-end
-
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
-    attach_or_detach_func(args, 1)
+    state.lsp.count = state.lsp.count + 1
+    update_lsp_state()
+    vim.cmd.redrawstatus()
   end
 })
 
 vim.api.nvim_create_autocmd('LspDetach', {
   callback = function(args)
-    attach_or_detach_func(args, -1)
+    state.lsp.count = state.lsp.count - 1
+    local client = args.data and args.data.client_id and vim.lsp.get_clients({ id = args.data.client_id })[1]
+    update_lsp_state(client and client.name)
+    vim.cmd.redrawstatus()
   end
 })
 
@@ -363,21 +332,19 @@ if opts.show_lsp_progress then
   vim.api.nvim_create_autocmd('LspProgress', {
     callback = function(args)
       local lsp_id = args.data.client_id
-      local lsp_name = vim.lsp.get_clients({ id = lsp_id })[1].name
 
-      local lsp
-
-      if args.data.params.value.kind == 'end' then
-        lsp = {
-          prog = nil,
-        }
-      else
-        lsp = {
-          prog = args.data.params.value.percentage,
-        }
+      local client = vim.lsp.get_clients({ id = lsp_id })[1]
+      if not client then
+        return
       end
 
-      state.lsp.collection[lsp_name] = lsp
+      local lsp_name = client.name
+
+      if args.data.params.value.kind == 'end' then
+        state.lsp.progress[lsp_name] = nil
+      else
+        state.lsp.progress[lsp_name] = args.data.params.value.percentage
+      end
       update_lsp_state()
       vim.cmd.redrawstatus()
     end
