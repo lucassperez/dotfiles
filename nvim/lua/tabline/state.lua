@@ -1,4 +1,8 @@
-local function should_include(bufnr, visible_any_tab, visible_non_float, unlisted_opts)
+local function should_include(bufnr, visible_any_tab, visible_non_float, unlisted_opts, pending_delete)
+  if pending_delete[bufnr] then
+    return false
+  end
+
   if vim.fn.isdirectory(vim.api.nvim_buf_get_name(bufnr)) == 1 then
     return false
   end
@@ -101,7 +105,7 @@ local function update_state_buffers(state, opts)
   local new_buffers = {}
 
   for _, bufnr in pairs(vim.api.nvim_list_bufs()) do
-    if should_include(bufnr, visible_any_tab, visible_non_float, opts.unlisted_buffers) then
+    if should_include(bufnr, visible_any_tab, visible_non_float, opts.unlisted_buffers, state.pending_delete) then
       included[bufnr] = true
     end
   end

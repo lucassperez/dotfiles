@@ -108,12 +108,6 @@ require('pack_wrap').call({
   -- Commands and features
   ------------------------
   {
-    'famiu/bufdelete.nvim',
-    after = function()
-      map_from_keys(require('plugins.bufdelete'))
-    end
-  },
-  {
     'eero-lehtinen/oklch-color-picker.nvim',
     after = function()
       require('plugins.oklch-color-picker')
