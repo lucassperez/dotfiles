@@ -1,5 +1,7 @@
 local helpers = require('lsp.helpers')
 
+local complete = require('utils.user_command_complete')
+
 return {
   create = function(installed_servers)
     installed_servers = installed_servers or helpers.get_installed_servers()
@@ -22,13 +24,21 @@ return {
       vim.notify('LSP started for installed servers', vim.log.levels.INFO)
     end, {
       nargs = '*',
-      complete = function()
-        return installed_servers
-      end,
+      complete = complete(installed_servers),
     })
 
     vim.api.nvim_create_user_command('LspStop', function(opts)
-      local clients = vim.lsp.get_clients(opts.fargs)
+      local wanted = {}
+      for _, name in ipairs(opts.fargs) do
+        wanted[name] = true
+      end
+
+      local clients = {}
+      for _, client in ipairs(vim.lsp.get_clients()) do
+        if wanted[client.name] then
+          clients[#clients+1] = client
+        end
+      end
 
       if #clients == 0 then
         vim.notify('No clients to stop', vim.log.levels.INFO)
@@ -41,9 +51,7 @@ return {
       end
     end, {
       nargs = '*',
-      complete = function()
-        return installed_servers
-      end,
+      complete = complete(installed_servers),
     })
 
     vim.api.nvim_create_user_command('LspRestart', function(opts)
@@ -62,9 +70,7 @@ return {
       vim.notify('LSP restarted', vim.log.levels.INFO)
     end, {
       nargs = '*',
-      complete = function()
-        return installed_servers
-      end,
+      complete = complete(installed_servers),
     })
 
     vim.api.nvim_create_user_command('LspCheckhealth', function()

@@ -1,6 +1,8 @@
 local runner = require('tmux.runner')
 local modules = require('tmux.modules')
 
+local complete = require('utils.user_command_complete')
+
 local scopes = {
   attach = { 'clear', 'show', 'attach' },
   from_git_generic = { 'test', 'linter' },
@@ -22,24 +24,6 @@ local function guard(scope, list)
     return false
   end
   return true
-end
-
-local function complete(list)
-  return function(_, cmd_line, cursor_pos)
-    local before_cursor = cmd_line:sub(1, cursor_pos):gsub('^%s*', '')
-    local args = vim.split(before_cursor, '%s+', { trimempty = false })
-    local current = args[#args] or ''
-
-    local matches = {}
-
-    for _, item in ipairs(list) do
-      if item:find('^' .. vim.pesc(current)) then
-        table.insert(matches, item)
-      end
-    end
-
-    return matches
-  end
 end
 
 ------------
