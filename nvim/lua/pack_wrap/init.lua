@@ -63,20 +63,29 @@ local function load_plugin(plugin)
 
   local ok, result = pcall(vim.cmd.packadd, plugin.name)
   if not ok then
-    vim.notify('Something wrong happened when packadd-ing ' .. plugin.name, vim.log.WARN)
+    vim.notify('Something wrong happened when packadd-ing ' .. plugin.name, vim.log.levels.WARN)
     vim.notify(result, vim.log.WARN)
   end
 
   if plugin.data.after then plugin.data.after() end
 end
 
-local function assume_github_if_not_specified(src)
+local function resolve_src_defaulting_to_github(src)
   if src == nil then
     return nil
   end
 
-  if string.match(src, '^https?://') or string.match(src, '^git@') then
+  if
+    string.match(src, '^https?://')
+    or string.match(src, '^git@')
+    or string.match(src, '^file://')
+  then
     return src
+  end
+
+  local expanded = vim.fn.expand(src)
+  if vim.fn.isdirectory(expanded) == 1 then
+    return 'file://' .. expanded
   end
 
   return 'https://github.com/' .. src
@@ -151,7 +160,7 @@ local function normalized(user_spec)
     src = user_spec.src or user_spec[1]
   end
 
-  src = assume_github_if_not_specified(src)
+  src = resolve_src_defaulting_to_github(src)
 
   if not src then
     error('pack_wrap#normalized: Plugin spec não possui src: ' .. vim.inspect(user_spec))
