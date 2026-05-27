@@ -7,6 +7,7 @@ local function blank_state()
   return {
     loaded = {},
     resolved = {},
+    disabled = {},
     seen = {},
     visiting = {},
   }
@@ -214,6 +215,7 @@ end
 
 local function resolve(plugin)
   if plugin.data.disable then
+    state.disabled[#state.disabled + 1] = plugin
     return
   end
 
@@ -358,7 +360,7 @@ local function call(list)
     resolve(pack_spec)
   end
   execute()
-  require('pack_wrap.user_commands').create(state.loaded, state.resolved)
+  require('pack_wrap.user_commands').create(state.loaded, state.resolved, state.disabled)
 end
 
 return {

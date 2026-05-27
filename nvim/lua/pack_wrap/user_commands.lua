@@ -1,11 +1,18 @@
-local function complete_resolved(resolved)
-  return function()
-    local k = {}
-    for _, value in pairs(resolved) do
-      table.insert(k, value.name)
-    end
-    return k
+local complete = require('utils.user_command_complete')
+
+local function list_resolved_and_disabled(resolved, disabled)
+  local k = {}
+  for _, value in ipairs(resolved) do
+    table.insert(k, value.name)
   end
+  for _, value in ipairs(disabled) do
+    table.insert(k, value.name)
+  end
+  return k
+end
+
+local function complete_resolved_and_disabled(resolved, disabled)
+  return complete.simple(list_resolved_and_disabled(resolved, disabled))
 end
 
 local function find_packwrap_buf()
@@ -102,23 +109,8 @@ local function open_pack_list_window(lines, floating)
   return buf
 end
 
-local cached_packs = nil
-
-local function get_packs(filter)
-  filter = filter or {}
-  if #filter > 0 then
-    return vim.pack.get(filter)
-  end
-
-  if not cached_packs then
-    cached_packs = vim.pack.get()
-  end
-
-  return cached_packs
-end
-
 return {
-  create = function(pack_wrap_loaded, resolved)
+  create = function(pack_wrap_loaded, resolved, disabled)
     vim.api.nvim_create_user_command('Pack', function(opts)
       local cmd = opts.fargs[1] or 'list'
       local args = {}
@@ -145,66 +137,54 @@ return {
     end, {
       nargs = '*',
       bang = true,
-      complete = function(_, cmd_line, cursor_pos)
-        local before_cursor = cmd_line:sub(1, cursor_pos):gsub('^%s*', '')
-        -- If we type :Pack list gitsigns.nvim<Space>, a trailing space,
-        -- and press enter, then the args (splitted list) will have an
-        -- empty string as the last argument. Which is great, because
-        -- we define "current" as the last item of the split.
-        -- But it keeps leading spaces as well. So that is why we gsubbed
-        -- leading whitespaces above when defining before_cursor.
-        local args = vim.split(before_cursor, '%s+', { trimempty = false })
-        local current = args[#args] or ''
-
-        local valid_subcommands = { 'list', 'update', 'delete' }
-
-        if #args <= 2 then
-          local matches = {}
-
-          for _, sub_cmd in ipairs(valid_subcommands) do
-            if sub_cmd:find('^' .. vim.pesc(current)) then
-              table.insert(matches, sub_cmd)
-            end
-          end
-
-          return matches
-        end
-
-        if not vim.tbl_contains(valid_subcommands, args[2]) then
-          return {}
-        end
-
-        local selected = {}
-        -- The last arg is the one we are currently typing, so
-        -- we left out of the filtering of selected items.
-        for i = 3, #args - 1 do
-          selected[args[i]] = true
-        end
-
-        local matches = {}
-
-        local plugins_list = {}
-        for _, p in ipairs(resolved) do
-          plugins_list[#plugins_list+1] = p
-        end
-
-        for _, plugin in ipairs(plugins_list) do
-          local name = plugin.name
-
-          if not selected[name] and name:find('^' .. vim.pesc(current)) then
-            table.insert(matches, name)
-          end
-        end
-
-        return matches
-      end
+      complete = complete.with_subcommands(
+        { 'list', 'update', 'delete' },
+        list_resolved_and_disabled(resolved, disabled)
+      ),
     })
 
     vim.api.nvim_create_user_command('PackList', function(opts)
       local buf = open_pack_list_window({ "Loading..." }, opts.bang)
 
       vim.schedule(function()
-        local packs = get_packs(opts.fargs)
+        local filters = {
+          any = #opts.fargs > 0,
+          disabled = {},
+          enabled = {},
+        }
+
+        if filters.any then
+          for _, f in ipairs(opts.fargs) do
+            -- Not very optmized, but oh, well
+            local found = false
+            for _, p in ipairs(disabled) do
+              if p.name == f then
+                found = true
+                break
+              end
+            end
+            if found then
+              filters.disabled[#filters.disabled + 1] = f
+            else
+              filters.enabled[#filters.enabled + 1] = f
+            end
+          end
+        end
+
+        local packs
+
+        if filters.any then
+          if #filters.enabled > 0 then
+            packs = vim.pack.get(filters.enabled)
+          elseif #filters.disabled > 0 then
+            packs = {}
+          else
+            -- This means invalid input, I'll let vim.pack.get error out
+            packs = vim.pack.get(opts.fargs)
+          end
+        else
+          packs = vim.pack.get()
+        end
 
         local lines = {}
 
@@ -243,6 +223,39 @@ return {
           table.insert(lines, line)
         end
 
+        local should_show_disabled
+        if not filters.any and #disabled > 0 then
+          should_show_disabled = true
+        elseif #filters.disabled > 0 then
+          should_show_disabled = true
+        else
+          should_show_disabled = false
+        end
+
+        if should_show_disabled then
+          if #packs > 0 then
+            table.insert(lines, '  ----------------------------------------------------------------------')
+          end
+
+          local disabled_names_to_show = {}
+
+          if #filters.disabled > 0 then
+            disabled_names_to_show = filters.disabled
+          else
+            for _, p in ipairs(disabled) do
+              disabled_names_to_show[#disabled_names_to_show + 1] = p.name
+            end
+          end
+
+          for i, plugin_name in ipairs(disabled_names_to_show) do
+            table.insert(lines, string.format(
+              '      %03s  %-30s -- disabled --',
+              i + #packs,
+              plugin_name
+            ))
+          end
+        end
+
         vim.bo[buf].modifiable = true
         vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
         vim.bo[buf].modifiable = false
@@ -250,7 +263,7 @@ return {
 
     end, {
       nargs = '*',
-      complete = complete_resolved(resolved),
+      complete = complete_resolved_and_disabled(resolved, disabled),
       bang = true,
     })
 
@@ -258,12 +271,12 @@ return {
       if #opts.fargs > 0 then
         vim.pack.update(opts.fargs, { force = opts.bang })
       else
-        vim.pack.update({ force = opts.bang })
+        vim.pack.update(nil, { force = opts.bang })
       end
     end, {
       nargs = '*',
       bang = true,
-      complete = complete_resolved(resolved),
+      complete = complete_resolved_and_disabled(resolved, disabled),
     })
 
     vim.api.nvim_create_user_command('PackDelete', function(opts)
@@ -271,7 +284,7 @@ return {
     end, {
       nargs = '+',
       bang = true,
-      complete = complete_resolved(resolved),
+      complete = complete_resolved_and_disabled(resolved, disabled),
     })
   end
 }
