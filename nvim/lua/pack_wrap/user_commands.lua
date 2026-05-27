@@ -8,10 +8,44 @@ local function complete_resolved(resolved)
   end
 end
 
-local function open_pack_list_window(lines, floating)
-  -- TODO reuse other packwrap buffer instead of creating a new one
-  local buf = vim.api.nvim_create_buf(true, true)
+local function find_packwrap_buf()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(buf) then
+      local name = vim.api.nvim_buf_get_name(buf)
+      if name:match('^packwrap://list') then
+        return buf
+      end
+    end
+  end
+end
 
+local function jump_to_buf(buf)
+  local wins = vim.fn.win_findbuf(buf)
+  if #wins > 0 then
+    vim.api.nvim_set_current_win(wins[1])
+    return true
+  end
+  return false
+end
+
+local function open_pack_list_window(lines, floating)
+  local existing_buf = find_packwrap_buf()
+
+  if existing_buf then
+    if not jump_to_buf(existing_buf) then
+      vim.cmd.tabnew()
+      local win = vim.api.nvim_get_current_win()
+      vim.api.nvim_win_set_buf(win, existing_buf)
+    end
+
+    vim.bo[existing_buf].modifiable = true
+    vim.api.nvim_buf_set_lines(existing_buf, 0, -1, false, lines)
+    vim.bo[existing_buf].modifiable = false
+
+    return existing_buf
+  end
+
+  local buf = vim.api.nvim_create_buf(true, true)
   local ok = pcall(vim.api.nvim_buf_set_name, buf, 'packwrap://list')
   if not ok then
     vim.api.nvim_buf_set_name(buf, 'packwrap://list:' .. buf)
