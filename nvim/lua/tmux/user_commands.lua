@@ -60,7 +60,7 @@ vim.api.nvim_create_user_command('TmuxAttach', function(opts)
   runner.attach_pane()
 end, {
   nargs = '?',
-  complete = complete(scopes.attach),
+  complete = complete.simple(scopes.attach),
 })
 
 vim.api.nvim_create_user_command('TmuxSend', function(opts)
@@ -114,7 +114,7 @@ vim.api.nvim_create_user_command('FromGitGeneric', function(opts)
     modules.from_git_generic.linter(clear_screen)
   end
 end, {
-  complete = complete(scopes.from_git_generic),
+  complete = complete.simple(scopes.from_git_generic),
   nargs = '?',
   bang = true,
 })
@@ -143,7 +143,7 @@ vim.api.nvim_create_user_command('TmuxTest', function(opts)
   modules.test.run(scope, clear_screen)
 end, {
   nargs = '?',
-  complete = complete(scopes.test),
+  complete = complete.simple(scopes.test),
   bang = true,
 })
 
@@ -161,7 +161,7 @@ vim.api.nvim_create_user_command('TmuxLinter', function(opts)
   modules.linter.run(scope, clear_screen)
 end, {
   nargs = '?',
-  complete = complete(scopes.linter),
+  complete = complete.simple(scopes.linter),
   bang = true,
 })
 
@@ -183,7 +183,7 @@ vim.api.nvim_create_user_command('TmuxExecuteFile', function(opts)
   end
 end, {
   nargs = '?',
-  complete = complete(scopes.execute_file),
+  complete = complete.simple(scopes.execute_file),
   bang = true,
 })
 

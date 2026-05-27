@@ -24,7 +24,7 @@ return {
       vim.notify('LSP started for installed servers', vim.log.levels.INFO)
     end, {
       nargs = '*',
-      complete = complete(installed_servers),
+      complete = complete.simple(installed_servers),
     })
 
     vim.api.nvim_create_user_command('LspStop', function(opts)
@@ -51,7 +51,7 @@ return {
       end
     end, {
       nargs = '*',
-      complete = complete(installed_servers),
+      complete = complete.simple(installed_servers),
     })
 
     vim.api.nvim_create_user_command('LspRestart', function(opts)
@@ -70,7 +70,7 @@ return {
       vim.notify('LSP restarted', vim.log.levels.INFO)
     end, {
       nargs = '*',
-      complete = complete(installed_servers),
+      complete = complete.simple(installed_servers),
     })
 
     vim.api.nvim_create_user_command('LspCheckhealth', function()
