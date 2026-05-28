@@ -5,8 +5,6 @@
 
 -- Ver isso depois? https://github.com/ray-x/lsp_signature.nvim
 
-local defaults = require('lsp.defaults')
-
 require('plugins.fidget')
 require('mason').setup()
 
