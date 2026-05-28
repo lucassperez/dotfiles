@@ -18,8 +18,15 @@ vim.keymap.set('n', '<leader>m', ':FloatingInspect<CR>', {
   desc = 'Mostra o grupo de destaque (highlight) da coisa/palavra embaixo do cursor numa janela flutuante usando minha função customizada FloatingInspect',
 })
 
+vim.keymap.set('n', '<leader>b', ':BufSwitcher<CR>',
+  {
+    remap = false,
+    desc = 'Mostra uma lista com os buffers abertos, e ao digitar o id de um buffer, muda automaticamente'
+  }
+)
+
 -- Search only in visual area when in visual mode.
-vim.keymap.set('x', '/', '<Esc>/\\%V') --search within visual selection - this is magic
+vim.keymap.set('x', '/', '<Esc>/\\%V')
 
 -- https://vim.fandom.com/wiki/Format_pasted_text_automatically
 -- Some options:
