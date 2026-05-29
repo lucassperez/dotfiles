@@ -261,8 +261,38 @@ vim.keymap.set('n', ',bP', function()
   WriteDebuggerBreakpoint(true)
 end, { silent = true, desc = 'Tenta escrever a entrada para o debugger na linha de cima' })
 
--- É brincadeira que :noh<CR> não vem por padrão em algum lugar, viu...
-vim.keymap.set('n', '<Esc>', ':noh<CR>', { desc = 'Remove os destaques feitos por busca' })
+vim.keymap.set('n', '<Esc>', (function()
+  -- I used an Immediately Invoked Function to avoid
+  -- declaring clear_on_text on top level of module.
+  -- It doesn't really matter, but it is nice.
+  local clear_on_next = false
+
+  -- Se apertar Esc duas vezes, some com o :noh lá embaixo.
+  -- Na verdade, eu transformei o Esc num apagador genérico.
+  -- Quando apertado duas vezes, apaga a cmdline, independente
+  -- de ter uma busca ou não (hlsearch).
+
+  return function()
+    if vim.v.hlsearch == 1 then
+      -- É brincadeira que :noh<CR> não vem por padrão em algum lugar, viu...
+      vim.api.nvim_feedkeys(
+        vim.api.nvim_replace_termcodes(':noh<CR>', true, false, true),
+        'nx',
+        false
+      )
+      clear_on_next = true
+      return
+    end
+
+    if clear_on_next then
+      vim.api.nvim_echo({ { '', '' } }, false, {})
+      clear_on_next = false
+      return
+    end
+
+    clear_on_next = true
+  end
+end)(), { desc = 'Remove os destaques feitos por busca. Se apertado duas vezes, remove o que tiver na cmdline.', silent = true })
 
 --- "Snippets" ---
 local snips_path = vim.fn.stdpath('config') .. '/snippets'
