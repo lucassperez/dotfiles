@@ -30,6 +30,7 @@ vimrc() {
     `print_filename_if_it_exists "$CONFIG_PATH/nvim/lua/settings.lua"` \
     `print_filename_if_it_exists "$CONFIG_PATH/nvim/lua/keymappings.lua"` \
     `print_filename_if_it_exists "$CONFIG_PATH/nvim/init.lua"` \
+    `print_filename_if_it_exists "$CONFIG_PATH/nvim/nvim-local_init.lua"` \
     "$@"
 }
 

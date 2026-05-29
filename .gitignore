@@ -1,5 +1,6 @@
 nvim/.netrwhist
 nvim/undodir
 nvim/nvim-require.log
+nvim/nvim-local_init.lua
 .luarc.json
 .gitconfig

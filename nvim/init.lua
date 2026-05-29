@@ -33,4 +33,9 @@ end
 
 protected_require.try_require('intro')
 
+local local_config = vim.fs.joinpath(vim.fn.stdpath('config'), 'nvim-local_init.lua')
+if vim.fn.filereadable(local_config) == 1 then
+  vim.cmd.source(local_config)
+end
+
 protected_require.report_errors()
