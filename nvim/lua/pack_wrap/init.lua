@@ -45,8 +45,8 @@ end
 
 local function load_plugin(plugin)
   if plugin.data.disable then
-    vim.notify('Tried loading disabled plugin: ' .. vim.inspect(plugin), vim.log.levels.WARN)
-    vim.notify('Skipping', vim.log.levels.WARN)
+    vim.notify('pack_wrap: Tried loading disabled plugin: ' .. vim.inspect(plugin), vim.log.levels.WARN)
+    vim.notify('pack_wrap: Skipping', vim.log.levels.WARN)
     return
   end
 
@@ -64,7 +64,7 @@ local function load_plugin(plugin)
 
   local ok, result = pcall(vim.cmd.packadd, plugin.name)
   if not ok then
-    vim.notify('Something wrong happened when packadd-ing ' .. plugin.name, vim.log.levels.WARN)
+    vim.notify('pack_wrap: Something wrong happened when packadd-ing ' .. plugin.name, vim.log.levels.WARN)
     vim.notify(result, vim.log.WARN)
   end
 
@@ -224,7 +224,7 @@ local function resolve(plugin)
       'pack_wrap#resolve: Plugins com o mesmo nome detectados: %s', plugin.name),
       vim.log.levels.WARN
     )
-    vim.notify('Ignorando ocorrências posteriores e usando a primeira configuração que apareceu.', vim.log.levels.WARN)
+    vim.notify('pack_wrap: Ignorando ocorrências posteriores e usando a primeira configuração que apareceu.', vim.log.levels.WARN)
     return
   end
 

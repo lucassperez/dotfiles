@@ -186,6 +186,22 @@ return {
           packs = vim.pack.get()
         end
 
+        local disabled_set = {}
+        for _, p in ipairs(disabled) do
+          disabled_set[p.name] = true
+        end
+
+        local disabled_on_disk = {}
+        local filtered_packs = {}
+        for _, pack in ipairs(packs) do
+          if disabled_set[pack.spec.name] then
+            disabled_on_disk[pack.spec.name] = true
+          else
+            filtered_packs[#filtered_packs + 1] = pack
+          end
+        end
+        packs = filtered_packs
+
         local lines = {}
 
         table.insert(lines, '   AL  nº  name                             rev    branches   (version)')
@@ -248,10 +264,14 @@ return {
           end
 
           for i, plugin_name in ipairs(disabled_names_to_show) do
+            local disabled_str = disabled_on_disk[plugin_name]
+              and '-- disabled, but found on disk --'
+              or  '-- disabled --'
             table.insert(lines, string.format(
-              '      %03s  %-30s -- disabled --',
+              '      %03s  %-30s %s',
               i + #packs,
-              plugin_name
+              plugin_name,
+              disabled_str
             ))
           end
         end
