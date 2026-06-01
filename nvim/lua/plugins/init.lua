@@ -31,7 +31,10 @@ require('pack_wrap').call({
     end,
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
-  'elixir-editors/vim-elixir',
+  {
+    disable = true,
+    'elixir-editors/vim-elixir',
+  },
 
   -----------------------------------------------
   -----------------------------------------------
