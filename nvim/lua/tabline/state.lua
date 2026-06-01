@@ -147,10 +147,8 @@ local function update_state_buffers(state, opts)
   -- assigned by neovim anyways, since it will also be random from the user's
   -- perspective. A random for a random is just as random.
   for bufnr in pairs(included) do
-    if included[bufnr] then
-      local fresh_buf = build_buf_obj(bufnr, visible_current_tab, state.current_bufnr, opts)
-      table.insert(new_buffers, fresh_buf)
-    end
+    local fresh_buf = build_buf_obj(bufnr, visible_current_tab, state.current_bufnr, opts)
+    table.insert(new_buffers, fresh_buf)
   end
 
   state.buffers = new_buffers

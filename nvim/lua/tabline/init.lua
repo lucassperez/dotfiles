@@ -105,11 +105,16 @@ function _G.MyTabline.click_handler(bufnr, _, button)
   -- l|r|m: l for left, r for right and m for middle.
   if button == 'l' then
     vim.api.nvim_set_current_buf(bufnr)
-  end
-  state.current_bufnr = bufnr
-  for i, buf in ipairs(state.buffers) do
-    if buf.bufnr == bufnr then
-      state.current_i = i
+    -- Since the nvim_set_current_buf triggers a redraw,
+    -- the state is recalculated right after anyways,
+    -- so all of these manual state updates are redundant.
+    -- But I also never use it. And it is pretty much harmless anyways.
+    -- So I left them there.
+    state.current_bufnr = bufnr
+    for i, buf in ipairs(state.buffers) do
+      if buf.bufnr == bufnr then
+        state.current_i = i
+      end
     end
   end
 end

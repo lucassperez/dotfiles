@@ -4,7 +4,7 @@ return {
     vim.keymap.set('n', '<A-D>', ':BDelete<CR>')
 
     vim.keymap.set('n', '<A-Q>', ':BMovePrevious<CR>', { desc = '[Tabline] Move o buffer atual para trás na tabline' })
-    vim.keymap.set('n', '<A-W>', ':BMoveNext<CR>', { desc = '[Tabline] Move o buffer atual para trás na tabline' })
+    vim.keymap.set('n', '<A-W>', ':BMoveNext<CR>', { desc = '[Tabline] Move o buffer atual para frente na tabline' })
 
     vim.keymap.set('n', '<leader>q', ':BPrevious<CR>')
     vim.keymap.set('n', '<leader>w', ':BNext<CR>')
