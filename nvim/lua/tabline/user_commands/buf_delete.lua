@@ -13,7 +13,7 @@ return function(state)
     return nil
   end
 
-  local function close(bufnr, force, vim_cmd)
+  local function close(bufnr, force, vim_cmd, cmd_name)
     if not vim.api.nvim_buf_is_valid(bufnr) then
       return
     end
@@ -40,12 +40,15 @@ return function(state)
       end
     end
 
-    local ok, err = pcall(vim.api.nvim_cmd, { cmd = vim_cmd, args = { bufnr }, bang = force }, {})
-    state.pending_delete[bufnr] = nil
+    if vim.api.nvim_buf_is_valid(bufnr) then
+      local ok, err = pcall(vim.api.nvim_cmd, { cmd = vim_cmd, args = { bufnr }, bang = force }, {})
 
-    if not ok then
-      vim.notify(vim_cmd .. ': ' .. vim.inspect(err), vim.log.levels.ERROR)
+      if not ok then
+        vim.notify('tabline#' .. cmd_name .. ': ' .. vim.inspect(err), vim.log.levels.ERROR)
+      end
     end
+
+    state.pending_delete[bufnr] = nil
   end
 
   local function resolve_bufnr(cmd_name, fargs)
@@ -72,12 +75,12 @@ return function(state)
   }
 
   vim.api.nvim_create_user_command('BDelete', function(opts)
-    local bufnr = resolve_bufnr('BDelete', opts.fargs)
-    if bufnr then close(bufnr, opts.bang, 'bdelete') end
+    local bufnr = resolve_bufnr(opts.name, opts.fargs)
+    if bufnr then close(bufnr, opts.bang, 'bdelete', opts.name) end
   end, vim.tbl_extend('force', cmd_opts, { desc = 'Deleta um buffer enquanto preserva o layout das janelas' }))
 
   vim.api.nvim_create_user_command('BWipeout', function(opts)
-    local bufnr = resolve_bufnr('BWipeout', opts.fargs)
-    if bufnr then close(bufnr, opts.bang, 'bwipeout') end
+    local bufnr = resolve_bufnr(opts.name, opts.fargs)
+    if bufnr then close(bufnr, opts.bang, 'bwipeout', opts.name) end
   end, vim.tbl_extend('force', cmd_opts, { desc = 'Wipeout um buffer enquanto preserva o layout das janelas' }))
 end
