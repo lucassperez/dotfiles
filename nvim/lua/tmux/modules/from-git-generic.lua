@@ -33,7 +33,7 @@ local function generic_linter(clear_screen)
 end
 
 local function generic_test(clear_screen)
-  local cmd, err = exec_script('sh ~/scripts/git-stuff/get-files/generic-test.sh noclipboard', clear_screen)
+  local cmd, err = exec_script('sh ~/scripts/git-stuff/get-files/generic-test.sh noclipboard')
 
   if not cmd then
     vim.notify('generic_test: ' .. err, vim.log.levels.WARN)

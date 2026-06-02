@@ -11,7 +11,20 @@ local function kaochaFilename(scope)
   if scope ~= 'file' then return '' end
 
   local filename = vim.fn.expand('%h')
-  if not filename:match('^.*test/.*_test.clj$') then filename = TestAndFile.filenamesFunctions.clojure() end
+  if not filename:match('^.*test/.*_test.clj$') then
+    -- TestAndFile is defined at helper-scripts/togglebetweentestandfile.lua
+    -- This is ancient old code, I have never really worked with clojure other
+    -- than some hello world level of own study projects, and yes, it is weird
+    -- coupling. It just assumes the togglebetweentestandfile file would be
+    -- loaded by the time this is used.
+    -- But I don't really feel like touching this. If one day I do some clojure
+    -- again, I might. I will probably just do a complete overhaul, but I might
+    -- use those as inspiration/notes, although probably, when that day comes,
+    -- assuming it will come (probably not, but who knows), I would probably be
+    -- better off just searching on how to configure it from the ground up.
+    -- Be it with vim-sexp or other sexp plugin, conjure, or my own tmux scripts integrations.
+    filename = TestAndFile.filenamesFunctions.clojure()
+  end
 
   return ' --focus ' .. filename:gsub('^(.*)test/(.*)_test.clj$', '%2-test'):gsub('/', '.')
 end

@@ -12,7 +12,7 @@ end
 local function rust_function(filename, full_path_filename)
   local filename_without_extension = filename:match('(.*)%.rs$')
   local bin_name = filename_without_extension .. '-nvim-rust-bin'
-  return 'rustc -o ' .. bin_name .. ' ' .. full_path_filename .. ' && ./' .. filename_without_extension,
+  return 'rustc -o ' .. bin_name .. ' ' .. full_path_filename .. ' && ./' .. bin_name,
     'Hopefully compiling and running ' .. filename
 end
 
