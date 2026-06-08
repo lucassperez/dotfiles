@@ -5,18 +5,23 @@ return function(state)
     end
 
     local new_i = state.current_i + direction
+    local new_bufnr
 
     if new_i > #state.buffers then
       new_i = 1
     elseif new_i < 1 then
       new_i = #state.buffers
     end
-    state.current_i = new_i
-    state.current_bufnr = state.buffers[new_i].bufnr
 
-    -- Setting current buffer already triggers a redraw,
-    -- so no need to call vim.cmd.redrawtabline()
-    vim.api.nvim_set_current_buf(state.current_bufnr)
+    new_bufnr = state.buffers[new_i].bufnr
+
+    if vim.api.nvim_buf_is_valid(new_bufnr) then
+      -- Setting current buffer already triggers a redraw,
+      -- so no need to call vim.cmd.redrawtabline()
+      vim.api.nvim_set_current_buf(new_bufnr)
+      state.current_i = new_i
+      state.current_bufnr = new_bufnr
+    end
   end
 
   local function move_current_buffer(direction)
