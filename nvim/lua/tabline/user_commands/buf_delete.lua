@@ -98,36 +98,60 @@ return function(state)
     state.pending_delete[bufnr] = nil
   end
 
-  local function resolve_bufnr(cmd_name, fargs)
-    if #fargs > 0 then
-      local arg = fargs[1]
-      local n = tonumber(arg)
-      if n then
-        return n
+  local function calculate_list_of_bufnrs(opts)
+    local bufnrs = {}
+
+    if opts.range > 0 then
+      for bufnr = opts.line1, opts.line2 do
+        bufnrs[#bufnrs + 1] = bufnr
       end
-      local bufnr = vim.fn.bufnr(arg)
-      if bufnr == -1 then
-        vim.notify(cmd_name .. ': No matching buffer for ' .. arg, vim.log.levels.ERROR)
-        return nil
-      end
-      return bufnr
     end
-    return vim.api.nvim_get_current_buf()
+
+    for _, arg in ipairs(opts.fargs) do
+      local bufnr = tonumber(arg) or vim.fn.bufnr(arg)
+      if bufnr == -1 then
+        vim.notify(opts.name .. ': No matching buffer for ' .. arg, vim.log.levels.ERROR)
+        return {}
+      end
+
+      bufnrs[#bufnrs + 1] = bufnr
+    end
+
+    if #bufnrs == 0 then
+      return { vim.api.nvim_get_current_buf() }
+    end
+
+    local seen = {}
+    local unique = {}
+
+    for _, bufnr in ipairs(bufnrs) do
+      if not seen[bufnr] then
+        seen[bufnr] = true
+        unique[#unique + 1] = bufnr
+      end
+    end
+
+    return unique
   end
 
   local cmd_opts = {
     bang = true,
-    nargs = '?',
+    bar = true,
+    nargs = '*',
+    range = true,
+    addr = 'buffers',
     complete = 'buffer',
   }
 
   vim.api.nvim_create_user_command('BDelete', function(opts)
-    local bufnr = resolve_bufnr(opts.name, opts.fargs)
-    if bufnr then close(bufnr, opts.bang, 'bdelete', opts.name) end
+    for _, bufnr in ipairs(calculate_list_of_bufnrs(opts)) do
+      close(bufnr, opts.bang, 'bdelete', opts.name)
+    end
   end, vim.tbl_extend('force', cmd_opts, { desc = 'Deleta um buffer enquanto preserva o layout das janelas' }))
 
   vim.api.nvim_create_user_command('BWipeout', function(opts)
-    local bufnr = resolve_bufnr(opts.name, opts.fargs)
-    if bufnr then close(bufnr, opts.bang, 'bwipeout', opts.name) end
+    for _, bufnr in ipairs(calculate_list_of_bufnrs(opts)) do
+      close(bufnr, opts.bang, 'bwipeout', opts.name)
+    end
   end, vim.tbl_extend('force', cmd_opts, { desc = 'Wipeout um buffer enquanto preserva o layout das janelas' }))
 end
