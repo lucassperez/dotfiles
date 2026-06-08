@@ -41,8 +41,24 @@ return function(state)
     end
 
     if not force and vim.bo[bufnr].modified then
-      vim.notify('No write since last change (add ! to override)', vim.log.levels.ERROR)
-      return
+      local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ':~:.')
+      local choice = vim.fn.confirm(
+        string.format('Save changes to "%s"?', filename),
+        '&Yes\n&No\n&Cancel',
+        1,
+        'Question'
+      )
+      if choice == 1 then
+        local ok, err = pcall(vim.api.nvim_buf_call, bufnr, vim.cmd.write)
+        if not ok then
+          vim.notify('tabline: Could not save: ' .. vim.inspect(err), vim.log.levels.ERROR)
+          return
+        end
+      elseif choice == 2 then
+        force = true
+      else
+        return
+      end
     end
 
     state.pending_delete[bufnr] = true
