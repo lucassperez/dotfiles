@@ -71,7 +71,7 @@ local function execute_file(clear_before_send)
     return
   end
 
-  runner.send_tmux_keys(command, clear_before_send)
+  runner.send_tmux_keys(command, { clear = clear_before_send })
 end
 
 local auto_execute = {
@@ -112,7 +112,7 @@ local function toggle_auto_execute(clear_before_send)
   auto_execute.autocmd_id = vim.api.nvim_create_autocmd('BufWritePost', {
     group = group,
     callback = function()
-      runner.send_tmux_keys(command, clear_before_send)
+      runner.send_tmux_keys(command, { clear = clear_before_send })
     end,
     desc = 'Auto execute on save for file ' .. filename,
   })

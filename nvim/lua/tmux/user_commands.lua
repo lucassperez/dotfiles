@@ -63,7 +63,7 @@ end, {
   complete = complete.simple(scopes.attach),
 })
 
-vim.api.nvim_create_user_command('TmuxSend', function(opts)
+local function tmux_send(opts, force_send)
   if opts.range > 0 and #opts.fargs > 0 then
     vim.notify(
       'TmuxSend: Não é permitido passar argumentos e um range simultaneamente',
@@ -72,10 +72,10 @@ vim.api.nvim_create_user_command('TmuxSend', function(opts)
     return
   end
 
-  local clear_screen = not opts.bang
+  local send_args = { clear = not opts.bang, force_send = force_send }
 
   if #opts.fargs > 0 then
-    runner.send_tmux_keys(opts.args, clear_screen)
+    runner.send_tmux_keys(opts.args, send_args)
     return
   end
 
@@ -86,11 +86,23 @@ vim.api.nvim_create_user_command('TmuxSend', function(opts)
       opts.line2,
       false
     )
-    runner.send_tmux_keys(table.concat(lines, '\n'), clear_screen)
+    runner.send_tmux_keys(table.concat(lines, '\n'), send_args)
     return
   end
 
-  runner.send_tmux_keys(vim.api.nvim_get_current_line(), clear_screen)
+  runner.send_tmux_keys(vim.api.nvim_get_current_line(), send_args)
+end
+
+vim.api.nvim_create_user_command('TmuxSend', function(opts)
+  tmux_send(opts, false)
+end, {
+  nargs = '*',
+  range = true,
+  bang = true,
+})
+
+vim.api.nvim_create_user_command('TmuxForceSend', function(opts)
+  tmux_send(opts, true)
 end, {
   nargs = '*',
   range = true,

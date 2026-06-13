@@ -29,7 +29,7 @@ local function generic_linter(clear_screen)
     return
   end
 
-  runner.send_tmux_keys(cmd, clear_screen)
+  runner.send_tmux_keys(cmd, { clear = clear_screen })
 end
 
 local function generic_test(clear_screen)
@@ -40,7 +40,7 @@ local function generic_test(clear_screen)
     return
   end
 
-  runner.send_tmux_keys(cmd, clear_screen)
+  runner.send_tmux_keys(cmd, { clear = clear_screen })
 end
 
 return {

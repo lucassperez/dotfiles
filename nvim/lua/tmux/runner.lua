@@ -1,5 +1,7 @@
 local attached_pane = nil
 
+local unallowed_list = {}
+
 local function list_panes()
   local result = vim.fn.systemlist('tmux list-panes -F "#{pane_index}:#{pane_id}"')
   local panes = {}
@@ -17,6 +19,16 @@ end
 local function current_pane()
   local result = vim.fn.systemlist('tmux display-message -p "#{pane_index}\n#{pane_id}"')
   return { index = result[1], id = result[2] }
+end
+
+local function pane_current_program(pane)
+  if pane == nil or pane.id == nil then
+    return nil
+  end
+
+  return vim.fn.systemlist(
+    string.format('tmux display-message -t %s -p "#{pane_current_command}"', pane.id)
+  )[1]
 end
 
 local function attach_pane()
@@ -138,7 +150,23 @@ local function ensure_attached()
   return attach_pane()
 end
 
-local function send_tmux_keys(str, clear_before_send)
+local function ensure_target_not_in_unallowed_list()
+  local current_prog = pane_current_program(attached_pane)
+
+  if vim.tbl_contains(unallowed_list, current_prog) then
+    vim.notify(
+      -- We assume attached-pane is not nil because of the ensure_attached
+      ---@diagnostic disable-next-line: need-check-nil
+      string.format('Painel %s rodando programa na lista ignorada: %s', attached_pane.id, current_prog),
+      vim.log.levels.WARN
+    )
+    return false
+  end
+
+  return true
+end
+
+local function send_tmux_keys(str, opts)
   if not vim.env.TMUX then
     vim.notify('Não há uma sessão de tmux rodando', vim.log.levels.ERROR)
     return
@@ -148,13 +176,33 @@ local function send_tmux_keys(str, clear_before_send)
     return
   end
 
-  if clear_before_send == nil then
-    clear_before_send = true
+  opts = opts or {}
+
+  if opts.clear == nil then
+    opts.clear = true
   end
 
+  if opts.force_send == nil then
+    opts.force_send = false
+  end
+
+  local clear_before_send = opts.clear
+
   coroutine.wrap(function()
-    if not ensure_attached() then
-      return
+    while true do
+      if not ensure_attached() then
+        return
+      end
+
+      if opts.force_send then
+        break
+      end
+
+      if ensure_target_not_in_unallowed_list() then
+        break
+      end
+
+      attached_pane = nil
     end
 
     local parts = {}

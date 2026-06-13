@@ -143,7 +143,7 @@ local function run(scope, clear_before_send)
   end
 
   test_cache = test_command
-  runner.send_tmux_keys(test_command, clear_before_send)
+  runner.send_tmux_keys(test_command, { clear = clear_before_send })
 end
 
 local function run_last(clear_before_send)
@@ -152,7 +152,7 @@ local function run_last(clear_before_send)
     return
   end
 
-  runner.send_tmux_keys(test_cache, clear_before_send)
+  runner.send_tmux_keys(test_cache, { clear = clear_before_send })
 end
 
 local function get_test_cache()

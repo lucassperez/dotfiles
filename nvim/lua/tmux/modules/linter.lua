@@ -24,7 +24,7 @@ local function run(scope, clear_before_send)
     vim.notify('Não sei rodar um linter para arquivos do tipo ' .. filetype, vim.log.levels.ERROR)
   end
 
-  require('tmux.runner').send_tmux_keys(cmd, clear_before_send)
+  require('tmux.runner').send_tmux_keys(cmd, { clear = clear_before_send })
 end
 
 return {
