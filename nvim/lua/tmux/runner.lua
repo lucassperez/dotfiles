@@ -1,6 +1,6 @@
 local attached_pane = nil
 
-local unallowed_list = {}
+local unallowed_list = { 'claude' }
 
 local function list_panes()
   local result = vim.fn.systemlist('tmux list-panes -F "#{pane_index}:#{pane_id}"')

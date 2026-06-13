@@ -17,6 +17,13 @@ local function ex(str)
   end
 end
 
+
+-- TmuxSend/TmuxForceSend
+
+vim.keymap.set('n', '<leader>1', ex('TmuxForceSend 1'))
+vim.keymap.set('n', '<leader>2', ex('TmuxForceSend 2'))
+vim.keymap.set('n', '<leader>3', ex('TmuxForceSend 3'))
+
 -- TmuxAttach
 
 vim.keymap.set('n', '<leader>a', ':TmuxAttach<CR>', { silent = true, desc = 'Fixa painel do tmux' })
