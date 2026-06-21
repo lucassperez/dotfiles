@@ -1,3 +1,13 @@
+vim.api.nvim_set_hl(0, '@elixirPrivateDefine', { fg = '#e58183' })
+if not vim.g._elixir_private_define_hl then
+  vim.g._elixir_private_define_hl = true
+  vim.api.nvim_create_autocmd('ColorScheme', {
+    callback = function()
+      vim.api.nvim_set_hl(0, '@elixirPrivateDefine', { fg = '#e58183' })
+    end,
+  })
+end
+
 local elixir_pipe_pry = [[|> fn x -><CR>require IEx; IEx.pry()<CR>x<CR>end.()]]
 
 -- Debugger (mnemonic is ruby's binding pry)

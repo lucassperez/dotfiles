@@ -22,6 +22,11 @@ vim.api.nvim_create_autocmd('FileType', {
     pcall(vim.treesitter.start, ev.buf)
     if ev.match == 'ruby' and vim.bo[ev.buf].filetype == 'ruby' then
       vim.bo[ev.buf].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
+      return
+    end
+    if ev.match == 'elixir' and vim.bo[ev.buf].filetype == 'elixir' then
+      vim.bo[ev.buf].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
+      return
     end
   end
 })
