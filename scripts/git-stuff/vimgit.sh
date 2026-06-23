@@ -114,11 +114,8 @@ git_porcelain_awk_command_with_new_files_complement() {
     awk '/^ ?R / { print $4; next} /^ ?D / { next } /^\?\?/ { next } { print $2 }'`
 
   local new_files=`git ls-files --exclude-standard --others`
-  if [ -n "$new_files" ]; then
-    printf "%s\n%s\n" "$files" "$new_files"
-  else
-    printf "%s\n" "$files"
-  fi
+
+  printf "%s\n%s\n" "$files" "$new_files" | sed '/^$/d'
 }
 
 files=''
