@@ -35,6 +35,32 @@ local run_commands = {
   c = c_function,
 }
 
+local filetype_extensions = {
+  elixir = 'exs',
+  ruby = 'rb',
+  sh = 'sh',
+  javascript = 'js',
+  lua = 'lua',
+  rust = 'rs',
+  go = 'go',
+  clojure = 'clj',
+  c = 'c',
+}
+
+local function write_tmp_file()
+  local filetype = vim.bo.filetype
+  local ext = filetype_extensions[filetype]
+
+  if not ext then
+    return nil
+  end
+
+  local tmp = vim.fn.tempname() .. '.' .. ext
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  vim.fn.writefile(lines, tmp)
+  return tmp
+end
+
 -- Build command based on shebang or filetype
 local function build_command()
   local first_line = vim.fn.getline(1)
@@ -42,11 +68,19 @@ local function build_command()
   local full_path = vim.fn.expand('%:p')
   local filename = vim.fn.expand('%')
 
+  if filename == '' or vim.fn.filereadable(full_path) == 0 then
+    local tmp = write_tmp_file()
+    if not tmp then
+      return nil, 'Não sei executar arquivos do tipo ' .. vim.bo.filetype
+    end
+    full_path = tmp
+    filename = vim.fn.fnamemodify(tmp, ':t')
+  end
+
   if prog_shebang then
     return prog_shebang .. ' ' .. full_path,
       prog_shebang .. ' ' .. filename
   end
-
 
   local filetype = vim.bo.filetype
   local cmd = run_commands[filetype]
@@ -82,6 +116,12 @@ local auto_execute = {
 
 local function toggle_auto_execute(clear_before_send)
   local filename = vim.fn.expand('%')
+  local full_path = vim.fn.expand('%:p')
+
+  if filename == '' or vim.fn.filereadable(full_path) == 0 then
+    vim.notify('Auto run requires a file written to disk', vim.log.levels.ERROR)
+    return
+  end
 
   if auto_execute.active and auto_execute.filename ~= filename then
     vim.notify('Auto run is already on for ' .. auto_execute.filename, vim.log.levels.WARN)
