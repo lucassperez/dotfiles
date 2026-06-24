@@ -71,37 +71,36 @@ local function build_command()
   if filename == '' or vim.fn.filereadable(full_path) == 0 then
     local tmp = write_tmp_file()
     if not tmp then
-      return nil, 'Não sei executar arquivos do tipo ' .. vim.bo.filetype
+      vim.notify('Não sei executar arquivos do tipo ' .. vim.bo.filetype, vim.log.levels.WARN)
+      return nil
     end
     full_path = tmp
     filename = vim.fn.fnamemodify(tmp, ':t')
   end
 
   if prog_shebang then
-    return prog_shebang .. ' ' .. full_path,
-      prog_shebang .. ' ' .. filename
+    return prog_shebang .. ' ' .. full_path
   end
 
   local filetype = vim.bo.filetype
   local cmd = run_commands[filetype]
 
   if not cmd then
-    return nil, 'Não sei executar arquivos do tipo ' .. filetype
+    vim.notify('Não sei executar arquivos do tipo ' .. filetype, vim.log.levels.WARN)
+    return nil
   end
 
   if type(cmd) == 'function' then
     return cmd(filename, full_path)
   end
 
-  return cmd .. full_path,
-         cmd .. filename
+  return cmd .. full_path
 end
 
 local function execute_file(clear_before_send)
-  local command, msg = build_command()
+  local command = build_command()
 
   if not command then
-    vim.notify(msg, vim.log.levels.WARN)
     return
   end
 
@@ -140,10 +139,9 @@ local function toggle_auto_execute(clear_before_send)
     return
   end
 
-  local command, msg = build_command()
+  local command = build_command()
 
   if not command then
-    vim.notify(msg, vim.log.levels.WARN)
     return
   end
 
