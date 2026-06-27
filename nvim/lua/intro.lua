@@ -51,6 +51,12 @@ local intro = {
   group = nil,
 }
 
+local function add_to_intro_text(chunks)
+  for _, l in ipairs(chunks) do
+    intro.text.lines[#intro.text.lines + 1] = l
+  end
+end
+
 local function initialize_intro_state()
   intro.ns = vim.api.nvim_create_namespace('IntroOverlayNS')
   intro.group = vim.api.nvim_create_augroup('IntroOverlay', { clear = true })
@@ -100,15 +106,85 @@ local function initialize_intro_state()
       { (' to see changes in v%d.%d'):format(vim_version.major, vim_version.minor), 'IntroText' },
     },
     { { '───────────────────────────────────────────────', 'IntroSeparator' } },
-    { { '         Help poor children in Uganda!', 'IntroText' } },
-    {
-      { 'type  ', 'IntroText' },
-      { ':', 'IntroSpecial', },
-      { 'help Kuwasha', 'IntroCode' },
-      { '<Enter>', 'IntroSpecial' },
-      { '    for information', 'IntroText' },
-    },
   }
+
+  local palestina_e_sul_global_text = {
+    { { '' } },
+    { { '                Palestina Livre', 'IntroText' } },
+    { { '               Viva o Sul Global', 'IntroText' } },
+    { { '' } },
+  }
+
+  local bram = {
+    { { '' } },
+    { { '     Àquele que construiu, minha gratidão', 'IntroText' } },
+    { { '                   :h Bram', 'IntroCode', }, },
+    { { '' } },
+  }
+
+  local og_uganda = {
+    { { '         Help poor children in Uganda!', 'IntroText' } },
+    { { 'type  ', 'IntroText' }, { ':', 'IntroSpecial', }, { 'help Kuwasha', 'IntroCode' }, { '<Enter>', 'IntroSpecial' }, { '    for information', 'IntroText' }, },
+    { { '' } },
+  }
+
+  local palestina = {
+    { { [[                  \]], 'IntroRed' }, { [[xxxxxxxxxx]], 'Comment' } },
+    { { [[                  x\]], 'IntroRed' }, { [[xxxxxxxxx]], 'Comment' } },
+    { { [[                  xx\]], 'IntroRed' }, { [[xxxxxxxx]], 'IntroText' } },
+    { { [[                  xx/]], 'IntroRed' }, { [[xxxxxxxx]], 'IntroText' } },
+    { { [[                  x/]], 'IntroRed' }, { [[xxxxxxxxx]], 'IntroGreen' } },
+    { { [[                  /]], 'IntroRed' }, { [[xxxxxxxxxx]], 'IntroGreen' } },
+  }
+
+  local brasil = {
+    { { [[               xxxxxx]], 'IntroGreen' }, { [[/xx\]], 'IntroYellow' }, { [[xxxxxxx]], 'IntroGreen' } },
+    { { [[               xxxx]], 'IntroGreen' },   { [[/xx]], 'IntroYellow' }, { 'xx', 'IntroBlue' }, { [[xx\]], 'IntroYellow' }, { [[xxxxx]], 'IntroGreen' } },
+    { { [[               xx]], 'IntroGreen' }, { '/', 'IntroYellow' },   { [[≈≈≈≈]], 'IntroWhite' },   {'xx', 'IntroBlue'}, {'*', 'IntroWhite'},{'x', 'IntroBlue'}, {[[xx\]], 'IntroYellow'}, { [[xxx]],  'IntroGreen' } },
+    { { [[               xx]], 'IntroGreen' },     { [[\xx]], 'IntroYellow' }, { 'xx', 'IntroBlue' },  {[[≈≈≈≈≈≈]], 'IntroWhite'}, { '/', 'IntroYellow' }, { [[xxx]], 'IntroGreen'  } },
+    { { [[               xxxx]], 'IntroGreen' },   { [[\xx]], 'IntroYellow' }, { 'xx', 'IntroBlue' }, { 'xx/', 'IntroYellow' }, { [[xxxxx]], 'IntroGreen' } },
+    { { [[               xxxxxx]], 'IntroGreen' }, { [[\xx/]], 'IntroYellow' }, { [[xxxxxxx]], 'IntroGreen' } },
+  }
+
+  local week_day = os.date('*t').wday
+  local eh_findi = week_day == 7 or week_day == 1
+
+  if week_day == 4 then
+    -- Quarta feira usamos rosa
+    vim.api.nvim_set_hl(0, 'IntroTitle', { fg = '#c7329f', bold = true })
+    vim.api.nvim_set_hl(0, 'IntroText', { fg = '#ebbedf' })
+    vim.api.nvim_set_hl(0, 'IntroCode', { fg = '#db9cca' })
+    vim.api.nvim_set_hl(0, 'IntroSpecial', { fg = '#f27cd2' })
+  end
+
+  if not eh_findi then
+    add_to_intro_text(bram)
+    return
+  end
+
+  local random = math.random(10)
+
+  if random == 1 then
+    add_to_intro_text(og_uganda)
+  else
+    add_to_intro_text(palestina_e_sul_global_text)
+  end
+
+  if random >= 6 then
+    return
+  end
+
+  vim.api.nvim_set_hl(0, 'IntroRed', { fg = 'red' })
+  vim.api.nvim_set_hl(0, 'IntroGreen', { fg = 'green' })
+  vim.api.nvim_set_hl(0, 'IntroYellow', { fg = 'yellow' })
+  vim.api.nvim_set_hl(0, 'IntroBlue', { fg = 'blue' })
+  vim.api.nvim_set_hl(0, 'IntroWhite', { fg = 'white' })
+
+  if random <= 2 then
+    add_to_intro_text(brasil)
+  else
+    add_to_intro_text(palestina)
+  end
 end
 
 local function create_intro_buf()
@@ -248,8 +324,8 @@ vim.api.nvim_create_autocmd('VimEnter', {
       return
     end
 
-    initialize_intro_state()
     create_intro_highlight_groups()
+    initialize_intro_state()
     render_intro()
 
     vim.api.nvim_create_autocmd('VimResized', {
