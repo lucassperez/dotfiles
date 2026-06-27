@@ -1,6 +1,13 @@
 -- global
 vim.o.confirm = true -- pede confirmação ao tentar fechar um buffer com alterações
 
+-- Filetype plugins already set this
+-- The default comments on files without filetype is mind blowing
+-- I tried joining lines with J and got some random behaviour, with
+-- a trailing * disappearing if I had a dash somewhere in the line,
+-- but not disappearing if I did not have it. Bizarre.
+vim.o.comments = ''
+
 local my_shiftwidth = 2
 vim.o.tabstop = my_shiftwidth -- tamanho do tab
 vim.o.shiftwidth = my_shiftwidth -- números de espaços pra usar para cada indentação
