@@ -1,14 +1,8 @@
--- Apparently, vim.keymap.set only works with "remap", and not "noremap".
--- "Noremap" only works with vim.api.nvim_set_keymap.
--- opts.noremap = true
--- Also, vim.keymap.set defaults "remap" to false anyways (noremap true).
--- But vim.api.nvim_set_keymap defaults noremap to false. Also, it does
--- not accept "remap" key in opts.
-
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<Enter>', '<Nop>', { silent = true })
 
 vim.keymap.set('n', '<leader>M', ':Inspect<CR>', {
   desc = 'Mostra informações, como o grupo de destaque (highlight), da coisa/palavra embaixo do cursor usando a funcionalidade padrão Inspect',
@@ -27,9 +21,37 @@ vim.keymap.set('x', '/', '<Esc>/\\%V')
 --   p to ]p
 --   p to p=`]
 --   p to p=`]^
-vim.keymap.set({ 'n', 'v' }, 'p', 'p=`]^')
-vim.keymap.set({ 'n', 'v' }, 'P', 'P=`]^')
+-- Ok, so apparently this is how it works:
+-- `[ beginning of paste
+-- `] end of paste
+-- When we do '] we go to the line of the end of paste, but when
+-- we do `], we go to specific line and column.
+-- In my case, I'm only indenting on linewise paste, so they are the same,
+-- but they could differ.
+-- Also, ]p and ]P (and even [p) are native to vim, but they sometimes
+-- don't indent correctly, for some reason.
+local function indent_on_linewise_paste(cmd)
+  local regtype = vim.fn.getregtype(vim.v.register)
+  vim.cmd.normal({ bang = true, args = { vim.v.count1 .. cmd } })
 
+  local ft = vim.bo.filetype
+
+  if
+    ft == 'text'
+    or ft == ''
+    -- or ft == 'markdown'
+  then
+    return
+  end
+
+  if regtype == 'V' then
+    vim.cmd("silent normal! `[=']^")
+  end
+end
+-- Also worth noting, if I don't want to paste and indent, I can try
+-- the :put command, or paste with either gp or gP native key bindings.
+vim.keymap.set({ 'n', 'x' }, 'p', function() indent_on_linewise_paste('p') end)
+vim.keymap.set({ 'n', 'x' }, 'P', function() indent_on_linewise_paste('P') end)
 
 -- Go to command mode without using shift
 -- vim.keymap.set({ 'n', 'v' }, ';', ':')
