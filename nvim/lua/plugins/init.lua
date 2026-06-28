@@ -32,8 +32,8 @@ require('pack_wrap').call({
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
   {
-    disable = true,
     'elixir-editors/vim-elixir',
+    disable = true,
   },
 
   -----------------------------------------------
@@ -55,6 +55,8 @@ require('pack_wrap').call({
     end,
   },
   {
+    -- Outra alternativa pra ver um dia é o 'monkoose/matchparen.nvim'.
+    -- Quem sabe, vai que é bom?
     'andymass/vim-matchup',
     before = function()
       require('plugins.vim-matchup')
