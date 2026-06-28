@@ -132,8 +132,9 @@ require('pack_wrap').call({
   },
   {
     'sindrets/diffview.nvim',
-    before = require('plugins.diffview').init,
-    after = require('plugins.diffview').setup,
+    after = function()
+      require('plugins.diffview')
+    end,
   },
 
   -----------------------------------------------
