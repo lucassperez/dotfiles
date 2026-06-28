@@ -24,6 +24,10 @@ vim.api.nvim_create_autocmd('FileType', {
       vim.bo[ev.buf].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
       return
     end
+    if ev.match == 'markdown' and vim.bo[ev.buf].filetype == 'markdown' then
+      vim.bo[ev.buf].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
+      return
+    end
     if ev.match == 'elixir' and vim.bo[ev.buf].filetype == 'elixir' then
       vim.bo[ev.buf].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
       return
