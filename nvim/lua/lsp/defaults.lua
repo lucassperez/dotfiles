@@ -25,7 +25,18 @@ local function default_key_maps(bufnr)
   end, formatDesc('Vai para a definição', fzf.lsp_definition))
 
   map('n', '\\k', function()
-    vim.lsp.buf.hover()
+    -- TODO: use solid, but make solid have the same color as the normal
+    --       background, so it appears to just be a padding.
+    --       Or find a way to actually have a padding.
+    --       In any way, I'd prefer not to have border, but it is sometimes
+    --       hard to read.
+    -- bold,double,none,rounded,shadow,single,solid
+    -- Also custom: comma-separated list of 8 characters
+    -- vim.lsp.buf.hover({ border = 'rounded' })
+    -- vim.lsp.buf.hover()
+    -- vim.lsp.buf.hover({ border = { '+', '-', '+', '|', '+', '-', '+', '|' } })
+    -- vim.lsp.buf.hover({ border = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' } })
+    vim.lsp.buf.hover({ border = 'single' })
   end, 'Hover (documentação flutuante)')
 
   map('n', '\\n', function()
@@ -41,11 +52,15 @@ local function default_key_maps(bufnr)
   end, formatDesc('Mostra as referências (onde é usado)', fzf.lsp_references))
 
   map('n', '\\ca', function()
-    if fzf.code_action then
-      fzf.code_action()
-    else
-      vim.lsp.buf.code_action()
-    end
+    -- fzf's code action even shows a preview,
+    -- but I'm ok with standard vim code action.
+    -- if fzf.code_action then
+    --   fzf.code_action()
+    -- else
+    --   vim.lsp.buf.code_action()
+    -- end
+
+    vim.lsp.buf.code_action()
   end, formatDesc('Code action', fzf.code_action))
 
   map('n', '\\d', function()
