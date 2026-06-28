@@ -66,6 +66,22 @@ vim.lsp.document_color.enable(false)
 -- https://github.com/stsewd/tree-sitter-comment/issues/22
 vim.api.nvim_set_hl(0, '@lsp.type.comment', {})
 
+-- share/nvim/runtime/lua/vim/lsp/util.lua:1786
+-- This line is extreme shit, so I'm monkey patching it. Fuck conceallevel
+local original_open_floating_preview = vim.lsp.util.open_floating_preview
+vim.lsp.util.open_floating_preview = function(contents, syntax, opts, ...)
+  local bufnr, winnr = original_open_floating_preview(contents, syntax, opts, ...)
+  if winnr and vim.api.nvim_win_is_valid(winnr) and syntax == 'markdown' then
+    vim.wo[winnr].conceallevel = 0
+    -- We have to recalculate the height after revealing the concealed text
+    if not (opts and opts.height) then
+      local text_height = vim.api.nvim_win_text_height(winnr, {}).all
+      vim.api.nvim_win_set_height(winnr, text_height)
+    end
+  end
+  return bufnr, winnr
+end
+
 vim.diagnostic.config({
   jump = {
     on_jump = function(_, bufnr)
