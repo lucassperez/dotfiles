@@ -1,3 +1,12 @@
+if true then
+  return
+end
+
+vim.keymap.set('n', '<leader>b', ':BufSwitcher<CR>', {
+  remap = false,
+  desc = 'Mostra uma lista com os buffers abertos, e ao digitar o id de um buffer, muda automaticamente',
+})
+
 vim.api.nvim_create_user_command('BufSwitcher', function()
   BufSwitcher()
 end, {})
